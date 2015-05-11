@@ -1,0 +1,47 @@
+{
+  "name":"Buyback",
+    "description":"Sistema de compra de equipos mobiles usados",
+    "keywords":[ "yii", "application", "web" ],
+    "type":"yii-application",
+    "config":{
+      "vendor-dir":"vendor"
+    },
+    "authors":[
+    {
+      "name":"Richard Grinberg",
+      "email":"rggrinberg@gmail.com"
+    }
+  ],
+    "require":{
+      "yiisoft/yii": "1.*",
+      "yiisoft/jquery": "1.8.3",
+      "crisu83/yiistrap": "1.*",
+      "assisrafael/giix": "dev-master",
+      "mpdf/mpdf": "dev-master",
+      "ensepar/html2pdf": "dev-master",
+      "borales/yii-pdf": "0.*",
+      "ardem/yii-coding-standard": "dev-master"
+    },
+    "autoload":{
+      "psr-0":{
+        "Yiinitializr":"common/lib/"
+      }
+    },
+    "scripts": {
+    "post-install-cmd": [
+
+      "config\\ComposerCallback::postInstall",
+      "php -r \"mkdir('.\\src\\uploads');\"",
+      "php -r \"mkdir('.\\src\\assets');\"",
+      "php -r \"mkdir('.\\src\\protected\\runtime');\"",
+      "php ./src/protected/yiic migrate --interactive=0"
+
+        ],
+    "post-update-cmd": [
+      "php -r \"!is_dir('.\\src\\uploads') ? mkdir('.\\src\\uploads') : true;\"",
+      "php -r \"!is_dir('.\\src\\assets') ? mkdir('.\\src\\assets') : true;\"",
+      "php -r \"!is_dir('.\\src\\protected\\runtime') ? mkdir('.\\src\\protected\\runtime') : true;\"",
+      "php ./src/protected/yiic migrate --interactive=0"
+    ]
+  }
+}
