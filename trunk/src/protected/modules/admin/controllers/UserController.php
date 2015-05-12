@@ -106,4 +106,28 @@ class UserController extends Controller {
 		));
 	}
 
+	public function saveAuthassigment($user, $itemname) {
+		$model = new Authassignment;
+
+		if ($authassigmen_item = $model->findByAttributes(array('userid' => $user->id))) {
+			$authassigmen_item->delete();
+		}
+
+		$model->itemname = $itemname;
+		$model->userid = $user->id;
+
+		if ($model->validate()) {
+			/* operacion para guardar las relaciones */
+			try {
+				$auth = Yii::app()->authManager;
+				$auth->assign($model->itemname, $model->userid, $model->bizrule, $model->data);
+
+				return true;
+			} catch (CDbException $e) {
+				Yii::app()->user->setFlash('error', $e->getMessage());
+				return false;
+			}
+		}
+	}
+
 }
