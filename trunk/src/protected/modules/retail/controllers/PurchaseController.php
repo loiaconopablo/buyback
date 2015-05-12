@@ -1,6 +1,7 @@
 <?php
 
-Yii::import('application.vendors.wsfe.*', true);
+//Yii::import('application.vendors.wsfe.*', true);
+Yii::import('ext.wsfe.*', true);
 
 class PurchaseController extends Controller {
 
