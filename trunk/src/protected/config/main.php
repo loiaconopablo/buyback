@@ -32,7 +32,8 @@ return array(
 		'bootstrap.behaviors.*',
 		'bootstrap.widgets.*',
 		'bootstrap.components.*',
-		'vendor.assisrafael.giix.components.*', // giix components
+		//'vendor.assisrafael.giix.components.*', // giix components
+		'giix.components.*', // giix components
 
 		//'application.vendors.PHPExcel',
 
@@ -55,7 +56,7 @@ return array(
 			'password' => '123456',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters' => array('127.0.0.1', '::1', '192.168.56.1'),
-			'generatorPaths' => array('ext.giix-core', 'bootstrap.gii'),
+			'generatorPaths' => array('giix.generators', 'bootstrap.gii'),
 		),
 	),
 

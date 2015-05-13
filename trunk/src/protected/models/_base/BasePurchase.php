@@ -19,7 +19,7 @@
  * @property string $last_dispatch_note_id
  * @property string $carrier_id
  * @property string $price_list_id
- * @property integer $imei
+ * @property string $imei
  * @property string $brand
  * @property string $model
  * @property string $carrier_name
@@ -62,14 +62,14 @@ abstract class BasePurchase extends GxActiveRecord {
 	}
 
 	public static function representingColumn() {
-		return 'brand';
+		return 'imei';
 	}
 
 	public function rules() {
 		return array(
 			array('company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, price_list_id, imei, brand, model, carrier_name, price_type, contract_number', 'required'),
-			array('imei', 'numerical', 'integerOnly'=>true),
 			array('company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, contract_id, last_dispatch_note_id, carrier_id, price_list_id, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id', 'length', 'max'=>10),
+			array('imei', 'length', 'max'=>16),
 			array('brand, model, carrier_name', 'length', 'max'=>255),
 			array('price_type, contract_number, cae', 'length', 'max'=>20),
 			array('purchase_price, paid_price, importe_neto, importe_iva', 'length', 'max'=>8),
@@ -136,7 +136,7 @@ abstract class BasePurchase extends GxActiveRecord {
 		$criteria->compare('last_dispatch_note_id', $this->last_dispatch_note_id, true);
 		$criteria->compare('carrier_id', $this->carrier_id, true);
 		$criteria->compare('price_list_id', $this->price_list_id, true);
-		$criteria->compare('imei', $this->imei);
+		$criteria->compare('imei', $this->imei, true);
 		$criteria->compare('brand', $this->brand, true);
 		$criteria->compare('model', $this->model, true);
 		$criteria->compare('carrier_name', $this->carrier_name, true);
