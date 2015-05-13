@@ -1,6 +1,6 @@
 <?php
 
-class MigrationsController extends GxController {
+class MigrationsController extends Controller {
 
 	public function actionRun() 
 	{

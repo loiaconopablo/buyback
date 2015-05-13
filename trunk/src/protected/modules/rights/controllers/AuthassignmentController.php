@@ -1,6 +1,6 @@
 <?php
 
-class AuthassignmentController extends GxController
+class AuthassignmentController extends Controller
 {
 public $layout='//layouts/column2';
 	

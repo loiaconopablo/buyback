@@ -1,6 +1,6 @@
 <?php
 
-class AuthitemchildController extends GxController
+class AuthitemchildController extends Controller
 {
 	
 	/**

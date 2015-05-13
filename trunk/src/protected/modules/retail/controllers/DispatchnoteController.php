@@ -1,6 +1,6 @@
 <?php
 
-class DispatchnoteController extends GxController {
+class DispatchnoteController extends Controller {
 
 	public function actionIndex() {
 		$this->redirect(array('admin'));
