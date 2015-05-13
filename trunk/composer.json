@@ -34,6 +34,7 @@
       "php -r \"mkdir('.\\src\\uploads');\"",
       "php -r \"mkdir('.\\src\\assets');\"",
       "php -r \"mkdir('.\\src\\protected\\runtime');\"",
+      "php -r \"mkdir('.\\vendor\\tecnick.com\\tcpdf\\cache');\"",
       "php ./src/protected/yiic migrate --interactive=0"
 
         ],
@@ -41,6 +42,7 @@
       "php -r \"!is_dir('.\\src\\uploads') ? mkdir('.\\src\\uploads') : true;\"",
       "php -r \"!is_dir('.\\src\\assets') ? mkdir('.\\src\\assets') : true;\"",
       "php -r \"!is_dir('.\\src\\protected\\runtime') ? mkdir('.\\src\\protected\\runtime') : true;\"",
+      "php -r \"!is_dir('.\\vendor\\tecnick.com\\tcpdf\\cache') ? mkdir('.\\vendor\\tecnick.com\\tcpdf\\cache') : true;\"",
       "php ./src/protected/yiic migrate --interactive=0"
     ]
   }
