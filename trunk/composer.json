@@ -35,10 +35,10 @@
       "php -r \"mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets');\"",
       "php -r \"mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime');\"",
       "php -r \"mkdir('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache');\"",
-      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'uploads', octdec(776));\"",
-      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets', octdec(776));\"",
-      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime', octdec(776));\"",
-      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache', octdec(776));\"",
+      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'uploads', octdec(777));\"",
+      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets', octdec(777));\"",
+      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime', octdec(777));\"",
+      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache', octdec(777));\"",
       "php ./src/protected/yiic migrate --interactive=0"
 
         ],
@@ -47,10 +47,10 @@
       "php -r \"!is_dir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets') ? mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets') : true;\"",
       "php -r \"!is_dir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime') ? mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime') : true;\"",
       "php -r \"!is_dir('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache') ? mkdir('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache') : true;\"",
-      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'uploads', octdec(776));\"",
-      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets', octdec(776));\"",
-      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime', octdec(776));\"",
-      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache', octdec(776));\"",
+      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'uploads', octdec(777));\"",
+      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets', octdec(777));\"",
+      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime', octdec(777));\"",
+      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache', octdec(777));\"",
       "php ./src/protected/yiic migrate --interactive=0"
     ]
   }
