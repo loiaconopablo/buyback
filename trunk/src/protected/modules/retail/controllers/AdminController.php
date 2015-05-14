@@ -31,24 +31,55 @@ class AdminController extends Controller {
 		));
 	}
 
+
 	/**
-	* action
-	*/
+	 * Lista los equipos (purchase) listados en la tabla de admin 
+	 * Tanto los de retail como los de headquarter
+	 * Y los despacha en una nueva nota de envio (dispatchnote)
+	 *
+	 * @author Richard Gribnerg <rggrinberg@gmail.com>
+	 *
+	 * TODO: Este action no debería estar aca ya que también es utilizdo por el modulo headquarter
+	 * Creo que debería estar en el modulo dispatchnote
+	 */
 	public function actionDispatchPurchases()
 	{
 		$dispatch_note_model = new DispatchNote;
 
+		/**
+		 * Arry de lo id de los equipos seleccionados (purchase.id)
+		 * @var array
+		 */
 		$purchases = array();
-		// Se fija si recibio purchases en el post del admin
+
+		/*
+		Se fija si recibió purchases en el post del admin
+		Esto es cuando viene del action admin de (retail o headquarter)
+		 */
 		if (isset($_POST['purchase_selected'])) {
 			$purchases = $_POST['purchase_selected'];
 		}
 
-		// En el submit del form con comment
-		if (isset($_POST['dispatch_selected'])) {
-			$dispatch_note_model->setAttributes($_POST['DispatchNote']);
-			$dispatch_note_id = $dispatch_note_model->create($_POST['dispatch_selected']);
+		/*
+		Si cumple la condición es porque viene del submit del form para confirmar y despachar
+		los equipos (purchase) en una nota de envío (dispatchnote)		
+		 */
+		// if (isset($_POST['dispatch_selected'])) {
+
+		// 	$dispatch_note_model->setAttributes($_POST['DispatchNote']);
+		// 	$dispatch_note_id = $dispatch_note_model->create($_POST['dispatch_selected']);
 			
+		// 	if ($dispatch_note_id) {
+		// 		$this->redirect(array('/dispatchnote/dispatchnote/view', 'id' => $dispatch_note_id));
+		// 	}
+		// }
+
+		// Si no recibe este POST el request viene de admin
+		if (isset($_POST['DispatchNote'])) {
+			$dispatch_note_model->setAttributes($_POST['DispatchNote']);
+			
+			$dispatch_note_id = $dispatch_note_model->create($purchases);
+
 			if ($dispatch_note_id) {
 				$this->redirect(array('/dispatchnote/dispatchnote/view', 'id' => $dispatch_note_id));
 			}
@@ -62,6 +93,7 @@ class AdminController extends Controller {
 		$dataProvider = new CActiveDataProvider(new Purchase, array(
 			'criteria' => $criteria,
 		));
+
 		$this->render('dispatch_purchase', array(
 			'dataProvider' => $dataProvider,
 			'model' => $model,
