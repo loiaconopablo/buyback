@@ -45,7 +45,7 @@
 					<td><?php echo $model->model;?></td>
 					<td><?php echo $carrier_name;?></td>
 					<td><?php echo $model->imei;?></td>
-					<td>$ <?php echo $model->purchase_price;?></td>
+					<td align="right">$ <?php echo $model->purchase_price;?></td>
 				</tr>
 			</table>
 
@@ -53,7 +53,7 @@
 				<tr><td colspan="4"><h3>Datos de la venta</h3></td></tr>
 				<?php $date = new DateTime($model->created_at);?>
 				<tr>
-					<td style="width:7%; font-weight:bold;">CAE:</td>
+					<td style="width:7%; font-weight:bold;">CAI:</td>
 					<td style="width:25%;"><?php echo $model->cae;?></td>
 					<td style="width:19%; font-weight:bold;">Entregado en:</td>
 					<td style="width:49%;"><?php echo $model->point_of_sale->address;?></td>
@@ -82,7 +82,7 @@
 			</table>
 			<table style="width:100%; margin:0px; padding:0px;">
 				<tr>
-					<td style="width:12%; font-weight:bold;">Tel&eacute;fono:</td>
+					<td style="width:12%; font-weight:bold;">Telefono:</td>
 					<td style="width:15%;"><?php echo $model->seller->phone;?></td>
 					<td style="width:9%; font-weight:bold;"><?php echo Yii::t('app', 'E-mail');?>:</td>
 					<td style="width:66%;"><?php echo $model->seller->mail;?></td>

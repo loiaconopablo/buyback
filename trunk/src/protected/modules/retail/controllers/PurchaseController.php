@@ -217,7 +217,9 @@ class PurchaseController extends Controller {
 		$html2pdf->Output();
 	}
 
-	public function savePurchase($seller) {
+	public function savePurchase($seller)
+	{
+
 		$model = new Purchase;
 
 		$point_of_sale = PointOfSale::model()->findByPk(Yii::app()->user->point_of_sale_id);
@@ -237,16 +239,27 @@ class PurchaseController extends Controller {
 
 		try {
 			/**
+			 * Array con la respuesta de la AFIP con los siguienes items
 			 * ['contract_munber'] : integer
 			 * ['cae'] : integer
-			 * ['json_response'] : raw el json que devuelve la afip con todos sus datos incluido el CAE
+			 * ['json_response'] : string : json raw del json que devuelve la afip con todos sus datos incluido el CAE
+			 * 
+			 * @var array
 			 */
 			$cae_array = $afipClient->getCaeParaContrato($purchase_price, $seller);
+
 		} catch (Exception $e) {
+
 			Yii::app()->user->setFlash('error', $e);
+
 			return;
+
 		}
 
+		/**
+		 * Datos que se van a guardar en el modelo Purchase
+		 * @var array
+		 */
 		$purchase_data = array(
 			'contract_number' => $cae_array['contract_number'],
 			'company_id' => Yii::app()->user->company_id,

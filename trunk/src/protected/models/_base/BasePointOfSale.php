@@ -55,12 +55,12 @@ abstract class BasePointOfSale extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('company_id, is_headquarter, headquarter_id, name, address, province, is_owner', 'required'),
+			array('company_id, is_headquarter, name, address, province, is_owner', 'required'),
 			array('is_headquarter, is_owner', 'numerical', 'integerOnly'=>true),
 			array('company_id, headquarter_id, user_update_id', 'length', 'max'=>10),
 			array('name, address, province, locality, phone, mail, reference_name, reference_phone, reference_mail', 'length', 'max'=>255),
 			array('created_at, updated_at', 'safe'),
-			array('locality, phone, mail, created_at, updated_at, user_update_id, reference_name, reference_phone, reference_mail', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('headquarter_id, locality, phone, mail, created_at, updated_at, user_update_id, reference_name, reference_phone, reference_mail', 'default', 'setOnEmpty' => true, 'value' => null),
 			array('id, company_id, is_headquarter, headquarter_id, name, address, province, locality, phone, mail, created_at, updated_at, user_update_id, reference_name, reference_phone, reference_mail, is_owner', 'safe', 'on'=>'search'),
 		);
 	}

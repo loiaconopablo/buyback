@@ -6,11 +6,34 @@ class WsfeClient {
 	/**
 	 * TODO: pasar todos estas constantes a un archivo de configuracion
 	 */
+	
+	/**
+	 * PROVISORIO
+	 * Esto es provisorio mientras se tramita el CAE
+	 *
+	 * También se agrega código provisorio en getCaeParaContrato()
+	 */
+	
+	const USAR_CAI = true;
+	const CAI = 41191016946437;
+	const PUNTO_DE_VENTA = 001;
+
+	/**
+	 * END PROVISORIO
+	 */
+	
 	const IVA = 0.17355;
 
 	const SERVICE_URL = 'http://localhost:8080';
 
-	const PUNTO_DE_VENTA = 124;
+	/**
+	 * PROVISORIO
+	 * Esta comentado mientras se usa el CAI y no el CAE
+	 */
+	// const PUNTO_DE_VENTA = 124;
+	/**
+	 * END PROVISORIO
+	 */
 
 	const TIPO_DE_COMPROBANTE = 49;
 	const TIPO_IVA = 5;
@@ -166,13 +189,41 @@ class WsfeClient {
 	 * @param $sellr Seller
 	 * @return array
 	 */
-	public function getCaeParaContrato($purchase_price, Seller $seller) {
+	public function getCaeParaContrato($purchase_price, Seller $seller)
+	{
 
 		$contract_number = $this->getProximoComprobante();
 
+		/**
+		 * Numero de contrato formateado:
+		 * punto de venta - numero de contrato
+		 * 0000-00000000
+		 * 
+		 * @var string
+		 */
+		$formated_contract_number = $this->formatearNumeroDeContrato($contract_number);
+
+
 		$cae_request_data = $this->getCaeRequestData($contract_number, $purchase_price, $seller);
 
+
 		$cae_json_response = $this->getCaeDesdeAfip($cae_request_data);
+
+		/**
+		 * PROVISORIO
+		 * Este código es provisorio mientras se tramita el CAE
+		 */
+		$response_array = array(
+			'contract_number' => $formated_contract_number,
+			'cae' => self::CAI,
+			'json_response' => 'Este es un CAI fijo temporal mientras se tramita el CAE',
+		);
+
+		return $response_array;
+
+		/**
+		 * END PROVISORIO
+		 */
 
 		$responseObj = CJSON::decode($cae_json_response, false);
 
@@ -191,12 +242,29 @@ class WsfeClient {
 		}
 
 		$response_array = array(
-			'contract_number' => $contract_number,
+			'contract_number' => $formated_contract_number,
 			'cae' => $responseObj->feDetResp->fecaedetResponse[0]->cae,
 			'json_response' => $cae_json_response,
 		);
 
 		return $response_array;
 
+	}
+
+	/**
+	 * Recibe el numero de contrato de la afip y lo formatea a:
+	 * 4 digitos de punto de venta - (guión) 8 digitos de numero de contrato
+	 *
+	 * @author  Richard Grinberg <rggrinberg@gmail.com>
+	 * @param  integer $contract_number numero de contrato recibido de la afip
+	 * @return string                  Numero de contrato con el formato 000-00000000
+	 */
+	private function formatearNumeroDeContrato($contract_number)
+	{
+		$contract_pdv_num = str_pad(self::PUNTO_DE_VENTA, 4, "0", STR_PAD_LEFT);
+		$contract_cn_num = str_pad($contract_number, 8, "0", STR_PAD_LEFT);
+		$final_contract_number = $contract_pdv_num . '-' . $contract_cn_num;
+
+		return $final_contract_number;
 	}
 }

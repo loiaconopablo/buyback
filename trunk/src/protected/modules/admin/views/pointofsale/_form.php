@@ -14,7 +14,7 @@
 
 		<div>
 		<?php echo $form->labelEx($model,'company_id'); ?>
-		<?php echo $form->dropDownList($model, 'company_id', GxHtml::listDataEx(Company::model()->findAllByAttributes(array('is_owner' => 0))), array('size' => TbHtml::INPUT_SIZE_XXLARGE, 'empty' => 'Seleccionar...')); ?>
+		<?php echo $form->dropDownList($model, 'company_id', GxHtml::listDataEx(Company::model()->findAll()), array('size' => TbHtml::INPUT_SIZE_XXLARGE, 'empty' => 'Seleccionar...')); ?>
 		<?php echo $form->error($model,'company_id'); ?>
 		</div><!-- row -->
 		<div>

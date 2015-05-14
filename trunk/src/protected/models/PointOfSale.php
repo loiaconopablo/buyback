@@ -58,28 +58,34 @@ class PointOfSale extends BasePointOfSale {
 		return $model;
 	}
 
-	public function validateHeadquarter($attribute, $params) {
+	/**
+	 * Valida el atributo headquarter_id
+	 * Todos los puntos de venta (point_of_sale) obligatoriamente
+	 * Salvo que pertenezca a la empresa owner (BGH)
+	 * En este caso puede tener headquarter como no
+	 * 		
+	 * @param  string $attribute El nombre del atributo del modelo (headquarter_id)
+	 * @param  [type] $params    [description]
+	 * @return boolean           Devuelve TRUE si valida ok o un error
+	 */
+	public function validateHeadquarter($attribute, $params)
+	{
 
-		if (!$this->is_headquarter) {
-			if ($this->$attribute) {
-				return true;
-			} else {
-				$this->addError($attribute, 'Debe seleccionar una cabecera');
-			}
-		} else {
+		if ($this->$attribute) {
+			// Tiene un headquarter asiganado ya valida ok
 			return true;
 		}
-	}
 
-	// TODO: esto no va mas creo 16-02-2015
-	// public function afterSave()
-	// {
-	// 	if ($this->is_headquarter) {
-	// 		$this->isNewRecord = false;
-	// 		$this->headquarter_id = $this->id;
-	// 		$this->saveAttributes(array('headquarter_id'));
-	// 	}
-	// }
+		if ($this->company->is_owner && $this->is_headquarter) {
+			// Pertenece a la empresa owner (BGH)
+			return true;
+		}
+
+		// NO tiene headquarter asignado
+		// NO pertenece a la empresa owner (BGH)
+		// DEBE tener headquarter asignado (Propio o del owner)
+		$this->addError($attribute, 'Debe seleccionar una cabecera');
+	}
 
 	public function attributeLabels() {
 		return CMap::mergeArray(parent::attributeLabels(),
