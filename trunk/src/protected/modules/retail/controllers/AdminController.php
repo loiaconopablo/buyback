@@ -64,17 +64,6 @@ class AdminController extends Controller {
 		Si cumple la condición es porque viene del submit del form para confirmar y despachar
 		los equipos (purchase) en una nota de envío (dispatchnote)		
 		 */
-		// if (isset($_POST['dispatch_selected'])) {
-
-		// 	$dispatch_note_model->setAttributes($_POST['DispatchNote']);
-		// 	$dispatch_note_id = $dispatch_note_model->create($_POST['dispatch_selected']);
-			
-		// 	if ($dispatch_note_id) {
-		// 		$this->redirect(array('/dispatchnote/dispatchnote/view', 'id' => $dispatch_note_id));
-		// 	}
-		// }
-
-		// Si no recibe este POST el request viene de admin
 		if (isset($_POST['DispatchNote'])) {
 			$dispatch_note_model->setAttributes($_POST['DispatchNote']);
 			
