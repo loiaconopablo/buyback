@@ -31,18 +31,19 @@
     "post-install-cmd": [
 
       "config\\ComposerCallback::postInstall",
-      "php -r \"mkdir('.\\src\\uploads');\"",
-      "php -r \"mkdir('.\\src\\assets');\"",
-      "php -r \"mkdir('.\\src\\protected\\runtime');\"",
-      "php -r \"mkdir('.\\vendor\\tecnick.com\\tcpdf\\cache');\"",
+      "php -r \"mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'uploads');\"",
+      "php -r \"mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets');\"",
+      "php -r \"mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime');\"",
+      "php -r \"mkdir('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache');\"",
+      "php -r \"chmod('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'uploads', octdec(776));\"",
       "php ./src/protected/yiic migrate --interactive=0"
 
         ],
     "post-update-cmd": [
-      "php -r \"!is_dir('.\\src\\uploads') ? mkdir('.\\src\\uploads') : true;\"",
-      "php -r \"!is_dir('.\\src\\assets') ? mkdir('.\\src\\assets') : true;\"",
-      "php -r \"!is_dir('.\\src\\protected\\runtime') ? mkdir('.\\src\\protected\\runtime') : true;\"",
-      "php -r \"!is_dir('.\\vendor\\tecnick.com\\tcpdf\\cache') ? mkdir('.\\vendor\\tecnick.com\\tcpdf\\cache') : true;\"",
+      "php -r \"!is_dir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'uploads') ? mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'uploads') : true;\"",
+      "php -r \"!is_dir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets') ? mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'assets') : true;\"",
+      "php -r \"!is_dir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime') ? mkdir('.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'runtime') : true;\"",
+      "php -r \"!is_dir('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache') ? mkdir('.' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'tecnick.com' . DIRECTORY_SEPARATOR . 'tcpdf' . DIRECTORY_SEPARATOR . 'cache') : true;\"",
       "php ./src/protected/yiic migrate --interactive=0"
     ]
   }
