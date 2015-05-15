@@ -1,4 +1,3 @@
-<?php Yii::import('application.vendors.wsfe.*', true);?>
 <?php $date = new DateTime($dispatch_note->created_at);?>
 
 <page backtop="2mm" backbottom="5mm" backleft="5mm" backright="5mm" format="A4" orientation="portrait">
@@ -111,13 +110,8 @@
 		<th style="width:15%; height:2%;">Vendedor</th>
 	</tr>
 	<?php foreach ($purchases as $purchase): ?>
-		<?php
-$contract_pdv_num = str_pad(WsfeClient::PUNTO_DE_VENTA, 4, "0", STR_PAD_LEFT);
-$contract_cn_num = str_pad($purchase->contract_number, 8, "0", STR_PAD_LEFT);
-$final_contract_number = $contract_pdv_num . '-' . $contract_cn_num;
-?>
 	<	<tr>
-			<td><?php echo $final_contract_number;?></td>
+			<td><?php echo $purchase->contract_number;?></td>
 			<td><?php echo $purchase->brand;?></td>
 			<td><?php echo $purchase->model;?></td>
 			<td><?php echo $purchase->imei;?></td>
