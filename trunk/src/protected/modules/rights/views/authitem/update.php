@@ -5,16 +5,16 @@
 
 <?php
 $this->breadcrumbs=array(
-	'Authitems'=>array('index'),
-	$model->name=>array('view','id'=>$model->name),
-	'Update',
+    'Authitems'=>array('index'),
+    $model->name=>array('view','id'=>$model->name),
+    'Update',
 );
 
 $this->menu=array(
-	array('label'=>'List Authitem', 'url'=>array('index')),
-	array('label'=>'Create Authitem', 'url'=>array('create')),
-	array('label'=>'View Authitem', 'url'=>array('view', 'id'=>$model->name)),
-	array('label'=>'Manage Authitem', 'url'=>array('admin')),
+    array('label'=>'List Authitem', 'url'=>array('index')),
+    array('label'=>'Create Authitem', 'url'=>array('create')),
+    array('label'=>'View Authitem', 'url'=>array('view', 'id'=>$model->name)),
+    array('label'=>'Manage Authitem', 'url'=>array('admin')),
 );
 ?>
 

@@ -2,7 +2,7 @@
 /* @var $this AuthitemchildController */
 
 $this->breadcrumbs=array(
-	'Authitemchild',
+    'Authitemchild',
 );
 ?>
 <h1><?php echo $this->id . '/' . $this->action->id; ?></h1>

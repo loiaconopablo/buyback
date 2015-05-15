@@ -10,7 +10,7 @@
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('company_id')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('company_id')); ?>:
 				</b>
 			</td>
 			<td>
@@ -20,17 +20,17 @@
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('is_headquarter')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('is_headquarter')); ?>:
 				</b>
 			</td>
 			<td>
-					<?php echo GxHtml::encode($data->is_headquarter); ?>
+        <?php echo GxHtml::encode($data->is_headquarter); ?>
 					</td>
 		<tr>	
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('headquarter_id')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('headquarter_id')); ?>:
 				</b>
 			</td>
 			<td>
@@ -40,94 +40,94 @@
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('name')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('name')); ?>:
 				</b>
 			</td>
 			<td>
-					<?php echo GxHtml::encode($data->name); ?>
+        <?php echo GxHtml::encode($data->name); ?>
 					</td>
 		<tr>	
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('address')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('address')); ?>:
 				</b>
 			</td>
 			<td>
-					<?php echo GxHtml::encode($data->address); ?>
+        <?php echo GxHtml::encode($data->address); ?>
 					</td>
 		<tr>	
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('province')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('province')); ?>:
 				</b>
 			</td>
 			<td>
-					<?php echo GxHtml::encode($data->province); ?>
+        <?php echo GxHtml::encode($data->province); ?>
 					</td>
 		<tr>	
-			<?php /*
-		<tr>
-			<td>
+    <?php /*
+    <tr>
+    <td>
 				<b>
 					<?php echo GxHtml::encode($data->getAttributeLabel('locality')); ?>:
 				</b>
-			</td>
-			<td>
+    </td>
+    <td>
 					<?php echo GxHtml::encode($data->locality); ?>
 					</td>
-		<tr>	
+    <tr>	
 				<tr>
-			<td>
+    <td>
 				<b>
 					<?php echo GxHtml::encode($data->getAttributeLabel('phone')); ?>:
 				</b>
-			</td>
-			<td>
+    </td>
+    <td>
 					<?php echo GxHtml::encode($data->phone); ?>
 					</td>
-		<tr>	
+    <tr>	
 				<tr>
-			<td>
+    <td>
 				<b>
 					<?php echo GxHtml::encode($data->getAttributeLabel('mail')); ?>:
 				</b>
-			</td>
-			<td>
+    </td>
+    <td>
 					<?php echo GxHtml::encode($data->mail); ?>
 					</td>
-		<tr>	
+    <tr>	
 				<tr>
-			<td>
+    <td>
 				<b>
 					<?php echo GxHtml::encode($data->getAttributeLabel('created_at')); ?>:
 				</b>
-			</td>
-			<td>
+    </td>
+    <td>
 					<?php echo GxHtml::encode($data->created_at); ?>
 					</td>
-		<tr>	
+    <tr>	
 				<tr>
-			<td>
+    <td>
 				<b>
 					<?php echo GxHtml::encode($data->getAttributeLabel('updated_at')); ?>:
 				</b>
-			</td>
-			<td>
+    </td>
+    <td>
 					<?php echo GxHtml::encode($data->updated_at); ?>
 					</td>
-		<tr>	
+    <tr>	
 				<tr>
-			<td>
+    <td>
 				<b>
 					<?php echo GxHtml::encode($data->getAttributeLabel('user_update_id')); ?>:
 				</b>
-			</td>
-			<td>
+    </td>
+    <td>
 					<?php echo GxHtml::encode($data->user_update_id); ?>
 					</td>
-		<tr>	
+    <tr>	
 					*/ ?>
 	</tbody>
 	</table>

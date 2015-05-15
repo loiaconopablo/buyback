@@ -1,10 +1,10 @@
 <?php //echo TbHtml::stackedTabs( array(array('label' => Yii::t('app', 'Filtrar entre fechas'), 'icon' => 'filter', 'url' => '#', 'active' => true))); ?>
 
 <?php
-	$in = false;
-	if (isset(Yii::app()->request->cookies['from']) || isset(Yii::app()->request->cookies['to'])) {
-		$in = true;
-	}
+    $in = false;
+if (isset(Yii::app()->request->cookies['from']) || isset(Yii::app()->request->cookies['to'])) {
+    $in = true;
+}
 ?>
 <div class="accordion" id="accordion2">
   <div class="accordion-group">
@@ -19,43 +19,47 @@
 
 		
 					
-					<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-						'name' => 'from',
-						'value' => isset(Yii::app()->request->cookies['from']) ? Yii::app()->request->cookies['from']->value : null,
-						'htmlOptions' => array(
-							'class' => 'block',
-							'placeholder' => 'desde',
-						),
-						'options' => array(
-							'showButtonPanel' => true,
-							'changeYear' => true,
-							'dateFormat' => 'dd/mm/yy',
-							'onSelect'=> new CJavaScriptExpression("function(dateSelected){ $.cookie('from', dateSelected); }"),
-							),
-						));
-					; ?>
+        <?php $this->widget(
+    'zii.widgets.jui.CJuiDatePicker', array(
+        'name' => 'from',
+        'value' => isset(Yii::app()->request->cookies['from']) ? Yii::app()->request->cookies['from']->value : null,
+        'htmlOptions' => array(
+        'class' => 'block',
+        'placeholder' => 'desde',
+        ),
+        'options' => array(
+        'showButtonPanel' => true,
+        'changeYear' => true,
+        'dateFormat' => 'dd/mm/yy',
+        'onSelect'=> new CJavaScriptExpression("function(dateSelected){ $.cookie('from', dateSelected); }"),
+        ),
+                        )
+);
+                    ; ?>
 		
-					<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-						'name' => 'to',
-						'value' => isset(Yii::app()->request->cookies['to']->value) ? Yii::app()->request->cookies['to']->value : null,
-						'htmlOptions' => array(
-							'class' => 'block',
-							'placeholder' => 'hasta',
-						),
-						'options' => array(
-							'showButtonPanel' => true,
-							'changeYear' => true,
-							'dateFormat' => 'dd/mm/yy',
-							'onSelect'=> new CJavaScriptExpression("function(dateSelected){ $.cookie('to', dateSelected); }"),
-							),
-						));
-					; ?>
+        <?php $this->widget(
+        'zii.widgets.jui.CJuiDatePicker', array(
+        'name' => 'to',
+        'value' => isset(Yii::app()->request->cookies['to']->value) ? Yii::app()->request->cookies['to']->value : null,
+        'htmlOptions' => array(
+        'class' => 'block',
+        'placeholder' => 'hasta',
+        ),
+        'options' => array(
+        'showButtonPanel' => true,
+        'changeYear' => true,
+        'dateFormat' => 'dd/mm/yy',
+        'onSelect'=> new CJavaScriptExpression("function(dateSelected){ $.cookie('to', dateSelected); }"),
+        ),
+                        )
+);
+                    ; ?>
 	
 
-			<?php echo TbHtml::button(Yii::t('app', 'Filtrar'), array('block' => true, 'onClick' => 'javascript: refreshGrid();')); ?>
-			<?php echo TbHtml::button(Yii::t('app', 'Reiniciar filtro'), array('block' => true, 'onClick' => 'javascript: resetDateFilter();')); ?>
+    <?php echo TbHtml::button(Yii::t('app', 'Filtrar'), array('block' => true, 'onClick' => 'javascript: refreshGrid();')); ?>
+    <?php echo TbHtml::button(Yii::t('app', 'Reiniciar filtro'), array('block' => true, 'onClick' => 'javascript: resetDateFilter();')); ?>
 
-			<?php $this->endWidget(); ?>
+    <?php $this->endWidget(); ?>
       </div>
     </div>
   </div>

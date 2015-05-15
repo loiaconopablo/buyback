@@ -22,13 +22,14 @@
 
 <h2>檢查結果</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 恭喜! 您的伺服器組態設定完全符合Yii的要求.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 您的伺服器組態設定符合Yii的最低要求. 請注意下列警告(如果您的應用程式會需要使用到相關功能).
 <?php else: ?>
 您的伺服器組態設定未能滿足Yii的要求.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>詳細結果</h2>
@@ -38,19 +39,20 @@
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? '通過' : '未通過'; ?>
+    <?php echo $requirement[2] ? '通過' : '未通過'; ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

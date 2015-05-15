@@ -25,14 +25,15 @@ konfigurácie v php.ini.
 
 <h2>Záver</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 Gratulujem! Váš server spĺňa všetky požiadavky potrebné pre korektné fungovanie Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 Váš server spĺňa minimálne požiadavky potrebné pre fungovanie Yii. 
 Venujte prosím pozornosť upozorneniam uvedeným nižšie v prípade, že vaša aplikácia bude využívať potrebné funkcie.
 <?php else: ?>
 Bohužiaľ, váš server nespĺňa požiadavky potrebné pre fungovanie Yii.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>Detaily</h2>
@@ -42,19 +43,20 @@ Bohužiaľ, váš server nespĺňa požiadavky potrebné pre fungovanie Yii.
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? 'OK' : ($requirement[1] ? 'Chyba' : 'Upozornenie'); ?>
+    <?php echo $requirement[2] ? 'OK' : ($requirement[1] ? 'Chyba' : 'Upozornenie'); ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

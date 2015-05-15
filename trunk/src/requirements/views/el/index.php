@@ -25,13 +25,14 @@
 
 <h2>Συμπέρασμα</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 Συγχαρητήρια! Η παραμετροποίηση του διακομιστή σας ικανοποιεί όλες τις απαιτήσεις του Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 Η παραμετροποίηση του διακομιστή σας ικανοποιεί τις ελάχιστες απαιτήσεις του Yii. Παρακαλούμε δείτε με προσοχή τις παρακάτω προειδοποιήσεις εφόσον η εφαρμογή σας θα χρησιμοποιεί τα αντίστοιχα χαρακτηριστικά.
 <?php else: ?>
 Δυστυχώς, η παραμετροποίηση του διακομιστή σας δεν ικανοποιεί τις απαιτήσεις του Yii.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>Λεπτομέρειες</h2>
@@ -41,19 +42,20 @@
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'πέρασε' : ($requirement[1] ? 'απέτυχε' : 'προειδοποίηση'); ?>">
-	<?php echo $requirement[2] ? 'Πέρασε' : ($requirement[1] ? 'Απέτυχε' : 'Προειδοποίηση'); ?>
+    <?php echo $requirement[2] ? 'Πέρασε' : ($requirement[1] ? 'Απέτυχε' : 'Προειδοποίηση'); ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

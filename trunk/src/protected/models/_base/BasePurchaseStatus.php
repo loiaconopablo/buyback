@@ -20,101 +20,110 @@
  * @property string $company_id
  * @property string $headquarter_id
  * @property string $dispatch_note_id
- *
  */
-abstract class BasePurchaseStatus extends GxActiveRecord {
+abstract class BasePurchaseStatus extends GxActiveRecord
+{
 
-	public $created_log_field = 'created_at';
+    public $created_log_field = 'created_at';
 
-	public $updated_log_field = 'updated_at';
+    public $updated_log_field = 'updated_at';
 
-	public $user_update_log_field = 'user_update_id';
-	
+    public $user_update_log_field = 'user_update_id';
+    
 
-	public static function model($className=__CLASS__) {
-		return parent::model($className);
-	}
+    public static function model($className=__CLASS__) 
+    {
+        return parent::model($className);
+    }
 
-	public function tableName() {
-		return 'purchase_status';
-	}
+    public function tableName() 
+    {
+        return 'purchase_status';
+    }
 
-	public static function label($n = 1) {
-		return Yii::t('app', 'PurchaseStatus|PurchaseStatuses', $n);
-	}
+    public static function label($n = 1) 
+    {
+        return Yii::t('app', 'PurchaseStatus|PurchaseStatuses', $n);
+    }
 
-	public static function representingColumn() {
-		return 'created_at';
-	}
+    public static function representingColumn() 
+    {
+        return 'created_at';
+    }
 
-	public function rules() {
-		return array(
-			array('purchase_id, status_id, point_of_sale_id, company_id, headquarter_id', 'required'),
-			array('purchase_id, status_id, user_update_id, point_of_sale_id, company_id, headquarter_id, dispatch_note_id', 'length', 'max'=>10),
-			array('comment, created_at, updated_at', 'safe'),
-			array('comment, created_at, updated_at, user_update_id, dispatch_note_id', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, purchase_id, status_id, comment, created_at, updated_at, user_update_id, point_of_sale_id, company_id, headquarter_id, dispatch_note_id', 'safe', 'on'=>'search'),
-		);
-	}
+    public function rules() 
+    {
+        return array(
+        array('purchase_id, status_id, point_of_sale_id, company_id, headquarter_id', 'required'),
+        array('purchase_id, status_id, user_update_id, point_of_sale_id, company_id, headquarter_id, dispatch_note_id', 'length', 'max'=>10),
+        array('comment, created_at, updated_at', 'safe'),
+        array('comment, created_at, updated_at, user_update_id, dispatch_note_id', 'default', 'setOnEmpty' => true, 'value' => null),
+        array('id, purchase_id, status_id, comment, created_at, updated_at, user_update_id, point_of_sale_id, company_id, headquarter_id, dispatch_note_id', 'safe', 'on'=>'search'),
+        );
+    }
 
-	public function relations() {
-		return array(
-		);
-	}
+    public function relations() 
+    {
+        return array(
+        );
+    }
 
-	public function pivotModels() {
-		return array(
-		);
-	}
+    public function pivotModels() 
+    {
+        return array(
+        );
+    }
 
-	public function attributeLabels() {
-		return array(
-			'id' => Yii::t('app', 'ID'),
-			'purchase_id' => Yii::t('app', 'Purchase'),
-			'status_id' => Yii::t('app', 'Status'),
-			'comment' => Yii::t('app', 'Comment'),
-			'created_at' => Yii::t('app', 'Created At'),
-			'updated_at' => Yii::t('app', 'Updated At'),
-			'user_update_id' => Yii::t('app', 'User Update'),
-			'point_of_sale_id' => Yii::t('app', 'Point Of Sale'),
-			'company_id' => Yii::t('app', 'Company'),
-			'headquarter_id' => Yii::t('app', 'Headquarter'),
-			'dispatch_note_id' => Yii::t('app', 'Dispatch Note'),
-		);
-	}
+    public function attributeLabels() 
+    {
+        return array(
+        'id' => Yii::t('app', 'ID'),
+        'purchase_id' => Yii::t('app', 'Purchase'),
+        'status_id' => Yii::t('app', 'Status'),
+        'comment' => Yii::t('app', 'Comment'),
+        'created_at' => Yii::t('app', 'Created At'),
+        'updated_at' => Yii::t('app', 'Updated At'),
+        'user_update_id' => Yii::t('app', 'User Update'),
+        'point_of_sale_id' => Yii::t('app', 'Point Of Sale'),
+        'company_id' => Yii::t('app', 'Company'),
+        'headquarter_id' => Yii::t('app', 'Headquarter'),
+        'dispatch_note_id' => Yii::t('app', 'Dispatch Note'),
+        );
+    }
 
-	public function search() {
-		$criteria = new CDbCriteria;
+    public function search() 
+    {
+        $criteria = new CDbCriteria;
 
-		$criteria->compare('id', $this->id, true);
-		$criteria->compare('purchase_id', $this->purchase_id, true);
-		$criteria->compare('status_id', $this->status_id, true);
-		$criteria->compare('comment', $this->comment, true);
-		$criteria->compare('created_at', $this->created_at, true);
-		$criteria->compare('updated_at', $this->updated_at, true);
-		$criteria->compare('user_update_id', $this->user_update_id, true);
-		$criteria->compare('point_of_sale_id', $this->point_of_sale_id, true);
-		$criteria->compare('company_id', $this->company_id, true);
-		$criteria->compare('headquarter_id', $this->headquarter_id, true);
-		$criteria->compare('dispatch_note_id', $this->dispatch_note_id, true);
+        $criteria->compare('id', $this->id, true);
+        $criteria->compare('purchase_id', $this->purchase_id, true);
+        $criteria->compare('status_id', $this->status_id, true);
+        $criteria->compare('comment', $this->comment, true);
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('updated_at', $this->updated_at, true);
+        $criteria->compare('user_update_id', $this->user_update_id, true);
+        $criteria->compare('point_of_sale_id', $this->point_of_sale_id, true);
+        $criteria->compare('company_id', $this->company_id, true);
+        $criteria->compare('headquarter_id', $this->headquarter_id, true);
+        $criteria->compare('dispatch_note_id', $this->dispatch_note_id, true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
+        return new CActiveDataProvider(
+            $this, array(
+            'criteria' => $criteria,
+            )
+        );
+    }
 
-	/**
-	*	Autolog some fields if exists
-	*
-	*
-	*/
-	public function behaviors()
-	{
-    	return array(
-        	'AutoLogBehavior' => array(
-            	'class' => 'application.components.AutoLogBehavior',
-            	//You can optionally set the field name options here
-        	)
-    	);
-	}
+    /**
+    *    Autolog some fields if exists
+    */
+    public function behaviors()
+    {
+        return array(
+            'AutoLogBehavior' => array(
+                'class' => 'application.components.AutoLogBehavior',
+                //You can optionally set the field name options here
+            )
+        );
+    }
 }

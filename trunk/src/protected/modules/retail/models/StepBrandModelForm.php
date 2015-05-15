@@ -7,32 +7,32 @@
  */
 class StepBrandModelForm extends CFormModel
 {
-	public $brand;
-	public $model;
+    public $brand;
+    public $model;
 
-	/**
-	 * Declares the validation rules.
-	 * The rules state that username and password are required,
-	 * and password needs to be authenticated.
-	 */
-	public function rules()
-	{
-		return array(
-			// username and password are required
-			array('brand, model', 'required'),
+    /**
+     * Declares the validation rules.
+     * The rules state that username and password are required,
+     * and password needs to be authenticated.
+     */
+    public function rules()
+    {
+        return array(
+        // username and password are required
+        array('brand, model', 'required'),
 
 
-		);
-	}
+        );
+    }
 
-	/**
-	 * Declares attribute labels.
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'brand' => Yii::t('app', 'Brand'),
-			'model' => Yii::t('app', 'Model'),
-		);
-	}
+    /**
+     * Declares attribute labels.
+     */
+    public function attributeLabels()
+    {
+        return array(
+        'brand' => Yii::t('app', 'Brand'),
+        'model' => Yii::t('app', 'Model'),
+        );
+    }
 }

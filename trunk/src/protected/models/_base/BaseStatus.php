@@ -16,95 +16,104 @@
  * @property string $created_at
  * @property string $updated_at
  * @property string $user_update_id
- *
  */
-abstract class BaseStatus extends GxActiveRecord {
+abstract class BaseStatus extends GxActiveRecord
+{
 
-	public $created_log_field = 'created_at';
+    public $created_log_field = 'created_at';
 
-	public $updated_log_field = 'updated_at';
+    public $updated_log_field = 'updated_at';
 
-	public $user_update_log_field = 'user_update_id';
-	
+    public $user_update_log_field = 'user_update_id';
+    
 
-	public static function model($className=__CLASS__) {
-		return parent::model($className);
-	}
+    public static function model($className=__CLASS__) 
+    {
+        return parent::model($className);
+    }
 
-	public function tableName() {
-		return 'status';
-	}
+    public function tableName() 
+    {
+        return 'status';
+    }
 
-	public static function label($n = 1) {
-		return Yii::t('app', 'Status|Statuses', $n);
-	}
+    public static function label($n = 1) 
+    {
+        return Yii::t('app', 'Status|Statuses', $n);
+    }
 
-	public static function representingColumn() {
-		return 'name';
-	}
+    public static function representingColumn() 
+    {
+        return 'name';
+    }
 
-	public function rules() {
-		return array(
-			array('id, constant_name, name', 'required'),
-			array('id, user_update_id', 'length', 'max'=>10),
-			array('constant_name', 'length', 'max'=>255),
-			array('name', 'length', 'max'=>20),
-			array('description, created_at, updated_at', 'safe'),
-			array('description, created_at, updated_at, user_update_id', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, constant_name, name, description, created_at, updated_at, user_update_id', 'safe', 'on'=>'search'),
-		);
-	}
+    public function rules() 
+    {
+        return array(
+        array('id, constant_name, name', 'required'),
+        array('id, user_update_id', 'length', 'max'=>10),
+        array('constant_name', 'length', 'max'=>255),
+        array('name', 'length', 'max'=>20),
+        array('description, created_at, updated_at', 'safe'),
+        array('description, created_at, updated_at, user_update_id', 'default', 'setOnEmpty' => true, 'value' => null),
+        array('id, constant_name, name, description, created_at, updated_at, user_update_id', 'safe', 'on'=>'search'),
+        );
+    }
 
-	public function relations() {
-		return array(
-		);
-	}
+    public function relations() 
+    {
+        return array(
+        );
+    }
 
-	public function pivotModels() {
-		return array(
-		);
-	}
+    public function pivotModels() 
+    {
+        return array(
+        );
+    }
 
-	public function attributeLabels() {
-		return array(
-			'id' => Yii::t('app', 'ID'),
-			'constant_name' => Yii::t('app', 'Constant Name'),
-			'name' => Yii::t('app', 'Name'),
-			'description' => Yii::t('app', 'Description'),
-			'created_at' => Yii::t('app', 'Created At'),
-			'updated_at' => Yii::t('app', 'Updated At'),
-			'user_update_id' => Yii::t('app', 'User Update'),
-		);
-	}
+    public function attributeLabels() 
+    {
+        return array(
+        'id' => Yii::t('app', 'ID'),
+        'constant_name' => Yii::t('app', 'Constant Name'),
+        'name' => Yii::t('app', 'Name'),
+        'description' => Yii::t('app', 'Description'),
+        'created_at' => Yii::t('app', 'Created At'),
+        'updated_at' => Yii::t('app', 'Updated At'),
+        'user_update_id' => Yii::t('app', 'User Update'),
+        );
+    }
 
-	public function search() {
-		$criteria = new CDbCriteria;
+    public function search() 
+    {
+        $criteria = new CDbCriteria;
 
-		$criteria->compare('id', $this->id, true);
-		$criteria->compare('constant_name', $this->constant_name, true);
-		$criteria->compare('name', $this->name, true);
-		$criteria->compare('description', $this->description, true);
-		$criteria->compare('created_at', $this->created_at, true);
-		$criteria->compare('updated_at', $this->updated_at, true);
-		$criteria->compare('user_update_id', $this->user_update_id, true);
+        $criteria->compare('id', $this->id, true);
+        $criteria->compare('constant_name', $this->constant_name, true);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('description', $this->description, true);
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('updated_at', $this->updated_at, true);
+        $criteria->compare('user_update_id', $this->user_update_id, true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
+        return new CActiveDataProvider(
+            $this, array(
+            'criteria' => $criteria,
+            )
+        );
+    }
 
-	/**
-	*	Autolog some fields if exists
-	*
-	*
-	*/
-	public function behaviors()
-	{
-    	return array(
-        	'AutoLogBehavior' => array(
-            	'class' => 'application.components.AutoLogBehavior',
-            	//You can optionally set the field name options here
-        	)
-    	);
-	}
+    /**
+    *    Autolog some fields if exists
+    */
+    public function behaviors()
+    {
+        return array(
+            'AutoLogBehavior' => array(
+                'class' => 'application.components.AutoLogBehavior',
+                //You can optionally set the field name options here
+            )
+        );
+    }
 }

@@ -1,14 +1,23 @@
-$("a[data-toggle=modal]").on('click', function(ev) {
-    ev.preventDefault();
-    var target = $(this).attr("href");
+// A esto lo reemplaza el código de abajo
+// @commented 2015-05-15
+// $("a[data-toggle=modal]").on('click', function(ev) {
+//     ev.preventDefault();
+//     var target = $(this).attr("href");
 
-    // load the url and show modal on success
-    $(".modal-body").load(target, function() { 
-         $("#modal-purchase").modal("show"); 
-    });
-});
+//     // load the url and show modal on success
+//     $(".modal-body").load(target, function() { 
+//          $("#modal-purchase").modal("show"); 
+//     });
+// });
 
 $(document).ready(function() {
+	// Esto sirve para refrescar el contenido del modal
+	// cuando se cierra y se abre uno distinto
+	// De otra manera siempre muestra el contenido del primer link cargado
+	$('body').on('hidden.bs.modal', '.modal', function () {
+		console.log(this);
+	  $(this).removeData();
+	});
 
 	$('.checks-submit').on('click', function(ev) {
 		

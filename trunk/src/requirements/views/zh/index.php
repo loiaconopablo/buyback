@@ -22,13 +22,14 @@
 
 <h2>检查结果</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 恭喜！您的服务器配置完全符合Yii的要求。
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 您的服务器配置符合Yii的最低要求。如果您需要使用特定的功能，请关注如下警告。
 <?php else: ?>
 您的服务器配置未能满足Yii的要求。
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>具体结果</h2>
@@ -38,19 +39,20 @@
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? '通过' : ($requirement[1] ? '未通过' : 'Warning'); ?>
+    <?php echo $requirement[2] ? '通过' : ($requirement[1] ? '未通过' : 'Warning'); ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

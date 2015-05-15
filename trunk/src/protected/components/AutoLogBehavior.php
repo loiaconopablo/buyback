@@ -1,5 +1,6 @@
 <?php
-class AutoLogBehavior extends CActiveRecordBehavior {
+class AutoLogBehavior extends CActiveRecordBehavior
+{
  
     /**
     * The field that stores the creation time

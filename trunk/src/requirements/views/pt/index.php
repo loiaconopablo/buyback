@@ -26,13 +26,14 @@ e se as definições do arquivo php.ini estão corretas.
 
 <h2>Resultados</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 Parabéns! As configurações do seu servidor satisfazem todos os requisitos do Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 As configurações do seu servidor satisfazem os requisitos mínimos do Yii. Por favor, preste atenção às advertências listados abaixo caso sua aplicação irá utilizar os recursos correspondentes.
 <?php else: ?>
 Infelizmente o as configurações do seu servidor não satisfazem os requisitos do Yii.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>Detalhes</h2>
@@ -42,19 +43,20 @@ Infelizmente o as configurações do seu servidor não satisfazem os requisitos 
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? 'Passed' : 'Failed'; ?>
+    <?php echo $requirement[2] ? 'Passed' : 'Failed'; ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

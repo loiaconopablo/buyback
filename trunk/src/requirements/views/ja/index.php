@@ -23,14 +23,15 @@
 
 <h2>判定結果</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 おめでとうございます。あなたのサーバ構成は Yii の全ての必要条件を満しています。
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 あなたのサーバ構成は Yii の最低限の必要条件を満しています。
 「注意」が出ている項目について、あなたのアプリケーションが対応する機能を使用する予定が有るか無いかを確認してください。
 <?php else: ?>
 残念ですが、あなたのサーバ構成は Yii の必要条件を満していません。
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>詳細</h2>
@@ -40,19 +41,20 @@
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? '合格' : ($requirement[1] ? '不合格' : '注意'); ?>
+    <?php echo $requirement[2] ? '合格' : ($requirement[1] ? '不合格' : '注意'); ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

@@ -24,13 +24,14 @@
 
 <h2>النتيجة</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 تهانينا! إعدادات الخادم لديك مستوفية جميع متطلبات تشغيل Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 إعدادات الخادم الخاص بك مستوفية للحد الادنى لمتطلبات تشغيل Yii. الرجاء ملاحظة قائمة التنبيهات أدناه وما إذا كان التطبيق الخاص بك يستخدم أحد هذه المزايا.
 <?php else: ?>
 لسوء الحظ إعدادات الخادم الخاص بك لا تلبي متطلبات تشغيل Yii.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>التفاصيل</h2>
@@ -40,19 +41,20 @@
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'نجح' : ($requirement[1] ? 'فشل' : 'تنبيه'); ?>">
-	<?php echo $requirement[2] ? 'نجح' : ($requirement[1] ? 'فشل' : 'تنبيه'); ?>
+    <?php echo $requirement[2] ? 'نجح' : ($requirement[1] ? 'فشل' : 'تنبيه'); ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

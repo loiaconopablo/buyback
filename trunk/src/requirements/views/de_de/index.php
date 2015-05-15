@@ -26,13 +26,14 @@ geladen wurden und ob die Einstellungen in der php.ini korrekt sind
 
 <h2>Zusammenfassung</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 Gratulation! Ihr Server erfüllt alle Anforderungen von Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 Ihr Server erfüllt die minimalen Anforderungen von Yii. Bitte beachten Sie die untenstehenden Warnungen, wenn Ihre Anwendungen einige dieser Features verwenden sollen.
- <?php else: ?>
+    <?php else: ?>
 Unglücklicherweise erfüllt Ihr Server die Anforderungen von Yii nicht.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>Details</h2>
@@ -42,19 +43,20 @@ Unglücklicherweise erfüllt Ihr Server die Anforderungen von Yii nicht.
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? 'Bestanden' : ($requirement[1] ? 'Verfehlt' : 'Warnung'); ?>
+    <?php echo $requirement[2] ? 'Bestanden' : ($requirement[1] ? 'Verfehlt' : 'Warnung'); ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

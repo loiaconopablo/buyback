@@ -25,13 +25,15 @@ si toutes les extensions PHP nécessaires ont été chargées, et si les paramè
 
 <h2>Conclusion</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 Félicitations ! Votre configuration vérifie toutes les exigences de Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 Votre configuration satisfait les exigences minimales de Yii. Notez les avertissements listés ci-dessous si votre application utilise les fonctionnalités correspondantes.
 <?php else: ?>
 Malheureusement, votre configuration ne satisfait pas les exigences de Yii.
-<?php endif; ?>
+<?php 
+
+endif; ?>
 </p>
 
 <h2>Details</h2>
@@ -41,19 +43,21 @@ Malheureusement, votre configuration ne satisfait pas les exigences de Yii.
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? 'Ok' : 'Echec'; ?>
+    <?php echo $requirement[2] ? 'Ok' : 'Echec'; ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+
+endforeach; ?>
 </table>
 
 <table>

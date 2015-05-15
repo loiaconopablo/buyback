@@ -25,13 +25,14 @@
 
 <h2>Висновок</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 Вітаємо! Конфігурація  Вашого веб-сервера задовольняє всі вимоги Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 Конфігурація Вашого веб-сервера задовольняє мінімально необхідні вимоги Yii. Зверніть увагу на попередження у табличці нижче, якщо передбачається використання відповідних функцій.
 <?php else: ?>
 На жаль, конфігурація Вашого веб-сервера не задовольняє вимоги Yii.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>Результати перевірки</h2>
@@ -41,19 +42,20 @@
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-		<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-		<?php echo $requirement[2] ? 'Так' : ($requirement[1] ? 'Ні' : 'Попередження'); ?>
+    <?php echo $requirement[2] ? 'Так' : ($requirement[1] ? 'Ні' : 'Попередження'); ?>
 	</td>
 	<td>
-		<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-		<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

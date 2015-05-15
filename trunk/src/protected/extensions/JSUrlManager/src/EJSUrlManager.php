@@ -38,8 +38,7 @@ class EJSUrlManager extends CApplicationComponent
             hostInfo: '{$hostInfo}'};
             Yii.app.urlManager = new UrlManager({$encodedVars});
             Yii.app.createUrl = function(route, params, ampersand)  {
-            return this.urlManager.createUrl(route, params, ampersand);};"
-            ,
+            return this.urlManager.createUrl(route, params, ampersand);};",
             CClientScript::POS_HEAD
         );
 

@@ -5,12 +5,12 @@
 
 <?php
 $this->breadcrumbs=array(
-	'Authitems'=>array('index'),
-	'Create',
+    'Authitems'=>array('index'),
+    'Create',
 );
 
 $this->menu=array(
-	array('label'=>'Manage Authitem', 'url'=>array('admin')),
+    array('label'=>'Manage Authitem', 'url'=>array('admin')),
 );
 ?>
 

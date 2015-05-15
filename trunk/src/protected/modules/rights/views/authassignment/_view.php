@@ -8,11 +8,11 @@
     	
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('itemname')); ?>:</b>
-	<?php echo CHtml::encode($data->itemname); ?>
+    <?php echo CHtml::encode($data->itemname); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('userid')); ?>:</b>
-	<?php echo CHtml::encode($data->userid); ?>
+    <?php echo CHtml::encode($data->userid); ?>
 	<br />
 
 	

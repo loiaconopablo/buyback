@@ -6,12 +6,16 @@
 		<tr>
 			<td><b><?php echo $row_number ?></b></td>
 
-			<?php foreach ($row as $key => $value): ?>
+    <?php foreach ($row as $key => $value): ?>
 				<td>
-					<?php echo $value; ?>
+        <?php echo $value; ?>
 				</td>
-			<?php endforeach;?>
+    <?php 
+
+endforeach;?>
 		<tr>
-		<?php endforeach; ?>
+    <?php 
+
+endforeach; ?>
 	</tbody>
 </table>

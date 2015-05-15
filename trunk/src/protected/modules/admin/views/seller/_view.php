@@ -10,51 +10,51 @@
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('name')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('name')); ?>:
 				</b>
 			</td>
 			<td>
-					<?php echo GxHtml::encode($data->name); ?>
+        <?php echo GxHtml::encode($data->name); ?>
 					</td>
 		<tr>	
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('dni')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('dni')); ?>:
 				</b>
 			</td>
 			<td>
-					<?php echo GxHtml::encode($data->dni); ?>
+        <?php echo GxHtml::encode($data->dni); ?>
 					</td>
 		<tr>	
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('created_at')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('created_at')); ?>:
 				</b>
 			</td>
 			<td>
-					<?php echo GxHtml::encode($data->created_at); ?>
+        <?php echo GxHtml::encode($data->created_at); ?>
 					</td>
 		<tr>	
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('updated_at')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('updated_at')); ?>:
 				</b>
 			</td>
 			<td>
-					<?php echo GxHtml::encode($data->updated_at); ?>
+        <?php echo GxHtml::encode($data->updated_at); ?>
 					</td>
 		<tr>	
 				<tr>
 			<td>
 				<b>
-					<?php echo GxHtml::encode($data->getAttributeLabel('user_update_id')); ?>:
+        <?php echo GxHtml::encode($data->getAttributeLabel('user_update_id')); ?>:
 				</b>
 			</td>
 			<td>
-					<?php echo GxHtml::encode($data->user_update_id); ?>
+        <?php echo GxHtml::encode($data->user_update_id); ?>
 					</td>
 		<tr>	
 					</tbody>

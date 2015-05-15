@@ -4,62 +4,64 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel"><?php echo Yii::t('app', 'Advanced Search'); ?></h3>
   </div>
-  <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-	    'action' => Yii::app()->createUrl($this->route),
-		'method' => 'get',
-	)); ?>
+    <?php $form = $this->beginWidget(
+    'bootstrap.widgets.TbActiveForm', array(
+        'action' => Yii::app()->createUrl($this->route),
+    'method' => 'get',
+    )
+); ?>
   <div class="modal-body">
     <p>
     	<p><?php echo Yii::t('app', 'You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&gt; or =) at the beginning of each of your search values to specify how the comparison should be done.'); ?></p>
 
 															<div>
-					<?php echo $form->label($model, 'id'); ?>
-					<?php echo $form->textField($model, 'id', array('maxlength' => 10)); ?>
+        <?php echo $form->label($model, 'id'); ?>
+        <?php echo $form->textField($model, 'id', array('maxlength' => 10)); ?>
 				</div>
 			
 															<div>
-					<?php echo $form->label($model, 'name'); ?>
-					<?php echo $form->textField($model, 'name', array('maxlength' => 255)); ?>
+        <?php echo $form->label($model, 'name'); ?>
+        <?php echo $form->textField($model, 'name', array('maxlength' => 255)); ?>
 				</div>
 			
 															<div>
-					<?php echo $form->label($model, 'social_reason'); ?>
-					<?php echo $form->textField($model, 'social_reason', array('maxlength' => 255)); ?>
+        <?php echo $form->label($model, 'social_reason'); ?>
+        <?php echo $form->textField($model, 'social_reason', array('maxlength' => 255)); ?>
 				</div>
 			
 															<div>
-					<?php echo $form->label($model, 'cuit'); ?>
-					<?php echo $form->textField($model, 'cuit'); ?>
+        <?php echo $form->label($model, 'cuit'); ?>
+        <?php echo $form->textField($model, 'cuit'); ?>
 				</div>
 			
 															<div>
-					<?php echo $form->label($model, 'address'); ?>
-					<?php echo $form->textField($model, 'address', array('maxlength' => 255)); ?>
+        <?php echo $form->label($model, 'address'); ?>
+        <?php echo $form->textField($model, 'address', array('maxlength' => 255)); ?>
 				</div>
 			
 															<div>
-					<?php echo $form->label($model, 'province'); ?>
-					<?php echo $form->textField($model, 'province', array('maxlength' => 255)); ?>
+        <?php echo $form->label($model, 'province'); ?>
+        <?php echo $form->textField($model, 'province', array('maxlength' => 255)); ?>
 				</div>
 			
 															<div>
-					<?php echo $form->label($model, 'locality'); ?>
-					<?php echo $form->textField($model, 'locality', array('maxlength' => 255)); ?>
+        <?php echo $form->label($model, 'locality'); ?>
+        <?php echo $form->textField($model, 'locality', array('maxlength' => 255)); ?>
 				</div>
 			
 															<div>
-					<?php echo $form->label($model, 'phone'); ?>
-					<?php echo $form->textField($model, 'phone', array('maxlength' => 255)); ?>
+        <?php echo $form->label($model, 'phone'); ?>
+        <?php echo $form->textField($model, 'phone', array('maxlength' => 255)); ?>
 				</div>
 			
 															<div>
-					<?php echo $form->label($model, 'mail'); ?>
-					<?php echo $form->textField($model, 'mail', array('maxlength' => 255)); ?>
+        <?php echo $form->label($model, 'mail'); ?>
+        <?php echo $form->textField($model, 'mail', array('maxlength' => 255)); ?>
 				</div>
 			
 															<div>
-					<?php echo $form->label($model, 'percent_fee'); ?>
-					<?php echo $form->textField($model, 'percent_fee'); ?>
+        <?php echo $form->label($model, 'percent_fee'); ?>
+        <?php echo $form->textField($model, 'percent_fee'); ?>
 				</div>
 			
 								
@@ -73,5 +75,5 @@
     <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo Yii::t('app', 'Cancel'); ?></button>
     <?php echo TbHtml::submitButton(Yii::t('app', 'Search'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY)); ?>
   </div>
-  <?php $this->endWidget(); ?>
+    <?php $this->endWidget(); ?>
 </div>

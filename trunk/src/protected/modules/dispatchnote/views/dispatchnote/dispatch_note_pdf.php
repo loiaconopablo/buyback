@@ -109,7 +109,7 @@
 		<th style="width:15%; height:2%;">IMEI</th>
 		<th style="width:15%; height:2%;">Vendedor</th>
 	</tr>
-	<?php foreach ($purchases as $purchase): ?>
+    <?php foreach ($purchases as $purchase): ?>
 	<	<tr>
 			<td><?php echo $purchase->contract_number;?></td>
 			<td><?php echo $purchase->brand;?></td>
@@ -117,9 +117,11 @@
 			<td><?php echo $purchase->imei;?></td>
 			<td><?php echo $purchase->user;?></td>
 		</tr>
-	<?php endforeach;?>
+    <?php 
+endforeach;?>
 </table>
-	<?php if (strlen(trim($dispatch_note->comment))): ?>
-		<?php echo $dispatch_note->comment;?>
-	<?php endif;?>
+    <?php if (strlen(trim($dispatch_note->comment))) : ?>
+    <?php echo $dispatch_note->comment;?>
+    <?php 
+endif;?>
 </page>

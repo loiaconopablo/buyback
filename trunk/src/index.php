@@ -3,11 +3,13 @@
 $yii = dirname(__FILE__) . '/../vendor/yiisoft/yii/framework/yii.php';
 $config = dirname(__FILE__) . '/protected/config/main.php';
 
-/** Composer autoloader */
+/**
+ * Composer autoloader 
+*/
 $composerAutoload = realpath(dirname(__FILE__) . '/../vendor/autoload.php');
 
 if (file_exists(($composerAutoload))) {
-    require_once ($composerAutoload);
+    include_once $composerAutoload;
 }
 // composer end
 

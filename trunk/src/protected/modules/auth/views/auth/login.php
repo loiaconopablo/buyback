@@ -16,7 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-	<?php Yii::app()->bootstrap->register(); ?>
+    <?php Yii::app()->bootstrap->register(); ?>
 </head>
 
 <body class="body-login">
@@ -31,54 +31,57 @@ $this->pageTitle=Yii::app()->name . ' - Login';
 ?>
 
 <?php  
-	if($data['showNewpassword']){   
-  		Yii::app()->user->setFlash(TbHtml::ALERT_COLOR_INFO,'<strong>Atenci&oacute;n!</strong> Debe ingresar un nuevo password.');
-	}
-	if($data['successNewpassword']){
-		Yii::app()->user->setFlash(TbHtml::ALERT_COLOR_INFO,'<strong>Felicitaciones!</strong> Su password fue cambiado con exito. Logueese');
-	}
- ?>
+if($data['showNewpassword']) {   
+          Yii::app()->user->setFlash(TbHtml::ALERT_COLOR_INFO, '<strong>Atenci&oacute;n!</strong> Debe ingresar un nuevo password.');
+}
+if($data['successNewpassword']) {
+    Yii::app()->user->setFlash(TbHtml::ALERT_COLOR_INFO, '<strong>Felicitaciones!</strong> Su password fue cambiado con exito. Logueese');
+}
+    ?>
 
 <div class="container" id="login-container">
-	<?php $form=$this->beginWidget('GxActiveForm', array(
-		'id'=>'login-form',
-		'htmlOptions'=>array('class'=>'well'),
-		'enableClientValidation'=>true,
-		'clientOptions'=>array(
-			'validateOnSubmit'=>true,
-		),
-	)); ?>
+    <?php $form=$this->beginWidget(
+    'GxActiveForm', array(
+    'id'=>'login-form',
+    'htmlOptions'=>array('class'=>'well'),
+    'enableClientValidation'=>true,
+    'clientOptions'=>array(
+    'validateOnSubmit'=>true,
+    ),
+    )
+); ?>
 		<div class="">
-			<?php // echo $form->labelEx($model,'usuario'); ?>
-			<?php echo $form->textField($model,'username', array('class'=>'input-block-level', 'placeholder'=>'Nombre de usuario')); ?>
-			<?php echo $form->error($model,'username'); ?>
+    <?php // echo $form->labelEx($model,'usuario'); ?>
+    <?php echo $form->textField($model, 'username', array('class'=>'input-block-level', 'placeholder'=>'Nombre de usuario')); ?>
+    <?php echo $form->error($model, 'username'); ?>
 		</div>
 
 		<div class="">
-			<?php // echo $form->labelEx($model,'contraseña'); ?>
-			<?php echo $form->passwordField($model,'password', array('class'=>'input-block-level', 'placeholder'=>'Contraseña')); ?>
-			<?php echo $form->error($model,'password'); ?>
+    <?php // echo $form->labelEx($model,'contraseña'); ?>
+    <?php echo $form->passwordField($model, 'password', array('class'=>'input-block-level', 'placeholder'=>'Contraseña')); ?>
+    <?php echo $form->error($model, 'password'); ?>
 		</div>
 
-		<?php if($data['showNewpassword']): ?>
+    <?php if($data['showNewpassword']) : ?>
 		<div class="">
-			<?php echo $form->labelEx($model,'newpassword'); ?>
-			<?php echo $form->passwordField($model,'newpassword'); ?>
-			<?php echo $form->error($model,'newpassword'); ?>
+    <?php echo $form->labelEx($model, 'newpassword'); ?>
+    <?php echo $form->passwordField($model, 'newpassword'); ?>
+    <?php echo $form->error($model, 'newpassword'); ?>
 		</div>
-		<?php endif; ?>
+    <?php 
+endif; ?>
 
 		<div class=" rememberMe">
-			<?php echo $form->checkBox($model,'rememberMe'); ?>
-			<?php echo $form->label($model,'rememberMe'); ?>
-			<?php echo $form->error($model,'rememberMe'); ?>
+    <?php echo $form->checkBox($model, 'rememberMe'); ?>
+    <?php echo $form->label($model, 'rememberMe'); ?>
+    <?php echo $form->error($model, 'rememberMe'); ?>
 		</div>
 
 		<div class=" buttons">
-			<?php echo TbHtml::button(Yii::t('app', 'Login'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'block' => true, 'type' => 'submit')); ?>
+    <?php echo TbHtml::button(Yii::t('app', 'Login'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'block' => true, 'type' => 'submit')); ?>
 		</div>
 
-	<?php $this->endWidget(); ?>
+    <?php $this->endWidget(); ?>
 	</div><!-- form -->
 </div>
 

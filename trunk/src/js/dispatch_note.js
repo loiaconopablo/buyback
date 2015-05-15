@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	// click on EN CAMINO
+	// click on EN TRANSITO
 	$("#send_dispatch").on('click', function() {
 		$.ajax({
 			url: Yii.app.createUrl('dispatchnote/dispatchnote/setassent', {'id': $('#dispatch_note_id').val()}),

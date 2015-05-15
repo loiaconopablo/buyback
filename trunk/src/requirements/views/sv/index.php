@@ -24,13 +24,14 @@ att erforderliga  PHP-tillägg är laddade, och att inställningar i filen php.i
 
 <h2>Slutsats</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 Grattis! Serverkonfigurationen uppfyller alla krav som Yii ställer.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 Serverkonfigurationen uppfyller minimikraven som Yii ställer. Lägg märke till nedanstående varningar om applikationer behöver använda nämnda finesser.
 <?php else: ?>
 Tyvärr uppfyller inte serverkonfigurationen minimikraven Yii ställer.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>Detaljer</h2>
@@ -40,19 +41,20 @@ Tyvärr uppfyller inte serverkonfigurationen minimikraven Yii ställer.
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? 'Stöds' : ($requirement[1] ? 'Stöd saknas' : 'Warning'); ?>
+    <?php echo $requirement[2] ? 'Stöds' : ($requirement[1] ? 'Stöd saknas' : 'Warning'); ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

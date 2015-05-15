@@ -23,14 +23,15 @@ El mateix verifica que el servidor corre una versió adequada de PHP, que les ex
 
 <h2>Conclusió</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 Enhorabona! El vostre servidor compleix tots els requeriments de Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 La configuració del vostre servidor compleix els requeriments mínims de Yii. Si us plau, prengui atenció a les advertències llistades a continuació si la seva aplicació utilitza alguna d'aquestes característiques.
 <?php else: ?>
 Desafortunadamente la configuración de su servidor no satisface los requerimientos de Yii.
 Desafortunamadament, la configuració del vostre servidor no compleix els requeriments de Yii.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>Detalles</h2>
@@ -40,19 +41,20 @@ Desafortunamadament, la configuració del vostre servidor no compleix els requer
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? 'Correcte' : 'Error'; ?>
+    <?php echo $requirement[2] ? 'Correcte' : 'Error'; ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

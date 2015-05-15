@@ -7,16 +7,16 @@ Yii::import('system.cli.commands.MigrateCommand');
  *
  * @description Dump table schema or data depending on functions used. This file is meant to use with Yii 1.1.13+. Currently it only supports MySQL since when I wrote it, I was working on project with MySQL database.
  * usage:
- * @tutorial README.md
+ * @tutorial    README.md
  *
- * @author      Varun Batra <codevarun@gmail.com>
- * @copyright   Varun Batra
- * @since       5/8/13
- * @version     0.01
- * @todo Make a multi insert compatible, as of today, Yii doesn't support it.
- * @link  http://varunbatra.com/ Personal Website
- * @link  http://deftinfotech.com/ Company Website
- * @license http://opensource.org/licenses/MIT MIT
+ * @author    Varun Batra <codevarun@gmail.com>
+ * @copyright Varun Batra
+ * @since     5/8/13
+ * @version   0.01
+ * @todo      Make a multi insert compatible, as of today, Yii doesn't support it.
+ * @link      http://varunbatra.com/ Personal Website
+ * @link      http://deftinfotech.com/ Company Website
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 class DeftmigrationsCommand extends MigrateCommand
 {
@@ -42,7 +42,8 @@ class DeftmigrationsCommand extends MigrateCommand
     private function getCharacterSet($tableName)
     {
         $curdb = $this->getDBName();
-        $results = Yii::app()->db->createCommand('
+        $results = Yii::app()->db->createCommand(
+            '
             SELECT  T.table_collation,CCSA.character_set_name FROM information_schema.`TABLES` T,
             information_schema.`COLLATION_CHARACTER_SET_APPLICABILITY` CCSA
             WHERE CCSA.collation_name = T.table_collation
@@ -197,9 +198,9 @@ class DeftmigrationsCommand extends MigrateCommand
         $fkName = $this->getFkNames($table->name);
         $Constraints = $this->findConstraintsMysql($table);
         foreach ($table->foreignKeys as $key => $value) {
-            $onDelete = (isset($Constraints[0][$i]) && $Constraints[0][$i] != '') ? ($Constraints[0][$i]) : NULL;
-            $onUpdate = (isset($Constraints[1][$i]) && $Constraints[1][$i] != '') ? ($Constraints[1][$i]) : NULL;
-            if ($onDelete == NULL && $onDelete == Null) {
+            $onDelete = (isset($Constraints[0][$i]) && $Constraints[0][$i] != '') ? ($Constraints[0][$i]) : null;
+            $onUpdate = (isset($Constraints[1][$i]) && $Constraints[1][$i] != '') ? ($Constraints[1][$i]) : null;
+            if ($onDelete == null && $onDelete == null) {
                 $this->fks[$table->name] .= '$this->addForeignKey("' . $fkName[$i] . '", "' . $table->name . '", "' . $key . '", "' . $value[0] . '", "' . $value[1] . '");' . "\n";
             } else {
                 $this->fks[$table->name] .= '$this->addForeignKey("' . $fkName[$i] . '", "' . $table->name . '", "' . $key . '", "' . $value[0] . '", "' . $value[1] . '","' . $onDelete . '","' . $onUpdate . '");' . "\n";
@@ -222,8 +223,9 @@ class DeftmigrationsCommand extends MigrateCommand
         $matches = array();
         $regexp = '/FOREIGN KEY\s+\(([^\)]+)\)\s+REFERENCES\s+([^\(^\s]+)\s*\(([^\)]+)\) ON DELETE (.*) ON UPDATE (.*),/mi';
         foreach ($row as $sql) {
-            if (preg_match_all($regexp, $sql, $matches, PREG_SET_ORDER))
-                break;
+            if (preg_match_all($regexp, $sql, $matches, PREG_SET_ORDER)) {
+                break; 
+            }
         }
         foreach ($matches as $match) {
             $onDelete[$i++] = $match[4];

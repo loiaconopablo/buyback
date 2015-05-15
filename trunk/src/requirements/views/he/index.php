@@ -25,14 +25,15 @@
 
 <h2>סיכום</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 ברכותיינו! סביבת השרת שלך תומכת בכל הגדרישות של Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 הגדרות סביבת השרת שלך מתאימות לדרישות המינימום של Yii.
  אנא שים לב לאזהרות והערות הכתובות מטה במידה והאפליקציה שתכתוב תשתמש באחת מהאפשרויות הללו.
 <?php else: ?>
 לצערנו סביבת השרת שלך אינה תומכת בדרישות המינימום של Yii.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>פרטים</h2>
@@ -42,19 +43,20 @@
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'passed' : ($requirement[1] ? 'failed' : 'warning'); ?>">
-	<?php echo $requirement[2] ? 'עבר' : 'נכשל'; ?>
+    <?php echo $requirement[2] ? 'עבר' : 'נכשל'; ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

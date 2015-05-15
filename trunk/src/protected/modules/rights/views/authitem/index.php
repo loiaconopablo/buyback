@@ -5,18 +5,20 @@
 
 <?php
 $this->breadcrumbs=array(
-	'Authitems',
+    'Authitems',
 );
 
 $this->menu=array(
-	array('label'=>'Create Authitem','url'=>array('create')),
-	array('label'=>'Manage Authitem','url'=>array('admin')),
+    array('label'=>'Create Authitem','url'=>array('create')),
+    array('label'=>'Manage Authitem','url'=>array('admin')),
 );
 ?>
 
 <h1>Authitems</h1>
 
-<?php $this->widget('bootstrap.widgets.TbListView',array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'_view',
-)); ?>
+<?php $this->widget(
+    'bootstrap.widgets.TbListView', array(
+    'dataProvider'=>$dataProvider,
+    'itemView'=>'_view',
+    )
+); ?>

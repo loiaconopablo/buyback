@@ -25,15 +25,16 @@ er lastet og om PHP-innstillingene i php.ini er korrekt.
 
 <h2>Konklusjon</h2>
 <p>
-<?php if($result>0): ?>
+<?php if($result>0) : ?>
 Gratulerer! Konfigurasjonen på serveren tilfredstiller alle krav for å kjøre Yii.
-<?php elseif($result<0): ?>
+<?php elseif($result<0) : ?>
 Konfigurasjonen på serveren tilfredstiller minimumskravene til Yii. Vær oppmerksom
 på advarslene listet nedenfor dersom applikasjonen din trenger noe av denne 
 funksjonaliteten.
 <?php else: ?>
 Desverre tilfredstiller ikke konfigurasjonen av serveren minimumskravene til Yii.
-<?php endif; ?>
+<?php 
+endif; ?>
 </p>
 
 <h2>Detaljer</h2>
@@ -43,19 +44,20 @@ Desverre tilfredstiller ikke konfigurasjonen av serveren minimumskravene til Yii
 <?php foreach($requirements as $requirement): ?>
 <tr>
 	<td>
-	<?php echo $requirement[0]; ?>
+    <?php echo $requirement[0]; ?>
 	</td>
 	<td class="<?php echo $requirement[2] ? 'ok' : ($requirement[1] ? 'feil' : 'advarsel'); ?>">
-	<?php echo $requirement[2] ? 'Ok' : 'Feil'; ?>
+    <?php echo $requirement[2] ? 'Ok' : 'Feil'; ?>
 	</td>
 	<td>
-	<?php echo $requirement[3]; ?>
+    <?php echo $requirement[3]; ?>
 	</td>
 	<td>
-	<?php echo $requirement[4]; ?>
+    <?php echo $requirement[4]; ?>
 	</td>
 </tr>
-<?php endforeach; ?>
+<?php 
+endforeach; ?>
 </table>
 
 <table>

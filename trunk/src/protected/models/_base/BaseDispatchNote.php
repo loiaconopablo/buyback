@@ -22,106 +22,115 @@
  * @property string $destination_id
  * @property string $dispatch_note_number
  * @property string $user_create_id
- *
  */
-abstract class BaseDispatchNote extends GxActiveRecord {
+abstract class BaseDispatchNote extends GxActiveRecord
+{
 
-	public $created_log_field = 'created_at';
+    public $created_log_field = 'created_at';
 
-	public $updated_log_field = 'updated_at';
+    public $updated_log_field = 'updated_at';
 
-	public $user_update_log_field = 'user_update_id';
-	
+    public $user_update_log_field = 'user_update_id';
+    
 
-	public static function model($className=__CLASS__) {
-		return parent::model($className);
-	}
+    public static function model($className=__CLASS__) 
+    {
+        return parent::model($className);
+    }
 
-	public function tableName() {
-		return 'dispatch_note';
-	}
+    public function tableName() 
+    {
+        return 'dispatch_note';
+    }
 
-	public static function label($n = 1) {
-		return Yii::t('app', 'DispatchNote|DispatchNotes', $n);
-	}
+    public static function label($n = 1) 
+    {
+        return Yii::t('app', 'DispatchNote|DispatchNotes', $n);
+    }
 
-	public static function representingColumn() {
-		return 'created_at';
-	}
+    public static function representingColumn() 
+    {
+        return 'created_at';
+    }
 
-	public function rules() {
-		return array(
-			array('company_id, source_id, destination_id, dispatch_note_number', 'required'),
-			array('company_id, source_id, user_update_id, status, destination_id, user_create_id', 'length', 'max'=>10),
-			array('dispatch_note_number', 'length', 'max'=>20),
-			array('comment, created_at, updated_at, sent_at, finished_at', 'safe'),
-			array('comment, created_at, updated_at, user_update_id, status, sent_at, finished_at, user_create_id', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, company_id, source_id, comment, created_at, updated_at, user_update_id, status, sent_at, finished_at, destination_id, dispatch_note_number, user_create_id', 'safe', 'on'=>'search'),
-		);
-	}
+    public function rules() 
+    {
+        return array(
+        array('company_id, source_id, destination_id, dispatch_note_number', 'required'),
+        array('company_id, source_id, user_update_id, status, destination_id, user_create_id', 'length', 'max'=>10),
+        array('dispatch_note_number', 'length', 'max'=>20),
+        array('comment, created_at, updated_at, sent_at, finished_at', 'safe'),
+        array('comment, created_at, updated_at, user_update_id, status, sent_at, finished_at, user_create_id', 'default', 'setOnEmpty' => true, 'value' => null),
+        array('id, company_id, source_id, comment, created_at, updated_at, user_update_id, status, sent_at, finished_at, destination_id, dispatch_note_number, user_create_id', 'safe', 'on'=>'search'),
+        );
+    }
 
-	public function relations() {
-		return array(
-		);
-	}
+    public function relations() 
+    {
+        return array(
+        );
+    }
 
-	public function pivotModels() {
-		return array(
-		);
-	}
+    public function pivotModels() 
+    {
+        return array(
+        );
+    }
 
-	public function attributeLabels() {
-		return array(
-			'id' => Yii::t('app', 'ID'),
-			'company_id' => Yii::t('app', 'Company'),
-			'source_id' => Yii::t('app', 'Source'),
-			'comment' => Yii::t('app', 'Comment'),
-			'created_at' => Yii::t('app', 'Created At'),
-			'updated_at' => Yii::t('app', 'Updated At'),
-			'user_update_id' => Yii::t('app', 'User Update'),
-			'status' => Yii::t('app', 'Status'),
-			'sent_at' => Yii::t('app', 'Sent At'),
-			'finished_at' => Yii::t('app', 'Finished At'),
-			'destination_id' => Yii::t('app', 'Destination'),
-			'dispatch_note_number' => Yii::t('app', 'Dispatch Note Number'),
-			'user_create_id' => Yii::t('app', 'User Create'),
-		);
-	}
+    public function attributeLabels() 
+    {
+        return array(
+        'id' => Yii::t('app', 'ID'),
+        'company_id' => Yii::t('app', 'Company'),
+        'source_id' => Yii::t('app', 'Source'),
+        'comment' => Yii::t('app', 'Comment'),
+        'created_at' => Yii::t('app', 'Created At'),
+        'updated_at' => Yii::t('app', 'Updated At'),
+        'user_update_id' => Yii::t('app', 'User Update'),
+        'status' => Yii::t('app', 'Status'),
+        'sent_at' => Yii::t('app', 'Sent At'),
+        'finished_at' => Yii::t('app', 'Finished At'),
+        'destination_id' => Yii::t('app', 'Destination'),
+        'dispatch_note_number' => Yii::t('app', 'Dispatch Note Number'),
+        'user_create_id' => Yii::t('app', 'User Create'),
+        );
+    }
 
-	public function search() {
-		$criteria = new CDbCriteria;
+    public function search() 
+    {
+        $criteria = new CDbCriteria;
 
-		$criteria->compare('id', $this->id, true);
-		$criteria->compare('company_id', $this->company_id, true);
-		$criteria->compare('source_id', $this->source_id, true);
-		$criteria->compare('comment', $this->comment, true);
-		$criteria->compare('created_at', $this->created_at, true);
-		$criteria->compare('updated_at', $this->updated_at, true);
-		$criteria->compare('user_update_id', $this->user_update_id, true);
-		$criteria->compare('status', $this->status, true);
-		$criteria->compare('sent_at', $this->sent_at, true);
-		$criteria->compare('finished_at', $this->finished_at, true);
-		$criteria->compare('destination_id', $this->destination_id, true);
-		$criteria->compare('dispatch_note_number', $this->dispatch_note_number, true);
-		$criteria->compare('user_create_id', $this->user_create_id, true);
+        $criteria->compare('id', $this->id, true);
+        $criteria->compare('company_id', $this->company_id, true);
+        $criteria->compare('source_id', $this->source_id, true);
+        $criteria->compare('comment', $this->comment, true);
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('updated_at', $this->updated_at, true);
+        $criteria->compare('user_update_id', $this->user_update_id, true);
+        $criteria->compare('status', $this->status, true);
+        $criteria->compare('sent_at', $this->sent_at, true);
+        $criteria->compare('finished_at', $this->finished_at, true);
+        $criteria->compare('destination_id', $this->destination_id, true);
+        $criteria->compare('dispatch_note_number', $this->dispatch_note_number, true);
+        $criteria->compare('user_create_id', $this->user_create_id, true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
-		));
-	}
+        return new CActiveDataProvider(
+            $this, array(
+            'criteria' => $criteria,
+            )
+        );
+    }
 
-	/**
-	*	Autolog some fields if exists
-	*
-	*
-	*/
-	public function behaviors()
-	{
-    	return array(
-        	'AutoLogBehavior' => array(
-            	'class' => 'application.components.AutoLogBehavior',
-            	//You can optionally set the field name options here
-        	)
-    	);
-	}
+    /**
+    *    Autolog some fields if exists
+    */
+    public function behaviors()
+    {
+        return array(
+            'AutoLogBehavior' => array(
+                'class' => 'application.components.AutoLogBehavior',
+                //You can optionally set the field name options here
+            )
+        );
+    }
 }
