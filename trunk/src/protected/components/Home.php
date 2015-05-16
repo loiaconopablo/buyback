@@ -1,17 +1,17 @@
 <?php
 class Home
 {
-    static public function getRoleHome()
+    public static function getRoleHome()
     {
-        if(Yii::app()->user->checkAccess('superuser')) {
+        if (Yii::app()->user->checkAccess('superuser')) {
             return array('/admin_root/carrier/admin');
         }
 
-        if(Yii::app()->user->checkAccess('admin')) {
-            return array('/admin/company/admin');
+        if (Yii::app()->user->checkAccess('admin')) {
+            return array('/owner/purchase');
         }
 
-        if(Yii::app()->user->checkAccess('retail')) {
+        if (Yii::app()->user->checkAccess('retail')) {
             if (Yii::app()->user->is_headquarter) {
                 return array('/headquarter');
             } else {
@@ -24,10 +24,10 @@ class Home
 
     }
 
-    static public function getMainMenu($action = null)
+    public static function getMainMenu($action = null)
     {
         // Si no esta logueado lo mando a freir churros
-        if(Yii::app()->user->isGuest) {
+        if (Yii::app()->user->isGuest) {
             return false;
         }
 
@@ -39,7 +39,7 @@ class Home
         /**
         * MENU DE SUPER USUARIO
         */
-        if(Yii::app()->user->checkAccess('superuser')) {
+        if (Yii::app()->user->checkAccess('superuser')) {
             return array(
             array('label'=>Yii::t('app', 'Setup'), 'url'=>array('/admin_root/carrier/admin'), 'active' => Yii::app()->controller->id == 'carrier'),
             array('label'=>Yii::t('app', 'Roles'), 'url'=>array('/rights/authassignment/admin'), 'active' => Yii::app()->controller->id == 'authassignment'),
@@ -50,7 +50,7 @@ class Home
         /**
         * MENU DE ADMINISTRADOR BGH
         */
-        if(Yii::app()->user->checkAccess('admin')) {
+        if (Yii::app()->user->checkAccess('admin')) {
             return array(
             array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/owner/purchase/admin'), 'active' => Yii::app()->controller->id == 'purchase'),
             array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/owner/dispatchnote/expecting'), 'active' => Yii::app()->controller->id == 'dispatchnote'),
@@ -61,7 +61,7 @@ class Home
         /**
         * MENU DE RETAIL Y HEADQUARTER
         */
-        if(Yii::app()->user->checkAccess('retail')) {
+        if (Yii::app()->user->checkAccess('retail')) {
             if (Yii::app()->user->is_headquarter) {
                 /**
                 * MENU DE CABECEERA (HEADQUARTER)

@@ -4,7 +4,7 @@ class OwnerModule extends CWebModule
 {
     public $defaultController = 'dispatchnote';
 
-    public function init() 
+    public function init()
     {
         // this method is called when the module is being created
         // you may place code here to customize the module or the application
@@ -18,7 +18,7 @@ class OwnerModule extends CWebModule
         );
     }
 
-    public function beforeControllerAction($controller, $action) 
+    public function beforeControllerAction($controller, $action)
     {
         if (parent::beforeControllerAction($controller, $action)) {
             // this method is called before any module controller action is performed
@@ -47,6 +47,7 @@ class OwnerModule extends CWebModule
                 array('label' => Yii::t('app', 'En observación'), 'url' => array('/owner/purchase/inobservation'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/inobservation'),
                 array('label' => Yii::t('app', 'Para liquidar'), 'url' => array('/owner/purchase/topay'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/topay'),
                 array('label' => Yii::t('app', 'Historial'), 'url' => array('/owner/purchase/history'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/history'),
+                array('label' => Yii::t('app', 'Pendientes'), 'url' => array('/owner/purchase/pending'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/pending'),
                 );
             }
 

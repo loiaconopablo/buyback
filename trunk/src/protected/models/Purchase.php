@@ -6,7 +6,7 @@ class Purchase extends BasePurchase
 {
     const DEFAULT_PAID_PRICE = 0;
 
-    public static function model($className = __CLASS__)    
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -19,6 +19,7 @@ class Purchase extends BasePurchase
 
         'company' => array(self::BELONGS_TO, 'Company', 'company_id'),
         'point_of_sale' => array(self::BELONGS_TO, 'PointOfSale', 'point_of_sale_id'),
+        'last_location' => array(self::BELONGS_TO, 'PointOfSale', 'last_location_id'),
         'headquarter' => array(self::BELONGS_TO, 'PointOfSale', 'headquarter_id'),
         'user' => array(self::BELONGS_TO, 'User', 'user_create_id'),
         'seller' => array(self::BELONGS_TO, 'Seller', 'seller_id'),
@@ -29,7 +30,7 @@ class Purchase extends BasePurchase
         );
     }
 
-    public function attributeLabels() 
+    public function attributeLabels()
     {
         return CMap::mergeArray(
             parent::attributeLabels(),
@@ -42,7 +43,7 @@ class Purchase extends BasePurchase
         );
     }
 
-    public function rules() 
+    public function rules()
     {
         return CMap::mergeArray(
             parent::rules(),
@@ -52,7 +53,7 @@ class Purchase extends BasePurchase
         );
     }
 
-    public function search() 
+    public function search()
     {
         $criteria = parent::search()->getCriteria();
 
@@ -60,7 +61,8 @@ class Purchase extends BasePurchase
         $criteria->params = Helper::getDateFilterParams();
 
         return new CActiveDataProvider(
-            $this, array(
+            $this,
+            array(
             'criteria' => $criteria,
             )
         );
@@ -69,10 +71,10 @@ class Purchase extends BasePurchase
     /**
      * Agrega condiciones al criterio de search para filtrar los equipos que estan en estado
      * RECIVED o PENDING para en el point_of_sale_id del usuario de session
-     * @author RGG <rggrinberg@gmail.com>
+     * @author Richard Grinberg <rggrinberg@gmail.com>
      * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
      */
-    public function admin() 
+    public function admin()
     {
         /**
          * Criterio del metodo search
@@ -84,7 +86,8 @@ class Purchase extends BasePurchase
         $criteria->addInCondition('current_status_id', array(Status::PENDING, Status::RECEIVED));
 
         return new CActiveDataProvider(
-            $this, array(
+            $this,
+            array(
             'criteria' => $criteria,
             )
         );
@@ -93,10 +96,10 @@ class Purchase extends BasePurchase
     /**
      * Agrega condiciones al crieria de search para filtrar los equipos IN_OBSERVATION
      * para el point_of_sale de user session
-     * @author RGG <rggrinberg@gmail.com>
+     * @author Richard Grinberg <rggrinberg@gmail.com>
      * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
      */
-    public function inObservation() 
+    public function inObservation()
     {
         /**
          * Criterio del metodo search
@@ -108,7 +111,35 @@ class Purchase extends BasePurchase
         $criteria->addInCondition('current_status_id', array(Status::IN_OBSERVATION));
 
         return new CActiveDataProvider(
-            $this, array(
+            $this,
+            array(
+            'criteria' => $criteria,
+            )
+        );
+    }
+
+    /**
+     * Agrega condiciones al criterio de search para filtrar los equipos que estan en los estados
+     * donde no se encuentra aún en la cabecera del Owner
+     * @author Richard Grinberg <rggrinberg@gmail.com>
+     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
+     */
+    public function pending()
+    {
+        /**
+         * Criterio del metodo search
+         * @var CCriteria
+         */
+        $criteria = $this->search()->getCriteria();
+
+        $criteria->addCondition('last_location_id != :user_point_of_sale');
+        $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
+        //$criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
+        //$criteria->addInCondition('current_status_id', array(Status::PENDING, Status::RECEIVED));
+
+        return new CActiveDataProvider(
+            $this,
+            array(
             'criteria' => $criteria,
             )
         );
@@ -116,18 +147,17 @@ class Purchase extends BasePurchase
 
     /**
      * Guarda el estado de purchase y el correspondiente purchase_status
-     * @author RGG <rggrinberg@gmail.com>
+     * @author Richard Grinberg <rggrinberg@gmail.com>
      * @param integer $status           Es un valor de alguna de las constantes de Status
      * @param integer $dispatch_note_id Nro de la nota de envio en la que esta cuando cambia de estado. Si no esta en ninguna es 0
      * @param string  $comment          Comentario que se guarda en el estado (no en la compra 'purchase')
      */
-    public function setStatus($status, $dispatch_note_id = 0, $comment = null) 
+    public function setStatus($status, $dispatch_note_id = 0, $comment = null)
     {
         //Acutaliza el atributo current_status_id
         $this->current_status_id = $status;
 
         if ($this->save()) {
-
             $purchase_status = new PurchaseStatus;
 
             $purchase_status->purchase_id = $this->id;
@@ -149,14 +179,14 @@ class Purchase extends BasePurchase
      * Pasa la compra al estado cancelado
      * Esto se dispara cuando se cancela un remito
      */
-    public function setAsCancelled() 
+    public function setAsCancelled()
     {
         $this->setStatus(Status::CANCELLED, $this->last_dispatch_note_id);
     }
 
     // TODO: Revisar si este metodo no deberia er reemplazado por los que extienden el criteria de search
     // commented: 07-05-2015
-    public function getRetailAdminPurchases() 
+    public function getRetailAdminPurchases()
     {
         $criteria = $this->admin()->getCriteria();
 
@@ -171,7 +201,7 @@ class Purchase extends BasePurchase
      * @param array  $purchase_ids array de purchases id
      * @param string $comment      comentario
      */
-    public function setPurchasesInObservation($purchase_ids, $comment) 
+    public function setPurchasesInObservation($purchase_ids, $comment)
     {
 
         if (count($purchase_ids)) {

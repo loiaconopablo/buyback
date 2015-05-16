@@ -1,7 +1,7 @@
 <?php
 /**
  * Esta clase maneja las compras del lado del administrador OWNER
- * @author RGG <rggrinberg@gmail.com>
+ * @author Richard Grinberg <rggrinberg@gmail.com>
  */
 class PurchaseController extends Controller
 {
@@ -13,9 +13,9 @@ class PurchaseController extends Controller
 
     /**
      * Redirecciona a actionAdmin
-     * @author RGG <rggrinberg@gmail.com>
+     * @author Richard Grinberg <rggrinberg@gmail.com>
      */
-    public function actionIndex() 
+    public function actionIndex()
     {
         $this->redirect(array('admin'));
     }
@@ -23,9 +23,9 @@ class PurchaseController extends Controller
     /**
      * Muestra la tabla de equipos en poder del OWNER
      * Status::RECIVED
-     * @author RGG <rggrinberg@gmail.com>
+     * @author Richard Grinberg <rggrinberg@gmail.com>
      */
-    public function actionAdmin() 
+    public function actionAdmin()
     {
         $model = new Purchase;
         // $model->unsetAttributes(); commented: 07-05-2015
@@ -35,7 +35,8 @@ class PurchaseController extends Controller
         }
 
         $this->render(
-            'admin', array(
+            'admin',
+            array(
             'model' => $model,
             )
         );
@@ -43,14 +44,15 @@ class PurchaseController extends Controller
 
     /**
      * Muestra la table con los equipos en estado Status::IN_OBSERVATION
-     * @author RGG <rggrinberg@gmail.com>
+     * @author Richard Grinberg <rggrinberg@gmail.com>
      */
-    public function actionInObservation() 
+    public function actionInObservation()
     {
         $model = new Purchase;
 
         $this->render(
-            'in_observation', array(
+            'in_observation',
+            array(
             'model' => $model,
             )
         );
@@ -59,9 +61,9 @@ class PurchaseController extends Controller
     /**
      * Renderiza la vista con la lista de equipos a pasar al estado IN_OBSERVATION
      * Tambien muestra un textarea para escribir un comentario en el estado de cada equipo
-     * @author RGG <rggrinberg@gmail.com>
+     * @author Richard Grinberg <rggrinberg@gmail.com>
      */
-    public function actionSetInObservation() 
+    public function actionSetInObservation()
     {
         /**
          * Modelo (no table) del formulario que contiene el comentario
@@ -90,6 +92,8 @@ class PurchaseController extends Controller
             if ($comment_model->validate()) {
                 // setea el comentario y el estado de todas las purchases del array
                 $model->setPurchasesInObservation($purchases, $comment_model->comment);
+
+                $this->redirect(array('inobservation'));
             }
         }
 
@@ -100,13 +104,15 @@ class PurchaseController extends Controller
         $criteria->addInCondition('id', $purchases);
 
         $dataProvider = new CActiveDataProvider(
-            new Purchase, array(
+            new Purchase,
+            array(
             'criteria' => $criteria,
             )
         );
 
         $this->render(
-            'set_in_observation', array(
+            'set_in_observation',
+            array(
             'dataProvider' => $dataProvider,
             'model' => $model,
             'comment_model' => $comment_model,
@@ -117,9 +123,9 @@ class PurchaseController extends Controller
     /**
      * Renderiza la vista con la lista de equipos a pasar al estado APPROVED
      * Tambien muestra un textarea para escribir un comentario en el estado de cada equipo
-     * @author RGG <rggrinberg@gmail.com>
+     * @author Richard Grinberg <rggrinberg@gmail.com>
      */
-    public function actionSetApproved() 
+    public function actionSetApproved()
     {
         /**
          * Modelo (no table) del formulario que contiene el comentario
@@ -158,16 +164,43 @@ class PurchaseController extends Controller
         $criteria->addInCondition('id', $purchases);
 
         $dataProvider = new CActiveDataProvider(
-            new Purchase, array(
+            new Purchase,
+            array(
             'criteria' => $criteria,
             )
         );
 
         $this->render(
-            'set_approved', array(
+            'set_approved',
+            array(
             'dataProvider' => $dataProvider,
             'model' => $model,
             'comment_model' => $comment_model,
+            )
+        );
+    }
+
+    /**
+     * Muestra la tabla de equipos en poder de los puntos de ventas de las empresas que no son owner
+     * Status::RECIVED && Purchase.last_location_id !== User_session->point_of_sale_id
+     * Status::PENDING
+     * Status::PENDING_TO_SEND
+     * Status::SENT
+     * Status::PENDING_TO_BE_RECEIVED
+     * @author Richard Grinberg <rggrinberg@gmail.com>
+     */
+    public function actionPending()
+    {
+        $model = new Purchase;
+
+        if (isset($_GET['Purchase'])) {
+            $model->setAttributes($_GET['Purchase']);
+        }
+
+        $this->render(
+            'pending',
+            array(
+            'model' => $model,
             )
         );
     }
