@@ -12,16 +12,14 @@
       "email":"rggrinberg@gmail.com"
     }
   ],
-    "require-dev":{
-      "assisrafael/giix": "dev-master"
-    },
     "require":{
       "yiisoft/yii": "1.*",
       "yiisoft/jquery": "1.8.3",
       "crisu83/yiistrap": "1.*",
       "mpdf/mpdf": "dev-master",
       "ensepar/html2pdf": "dev-master",
-      "borales/yii-pdf": "0.*"
+      "borales/yii-pdf": "0.*",
+      "assisrafael/giix": "dev-master"
     },
     "autoload":{
       "psr-0":{
