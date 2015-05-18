@@ -12,7 +12,7 @@
       "email":"rggrinberg@gmail.com"
     }
   ],
-    "require-dev ":{
+    "require-dev":{
       "assisrafael/giix": "dev-master"
     },
     "require":{
