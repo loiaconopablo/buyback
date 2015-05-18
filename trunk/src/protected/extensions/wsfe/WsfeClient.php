@@ -82,9 +82,8 @@ class WsfeClient
     public function getCaeDesdeAfip(array $comprobante_data) 
     {
         /**
-* 
-  * Alic IVA  N  
-**/
+         * @var AlicIva
+         */
         $alicIva = new AlicIva;
 
         $alicIva->baseImp = $comprobante_data['impNeto'];
@@ -92,17 +91,15 @@ class WsfeClient
         $alicIva->id = self::TIPO_IVA;
 
         /**
-* 
-  * IVA array de AlicIvas  
-**/
+         * @var Iva
+         */
         $iva = new Iva;
 
         $iva->alicIva[] = $alicIva;
 
         /**
-* 
- * Opcional N 
-**/
+         * @var Opcional
+         */
         $opcional01 = new Opcional;
 
         $opcional01->valor = $comprobante_data['sellerName'];
@@ -114,18 +111,16 @@ class WsfeClient
         $opcional02->id = self::OPCIONAL_DIRECCION;
 
         /**
-* 
- * Opcionales array de Opcional 
-**/
+         * @var Opcionales
+         */
         $opcionales = new Opcionales;
 
         $opcionales->opcional[] = $opcional01;
         $opcionales->opcional[] = $opcional02;
 
         /**
-* 
- * FecaedetRequest N 
-**/
+         * @var FecaedetRequest
+         */
         $fecaedetRequest = new FecaedetRequest;
 
         $fecaedetRequest->iva = $iva;
@@ -151,17 +146,15 @@ class WsfeClient
         $fecaedetRequest->monId = self::TIPO_DE_MONEDA;
 
         /**
-* 
- * FeDetReq array de FecaedetRequest  
-**/
+         * @var FeDetReq
+         */
         $feDetReq = new FeDetReq;
 
         $feDetReq->fecaedetRequest[] = $fecaedetRequest;
 
         /**
-* 
- * FeCabReq 
-**/
+         * @var FeCabReq
+         */
         $feCabReq = new FeCabReq;
 
         $feCabReq->ptoVta = self::PUNTO_DE_VENTA;
@@ -219,6 +212,16 @@ class WsfeClient
 
         $contract_number = $this->getProximoComprobante();
 
+        $cae_request_data = $this->getCaeRequestData($contract_number, $purchase_price, $seller);
+
+        $cae_json_response = $this->getCaeDesdeAfip($cae_request_data);
+
+        $responseObj = CJSON::decode($cae_json_response, false);
+        
+        if (!isset($responseObj->feDetResp->fecaedetResponse[0]->cae)) {
+            throw new Exception("La respuesta de la AFIP no trae CAE", 1);
+        }
+
         /**
          * Numero de contrato formateado:
          * punto de venta - numero de contrato
@@ -226,15 +229,9 @@ class WsfeClient
          * 
          * @var string
          */
-        $formated_contract_number = $this->formatearNumeroDeContrato($contract_number);
+        $formated_contract_number = $this->formatearNumeroDeContrato($responseObj->feDetResp->fecaedetResponse[0]->cbteDesde);
 
-
-        $cae_request_data = $this->getCaeRequestData($contract_number, $purchase_price, $seller);
-
-
-        $cae_json_response = $this->getCaeDesdeAfip($cae_request_data);
-
-        /**
+         /**
          * PROVISORIO
          * Este código es provisorio mientras se tramita el CAE
          */
@@ -249,12 +246,6 @@ class WsfeClient
         /**
          * END PROVISORIO
          */
-
-        $responseObj = CJSON::decode($cae_json_response, false);
-
-        if (!isset($responseObj->feDetResp->fecaedetResponse[0]->cae)) {
-            throw new Exception("La respuesta de la AFIP no trae CAE", 1);
-        }
 
         if ($responseObj->feCabResp->resultado != 'A') {
             // 'A': Respuesta del servicio de la AFIP APROBADO
