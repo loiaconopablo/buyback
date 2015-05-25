@@ -19,7 +19,8 @@
       "mpdf/mpdf": "dev-master",
       "ensepar/html2pdf": "dev-master",
       "borales/yii-pdf": "0.*",
-      "assisrafael/giix": "dev-master"
+      "assisrafael/giix": "dev-master",
+      "phpoffice/phpexcel": "dev-master"
     },
     "autoload":{
       "psr-0":{

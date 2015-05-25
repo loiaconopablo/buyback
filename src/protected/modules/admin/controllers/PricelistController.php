@@ -5,27 +5,25 @@ class PricelistController extends Controller
 
     // function init()
     // {
-    // 	if(isset($_POST['SESSION_ID'])){
-    // 		$session=Yii::app()->getSession();
-    // 		$session->close();
-    // 		$session->sessionID = $_POST['SESSION_ID'];
-    // 		$session->open();
-    // 	}
+    //  if(isset($_POST['SESSION_ID'])){
+    //      $session=Yii::app()->getSession();
+    //      $session->close();
+    //      $session->sessionID = $_POST['SESSION_ID'];
+    //      $session->open();
+    //  }
     // }
 
-    public function actionUpload() 
+    public function actionUpload()
     {
 
         $model = new uploadForm;
         $PriceList_model = new PriceList;
 
         if (isset($_POST['uploadForm'])) {
-
             $model->attributes = $_POST['uploadForm'];
             $model->file = CUploadedFile::getInstance($model, 'file');
 
             if ($model->validate()) {
-
                 if ($model->file->saveAs(Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $model->file->getName())) {
                     $this->redirect(array('processexcel', 'filename' => $model->file->getName()));
                 }
@@ -39,48 +37,49 @@ class PricelistController extends Controller
 
     // public function actionUpload(){
 
-    // 	$tempFolder = Yii::getPathOfAlias('webroot').'/uploads/temp/';
-    // 	if( !file_exists($tempFolder) && !is_dir($tempFolder)) {
-    // 		mkdir($tempFolder, 0777, TRUE);
-    // 	}
+    //  $tempFolder = Yii::getPathOfAlias('webroot').'/uploads/temp/';
+    //  if( !file_exists($tempFolder) && !is_dir($tempFolder)) {
+    //      mkdir($tempFolder, 0777, TRUE);
+    //  }
 
-    // 	if(!file_exists($tempFolder.'/chunks') && !is_dir($tempFolder.'/chunks')) {
-    // 		mkdir($tempFolder.'/chunks', 0777, TRUE);
-    // 	}
+    //  if(!file_exists($tempFolder.'/chunks') && !is_dir($tempFolder.'/chunks')) {
+    //      mkdir($tempFolder.'/chunks', 0777, TRUE);
+    //  }
 
-    // 	 die('a');
+    //   die('a');
 
-    // 	Yii::log('info', CLogger::LEVEL_INFO, 'actionUpload');
+    //  Yii::log('info', CLogger::LEVEL_INFO, 'actionUpload');
 
-    // 	if( isset($_POST['file'])) {
+    //  if( isset($_POST['file'])) {
 
-    // 		//$myPicture=CUploadedFile::getInstanceByName('myPicture');
-    // 		$galleriaPicture=CUploadedFile::getInstanceByName('file');
-    // 		$uploadedPicture = $galleriaPicture->getName('file');
-    // 		$galleriaPicture_url = $tempFolder.$uploadedPicture;
-    // 		if(!$galleriaPicture->saveAs($galleriaPicture_url)){
+    //      //$myPicture=CUploadedFile::getInstanceByName('myPicture');
+    //      $galleriaPicture=CUploadedFile::getInstanceByName('file');
+    //      $uploadedPicture = $galleriaPicture->getName('file');
+    //      $galleriaPicture_url = $tempFolder.$uploadedPicture;
+    //      if(!$galleriaPicture->saveAs($galleriaPicture_url)){
 
-    // 			//if(!$myPicture->saveAs('someFile.ext')){
-    // 			Yii::log('info', CLogger::LEVEL_INFO, 'saveAs FALLO');
-    // 			throw new CHttpException(500);
-    // 		}else{
-    // 			Yii::log('info', CLogger::LEVEL_INFO, 'saveAs EXITO');
-    // 		}
-    // 		echo 1;
-    // 		Yii::app()->end();
-    // 	}
+    //          //if(!$myPicture->saveAs('someFile.ext')){
+    //          Yii::log('info', CLogger::LEVEL_INFO, 'saveAs FALLO');
+    //          throw new CHttpException(500);
+    //      }else{
+    //          Yii::log('info', CLogger::LEVEL_INFO, 'saveAs EXITO');
+    //      }
+    //      echo 1;
+    //      Yii::app()->end();
+    //  }
     // }
 
-    public function actionView($id) 
+    public function actionView($id)
     {
         $this->render(
-            'view', array(
+            'view',
+            array(
             'model' => PriceList::model()->findByPk($id),
             )
         );
     }
 
-    public function actionCreate() 
+    public function actionCreate()
     {
         $model = new PriceList;
 
@@ -100,7 +99,7 @@ class PricelistController extends Controller
         $this->render('create', array('model' => $model));
     }
 
-    public function actionUpdate($id) 
+    public function actionUpdate($id)
     {
         $model = PriceList::model()->findByPk($id);
 
@@ -113,13 +112,14 @@ class PricelistController extends Controller
         }
 
         $this->render(
-            'update', array(
+            'update',
+            array(
             'model' => $model,
             )
         );
     }
 
-    public function actionDelete($id) 
+    public function actionDelete($id)
     {
         if (Yii::app()->getRequest()->getIsPostRequest()) {
             PriceList::model()->findByPk($id)->delete();
@@ -134,12 +134,12 @@ class PricelistController extends Controller
 
     }
 
-    public function actionIndex() 
+    public function actionIndex()
     {
         $this->redirect(array('admin'));
     }
 
-    public function actionAdmin() 
+    public function actionAdmin()
     {
         $model = new PriceList('search');
         $model->unsetAttributes();
@@ -149,16 +149,17 @@ class PricelistController extends Controller
         }
 
         $this->render(
-            'admin', array(
+            'admin',
+            array(
             'model' => $model,
             )
         );
     }
 
-    public function actionProcessExcel($filename) 
+    public function actionProcessExcel($filename)
     {
 
-        Yii::import('application.vendors.PHPExcel', true);
+        Yii::import('vendor.phpoffice.phpexcel.Classes.PHPExcel', true);
 
         $file = Yii::app()->basePath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $filename;
 
@@ -203,7 +204,6 @@ class PricelistController extends Controller
                 unset($model);
 
             } else {
-
                 foreach ($model->getErrors() as $field => $value) {
                     $values[$field] .= $value[0];
                 }
@@ -216,7 +216,8 @@ class PricelistController extends Controller
             $transaction->rollback();
 
             $this->render(
-                'excel_errors', array(
+                'excel_errors',
+                array(
                 'model' => $errors,
                 )
             );
@@ -233,7 +234,7 @@ class PricelistController extends Controller
     *
     */
 
-    public function actionTruncate() 
+    public function actionTruncate()
     {
         $pricelist = new PriceList();
 
@@ -244,7 +245,7 @@ class PricelistController extends Controller
         $this->redirect(array('admin'));
     }
 
-    public function cleanPrice($price) 
+    public function cleanPrice($price)
     {
         $price = number_format((float) $price, 2, '.', '');
 
