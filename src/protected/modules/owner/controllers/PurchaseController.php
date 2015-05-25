@@ -48,7 +48,12 @@ class PurchaseController extends Controller
      */
     public function actionInObservation()
     {
-        $model = new Purchase;
+        $model = new Purchase('search');
+        $model->unsetAttributes();
+
+        if (isset($_GET['Purchase'])) {
+            $model->setAttributes($_GET['Purchase']);
+        }
 
         $this->render(
             'in_observation',
@@ -191,7 +196,8 @@ class PurchaseController extends Controller
      */
     public function actionPending()
     {
-        $model = new Purchase;
+        $model = new Purchase('search');
+        $model->unsetAttributes();
 
         if (isset($_GET['Purchase'])) {
             $model->setAttributes($_GET['Purchase']);
