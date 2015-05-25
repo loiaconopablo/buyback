@@ -57,8 +57,21 @@ class Purchase extends BasePurchase
     {
         $criteria = parent::search()->getCriteria();
 
+        /*
+        Condiciones para filtrar entre fechas
+         */
         $criteria->condition = 'created_at >= :from AND created_at <= :to';
         $criteria->params = Helper::getDateFilterParams();
+
+        /*
+        Condiciones para los filstros de la tabla
+         */
+        $criteria->compare('contract_number', $this->contract_number, true);
+        $criteria->compare('brand', $this->brand, true);
+        $criteria->compare('model', $this->model, true);
+        $criteria->compare('purchase_price', $this->purchase_price, true);
+        $criteria->compare('user_create_id', $this->user_create_id, true);
+        $criteria->compare('point_of_sale_id', $this->point_of_sale_id, true);
 
         return new CActiveDataProvider(
             $this,
@@ -82,6 +95,9 @@ class Purchase extends BasePurchase
          */
         $criteria = $this->search()->getCriteria();
 
+        /*
+        Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
+         */
         $criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
         $criteria->addInCondition('current_status_id', array(Status::PENDING, Status::RECEIVED));
 

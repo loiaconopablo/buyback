@@ -49,27 +49,27 @@ abstract class BasePurchase extends GxActiveRecord
     public $user_update_log_field = 'user_update_id';
     
 
-    public static function model($className=__CLASS__) 
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
 
-    public function tableName() 
+    public function tableName()
     {
         return 'purchase';
     }
 
-    public static function label($n = 1) 
+    public static function label($n = 1)
     {
         return Yii::t('app', 'Purchase|Purchases', $n);
     }
 
-    public static function representingColumn() 
+    public static function representingColumn()
     {
         return 'imei';
     }
 
-    public function rules() 
+    public function rules()
     {
         return array(
         array('company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, price_list_id, imei, brand, model, carrier_name, price_type, contract_number', 'required'),
@@ -84,19 +84,19 @@ abstract class BasePurchase extends GxActiveRecord
         );
     }
 
-    public function relations() 
+    public function relations()
     {
         return array(
         );
     }
 
-    public function pivotModels() 
+    public function pivotModels()
     {
         return array(
         );
     }
 
-    public function attributeLabels() 
+    public function attributeLabels()
     {
         return array(
         'id' => Yii::t('app', 'ID'),
@@ -131,7 +131,7 @@ abstract class BasePurchase extends GxActiveRecord
         );
     }
 
-    public function search() 
+    public function search()
     {
         $criteria = new CDbCriteria;
 
@@ -166,7 +166,8 @@ abstract class BasePurchase extends GxActiveRecord
         $criteria->compare('cae_response_json', $this->cae_response_json, true);
 
         return new CActiveDataProvider(
-            $this, array(
+            $this,
+            array(
             'criteria' => $criteria,
             )
         );

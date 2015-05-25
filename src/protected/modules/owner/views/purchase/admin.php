@@ -14,14 +14,16 @@ $this->menu = array(
 <!--<h2><?php echo Yii::t('app', 'Manage') . ' ' . GxHtml::encode($model->label(2));?></h2>-->
 
 <?php $form = $this->beginWidget(
-    'CActiveForm', array(
+    'CActiveForm',
+    array(
     'action' => Yii::app()->createUrl('/owner/purchase/setinobservation'),
     //'enableAjaxValidation'=>true,
     )
 );?>
 
 <?php $this->widget(
-    'bootstrap.widgets.TbGridView', array(
+    'bootstrap.widgets.TbGridView',
+    array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'id' => 'owner-purchase-grid',
     'dataProvider' => $model->admin(),
@@ -117,19 +119,20 @@ $this->menu = array(
 <?php $this->date_filter = true;?>
 
 <?php $this->renderPartial(
-    '_search', array(
+    '_search',
+    array(
     'model' => $model,
     )
 );?>
 
 <div id="modal-purchase" class="modal hide fade" style="">
-	<div class="modal-header">
+    <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"><?php echo Yii::t('app', 'Compra');?></h4>
       </div>
-	<div class="modal-body"></div>
-	<div class="modal-footer">
+    <div class="modal-body"></div>
+    <div class="modal-footer">
 	    <a href="#" data-dismiss="modal" class="btn"><?php echo Yii::t('app', 'Close');?></a>
 	    <!--<a href="#" id="in-observation-purchase" class="btn btn-warning"><?php echo Yii::t('app', 'En observación');?></a>-->
-	</div>
+    </div>
 </div>

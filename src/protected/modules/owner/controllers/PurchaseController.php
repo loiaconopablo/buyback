@@ -27,8 +27,8 @@ class PurchaseController extends Controller
      */
     public function actionAdmin()
     {
-        $model = new Purchase;
-        // $model->unsetAttributes(); commented: 07-05-2015
+        $model = new Purchase('search');
+        $model->unsetAttributes();
 
         if (isset($_GET['Purchase'])) {
             $model->setAttributes($_GET['Purchase']);
