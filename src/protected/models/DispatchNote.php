@@ -10,7 +10,7 @@ class DispatchNote extends BaseDispatchNote
     const PARTIALLY_RECEIVED = 50;
     const RECEIVED = 60;
 
-    public static function model($className = __CLASS__) 
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -18,7 +18,7 @@ class DispatchNote extends BaseDispatchNote
     /**
      * relations
      */
-    public function relations() 
+    public function relations()
     {
         return array(
         'purchases' => array(self::HAS_MANY, 'Purchase', 'last_dispatch_note_id'),
@@ -36,15 +36,16 @@ class DispatchNote extends BaseDispatchNote
         );
     }
 
-    public static function label($n = 1) 
+    public static function label($n = 1)
     {
         return Yii::t('app', 'Dispatch note|Dispatch notes', $n);
     }
 
-    public function attributeLabels() 
+    public function attributeLabels()
     {
         return CMap::mergeArray(
-            parent::attributeLabels(), array(
+            parent::attributeLabels(),
+            array(
             'user_update_id' => Yii::t('app', 'User|Users', 1),
             'user_create_id' => Yii::t('app', 'Vendedor'),
             'created_at' => Yii::t('app', 'Fecha'),
@@ -55,35 +56,29 @@ class DispatchNote extends BaseDispatchNote
     /**
      * Extiende de la clase Base
      */
-    public function search() 
+    public function search()
     {
         $criteria = parent::search()->getCriteria();
 
+         /*
+        Condiciones para filtrar entre fechas
+         */
         $criteria->condition = 'created_at >= :from AND created_at <= :to';
         $criteria->params = Helper::getDateFilterParams();
 
-        // Creo que esto no va mas 17-02-2015
-        // if(Yii::app()->user->checkAccess('retail')) {
+         /*
+        Condiciones para los filstros de la tabla
+         */
+        $criteria->compare('dispatch_note_number', $this->dispatch_note_number, true);
+        $criteria->compare('source_id', $this->source_id, true);
+        $criteria->compare('comment', $this->comment, true);
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('user_create_id', $this->user_create_id, true);
 
-        // 	if (Yii::app()->user->is_headquarter) {
-        // 		//============//
-        // 		//  CABECERA  //
-        // 		//============//
-        // 		// Si es retail y headquarter se le deja ver los que confecciono el mismo y los que el es el destino
-        // 		$criteria->compare('source_id', Yii::app()->user->point_of_sale_id);
-        // 		$criteria->compare('destination_id', Yii::app()->user->point_of_sale_id,true, 'OR');
-
-        // 	} else {
-        // 		//========================//
-        // 		//  PUNTO DE VENTA SIMPLE //
-        // 		//========================//
-        // 		// Si es un retail comun (NO HEADCUARTER) solo ve los que confecciono el mismo
-        // 		$criteria->compare('source_id', Yii::app()->user->point_of_sale_id);
-        // 	}
-        // }
 
         return new CActiveDataProvider(
-            $this, array(
+            $this,
+            array(
             'criteria' => $criteria,
             )
         );
@@ -92,7 +87,7 @@ class DispatchNote extends BaseDispatchNote
     /**
      * ADMIN DataProvider
      */
-    public function admin() 
+    public function admin()
     {
         $criteria = $this->search()->getCriteria();
 
@@ -107,7 +102,8 @@ class DispatchNote extends BaseDispatchNote
         }
 
         return new CActiveDataProvider(
-            $this, array(
+            $this,
+            array(
             'criteria' => $criteria,
             )
         );
@@ -116,7 +112,7 @@ class DispatchNote extends BaseDispatchNote
     /**
      * HISTORY OWN DataProvider
      */
-    public function expecting() 
+    public function expecting()
     {
         $criteria = $this->search()->getCriteria();
 
@@ -130,7 +126,8 @@ class DispatchNote extends BaseDispatchNote
         }
 
         return new CActiveDataProvider(
-            $this, array(
+            $this,
+            array(
             'criteria' => $criteria,
             )
         );
@@ -139,7 +136,7 @@ class DispatchNote extends BaseDispatchNote
     /**
      * HISTORY OWN DataProvider
      */
-    public function historyOwn() 
+    public function historyOwn()
     {
         $criteria = $this->search()->getCriteria();
 
@@ -153,7 +150,8 @@ class DispatchNote extends BaseDispatchNote
         }
 
         return new CActiveDataProvider(
-            $this, array(
+            $this,
+            array(
             'criteria' => $criteria,
             )
         );
@@ -162,7 +160,7 @@ class DispatchNote extends BaseDispatchNote
     /**
      * HISTORY OTHERS DataProvider
      */
-    public function historyOthers() 
+    public function historyOthers()
     {
         $criteria = $this->search()->getCriteria();
 
@@ -176,7 +174,8 @@ class DispatchNote extends BaseDispatchNote
         }
 
         return new CActiveDataProvider(
-            $this, array(
+            $this,
+            array(
             'criteria' => $criteria,
             )
         );
@@ -185,10 +184,9 @@ class DispatchNote extends BaseDispatchNote
     /**
      * Crea un remito
      */
-    public function create(array $purchases) 
+    public function create(array $purchases)
     {
         if (count($purchases)) {
-
             $this->company_id = Yii::app()->user->company_id;
             $this->source_id = Yii::app()->user->point_of_sale_id;
             $this->dispatch_note_number = Company::model()->findByPk(Yii::app()->user->company_id)->getDispatchNoteNumber();
@@ -223,19 +221,19 @@ class DispatchNote extends BaseDispatchNote
     /**
      *    Marca el remito como ENVIADO A LA CABECERA
      */
-    public function setAsSent() 
+    public function setAsSent()
     {
         // Esto creo que no va mas y todos son iguales 17-02-2015
 
         // if (Yii::app()->user->is_headquarter) {
-        // 	// Si el remito lo esta despachando una cabecera lo esta enviando a BGH
-        // 	$this->status = self::SENT_TO_OWNER;
-        // 	$purchase_status = Status::REMOVED_FROM_HEADQUARTER;
+        //  // Si el remito lo esta despachando una cabecera lo esta enviando a BGH
+        //  $this->status = self::SENT_TO_OWNER;
+        //  $purchase_status = Status::REMOVED_FROM_HEADQUARTER;
 
         // } else {
-        // 	// Si el remito lo esta despachando un punto de venta comun lo esta enviando a su cabecera
-        // 	$this->status = self::SENT_TO_HEADQUARTER;
-        // 	$purchase_status = Status::SENT_TO_HEADQUARTER;
+        //  // Si el remito lo esta despachando un punto de venta comun lo esta enviando a su cabecera
+        //  $this->status = self::SENT_TO_HEADQUARTER;
+        //  $purchase_status = Status::SENT_TO_HEADQUARTER;
 
         // }
 
@@ -260,18 +258,18 @@ class DispatchNote extends BaseDispatchNote
      */
     // public function setAsReceivedInHeadquarter()
     // {
-    // 	$this->status = self::RECEIVED_IN_HEADQUARTER;
-    // 	$purchase_status = Status::RECEIVED_IN_HEADQUARTER;
+    //  $this->status = self::RECEIVED_IN_HEADQUARTER;
+    //  $purchase_status = Status::RECEIVED_IN_HEADQUARTER;
 
-    // 	if ($this->save()) {
-    // 		foreach ($this->purchase_to_headquarter as $purchase) {
-    // 			$purchase->setStatus($purchase_status);
-    // 		}
-    // 	} else {
-    // 		return false;
-    // 	}
+    //  if ($this->save()) {
+    //      foreach ($this->purchase_to_headquarter as $purchase) {
+    //          $purchase->setStatus($purchase_status);
+    //      }
+    //  } else {
+    //      return false;
+    //  }
 
-    // 	return true;
+    //  return true;
     // }
 
     /**
@@ -279,17 +277,17 @@ class DispatchNote extends BaseDispatchNote
      */
     // public function getDestinationId()
     // {
-    // 	// TODO: Cuando se rediseñe lo de las cabeceras esta funcion no deberia existir mas
-    // 	// Siempre el destination deberia ser la cabecera
-    // 	if (Yii::app()->user->is_headquarter) {
-    // 		$company = Company::model()->findAllByAttributes(array('is_owner' => 1));
-    // 		return $company[0]->id;
-    // 	} else {
-    // 		return Yii::app()->user->headquarter_id;
-    // 	}
+    //  // TODO: Cuando se rediseñe lo de las cabeceras esta funcion no deberia existir mas
+    //  // Siempre el destination deberia ser la cabecera
+    //  if (Yii::app()->user->is_headquarter) {
+    //      $company = Company::model()->findAllByAttributes(array('is_owner' => 1));
+    //      return $company[0]->id;
+    //  } else {
+    //      return Yii::app()->user->headquarter_id;
+    //  }
     // }
 
-    public static function getRowClass($status) 
+    public static function getRowClass($status)
     {
         if ($status == self::PENDING_TO_SEND) {
             return 'pending';
@@ -310,7 +308,7 @@ class DispatchNote extends BaseDispatchNote
         return 'in-transit';
     }
 
-    public static function availableToReception($status) 
+    public static function availableToReception($status)
     {
         // Si me lo enviarn lo puedo recibir
         if ($status == self::SENT) {
@@ -324,7 +322,7 @@ class DispatchNote extends BaseDispatchNote
         return false;
     }
 
-    public function cancel() 
+    public function cancel()
     {
         $this->status = self::CANCELLED;
         $this->finished_at = new CDbExpression('UTC_TIMESTAMP()');
@@ -345,7 +343,7 @@ class DispatchNote extends BaseDispatchNote
     /**
      * recibe un remito
      */
-    public function receive(array $purchases) 
+    public function receive(array $purchases)
     {
         $purchases_cancelled = 0;
         $purchases_received = 0;
@@ -374,18 +372,15 @@ class DispatchNote extends BaseDispatchNote
                 }
 
             } else {
-
                 $purchases_cancelled++;
 
             }
         }
 
         if ($purchases_pending_to_be_received) {
-
             $this->status = self::PARTIALLY_RECEIVED;
 
         } else {
-
             // Esta completamente recibido y ya no tiene compras pendientes
             $this->status = self::RECEIVED;
             $this->finished_at = new CDbExpression('UTC_TIMESTAMP()');
@@ -400,7 +395,7 @@ class DispatchNote extends BaseDispatchNote
     /**
      * Referencias de colores
      */
-    public static function references() 
+    public static function references()
     {
         $references = array(
         array('label' => Yii::t('app', 'REFERENCIAS'), 'icon' => 'th-large', 'url' => '#', 'active' => true),
@@ -413,32 +408,31 @@ class DispatchNote extends BaseDispatchNote
         return $references;
     }
 
-    public function getPending() 
+    public function getPending()
     {
         $criteria = $this->admin()->getCriteria();
 
         return $this->findAll($criteria);
     }
 
-    public function getExpecting() 
+    public function getExpecting()
     {
         $criteria = $this->expecting()->getCriteria();
 
         return $this->findAll($criteria);
     }
 
-    public function getOwnHistory() 
+    public function getOwnHistory()
     {
         $criteria = $this->historyOwn()->getCriteria();
 
         return $this->findAll($criteria);
     }
 
-    public function getOthersHistory() 
+    public function getOthersHistory()
     {
         $criteria = $this->historyOthers()->getCriteria();
 
         return $this->findAll($criteria);
     }
-
 }
