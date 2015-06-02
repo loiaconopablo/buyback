@@ -30,7 +30,7 @@ class PurchaseReferences extends CWidget
         );
 
         foreach ($estados as $key => $estado) {
-            array_push($references, array('label' => Yii::t('app', $estado->name), 'icon' => 'th-large', 'url' => '#', 'htmlOptions' => array('class' => 'pending ' . $estado->constant_name)));
+            array_push($references, array('label' => Yii::t('app', $estado->name), 'url' => '#', 'htmlOptions' => array('class' => 'pending ' . $estado->constant_name)));
         }
 
         return $references;
