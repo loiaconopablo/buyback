@@ -1,6 +1,13 @@
-
 .container {
 	width: 95%;
+}
+
+table td.chandran {
+  padding-left: 14px;
+}
+
+table td.button-column {
+  padding-right: 14px;
 }
 
 input[type=number].no-spin::-webkit-inner-spin-button, 
