@@ -19,6 +19,9 @@ $this->menu = array(
     'id' => 'owner-purchase-grid',
     'dataProvider' => $model->pending(),
     'filter' => $model,
+    'rowCssClassExpression' => '
+        ( Status::model()->findByAttributes(array("id" => $data->current_status_id))->constant_name )
+    ',
     'template' => "{items}\n{pager}",
     'columns' => array(
         array(
@@ -65,7 +68,7 @@ $this->menu = array(
         array(
             'name' => 'created_at',
             'header' => Yii::t('app', 'Fecha'),
-            'value' => 'date("d / m / Y", strtotime($data->created_at))',
+            'value' => 'date("d / m / Y h:i", strtotime($data->created_at))',
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
         //'user',
@@ -105,6 +108,7 @@ $this->menu = array(
 
 <?php //$this->advanced_search = true; ?>
 <?php $this->date_filter = true;?>
+<?php $this->purchase_references = $model->pending();?>
 
 <?php $this->renderPartial(
     '_search',

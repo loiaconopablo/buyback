@@ -1,3 +1,8 @@
+
+.container {
+	width: 95%;
+}
+
 input[type=number].no-spin::-webkit-inner-spin-button, 
 input[type=number].no-spin::-webkit-outer-spin-button,
 { 
@@ -252,7 +257,6 @@ h2.logo-retail {
 
 /* REMITOS row class*/
 tr.pending .btn,tr.pending .btn:hover, li.pending a i{
-	background-position: 0;
 	background-image: linear-gradient(to bottom, #f5ef78, #f5ef78);
 }
 
@@ -268,7 +272,6 @@ tr.pending td:last-child {
 }
 
 tr.partially-recived .btn, tr.partially-recived .btn:hover, li.partially-recived a i{
-	background-position: 0;
 	background-image: linear-gradient(to bottom, #ff6347, #ff6347);
 }
 
@@ -284,7 +287,6 @@ tr.partially-recived td:last-child {
 }
 
 tr.cancelled .btn, tr.cancelled .btn:hover, li.cancelled a i{
-	background-position: 0;
 	background-image: linear-gradient(to bottom, #aaa, #aaa);
 }
 
@@ -300,7 +302,6 @@ tr.cancelled td:last-child {
 }
 
 tr.in-transit .btn, tr.in-transit .btn:hover, li.in-transit a i{
-	background-position: 0;
 	background-image: linear-gradient(to bottom, #eee, #eee);
 }
 
@@ -315,9 +316,157 @@ tr.in-transit td:last-child {
 	-moz-box-shadow: inset -3px 0px 0px 0px  #eee;
 }
 
+.reference a i{
+	background-position: 0;
+}
+
 .reference a {
 	color: #000;
 }
+
+/* Purchase references  */
+/* PENDING PURCHASES */
+tr.PENDING td:first-child, li.PENDING {
+	box-shadow: inset 5px 0px 0px 0px  #eee;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #eee;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #eee;
+}
+
+tr.PENDING td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #eee;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #eee;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #eee;
+}
+
+/* PENDING_TO_SEND */
+tr.PENDING_TO_SEND td:first-child, li.PENDING_TO_SEND {
+	box-shadow: inset 5px 0px 0px 0px  #EDE925;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #EDE925;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #EDE925;
+}
+
+tr.PENDING_TO_SEND td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #EDE925;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #EDE925;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #EDE925;
+}
+
+/* SENT */
+tr.SENT td:first-child, li.SENT {
+	box-shadow: inset 5px 0px 0px 0px  #9A94C2;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #9A94C2;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #9A94C2;
+}
+
+tr.SENT td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #9A94C2;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #9A94C2;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #9A94C2;
+}
+
+/* RECIVED */
+tr.RECEIVED td:first-child, li.RECEIVED {
+	box-shadow: inset 5px 0px 0px 0px  #34A299;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #34A299;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #34A299;
+}
+
+tr.RECEIVED td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #34A299;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #34A299;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #34A299;
+}
+
+/* PENDING_TO_BE_RECEIVED */
+tr.PENDING_TO_BE_RECEIVED td:first-child, li.PENDING_TO_BE_RECEIVED {
+	box-shadow: inset 5px 0px 0px 0px  #D69400;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #D69400;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #D69400;
+}
+tr.PENDING_TO_BE_RECEIVED td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #D69400;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #D69400;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #D69400;
+}
+
+/* CANCELLED */
+tr.CANCELLED td:first-child, li.CANCELLED {
+	box-shadow: inset 5px 0px 0px 0px  #CB2F3A;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #CB2F3A;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #CB2F3A;
+}
+
+tr.CANCELLED td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #CB2F3A;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #CB2F3A;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #CB2F3A;
+}
+
+/* IN_OBSERVATION */
+tr.IN_OBSERVATION td:first-child, li.IN_OBSERVATION {
+	box-shadow: inset 5px 0px 0px 0px  #5D5C6E;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #5D5C6E;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #5D5C6E;
+}
+
+tr.IN_OBSERVATION td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #5D5C6E;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #5D5C6E;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #5D5C6E;
+}
+
+/* APPROVED */
+tr.APPROVED td:first-child, li.APPROVED {
+	box-shadow: inset 5px 0px 0px 0px  #269C62;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #269C62;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #269C62;
+}
+
+tr.APPROVED td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #269C62;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #269C62;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #269C62;
+}
+
+/* REJECTED */
+tr.REJECTED td:first-child, li.REJECTED {
+	box-shadow: inset 5px 0px 0px 0px  #AC1214;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #AC1214;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #AC1214;
+}
+
+tr.REJECTED td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #AC1214;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #AC1214;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #AC1214;
+}
+
+/* REQUOTED */
+tr.REQUOTED td:first-child, li.REQUOTED {
+	box-shadow: inset 5px 0px 0px 0px  #F99533;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #F99533;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #F99533;
+}
+
+tr.REQUOTED td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #F99533;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #F99533;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #F99533;
+}
+
+/* PAID */
+tr.PAID td:first-child, li.PAID {
+	box-shadow: inset 5px 0px 0px 0px  #74A061;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #74A061;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #74A061;
+}
+
+tr.PAID td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #74A061;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #74A061;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #74A061;
+}
+
 
 .block {
 	width: 100%;

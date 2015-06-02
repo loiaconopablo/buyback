@@ -27,6 +27,7 @@ return array(
     'import' => array(
         'application.models.*',
         'application.components.*',
+        'zii.widgets.CWidget.*',
 
         'bootstrap.helpers.*',
         'bootstrap.behaviors.*',
