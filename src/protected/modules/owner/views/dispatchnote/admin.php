@@ -16,7 +16,8 @@ $this->menu = array(
 
 
 <?php $this->widget(
-    'bootstrap.widgets.TbGridView', array(
+    'bootstrap.widgets.TbGridView',
+    array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'id' => 'dispatch_notes_grid',
     'dataProvider' => $model->admin(),
@@ -47,13 +48,13 @@ $this->menu = array(
             ),
         ),
         // array(
-        // 	'name' => 'destination',
-        // 	'header' => Yii::t('app', 'Destino'),
-        // 	'filter' => false,
+        //  'name' => 'destination',
+        //  'header' => Yii::t('app', 'Destino'),
+        //  'filter' => false,
         // ),
         array(
             'name' => 'created_at',
-            'value' => 'date("d / m / Y", strtotime($data->created_at))',
+            'value' => 'date("d-m-Y", strtotime($data->created_at))',
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
         array(
@@ -85,7 +86,8 @@ $this->menu = array(
 
 
 <?php $this->renderPartial(
-    '_search', array(
+    '_search',
+    array(
     'model' => $model,
     )
 );?>
@@ -93,11 +95,11 @@ $this->menu = array(
 <?php $this->date_filter = true;?>
 
 <div id="modal-dispatch-note" class="modal hide fade" style="">
-	<div class="modal-body"></div>
-	<div class="modal-footer">
+    <div class="modal-body"></div>
+    <div class="modal-footer">
 	    <a href="#" data-dismiss="modal" class="btn"><?php echo Yii::t('app', 'Close');?></a>
 	    <a href="#" id="send_dispatch" class="btn btn-primary"><?php echo Yii::t('app', 'In transit');?></a>
-	</div>
+    </div>
 </div>
 
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl;?>/js/dispatch_note.js"></script>
