@@ -68,7 +68,7 @@ $this->menu = array(
         array(
             'name' => 'created_at',
             'header' => Yii::t('app', 'Fecha'),
-            'value' => 'date("d / m / Y h:i", strtotime($data->created_at))',
+            'value' => 'date("d-m-Y  .  h:i", strtotime($data->created_at))',
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
         //'user',

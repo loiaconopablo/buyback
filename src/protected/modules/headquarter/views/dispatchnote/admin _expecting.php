@@ -58,7 +58,7 @@ $this->menu = array(
         ),
         array(
             'name' => 'created_at',
-            'value' => 'date("d / m / Y", strtotime($data->created_at))',
+            'value' => 'date("d-m-Y", strtotime($data->created_at))',
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
         array(

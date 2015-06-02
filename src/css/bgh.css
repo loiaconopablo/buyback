@@ -326,7 +326,7 @@ tr.in-transit td:last-child {
 
 /* Purchase references  */
 /* PENDING PURCHASES */
-tr.PENDING td:first-child, li.PENDING {
+tr.PENDING td:first-child, li.PENDING, div.well.PENDING {
 	box-shadow: inset 5px 0px 0px 0px  #eee;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #eee;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #eee;
@@ -339,7 +339,7 @@ tr.PENDING td:last-child {
 }
 
 /* PENDING_TO_SEND */
-tr.PENDING_TO_SEND td:first-child, li.PENDING_TO_SEND {
+tr.PENDING_TO_SEND td:first-child, li.PENDING_TO_SEND, div.well.PENDING_TO_SEND {
 	box-shadow: inset 5px 0px 0px 0px  #EDE925;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #EDE925;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #EDE925;
@@ -352,7 +352,7 @@ tr.PENDING_TO_SEND td:last-child {
 }
 
 /* SENT */
-tr.SENT td:first-child, li.SENT {
+tr.SENT td:first-child, li.SENT, div.well.SENT {
 	box-shadow: inset 5px 0px 0px 0px  #9A94C2;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #9A94C2;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #9A94C2;
@@ -365,7 +365,7 @@ tr.SENT td:last-child {
 }
 
 /* RECIVED */
-tr.RECEIVED td:first-child, li.RECEIVED {
+tr.RECEIVED td:first-child, li.RECEIVED, div.well.RECEIVED {
 	box-shadow: inset 5px 0px 0px 0px  #34A299;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #34A299;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #34A299;
@@ -378,7 +378,7 @@ tr.RECEIVED td:last-child {
 }
 
 /* PENDING_TO_BE_RECEIVED */
-tr.PENDING_TO_BE_RECEIVED td:first-child, li.PENDING_TO_BE_RECEIVED {
+tr.PENDING_TO_BE_RECEIVED td:first-child, li.PENDING_TO_BE_RECEIVED, div.well.PENDING_TO_BE_RECEIVED {
 	box-shadow: inset 5px 0px 0px 0px  #D69400;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #D69400;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #D69400;
@@ -390,7 +390,7 @@ tr.PENDING_TO_BE_RECEIVED td:last-child {
 }
 
 /* CANCELLED */
-tr.CANCELLED td:first-child, li.CANCELLED {
+tr.CANCELLED td:first-child, li.CANCELLED, div.well.CANCELLED {
 	box-shadow: inset 5px 0px 0px 0px  #CB2F3A;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #CB2F3A;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #CB2F3A;
@@ -403,7 +403,7 @@ tr.CANCELLED td:last-child {
 }
 
 /* IN_OBSERVATION */
-tr.IN_OBSERVATION td:first-child, li.IN_OBSERVATION {
+tr.IN_OBSERVATION td:first-child, li.IN_OBSERVATION, div.well.IN_OBSERVATION {
 	box-shadow: inset 5px 0px 0px 0px  #5D5C6E;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #5D5C6E;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #5D5C6E;
@@ -416,7 +416,7 @@ tr.IN_OBSERVATION td:last-child {
 }
 
 /* APPROVED */
-tr.APPROVED td:first-child, li.APPROVED {
+tr.APPROVED td:first-child, li.APPROVED, div.well.APPROVED {
 	box-shadow: inset 5px 0px 0px 0px  #269C62;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #269C62;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #269C62;
@@ -429,7 +429,7 @@ tr.APPROVED td:last-child {
 }
 
 /* REJECTED */
-tr.REJECTED td:first-child, li.REJECTED {
+tr.REJECTED td:first-child, li.REJECTED, div.well.REJECTED {
 	box-shadow: inset 5px 0px 0px 0px  #AC1214;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #AC1214;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #AC1214;
@@ -442,7 +442,7 @@ tr.REJECTED td:last-child {
 }
 
 /* REQUOTED */
-tr.REQUOTED td:first-child, li.REQUOTED {
+tr.REQUOTED td:first-child, li.REQUOTED, div.well.REQUOTED {
 	box-shadow: inset 5px 0px 0px 0px  #F99533;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #F99533;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #F99533;
@@ -455,7 +455,7 @@ tr.REQUOTED td:last-child {
 }
 
 /* PAID */
-tr.PAID td:first-child, li.PAID {
+tr.PAID td:first-child, li.PAID, div.well.PAID {
 	box-shadow: inset 5px 0px 0px 0px  #74A061;
 	-webkit-box-shadow: inset 5px 0px 0px 0px  #74A061;
 	-moz-box-shadow: inset 5px 0px 0px 0px  #74A061;

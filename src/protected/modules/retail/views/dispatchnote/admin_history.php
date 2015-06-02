@@ -16,7 +16,8 @@ $this->menu = array(
 
 
 <?php $this->widget(
-    'bootstrap.widgets.TbGridView', array(
+    'bootstrap.widgets.TbGridView',
+    array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'id' => 'dispatch_notes_grid',
     'dataProvider' => $model->historyOwn(),
@@ -52,7 +53,7 @@ $this->menu = array(
         // ),
         array(
             'name' => 'created_at',
-            'value' => 'date("d / m / Y", strtotime($data->created_at))',
+            'value' => 'date("d-m-Y", strtotime($data->created_at))',
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
         array(
@@ -83,7 +84,8 @@ $this->menu = array(
 );?>
 
 <?php $this->renderPartial(
-    '_search', array(
+    '_search',
+    array(
     'model' => $model,
     )
 );?>
