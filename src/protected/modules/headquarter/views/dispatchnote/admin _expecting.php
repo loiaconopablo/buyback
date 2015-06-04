@@ -16,7 +16,8 @@ $this->menu = array(
 
 
 <?php $this->widget(
-    'bootstrap.widgets.TbGridView', array(
+    'bootstrap.widgets.TbGridView',
+    array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'id' => 'dispatch_notes_grid',
     'dataProvider' => $model->expecting(),
@@ -57,7 +58,7 @@ $this->menu = array(
         ),
         array(
             'name' => 'created_at',
-            'value' => 'date("d / m / Y", strtotime($data->created_at))',
+            'value' => 'date("d-m-Y", strtotime($data->created_at))',
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
         array(
@@ -99,7 +100,8 @@ $this->menu = array(
 );?>
 
 <?php $this->renderPartial(
-    '_search', array(
+    '_search',
+    array(
     'model' => $model,
     )
 );?>
@@ -110,20 +112,20 @@ $this->menu = array(
 <!-- Por ahora no va a ser modal, es muy comoplejo y trae conflictos -->
 <!--
 <div id="modal-dispatch-note-receiving" class="modal hide fade" style="">
-	<div class="modal-body"></div>
-	<div class="modal-footer">
+    <div class="modal-body"></div>
+    <div class="modal-footer">
 	    <a href="#" data-dismiss="modal" class="btn"><?php echo Yii::t('app', 'Close');?></a>
 	    <a href="#" id="receiving_in_headquarter_dispatch" class="btn btn-primary"><?php echo Yii::t('app', 'Received');?></a>
-	</div>
+    </div>
 </div>
 -->
 
 <!-- MODAL SOLO PARA VER LO QUE TODAVIA NO ENVIARON -->
 <div id="modal-dispatch-note" class="modal hide fade" style="">
-	<div class="modal-body"></div>
-	<div class="modal-footer">
+    <div class="modal-body"></div>
+    <div class="modal-footer">
 	    <a href="#" data-dismiss="modal" class="btn"><?php echo Yii::t('app', 'Close');?></a>
-	</div>
+    </div>
 </div>
 
 <script type="text/javascript" src="<?php echo Yii::app()->baseUrl;?>/js/dispatch_note.js"></script>

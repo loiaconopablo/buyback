@@ -150,8 +150,6 @@ class Purchase extends BasePurchase
 
         $criteria->addCondition('last_location_id != :user_point_of_sale');
         $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
-        //$criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
-        //$criteria->addInCondition('current_status_id', array(Status::PENDING, Status::RECEIVED));
 
         return new CActiveDataProvider(
             $this,

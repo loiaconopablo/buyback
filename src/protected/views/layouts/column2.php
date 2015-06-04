@@ -13,6 +13,12 @@
     <?php
 endif; ?>
 
+    <?php if (Yii::app()->controller->purchase_references) :
+    ?>
+        <?php Yii::app()->controller->widget('PurchaseReferences'); ?>
+        <?php
+endif; ?>
+
     <?php if (Yii::app()->controller->advanced_search) :
 ?>
     <?php echo TbHtml::button(

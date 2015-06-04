@@ -15,7 +15,20 @@ class Controller extends CController
      */
     public $menu = array();
 
+    /**
+     * Habilita la busqueda avanzada si es TRUE
+     * @var boolean
+     */
     public $advanced_search = false;
+    /**
+     * Habilita el cuadro de referencia de estados de los equipos si es TRUE
+     * @var boolean
+     */
+    public $purchase_references = false;
+    /**
+     * Habilita el filtro entre fechas si es TRUE
+     * @var boolean
+     */
     public $date_filter = false;
 
     public $main_menu = array();
@@ -28,11 +41,10 @@ class Controller extends CController
      */
     public $breadcrumbs = array();
 
-    protected function beforeAction($action) 
+    protected function beforeAction($action)
     {
         if (!Yii::app()->user->isGuest) {
-
-            if ($this->condition_for_changepassword(Yii::app()->user->id) && !($action->controller->id == 'auth' or $action->id == 'error')) {
+            if ($this->conditionForChangePassword(Yii::app()->user->id) && !($action->controller->id == 'auth' or $action->id == 'error')) {
                 $this->redirect(array('/auth/auth/changepassword', 'id' => Yii::app()->user->id));
             }
 
@@ -44,7 +56,7 @@ class Controller extends CController
         return parent::beforeAction($action);
     }
 
-    protected function condition_for_changepassword($id) 
+    protected function conditionForChangePassword($id)
     {
 
         $model = new User;

@@ -14,14 +14,16 @@ $this->menu = array(
 <!--<h2><?php echo Yii::t('app', 'Manage') . ' ' . GxHtml::encode($model->label(2));?></h2>-->
 
 <?php $form = $this->beginWidget(
-    'CActiveForm', array(
+    'CActiveForm',
+    array(
     // 'action' => Yii::app()->createUrl('/owner/purchase/setinobservation'),
     //'enableAjaxValidation'=>true,
     )
 );?>
 
 <?php $this->widget(
-    'bootstrap.widgets.TbGridView', array(
+    'bootstrap.widgets.TbGridView',
+    array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'id' => 'owner-purchase-grid',
     'dataProvider' => $model->inobservation(),
@@ -72,7 +74,7 @@ $this->menu = array(
         array(
             'name' => 'created_at',
             'header' => Yii::t('app', 'Fecha'),
-            'value' => 'date("d / m / Y", strtotime($data->created_at))',
+            'value' => 'date("d-m-Y", strtotime($data->created_at))',
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
         //'user',
@@ -119,7 +121,8 @@ $this->menu = array(
 <?php $this->date_filter = true;?>
 
 <?php $this->renderPartial(
-    '_search', array(
+    '_search',
+    array(
     'model' => $model,
     )
 );?>

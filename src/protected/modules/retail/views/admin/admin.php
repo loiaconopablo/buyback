@@ -15,14 +15,16 @@ $this->menu = array(
 <!--<h2><?php echo Yii::t('app', 'Manage') . ' ' . GxHtml::encode($model->label(2));?></h2>-->
 
 <?php $form = $this->beginWidget(
-    'CActiveForm', array(
+    'CActiveForm',
+    array(
     'action' => Yii::app()->createUrl('/retail/admin/dispatchpurchases'),
     //'enableAjaxValidation'=>true,
     )
 );?>
 
 <?php $this->widget(
-    'bootstrap.widgets.TbGridView', array(
+    'bootstrap.widgets.TbGridView',
+    array(
     'id' => 'admin-grid',
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'dataProvider' => $model->admin(),
@@ -72,7 +74,7 @@ $this->menu = array(
         ),
         array(
             'name' => 'created_at',
-            'value' => 'date("d / m / Y", strtotime($data->created_at))',
+            'value' => 'date("d-m-Y", strtotime($data->created_at))',
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
         array(
@@ -108,22 +110,23 @@ $this->menu = array(
 <?php $this->endWidget();?>
 
 <div id="modal-purchase" class="modal hide fade" style="">
-	<div class="modal-header">
+    <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"><?php echo Yii::t('app', 'Purchase');?></h4>
       </div>
-	<div class="modal-body"></div>
-	<div class="modal-footer">
+    <div class="modal-body"></div>
+    <div class="modal-footer">
 	    <a href="#" data-dismiss="modal" class="btn"><?php echo Yii::t('app', 'Close');?></a>
 	    <!--<a href="#" id="send_dispatch" class="btn btn-primary"><?php echo Yii::t('app', 'In transit');?></a>-->
-	</div>
+    </div>
 </div>
 
 <?php $this->date_filter = true;?>
 <?php //$this->advanced_search = true; ?>
 
 <?php $this->renderPartial(
-    '_search', array(
+    '_search',
+    array(
     'model' => $model,
     )
 );?>
