@@ -3,20 +3,22 @@ class Home
 {
     public static function getRoleHome()
     {
+        /*
+        Si es super usuario va al admin de los operadores
+         */
         if (Yii::app()->user->checkAccess('superuser')) {
             return array('/admin_root/carrier/admin');
         }
 
+        /*
+        Si es administrador (BGH) va al controler purchase
+         */
         if (Yii::app()->user->checkAccess('admin')) {
             return array('/owner/purchase');
         }
 
         if (Yii::app()->user->checkAccess('retail')) {
-            if (Yii::app()->user->is_headquarter) {
-                return array('/headquarter');
-            } else {
                 return array('/retail');
-            }
         }
 
         //Si no esta logueado o no se reconoce el rol
