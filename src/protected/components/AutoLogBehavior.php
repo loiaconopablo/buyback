@@ -18,16 +18,15 @@ class AutoLogBehavior extends CActiveRecordBehavior
         if ($this->Owner->isNewRecord) {
             // Guarda el timestamp de la fecha de creacion
             if ($this->Owner->hasAttribute($this->Owner->created_log_field)) {
-                $this->Owner->{$this->Owner->created_log_field} = new CDbExpression('UTC_TIMESTAMP()');
+                $this->Owner->{$this->Owner->created_log_field} = new CDbExpression('NOW()');
             }
             // Guarda el id del usuario de creacion
             if ($this->Owner->hasAttribute('user_create_id')) {
                 $this->Owner->user_create_id = Yii::app()->user->id;
             }
         } else {
-
             if ($this->Owner->hasAttribute($this->Owner->updated_log_field)) {
-                $this->Owner->{$this->Owner->updated_log_field} = new CDbExpression('UTC_TIMESTAMP()');
+                $this->Owner->{$this->Owner->updated_log_field} = new CDbExpression('NOW()');
             }
 
         }
@@ -36,6 +35,6 @@ class AutoLogBehavior extends CActiveRecordBehavior
             $this->Owner->{$this->Owner->user_update_log_field} = Yii::app()->user->id;
         }
              
-        return true;    
+        return true;
     }
 }
