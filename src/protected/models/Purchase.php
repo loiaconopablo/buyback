@@ -48,7 +48,8 @@ class Purchase extends BasePurchase
         return CMap::mergeArray(
             parent::rules(),
             array(
-            array('', 'safe', 'on' => 'search'),
+                array('', 'safe', 'on' => 'search'),
+                array('imei', 'unique'),
             )
         );
     }
