@@ -1,34 +1,34 @@
 <?php
 class Helper
 {
-    public static function list_authitems() 
+    public static function list_authitems()
     {
         return CHtml::listData(Authitem::model()->findAll(array('order'=>'name ASC')), 'name', 'name');
     }
-    public static function list_authitems_by_type($type) 
+    public static function list_authitems_by_type($type)
     {
         $condition='type='.$type;
         return CHtml::listData(Authitem::model()->findAll(array('condition'=>$condition,'order'=>'name ASC')), 'name', 'name');
     }
-    public static function list_users() 
+    public static function list_users()
     {
         return CHtml::listData(User::model()->findAll(array('order'=>'username ASC')), 'id', 'username');
     }
-    public static function getStringTypeAuthitem($authitem_type) 
+    public static function getStringTypeAuthitem($authitem_type)
     {
         switch ($authitem_type) {
-        case Authitem::OPERATION :
-            return 'Operation';
-        case Authitem::TASK :
-            return 'Task';
-        case Authitem::ROLE :
-            return 'Role';
-        default :
-            return 'NONE';
+            case Authitem::OPERATION:
+                return 'Operation';
+            case Authitem::TASK:
+                return 'Task';
+            case Authitem::ROLE:
+                return 'Role';
+            default:
+                return 'NONE';
         }
     }
 
-    public static function getDateFilterParams() 
+    public static function getDateFilterParams()
     {
         if (isset(Yii::app()->request->cookies['from']->value)) {
             $date_from = DateTime::createFromFormat('d/m/Y', Yii::app()->request->cookies['from']->value);
@@ -49,5 +49,23 @@ class Helper
             ':from' => $from,
             ':to' => $to,
         );
+    }
+
+    /**
+     * Chequea si el item esta en la cookie que mantiene los ids seleccionados
+     * @param  integer $id Id del tipo de registro que se este seleccionando en la Grid
+     * @return boolean     Devuelve si dicho item esta selecionado o no
+     */
+    public static function checkedInGrid($id)
+    {
+        $checkedItemsCookie = Yii::app()->request->cookies['checkedItems'];
+
+        if ($checkedItemsCookie) {
+            $checkedItemsArray = explode(',', $checkedItemsCookie->value);
+
+            return in_array($id, $checkedItemsArray);
+        }
+        
+        return false;
     }
 }
