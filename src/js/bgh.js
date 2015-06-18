@@ -7,21 +7,19 @@ $(document).ready(function() {
 	  $(this).removeData();
 	});
 
+	/**
+	 * Submit de los formularios con columna de checks  Grid
+	 * 
+	 */
 	$('.checks-submit').on('click', function(ev) {
+
+		setCheckedItems();
 		
-		var checkcolumn = $(this).attr('data-checkcolumn');
-		if (!$("input[name='" + checkcolumn + "[]']").is(':checked')) {
+		if ($.trim($.cookie('checkedItems')).length <= 0) {
 			ev.preventDefault();
 			return;
 		}
 
-		var attr = $(this).attr('data-submit-action');
-
-		// For some browsers, `attr` is undefined; for others,
-		// `attr` is false.  Check for both.
-		if (typeof attr !== typeof undefined && attr !== false) {
-		    $(this).parents('form').attr('action', attr);
-		}
 	});
 
 	// Activa los tooltips de las tablas
@@ -60,6 +58,10 @@ function resetDateFilter() {
 	location.reload();
 }
 
+/**
+ * Guarda en una cookie los checkbox seleccionados en un Grid
+ * Para mantenerlos aunque se pagine
+ */
 function setCheckedItems() {
 	// Si la cookie no esta creada la crea vacia
 	if ($.cookie('checkedItems') == undefined) {
@@ -72,22 +74,40 @@ function setCheckedItems() {
 	// Trae los nuevos ids seleccionados
 	var newCheckedItems = $.fn.yiiGridView.getChecked("selectableGrid","purchase_selected");
 
-	var checkedItems = oldCheckedItems.concat(newCheckedItems).unique();
+	var checkedItems = oldCheckedItems.concat(newCheckedItems);
+
+	// Se liminan los duplicados
+	checkedItems = uniq(checkedItems);
 
 	// Se les restan los que se deseleccionaron
-	checkedItems = checkedItems.diff(getUncheckeds());
+	checkedItems = arrayDiff(checkedItems, getUncheckeds());
 	
 	$.cookie('checkedItems', checkedItems, { path: '/' });
 }
 
+
 /**
- * Exquende array para agregar el metodo "diff"
- * @param  Array a El array contra el que se compara el original
- * @return Array   La diferencia entre arrays
+ * Recibe un array y devuelve otro sin los datos duplicados del recibido
+ * @param  Array a array original
+ * @return Array   Array sin items duplicados
  */
-Array.prototype.diff = function(a) {
-    return this.filter(function(i) {return a.indexOf(i) < 0;});
-};
+function uniq(a) {
+    var prims = {"boolean":{}, "number":{}, "string":{}}, objs = [];
+
+    return a.filter(function(item) {
+        var type = typeof item;
+        if(type in prims)
+            return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
+        else
+            return objs.indexOf(item) >= 0 ? false : objs.push(item);
+    });
+}
+
+
+function arrayDiff(a1, a2) {
+	return a1.filter(function(i) {return a2.indexOf(i) < 0;});
+}
+
 
 /**
  * Devuelve los elementos deseleccionados de la columna de checbocks
@@ -96,23 +116,6 @@ Array.prototype.diff = function(a) {
  */
 function getUncheckeds() {
     var unch = [];
-    /*corrected typo: $('[name^=someChec]') => $('[name^=someChecks]') */
     $('[name^=purchase_selected]').not(':checked,[name$=all]').each(function(){unch.push($(this).val());});
     return unch.toString();
 }
-
-/**
- * Extiende Array.concat para concatenar sin duplicados
- * @return array
- */
-Array.prototype.unique = function() {
-    var a = this.concat();
-    for(var i=0; i<a.length; ++i) {
-        for(var j=i+1; j<a.length; ++j) {
-            if(a[i] === a[j])
-                a.splice(j--, 1);
-        }
-    }
-
-    return a;
-};

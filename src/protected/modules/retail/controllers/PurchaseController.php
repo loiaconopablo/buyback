@@ -161,7 +161,7 @@ class PurchaseController extends Controller
                     $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
 
                     // if(Yii::app()->user->is_headquarter) {
-                    // 	$purchase->setStatus(Status::RECEIVED_IN_HEADQUARTER);
+                    //  $purchase->setStatus(Status::RECEIVED_IN_HEADQUARTER);
                     // }
                 }
             }
@@ -291,6 +291,10 @@ class PurchaseController extends Controller
         $this->render('rejected_purchase');
     }
 
+    /**
+     * Devuelve un json con los modelos de la marca seleccionada
+     * @param  string $brand marca de equipo
+     */
     public function actionGetmodels($brand)
     {
         if (Yii::app()->getRequest()->getIsPostRequest()) {

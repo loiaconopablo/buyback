@@ -16,7 +16,7 @@ $this->menu = array(
 <?php $form = $this->beginWidget(
     'CActiveForm',
     array(
-    'action' => Yii::app()->createUrl('/retail/admin/dispatchpurchases'),
+    'action' => Yii::app()->createUrl('/purchase/purchase/dispatch'),
     //'enableAjaxValidation'=>true,
     )
 );?>

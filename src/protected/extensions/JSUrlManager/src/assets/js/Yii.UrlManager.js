@@ -153,8 +153,10 @@ var UrlManager = (function () {
             }
 
             if (Object.prototype.toString.call(v) === '[object Array]') {
+                console.log('Array');
                 pairs.push(this.createPathInfo(v, equal, ampersand, k));
             } else {
+                console.lo('NO Array');
                 pairs.push(encodeURIComponent(k) + equal + encodeURIComponent(v));
             }
         }

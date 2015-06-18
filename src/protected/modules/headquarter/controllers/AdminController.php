@@ -16,10 +16,16 @@ class AdminController extends Controller
     }
 
     /**
-    * action
-    */
+     * Lista los equipos en el lugar listos para ser enviados a la cabecera
+     */
     public function actionAdmin()
     {
+        // Limpia la cookie de checkbox seleccionados en Grid
+        // Para que esto funcione 'ajaxUpdate'=>true en el Grid de la vista
+        if (!Yii::app()->request->isAjaxRequest) {
+            unset(Yii::app()->request->cookies['checkedItems']);
+        }
+
         $model = new Purchase;
         $model->unsetAttributes();
 
@@ -28,48 +34,10 @@ class AdminController extends Controller
         }
         
         $this->render(
-            'admin', array(
+            'admin',
+            array(
             'model' => $model,
             )
         );
     }
-
-    /**
-    * action
-    */
-    // public function actionDispatchPurchases()
-    // {
-    // 	$dispatch_note_model = new DispatchNote;
-
-    // 	$purchases = array();
-    // 	// Se fija si recibio purchases en el post del admin
-    // 	if (isset($_POST['purchase_selected'])) {
-    // 		$purchases = $_POST['purchase_selected'];
-    // 	}
-
-    // 	// En el submit del form con comment
-    // 	if (isset($_POST['dispatch_selected'])) {
-    // 		$dispatch_note_model->setAttributes($_POST['DispatchNote']);
-    // 		$dispatch_note_id = $dispatch_note_model->create($_POST['dispatch_selected']);
-            
-    // 		if ($dispatch_note_id) {
-    // 			$this->redirect(array('/dispatchnote/dispatchnote/view', 'id' => $dispatch_note_id));
-    // 		}
-    // 	}
-        
-    // 	$criteria = new CDbCriteria;
-    // 	$criteria->addInCondition('id', $purchases);
-
-    // 	$model = new Purchase;
-
-    // 	$dataProvider = new CActiveDataProvider(new Purchase, array(
-    // 		'criteria' => $criteria,
-    // 	));
-    // 	$this->render('dispatch_purchase', array(
-    // 		'dataProvider' => $dataProvider,
-    // 		'model' => $model,
-    // 		'dispatch_note_model' => $dispatch_note_model,
-    // 	));
-    // }
-
 }
