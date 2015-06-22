@@ -161,7 +161,7 @@ class PurchaseController extends Controller
                     $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
 
                     // if(Yii::app()->user->is_headquarter) {
-                    // 	$purchase->setStatus(Status::RECEIVED_IN_HEADQUARTER);
+                    //  $purchase->setStatus(Status::RECEIVED_IN_HEADQUARTER);
                     // }
                 }
             }
@@ -227,6 +227,7 @@ class PurchaseController extends Controller
         $purchase_price = Yii::app()->session['purchase']['purchase_price'];
 
         $afipClient = new WsfeClient;
+
 
         try {
             /**
