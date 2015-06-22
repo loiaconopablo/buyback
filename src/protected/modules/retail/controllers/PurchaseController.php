@@ -208,6 +208,52 @@ class PurchaseController extends Controller
         $html2pdf->Output();
     }
 
+    public function actionGenerateUnContract($purchase_id)
+    {
+        if (!Yii::app()->user->checkAccess('admin')) {
+            return false;
+        }
+
+        $purchase = Purchase::model()->findByPk($purchase_id);
+        $retail = PointOfSale::model()->findByPk($purchase->point_of_sale_id);
+        $seller = Seller::model()->findByPk($purchase->seller_id);
+
+        $carrier = Carrier::model()->findByPk($purchase->carrier_id);
+
+        $afipClient = new WsfeClient;
+
+        try {
+            /**
+             * Array con la respuesta de la AFIP con los siguienes items
+             * ['contract_munber'] : integer
+             * ['cae'] : integer
+             * ['json_response'] : string : json raw del json que devuelve la afip con todos sus datos incluido el CAE
+             *
+             * @var array
+             */
+            $cae_array = $afipClient->getCaeParaContrato($purchase->purchase_price, $seller);
+
+        } catch (Exception $e) {
+            Yii::app()->user->setFlash('error', $e);
+
+            return;
+
+        }
+
+        if (!$carrier) {
+            $carrier_name = Yii::t('app', 'Unlocked');
+        } else {
+            $carrier_name = $carrier->name;
+        }
+
+        //$this->renderPartial('contract', array('model' => $purchase, 'retail' => $retail, 'seller' => $seller, 'carrier_name' => $carrier_name));
+        //die();
+
+        $html2pdf = Yii::app()->ePdf->HTML2PDF();
+        $html2pdf->WriteHTML($this->renderPartial('uncontract_wrap', array('model' => $purchase, 'retail' => $retail, 'seller' => $seller, 'carrier_name' => $carrier_name, 'contract_number' => $cae_array['contract_number']), true));
+        $html2pdf->Output();
+    }
+
     public function savePurchase($seller)
     {
 
@@ -227,7 +273,6 @@ class PurchaseController extends Controller
         $purchase_price = Yii::app()->session['purchase']['purchase_price'];
 
         $afipClient = new WsfeClient;
-
 
         try {
             /**
@@ -292,6 +337,10 @@ class PurchaseController extends Controller
         $this->render('rejected_purchase');
     }
 
+    /**
+     * Devuelve un json con los modelos de la marca seleccionada
+     * @param  string $brand marca de equipo
+     */
     public function actionGetmodels($brand)
     {
         if (Yii::app()->getRequest()->getIsPostRequest()) {
