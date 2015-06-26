@@ -1,15 +1,15 @@
 <?php
 
-class m150616_174204_alter_purchase_unique_imei extends CDbMigration
+class m150625_173357_alter_price_list_delete_imeiws_name extends CDbMigration
 {
     public function up()
     {
-        $this->createIndex('imei', 'purchase', 'imei', true);
+        $this->dropColumn('price_list', 'imeiws_name');
     }
 
     public function down()
     {
-        echo "m150616_174204_alter_purchase_unique_imei does not support migration down.\n";
+        echo "m150625_173357_alter_price_list_delete_imeiws_name does not support migration down.\n";
         return false;
     }
 

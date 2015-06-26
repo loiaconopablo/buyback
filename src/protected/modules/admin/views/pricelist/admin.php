@@ -19,17 +19,13 @@ $this->menu = array(
 
 
 <?php $this->widget(
-    'bootstrap.widgets.TbGridView', array(
+    'bootstrap.widgets.TbGridView',
+    array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'dataProvider' => $model->search(),
     'filter' => $model,
     'template' => "{items}\n{pager}",
     'columns' => array(
-        array(
-            'name' => 'id',
-            'value' => '$data->id',
-            'headerHtmlOptions' => array('width' => '10'),
-        ),
         'brand',
         'model',
         array(
@@ -47,10 +43,10 @@ $this->menu = array(
             'value' => '$data->broken_price',
             'htmlOptions' => array('style' => 'text-align: right'),
         ),
-        //  		array(
-        // 	'name'=>'user_update_id',
-        // 	'value'=>'GxHtml::valueEx($data->user_log)',
-        // 	'filter'=>GxHtml::listDataEx(User::model()->getListData()),
+        //          array(
+        //  'name'=>'user_update_id',
+        //  'value'=>'GxHtml::valueEx($data->user_log)',
+        //  'filter'=>GxHtml::listDataEx(User::model()->getListData()),
         // ),
         /*
         'created_at',
@@ -65,7 +61,8 @@ $this->menu = array(
 );?>
 
 <?php echo TbHtml::button(
-    Yii::t('app', 'Advanced Search'), array(
+    Yii::t('app', 'Advanced Search'),
+    array(
     'style' => TbHtml::BUTTON_COLOR_PRIMARY,
     'data-toggle' => 'modal',
     'data-target' => '#searchModal',
@@ -73,7 +70,8 @@ $this->menu = array(
 );?>
 
 <?php $this->renderPartial(
-    '_search', array(
+    '_search',
+    array(
     'model' => $model,
     )
 );?>

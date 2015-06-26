@@ -50,6 +50,7 @@ class Purchase extends BasePurchase
             array(
                 array('', 'safe', 'on' => 'search'),
                 array('imei', 'unique'),
+                array('contract_number', 'unique'),
             )
         );
     }
