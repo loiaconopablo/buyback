@@ -115,7 +115,9 @@ return array(
 
         'curl' => include dirname(__FILE__) . '/curl.php',
         
-        'imeiws' => include dirname(__FILE__) . '/imeiws.php',
+        'imeiws' => include dirname(__FILE__) . '/wsgif.php',
+
+        'wsfe' => include dirname(__FILE__) . '/wsfe.php',
 
         'authManager' => array(
             'class' => 'CDbAuthManager',

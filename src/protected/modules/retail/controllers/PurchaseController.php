@@ -1,8 +1,5 @@
 <?php
 
-//Yii::import('application.vendors.wsfe.*', true);
-Yii::import('ext.wsfe.*', true);
-
 class PurchaseController extends Controller
 {
 
@@ -249,8 +246,6 @@ class PurchaseController extends Controller
 
         $carrier = Carrier::model()->findByPk($purchase->carrier_id);
 
-        $afipClient = new WsfeClient;
-
         try {
             /**
              * Array con la respuesta de la AFIP con los siguienes items
@@ -260,7 +255,7 @@ class PurchaseController extends Controller
              *
              * @var array
              */
-            $cae_array = $afipClient->getCaeParaContrato($purchase->purchase_price, $seller);
+            $cae_array = Yii::app()->wsfe->getCaeParaContrato($purchase->purchase_price, $seller);
 
         } catch (Exception $e) {
             Yii::app()->user->setFlash('error', $e);
@@ -301,8 +296,6 @@ class PurchaseController extends Controller
 
         $purchase_price = Yii::app()->session['purchase']['purchase_price'];
 
-        $afipClient = new WsfeClient;
-
         try {
             /**
              * Array con la respuesta de la AFIP con los siguienes items
@@ -312,7 +305,7 @@ class PurchaseController extends Controller
              *
              * @var array
              */
-            $cae_array = $afipClient->getCaeParaContrato($purchase_price, $seller);
+            $cae_array = Yii::app()->wsfe->getCaeParaContrato($purchase_price, $seller);
 
         } catch (Exception $e) {
             Yii::app()->user->setFlash('error', $e);
