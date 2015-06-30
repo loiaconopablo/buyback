@@ -21,15 +21,15 @@ $this->menu = array(
 
 <?php $this->widget(
     'bootstrap.widgets.TbDetailView', array(
-    'data' => $company_from,
+    'data' => $dispatchnote_model->company,
     'attributes' => array(
         array(
             'label' => Yii::t('app', 'Source'),
-            'value' => $company_from->name . ' - ' . $from->name,
+            'value' => $dispatchnote_model->company->name . ' - ' . $dispatchnote_model->point_of_sale->name,
         ),
         array(
             'label' => Yii::t('app', 'Destination'),
-            'value' => $to->name,
+            'value' => $dispatchnote_model->destination->name,
         ),
     ),
     )

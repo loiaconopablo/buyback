@@ -182,11 +182,14 @@ class DispatchNote extends BaseDispatchNote
     }
 
     /**
-     * Crea un remito
+     * Crea una nueva nota de envio
+     * @param  array  $purchases Array con los id de purchase que entran en la nota de envio
+     * @return integer  Ide de la nota de envio creada
      */
     public function create(array $purchases)
     {
         if (count($purchases)) {
+
             $this->company_id = Yii::app()->user->company_id;
             $this->source_id = Yii::app()->user->point_of_sale_id;
             $this->dispatch_note_number = Company::model()->findByPk(Yii::app()->user->company_id)->getDispatchNoteNumber();
@@ -215,7 +218,7 @@ class DispatchNote extends BaseDispatchNote
             }
         }
 
-        return false;
+        return null;
     }
 
     /**

@@ -8,7 +8,6 @@ class DispatchnoteController extends Controller
     public function actionView($id, $receiving = false) 
     {
         $dispatch_note = DispatchNote::model()->findByPk($id);
-
         if (Yii::app()->request->isPostRequest) {
 
             $purchases_array = array();
@@ -25,28 +24,23 @@ class DispatchnoteController extends Controller
             }
         }
 
-        $company_from = Company::model()->findByPk($dispatch_note->company_id);
-
-        $from = PointOfSale::model()->findByPk($dispatch_note->source_id);
-
-        $to = PointOfSale::model()->findByPk($dispatch_note->destination_id);
-
         $criteria = new CDbCriteria;
         $criteria->compare('last_dispatch_note_id', $id);
 
         $purchasesDataProvider = new CActiveDataProvider(
             new Purchase, array(
-            'criteria' => $criteria,
+                'criteria' => $criteria,
+                'Pagination' => array(
+                    'PageSize' => 5000
+                )
             )
         );
 
         $view_data = array(
-        'dispatch_note' => $dispatch_note,
-        'purchasesDataProvider' => $purchasesDataProvider,
-        'company_from' => $company_from,
-        'from' => $from,
-        'to' => $to,
-        'model' => new Purchase,
+            'dispatch_note' => $dispatch_note,
+            'purchasesDataProvider' => $purchasesDataProvider,
+            'dispatchnote_model' => $dispatch_note,
+            'model' => new Purchase,
         );
 
         if (Yii::app()->request->isAjaxRequest) {
