@@ -69,20 +69,11 @@ class PurchaseController extends Controller
         $purchases = explode(',', Yii::app()->request->cookies['checkedItems']->value);
 
         
-        // Se fija si recibió purchases en el post del admin
-        // Esto es cuando viene del action admin de (retail o headquarter)
-        
-        // if (isset($_POST['purchase_selected'])) {
-        //     $purchases = $_POST['purchase_selected'];
-        // }
-
-        /*
-        Si cumple la condición es porque viene del submit del form para confirmar y despachar
-        los equipos (purchase) en una nota de envío (dispatchnote)      
-        */
+        // Si cumple la condición es porque viene del submit del form para confirmar y despachar
+        // los equipos (purchase) en una nota de envío (dispatchnote)      
         if (isset($_POST['DispatchNote'])) {
             $dispatch_note_model->setAttributes($_POST['DispatchNote']);
-            
+   
             $dispatch_note_id = $dispatch_note_model->create($purchases);
 
             if ($dispatch_note_id) {

@@ -21,6 +21,7 @@ class StepImeiForm extends CFormModel
             // username and password are required
             array('imei', 'required'),
             array('imei', 'validateImeiFormat'),
+            array('imei', 'validateDuplication'),
             array('imei', 'validateImeiBlacklist'),
         );
     }
@@ -39,7 +40,6 @@ class StepImeiForm extends CFormModel
      * Valida que el imai tenga un formato valido
      * @param  [type] $attribute [description]
      * @param  [type] $params    [description]
-     * @return [type]            [description]
      */
     public function validateImeiFormat($attribute, $params)
     {
@@ -65,11 +65,25 @@ class StepImeiForm extends CFormModel
         }
     }
 
+
+    /**
+     * Valida que el imei no este ya comprado
+     * @param  [type] $attribute [description]
+     * @param  [type] $params    [description]
+     */
+    public function validateDuplication($attribute, $params)
+    {
+        $purchase_found = Purchase::model()->findByAttributes(array('imei' => $this->imei));
+
+        if (count($purchase_found)) {
+            $this->addError($attribute, 'El imei ya fue comprado anteriormente');
+        }
+    }
+
     /**
      * Valida que el imei contra el webservice para ver si no esta en la blacklist
      * @param  [type] $attribute [description]
      * @param  [type] $params    [description]
-     * @return [type]            [description]
      */
     public function validateImeiBlacklist($attribute, $params)
     {
