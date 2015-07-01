@@ -1,4 +1,4 @@
-<?php $this->beginContent('//layouts/column2'); ?>
+<?php $this->beginContent('//layouts/column2.view'); ?>
 <?php
     $this->submenu_title = Yii::t('app', 'Roles', 2);
     $this->submenu = array(

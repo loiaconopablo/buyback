@@ -3,7 +3,7 @@
 class PurchaseController extends Controller
 {
 
-    public $layout = '//layouts/column1';
+    public $layout = '//layouts/column1.view';
 
     /**
      *  Solo redireccionla al paso 01
