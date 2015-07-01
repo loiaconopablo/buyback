@@ -79,7 +79,11 @@
         </div>
     </header><!-- header -->
 
-    <div id="messages-wrapper"></div>
+    <div id="messages-wrapper">
+        <?php foreach(Yii::app()->user->getFlashes() as $type => $message): ?>
+            <?php $this->renderPartial('application.views.default.message', array('message' => $message, 'type' => 'alert-' . $type));?>
+        <?php endforeach; ?>
+    </div>
 
     <!-- CONTENT begin -->
     <div class="row-fluid">

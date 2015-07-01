@@ -198,23 +198,37 @@ class DispatchNote extends BaseDispatchNote
 
             $this->status = self::PENDING_TO_SEND;
 
-            if ($this->save()) {
+            // Inicia la transacción de DisptchNote
+            $transaction = $this->dbConnection->beginTransaction();
+
+            try {
+                $this->save();
                 //Actualiza el estado de las compras
                 $criteria = new CDbCriteria;
                 $criteria->addInCondition('id', $purchases);
-                $purchase_model = Purchase::model()->findAll($criteria);
 
-                foreach ($purchase_model as $purchase) {
-                    $purchase->last_dispatch_note_id = $this->id;
-                    $purchase->last_source_id = Yii::app()->user->point_of_sale_id;
-                    $purchase->last_destination_id = Yii::app()->user->headquarter_id;
-                    $purchase->setStatus(Status::PENDING_TO_SEND, $this->id);
+                $purchase_model = new Purchase;
+
+                $purchases = $purchase_model->findAll($criteria);
+
+                try {
+                    foreach ($purchases as $purchase) {
+                        // Actualiza el estado de Purchase y crea un registro PurchaseStatus
+                        $this->setPurchaseStatus($purchase);
+                    }
+                } catch (Exception $e) {
+                    throw $e;
                 }
 
-                return $this->id;
+                // Si no tiró ninguna exepción todos los Purchase se actualizaron correctamente
+                // Ejecuta la transacción
+                $transaction->commit();
 
-            } else {
-                die(var_dump($this->getErrors()));
+                return $this->id;
+            } catch (Exception $e) {
+                // Hubo una excepción y no se ejecutan los update e insert
+                $transaction->rollback();
+                throw $e;
             }
         }
 
@@ -255,40 +269,6 @@ class DispatchNote extends BaseDispatchNote
         //$purchases = Purchase::model()->findAllByAttributes(array('dispatch_note_to_headquarter_id' => $id));
 
     }
-
-    /**
-     * CREO QUE ESTO NO VA MAS 17-02-2015
-     */
-    // public function setAsReceivedInHeadquarter()
-    // {
-    //  $this->status = self::RECEIVED_IN_HEADQUARTER;
-    //  $purchase_status = Status::RECEIVED_IN_HEADQUARTER;
-
-    //  if ($this->save()) {
-    //      foreach ($this->purchase_to_headquarter as $purchase) {
-    //          $purchase->setStatus($purchase_status);
-    //      }
-    //  } else {
-    //      return false;
-    //  }
-
-    //  return true;
-    // }
-
-    /**
-     *
-     */
-    // public function getDestinationId()
-    // {
-    //  // TODO: Cuando se rediseñe lo de las cabeceras esta funcion no deberia existir mas
-    //  // Siempre el destination deberia ser la cabecera
-    //  if (Yii::app()->user->is_headquarter) {
-    //      $company = Company::model()->findAllByAttributes(array('is_owner' => 1));
-    //      return $company[0]->id;
-    //  } else {
-    //      return Yii::app()->user->headquarter_id;
-    //  }
-    // }
 
     public static function getRowClass($status)
     {
@@ -437,5 +417,24 @@ class DispatchNote extends BaseDispatchNote
         $criteria = $this->historyOthers()->getCriteria();
 
         return $this->findAll($criteria);
+    }
+
+    /**
+     * Actualiza el AR Purchase que se le pasa y crea un registro de PurchaseStatus
+     * @param Purchase $purchase AR de Purchase
+     */
+    public function setPurchaseStatus($purchase)
+    {
+        $purchase->last_dispatch_note_id = $this->id;
+        $purchase->last_source_id = Yii::app()->user->point_of_sale_id;
+        $purchase->last_destination_id = Yii::app()->user->headquarter_id;
+
+        try {
+            // Actualiza el estado de Purchase y crea un registro en PurchaseStatus
+            $purchase->setStatus(Status::PENDING_TO_SEND, $this->id);
+        } catch(Exception $e) {
+            // Si alguno no se puede guardar se hace rollback a todos los saves
+            throw $e;
+        }
     }
 }

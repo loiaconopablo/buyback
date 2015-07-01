@@ -189,7 +189,7 @@ class Purchase extends BasePurchase
                 throw new Exception("Error guardando estado", 1);
             }
         } else {
-            throw new Exception($this->getErrors(), 1);
+            throw new Exception('Error actualizando compra: ' . $this->contract_number, 1);
         }
     }
 
