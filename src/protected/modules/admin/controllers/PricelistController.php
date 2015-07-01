@@ -3,16 +3,9 @@
 class PricelistController extends Controller
 {
 
-    // function init()
-    // {
-    //  if(isset($_POST['SESSION_ID'])){
-    //      $session=Yii::app()->getSession();
-    //      $session->close();
-    //      $session->sessionID = $_POST['SESSION_ID'];
-    //      $session->open();
-    //  }
-    // }
-
+    /**
+     * Permite la carga del archivo Excel con la lista de precios
+     */
     public function actionUpload()
     {
 
@@ -35,39 +28,6 @@ class PricelistController extends Controller
 
     }
 
-    // public function actionUpload(){
-
-    //  $tempFolder = Yii::getPathOfAlias('webroot').'/uploads/temp/';
-    //  if( !file_exists($tempFolder) && !is_dir($tempFolder)) {
-    //      mkdir($tempFolder, 0777, TRUE);
-    //  }
-
-    //  if(!file_exists($tempFolder.'/chunks') && !is_dir($tempFolder.'/chunks')) {
-    //      mkdir($tempFolder.'/chunks', 0777, TRUE);
-    //  }
-
-    //   die('a');
-
-    //  Yii::log('info', CLogger::LEVEL_INFO, 'actionUpload');
-
-    //  if( isset($_POST['file'])) {
-
-    //      //$myPicture=CUploadedFile::getInstanceByName('myPicture');
-    //      $galleriaPicture=CUploadedFile::getInstanceByName('file');
-    //      $uploadedPicture = $galleriaPicture->getName('file');
-    //      $galleriaPicture_url = $tempFolder.$uploadedPicture;
-    //      if(!$galleriaPicture->saveAs($galleriaPicture_url)){
-
-    //          //if(!$myPicture->saveAs('someFile.ext')){
-    //          Yii::log('info', CLogger::LEVEL_INFO, 'saveAs FALLO');
-    //          throw new CHttpException(500);
-    //      }else{
-    //          Yii::log('info', CLogger::LEVEL_INFO, 'saveAs EXITO');
-    //      }
-    //      echo 1;
-    //      Yii::app()->end();
-    //  }
-    // }
 
     public function actionView($id)
     {
@@ -156,6 +116,11 @@ class PricelistController extends Controller
         );
     }
 
+    /**
+     * Procesa el archivo xls con la lista de precios
+     * Muestra las lineas con errores si las hay
+     * @param  string $filename Nombre del archivo xls a procesar
+     */
     public function actionProcessExcel($filename)
     {
 
@@ -182,11 +147,11 @@ class PricelistController extends Controller
                 continue;
             }
             $values = array(
-            'brand' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(0, $row)->getValue())),
-            'model' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(1, $row)->getValue())),
-            'locked_price' => $this->cleanPrice($objWorksheet->getCellByColumnAndRow(2, $row)->getValue()),
-            'unlocked_price' => $this->cleanPrice($objWorksheet->getCellByColumnAndRow(3, $row)->getValue()),
-            'broken_price' => $this->cleanPrice($objWorksheet->getCellByColumnAndRow(4, $row)->getValue()),
+                'brand' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(0, $row)->getValue())),
+                'model' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(1, $row)->getValue())),
+                'locked_price' => $this->cleanPrice($objWorksheet->getCellByColumnAndRow(2, $row)->getValue()),
+                'unlocked_price' => $this->cleanPrice($objWorksheet->getCellByColumnAndRow(3, $row)->getValue()),
+                'broken_price' => $this->cleanPrice($objWorksheet->getCellByColumnAndRow(4, $row)->getValue()),
 
             );
 

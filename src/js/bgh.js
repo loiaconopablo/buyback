@@ -1,15 +1,3 @@
-// A esto lo reemplaza el código de abajo
-// @commented 2015-05-15
-// $("a[data-toggle=modal]").on('click', function(ev) {
-//     ev.preventDefault();
-//     var target = $(this).attr("href");
-
-//     // load the url and show modal on success
-//     $(".modal-body").load(target, function() { 
-//          $("#modal-purchase").modal("show"); 
-//     });
-// });
-
 $(document).ready(function() {
 	// Esto sirve para refrescar el contenido del modal
 	// cuando se cierra y se abre uno distinto
@@ -19,42 +7,42 @@ $(document).ready(function() {
 	  $(this).removeData();
 	});
 
+	/**
+	 * Submit de los formularios con columna de checks  Grid
+	 * 
+	 */
 	$('.checks-submit').on('click', function(ev) {
+
+		setCheckedItems();
 		
-		var checkcolumn = $(this).attr('data-checkcolumn');
-		if (!$("input[name='" + checkcolumn + "[]']").is(':checked')) {
+		if ($.trim($.cookie('checkedItems')).length <= 0) {
 			ev.preventDefault();
 			return;
 		}
 
-		var attr = $(this).attr('data-submit-action');
-
-		// For some browsers, `attr` is undefined; for others,
-		// `attr` is false.  Check for both.
-		if (typeof attr !== typeof undefined && attr !== false) {
-		    $(this).parents('form').attr('action', attr);
-		}
 	});
 
+	// Activa los tooltips de las tablas
 	$('table').tooltip({'selector':'[rel=tooltip]'});
 
-	$("#in-observation-purchase").on('click', function() {
+	// Comentado 16-06-2015
+	// $("#in-observation-purchase").on('click', function() {
 
-		console.log($(this).parents('.modal').children('#purchase-comment').value);
-		// $.ajax({
-		// 	url: Yii.app.createUrl('purchase/purchase/setinobservation', {'id': $('#purchase-id').val()}),
-		// 	type: 'POST',
-		// 	//data: {comment: $('#purchase-comment')},
-		// 	dataType: 'json',
-		// 	success: function(data) {
-		// 		$.fn.yiiGridView.update('owner-purchase-grid');
-		// 		$('#modal-purchase').modal('hide');
-		// 	},
-		// 	error: function() {
-		// 		//console.log('error');
-		// 	}
-		// });
-	});
+	// 	console.log($(this).parents('.modal').children('#purchase-comment').value);
+	// 	// $.ajax({
+	// 	// 	url: Yii.app.createUrl('purchase/purchase/setinobservation', {'id': $('#purchase-id').val()}),
+	// 	// 	type: 'POST',
+	// 	// 	//data: {comment: $('#purchase-comment')},
+	// 	// 	dataType: 'json',
+	// 	// 	success: function(data) {
+	// 	// 		$.fn.yiiGridView.update('owner-purchase-grid');
+	// 	// 		$('#modal-purchase').modal('hide');
+	// 	// 	},
+	// 	// 	error: function() {
+	// 	// 		//console.log('error');
+	// 	// 	}
+	// 	// });
+	// });
 
 });
 
@@ -68,4 +56,66 @@ function resetDateFilter() {
 	$.removeCookie("from");
 	$.removeCookie("to");
 	location.reload();
+}
+
+/**
+ * Guarda en una cookie los checkbox seleccionados en un Grid
+ * Para mantenerlos aunque se pagine
+ */
+function setCheckedItems() {
+	// Si la cookie no esta creada la crea vacia
+	if ($.cookie('checkedItems') == undefined) {
+		$.cookie('checkedItems', '', { path: '/' });
+	}
+
+	// convierte los ids separados por coma en la cookie en un array
+	var oldCheckedItems = $.cookie('checkedItems').split(',');
+
+	// Trae los nuevos ids seleccionados
+	var newCheckedItems = $.fn.yiiGridView.getChecked("selectableGrid","purchase_selected");
+
+	var checkedItems = oldCheckedItems.concat(newCheckedItems);
+
+	// Se liminan los duplicados
+	checkedItems = uniq(checkedItems);
+
+	// Se les restan los que se deseleccionaron
+	checkedItems = arrayDiff(checkedItems, getUncheckeds());
+	
+	$.cookie('checkedItems', checkedItems, { path: '/' });
+}
+
+
+/**
+ * Recibe un array y devuelve otro sin los datos duplicados del recibido
+ * @param  Array a array original
+ * @return Array   Array sin items duplicados
+ */
+function uniq(a) {
+    var prims = {"boolean":{}, "number":{}, "string":{}}, objs = [];
+
+    return a.filter(function(item) {
+        var type = typeof item;
+        if(type in prims)
+            return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
+        else
+            return objs.indexOf(item) >= 0 ? false : objs.push(item);
+    });
+}
+
+
+function arrayDiff(a1, a2) {
+	return a1.filter(function(i) {return a2.indexOf(i) < 0;});
+}
+
+
+/**
+ * Devuelve los elementos deseleccionados de la columna de checbocks
+ * de Grid
+ * @return {[type]} [description]
+ */
+function getUncheckeds() {
+    var unch = [];
+    $('[name^=purchase_selected]').not(':checked,[name$=all]').each(function(){unch.push($(this).val());});
+    return unch.toString();
 }

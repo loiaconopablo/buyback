@@ -8,6 +8,7 @@
 class StepImeiForm extends CFormModel
 {
     public $imei;
+    public $gif_data ;
 
     /**
      * Declares the validation rules.
@@ -17,9 +18,11 @@ class StepImeiForm extends CFormModel
     public function rules()
     {
         return array(
-        // username and password are required
-        array('imei', 'required'),
-        array('imei', 'validateImei'),
+            // username and password are required
+            array('imei', 'required'),
+            array('imei', 'validateImeiFormat'),
+            array('imei', 'validateDuplication'),
+            array('imei', 'validateImeiBlacklist'),
         );
     }
 
@@ -33,8 +36,12 @@ class StepImeiForm extends CFormModel
         );
     }
 
-
-    public function validateImei($attribute,$params)
+    /**
+     * Valida que el imai tenga un formato valido
+     * @param  [type] $attribute [description]
+     * @param  [type] $params    [description]
+     */
+    public function validateImeiFormat($attribute, $params)
     {
         //Luhn' s algorithm
         $number = $this->imei;
@@ -54,8 +61,47 @@ class StepImeiForm extends CFormModel
         }
 
         if (!(($sum % 10) === 0)) {
-            $this->addError($attribute, 'IMEI invalido.');
+            $this->addError($attribute, 'IMEI Formato invalido.');
         }
     }
 
+
+    /**
+     * Valida que el imei no este ya comprado
+     * @param  [type] $attribute [description]
+     * @param  [type] $params    [description]
+     */
+    public function validateDuplication($attribute, $params)
+    {
+        $purchase_found = Purchase::model()->findByAttributes(array('imei' => $this->imei));
+
+        if (count($purchase_found)) {
+            $this->addError($attribute, 'El imei ya fue comprado anteriormente');
+        }
+    }
+
+    /**
+     * Valida que el imei contra el webservice para ver si no esta en la blacklist
+     * @param  [type] $attribute [description]
+     * @param  [type] $params    [description]
+     */
+    public function validateImeiBlacklist($attribute, $params)
+    {
+        $imeiws_response = Yii::app()->imeiws->check($this->imei);
+
+        if ($imeiws_response->error !== 0) {
+            // No valida como negativo pero loguea que hubo un error utilizando el webservice
+            Yii::log('IMEI WEBSERVICE', CLogger::LEVEL_ERROR, $imeiws_response->error_desc);
+
+            return true;
+        }
+
+        if (strtoupper(trim($imeiws_response->respuesta->blacklist)) == 'YES') {
+            $this->addError($attribute, 'El equipo no se puede comprar. Validar con el operador.');
+        }
+
+        // Guarda la respuesta del webservice
+        // para que la aplicacion lo pueda usar para matchar con sus equipos en la lista de precios
+        $this->gif_data = $imeiws_response;
+    }
 }

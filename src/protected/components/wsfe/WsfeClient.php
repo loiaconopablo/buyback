@@ -1,6 +1,6 @@
 <?php
 
-Yii::import('ext.wsfe.models.*', true);
+Yii::import('application.components.wsfe.models.*', true);
 
 class WsfeClient
 {
@@ -15,48 +15,54 @@ class WsfeClient
      * También se agrega código provisorio en getCaeParaContrato()
      */
     
-    const USAR_CAI = true;
     const CAI = 41191016946437;
-    const PUNTO_DE_VENTA = 001;
 
     /**
      * END PROVISORIO
      */
     
-    const IVA = 0.17355;
+    public $url = '';
+    
+    public $punto_de_venta = 0;
 
-    const SERVICE_URL = 'http://localhost:8080';
+    public $iva = 0;
+
+    public $tipo_de_comprobante = 0;
+
+    public $tipo_iva = 0;
+
+    public $concepto = 0;
+
+    public $tipo_de_documento = 0;
+
+    public $tipo_de_moneda = '';
+
+    public $importe_no_gravado = 0;
+
+    public $opcional_nombre = 0;
+
+    public $opcional_direccion = 0;
+
 
     /**
-     * PROVISORIO
-     * Esta comentado mientras se usa el CAI y no el CAE
+     * Inicia el componente
      */
-    // const PUNTO_DE_VENTA = 124;
-    /**
-     * END PROVISORIO
-     */
-
-    const TIPO_DE_COMPROBANTE = 49;
-    const TIPO_IVA = 5;
-    const CONCEPTO = 1;
-    const TIPO_DOCUMENTO_DNI = 96;
-    const TIPO_DE_MONEDA = 'PES';
-    const IMPORTE_NO_GRAVADO = 0;
-
-    const OPCIONAL_NOMBRE = 91;
-    const OPCIONAL_DIRECCION = 93;
+    public function init()
+    {
+        
+    }
 
     /**
      * Devuelve el proximo numero de contrato para el cual solicitar CAE
      * @author Richard Grinberg
      * @return integer
      */
-    public function getProximoComprobante() 
+    public function getProximoComprobante()
     {
         try {
-            $output = Yii::app()->curl->get(self::SERVICE_URL . '/wsfe/cae/ultimo/' . self::TIPO_DE_COMPROBANTE . '/' . self::PUNTO_DE_VENTA);
+            $output = Yii::app()->curl->get($this->url . '/wsfe/cae/ultimo/' . $this->tipo_de_comprobante . '/' . $this->punto_de_venta);
         } catch (Exception $e) {
-            die(var_dump($e));
+            Yii::log('error obteniendo ultimo cae - punto_de_venta: ' . $this->punto_de_venta, CLogger::LEVEL_ERROR, 'WSFE ERROR');
             throw new Exception($e->message, 1);
         }
 
@@ -79,7 +85,7 @@ class WsfeClient
      * @param array :con los datos para armar el request para solicitar el CAE
      * @return array : con ["nro_cae"] ["json_response"]
      */
-    public function getCaeDesdeAfip(array $comprobante_data) 
+    public function getCaeDesdeAfip(array $comprobante_data)
     {
         /**
          * @var AlicIva
@@ -88,7 +94,7 @@ class WsfeClient
 
         $alicIva->baseImp = $comprobante_data['impNeto'];
         $alicIva->importe = $comprobante_data['impIVA'];
-        $alicIva->id = self::TIPO_IVA;
+        $alicIva->id = $this->tipo_iva;
 
         /**
          * @var Iva
@@ -103,12 +109,12 @@ class WsfeClient
         $opcional01 = new Opcional;
 
         $opcional01->valor = $comprobante_data['sellerName'];
-        $opcional01->id = self::OPCIONAL_NOMBRE;
+        $opcional01->id = $this->opcional_nombre;
 
         $opcional02 = new Opcional;
 
         $opcional02->valor = $comprobante_data['sellerAddress'];
-        $opcional02->id = self::OPCIONAL_DIRECCION;
+        $opcional02->id = $this->opcional_direccion;
 
         /**
          * @var Opcionales
@@ -124,14 +130,14 @@ class WsfeClient
         $fecaedetRequest = new FecaedetRequest;
 
         $fecaedetRequest->iva = $iva;
-        $fecaedetRequest->concepto = self::CONCEPTO;
-        $fecaedetRequest->docTipo = self::TIPO_DOCUMENTO_DNI;
+        $fecaedetRequest->concepto = $this->concepto;
+        $fecaedetRequest->docTipo = $this->tipo_de_documento;
         $fecaedetRequest->docNro = $comprobante_data['sellerDni'];
         $fecaedetRequest->cbteDesde = $comprobante_data['cbteNro'];
         $fecaedetRequest->cbteHasta = $comprobante_data['cbteNro'];
         $fecaedetRequest->cbteFch = date('Ymd');
         $fecaedetRequest->impTotal = $comprobante_data['impTotal'];
-        $fecaedetRequest->impTotConc = self::IMPORTE_NO_GRAVADO;
+        $fecaedetRequest->impTotConc = $this->importe_no_gravado;
         $fecaedetRequest->impNeto = $comprobante_data['impNeto'];
         $fecaedetRequest->impOpEx = 0;
         $fecaedetRequest->impTrib = 0;
@@ -143,7 +149,7 @@ class WsfeClient
         $fecaedetRequest->cbtesAsoc = null;
         $fecaedetRequest->tributos = null;
         $fecaedetRequest->opcionales = $opcionales;
-        $fecaedetRequest->monId = self::TIPO_DE_MONEDA;
+        $fecaedetRequest->monId = $this->tipo_de_moneda;
 
         /**
          * @var FeDetReq
@@ -157,8 +163,8 @@ class WsfeClient
          */
         $feCabReq = new FeCabReq;
 
-        $feCabReq->ptoVta = self::PUNTO_DE_VENTA;
-        $feCabReq->cbteTipo = self::TIPO_DE_COMPROBANTE;
+        $feCabReq->ptoVta = $this->punto_de_venta;
+        $feCabReq->cbteTipo = $this->tipo_de_comprobante;
         $feCabReq->cantReg = 1;
 
         $cae_request = new FECAERequest;
@@ -166,7 +172,7 @@ class WsfeClient
         $cae_request->feCabReq = $feCabReq;
         $cae_request->feDetReq = $feDetReq;
 
-        $output = Yii::app()->curl->post("http://localhost:8080/wsfe/cae", CJSON::encode($cae_request));
+        $output = Yii::app()->curl->setOption(CURLOPT_HTTPHEADER, array('Accept: application/json', 'Content-type: application/json'))->post("http://localhost:8080/wsfe/cae", CJSON::encode($cae_request));
 
         return $output;
     }
@@ -179,9 +185,9 @@ class WsfeClient
      * @param $sellr Seller
      * @return array
      */
-    public function getCaeRequestData($contract_number, $purchase_price, Seller $seller) 
+    public function getCaeRequestData($contract_number, $purchase_price, Seller $seller)
     {
-        $impIVA = round($purchase_price * self::IVA, 2);
+        $impIVA = round($purchase_price * $this->iva, 2);
         $impNeto = $purchase_price - $impIVA;
         $impTotal = $impNeto + $impIVA;
 
@@ -226,7 +232,7 @@ class WsfeClient
          * Numero de contrato formateado:
          * punto de venta - numero de contrato
          * 0000-00000000
-         * 
+         *
          * @var string
          */
         $formated_contract_number = $this->formatearNumeroDeContrato($responseObj->feDetResp->fecaedetResponse[0]->cbteDesde);
@@ -277,7 +283,7 @@ class WsfeClient
      */
     private function formatearNumeroDeContrato($contract_number)
     {
-        $contract_pdv_num = str_pad(self::PUNTO_DE_VENTA, 4, "0", STR_PAD_LEFT);
+        $contract_pdv_num = str_pad($this->punto_de_venta, 4, "0", STR_PAD_LEFT);
         $contract_cn_num = str_pad($contract_number, 8, "0", STR_PAD_LEFT);
         $final_contract_number = $contract_pdv_num . '-' . $contract_cn_num;
 

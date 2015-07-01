@@ -50,6 +50,7 @@ class Purchase extends BasePurchase
             array(
                 array('', 'safe', 'on' => 'search'),
                 array('imei', 'unique'),
+                array('contract_number', 'unique'),
             )
         );
     }
@@ -187,6 +188,8 @@ class Purchase extends BasePurchase
             if (!$purchase_status->save()) {
                 throw new Exception("Error guardando estado", 1);
             }
+        } else {
+            throw new Exception($this->getErrors(), 1);
         }
     }
 

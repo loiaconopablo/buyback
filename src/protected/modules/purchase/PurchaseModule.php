@@ -20,13 +20,13 @@ class PurchaseModule extends CWebModule
 
     public function beforeControllerAction($controller, $action)
     {
-        if(parent::beforeControllerAction($controller, $action)) {
+        if (parent::beforeControllerAction($controller, $action)) {
             // this method is called before any module controller action is performed
             // you may place customized code here
+            $controller->main_menu = Home::getMainMenu($action);
             return true;
-        }
-        else {
-            return false; 
+        } else {
+            return false;
         }
     }
 }

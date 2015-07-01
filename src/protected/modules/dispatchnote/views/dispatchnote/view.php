@@ -22,27 +22,27 @@ $this->menu = array(
 <h4>Origen</h4>
 <?php $this->widget(
     'bootstrap.widgets.TbDetailView', array(
-    'data' => $company_from,
+    'data' => $dispatchnote_model,
     'attributes' => array(
         array(
             'label' => Yii::t('app', 'Company'),
-            'value' => $company_from->name,
+            'value' => $dispatchnote_model->company->name,
         ),
         array(
             'label' => Yii::t('app', 'Point Of Sale'),
-            'value' => $from->name,
+            'value' => $dispatchnote_model->point_of_sale->name,
         ),
         array(
             'label' => Yii::t('app', 'Province'),
-            'value' => $from->province,
+            'value' => $dispatchnote_model->point_of_sale->province,
         ),
         array(
             'label' => Yii::t('app', 'Locality'),
-            'value' => $from->locality,
+            'value' => $dispatchnote_model->point_of_sale->locality,
         ),
         array(
             'label' => Yii::t('app', 'Address'),
-            'value' => $from->address,
+            'value' => $dispatchnote_model->point_of_sale->address,
         ),
     ),
     )
@@ -51,23 +51,23 @@ $this->menu = array(
 <h4>Destino</h4>
 <?php $this->widget(
     'bootstrap.widgets.TbDetailView', array(
-    'data' => $to,
+    'data' => $dispatchnote_model->destination,
     'attributes' => array(
         array(
             'label' => Yii::t('app', 'Point Of Sale'),
-            'value' => $to->name,
+            'value' => $dispatchnote_model->destination->name,
         ),
         array(
             'label' => Yii::t('app', 'Province'),
-            'value' => $to->province,
+            'value' => $dispatchnote_model->destination->province,
         ),
         array(
             'label' => Yii::t('app', 'Locality'),
-            'value' => $to->locality,
+            'value' => $dispatchnote_model->destination->locality,
         ),
         array(
             'label' => Yii::t('app', 'Address'),
-            'value' => $to->address,
+            'value' => $dispatchnote_model->destination->address,
         ),
     ),
     )
@@ -79,7 +79,8 @@ $this->menu = array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'dataProvider' => $purchasesDataProvider,
     //'filter' => $model,
-    'template' => "{items}",
+    //'pageSize' => 50,
+    'template' => "{items}\n{pager}",
     'columns' => array(
         //'id',
         //'company_id',

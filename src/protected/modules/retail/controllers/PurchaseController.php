@@ -1,8 +1,5 @@
 <?php
 
-//Yii::import('application.vendors.wsfe.*', true);
-Yii::import('ext.wsfe.*', true);
-
 class PurchaseController extends Controller
 {
 
@@ -17,10 +14,14 @@ class PurchaseController extends Controller
     }
 
     /**
-     *  PASO 1
+     * Muestra el formulario para ingresar el IMEI
+     * Valida el formato del imei
+     * Valida el imei contra el webservice chequeando que no esté en la BLACKLIST
+     * Guarda el atributo 'name' del webservice en session para uso interno del sistema en las acciones que siguen
      */
     public function actionImei()
     {
+
         $model = new StepImeiForm;
         Yii::app()->session['purchase'] = array();
 
@@ -28,8 +29,11 @@ class PurchaseController extends Controller
             $model->setAttributes($_POST['StepImeiForm']);
 
             if ($model->validate()) {
-                Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], $_POST['StepImeiForm']);
+                Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], array('imei' => $model->imei));
 
+                // Guarda la respuesta de gif (webservice) en session
+                Yii::app()->session['gif_data'] = $model->gif_data;
+                
                 if (Yii::app()->getRequest()->getIsAjaxRequest()) {
                     Yii::app()->end();
                 }
@@ -46,19 +50,36 @@ class PurchaseController extends Controller
     }
 
     /**
-     *  PASO 2
+     * Muestra el formulario con los selects para seleccionar la marca y modelo
      */
     public function actionBrandModel()
     {
-        //Yii::app()->session->open();
-
         $model = new StepBrandModelForm;
+
         if (isset($_POST['StepBrandModelForm'])) {
             $model->setAttributes($_POST['StepBrandModelForm']);
 
             if ($model->validate()) {
-                //die(var_dump(Yii::app()->session['purchase']));
                 Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], $_POST['StepBrandModelForm']);
+     
+                // TODO: Esto creo que deberia estar en savePurchase
+                // Busca el dispositivo en Pricelist
+                $current_price_list_device = PriceList::model()->findByAttributes(array('brand' => $_POST['StepBrandModelForm']['brand'], 'model' => $_POST['StepBrandModelForm']['model']));
+
+                // Guarda el AR del dispocitivo finalmente selecionado
+                // para comparalo contra el primeramente seleccionado gracias a GIF
+                Yii::app()->session['current_price_list_device'] = $current_price_list_device;
+                
+                // Incrementa en 1 el registro que coincide con name, brand, model
+                // o lo crea con quantity en 1
+                GifDictionary::model()->incrementQuantity(Yii::app()->session['gif_data']->respuesta->name, Yii::app()->session['current_price_list_device']->brand, Yii::app()->session['current_price_list_device']->model);
+                
+                // Compara el registro de price_list recuperado con el gif_dictionary
+                // Contra el registro de price_list seleccionado por el usuario
+                // Si no coinciden repora 'RUIDO' el usuario no eligio lo miso que el diccionario
+                // Si el registro recuperado con gif_dictionary es NULL no se reporta ruido sino que significa
+                // que todavia no lo habia aprandido el diccionario
+                $this->comparePricelistItems();
 
                 if (Yii::app()->getRequest()->getIsAjaxRequest()) {
                     Yii::app()->end();
@@ -74,13 +95,17 @@ class PurchaseController extends Controller
             }
         }
 
-        $brand_model = $this->getBrandModel(Yii::app()->session['purchase']['imei']);
+        $price_list_device = $this->getBrandModel();
 
-        if ($brand_model['response']) {
-            $model->brand = $brand_model['brand'];
-            $model->model = $brand_model['model'];
+        // Guarda en la variable de session lo que encontro en la lista de precios
+        Yii::app()->session['gif_data']->price_list_device = $price_list_device;
+
+        // Si no es NULL popula el formulario con el dispositivo que encontró
+        if ($price_list_device) {
+            $model->brand = $price_list_device->brand;
+            $model->model = $price_list_device->model;
         }
-        //Yii::app()->clientScript->registerCoreScript('yiiactiveform');
+
         $this->render('step_brand_model', array('model' => $model));
 
     }
@@ -90,6 +115,7 @@ class PurchaseController extends Controller
      */
     public function actionQuestionary()
     {
+            
         $model = new StepQuestionaryForm;
 
         if (isset($_POST['StepQuestionaryForm'])) {
@@ -220,8 +246,6 @@ class PurchaseController extends Controller
 
         $carrier = Carrier::model()->findByPk($purchase->carrier_id);
 
-        $afipClient = new WsfeClient;
-
         try {
             /**
              * Array con la respuesta de la AFIP con los siguienes items
@@ -231,7 +255,7 @@ class PurchaseController extends Controller
              *
              * @var array
              */
-            $cae_array = $afipClient->getCaeParaContrato($purchase->purchase_price, $seller);
+            $cae_array = Yii::app()->wsfe->getCaeParaContrato($purchase->purchase_price, $seller);
 
         } catch (Exception $e) {
             Yii::app()->user->setFlash('error', $e);
@@ -272,8 +296,6 @@ class PurchaseController extends Controller
 
         $purchase_price = Yii::app()->session['purchase']['purchase_price'];
 
-        $afipClient = new WsfeClient;
-
         try {
             /**
              * Array con la respuesta de la AFIP con los siguienes items
@@ -283,7 +305,7 @@ class PurchaseController extends Controller
              *
              * @var array
              */
-            $cae_array = $afipClient->getCaeParaContrato($purchase_price, $seller);
+            $cae_array = Yii::app()->wsfe->getCaeParaContrato($purchase_price, $seller);
 
         } catch (Exception $e) {
             Yii::app()->user->setFlash('error', $e);
@@ -320,6 +342,7 @@ class PurchaseController extends Controller
 
         if ($model->save()) {
             $model->setStatus(Status::PENDING);
+
             return $model;
         } else {
             //die(var_dump($model->getErrors()));
@@ -355,36 +378,34 @@ class PurchaseController extends Controller
         }
     }
 
-    /***
-    * TODO
-    *
-    *
-    */
-    public function getBrandModel($imei)
+    /**
+     * Intenta matchear $gif_dictionary_device con un registro de price_list
+     * @return Pricelist Devuelve el AR que encontro o NULL
+     */
+    public function getBrandModel()
     {
-        /*
-        // Para cuando haya un servicio donde pegar con curl y obtener datos del imei
-        // https://github.com/hackerone/curl/
+      
+        /**
+         * Nombre del equipo en el webservice de gif
+         * @var string
+         */
+        $gif_name = Yii::app()->session['gif_data']->respuesta->name;
 
-        $output = Yii::app()->curl->get('http://www.imei.info/?imei=352148051992965');
+        /**
+         * el AC de GifDictionary del equipo por encontraro por nombre y mayor cantidad o NULL
+         * @var Gifdictionary
+         */
+        $gif_dictionary_device = GifDictionary::model()->getParidadMasVotada($gif_name);
 
-        */
-        // TODO curl
-        // fake
+        /**
+         * El AC de Pricelist del equipo encontrado matcheando con GifDictionary o NULL
+         * @var Pricelist
+         */
+        $price_list_device = $this->getDeviceFromPricelist($gif_dictionary_device);
 
-        if ($imei == '352148051992965') {
-            return array(
-                'response' => 1,
-                'brand' => 'SAMSUNG',
-                'model' => 'GALAXY S4 MINI',
-            );
-        } else {
-            return array(
-                'response' => 1,
-                'brand' => 'MARCA DESCONOCIDA',
-                'model' => 'MODELO',
-            );
-        }
+        // Devuelve el AR de Pricelist o NULL
+        return $price_list_device;
+
     }
 
     /**
@@ -412,5 +433,74 @@ class PurchaseController extends Controller
         }
 
         return $price_data;
+    }
+
+
+    /**
+     * Busca el dispocitivo en la lista de precios basandose en lo encontrado
+     * en el diccionario de GIF
+     * @param  GifDictionary $gif_dictionary_device Un objeto del diccionario
+     * @return PriceList Devuelve un objeto de la lista de precios o null si no encuentra nada o no se le paso con que buscar $gif_dictionary_device
+     */
+    public function getDeviceFromPricelist($gif_dictionary_device)
+    {
+        // Si no hay dispocitivo del diccionario de GIF
+        // Se retorna nulo
+        if (!$gif_dictionary_device) {
+            return null;
+        }
+
+        // Busca el dispositivo en Pricelist
+        $price_list_device = PriceList::model()->findByAttributes(array('brand' => $gif_dictionary_device->brand, 'model' => $gif_dictionary_device->model));
+
+        if (!count($price_list_device)) {
+            // Se loguea que el diccionario no matchea con la lista de precios
+            Yii::log(
+                'gif_dictionary.name = ' . $gif_dictionary_device->name . ' - gif_dictionary.brand = ' . $gif_dictionary_device->brand . ' - gif_dictionary.model = ' . $gif_dictionary_device->model,
+                CLogger::LEVEL_WARNING,
+                'PRICELIST GIF_DICTIONARY NOT MATCH'
+            );
+
+            return null;
+        }
+
+        // Devuelve el dispocitivo encontrado en la lista de precios
+        return $price_list_device;
+
+    }
+
+    /**
+     * Compara el registro de price_list recuperado con el gif_dictionary
+     * Contra el registro de price_list seleccionado por el usuario
+     * (Ambos registros están guarddos en session)
+     * Si no coinciden repora 'RUIDO' el usuario no eligio lo miso que el diccionario
+     * Si el registro recuperado con gif_dictionary es NULL no se reporta ruido sino que significa
+     * que todavia no lo habia aprandido el diccionario
+     *
+     * Si no coinciden
+     * TODO: Levanta un ticket de ruido en GIF
+     * agrega l aplication log un warning
+     */
+    public function comparePricelistItems()
+    {
+        // Si el registro recuperado con gif_dictionary es NULL no se reporta ruido sino que significa que todavia no lo habia aprandido el diccionario
+        if (!Yii::app()->session['gif_data']->price_list_device) {
+            return;
+        }
+
+        
+        $gif_dictionary_brand = Yii::app()->session['gif_data']->price_list_device->brand;
+        $current_price_list_device_brand = Yii::app()->session['current_price_list_device']->brand;
+        $gif_dictionary_model = Yii::app()->session['gif_data']->price_list_device->model;
+        $current_price_list_device_model = Yii::app()->session['current_price_list_device']->model;
+
+
+        // Si la marca o el modelo no coinciden se trata de otro dispositivo
+        // TODO: Se levanta un ticket en la plataforma GIF
+        // Se escribe en el log de la aplicacion
+        if (($gif_dictionary_brand != $current_price_list_device_brand) || ($gif_dictionary_model != $current_price_list_device_model)) {
+            echo 'mira el log';
+            Yii::log('GIF_DICTIONARY brand: ' . $gif_dictionary_brand . ' model: ' . $gif_dictionary_model . ' | USER SELECTION brand: ' . $current_price_list_device_brand . ' model: ' . $current_price_list_device_model, CLogger::LEVEL_WARNING, 'GIF_DICTIONARY USER SELECTION NOT MATCHING');
+        }
     }
 }

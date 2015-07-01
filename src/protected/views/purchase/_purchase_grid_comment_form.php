@@ -10,24 +10,23 @@
 
 <?php $this->widget(
     'bootstrap.widgets.TbGridView', array(
+    'id' => 'selectableGrid',
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'dataProvider' => $dataProvider,
-    //'filter' => $model,
+    'ajaxUpdate'=>true,
+    'beforeAjaxUpdate'=>'function(){setCheckedItems()}',
     'template' => "{items}\n{pager}",
     'columns' => array(
-        //'id',
-        //'company_id',
-        //'point_of_sale_id',
-        //'headquarter_id',
         array(
             'header' => 'html',
             'id' => 'purchase_selected',
             'class' => 'CCheckBoxColumn',
+            'checked' => 'Helper::checkedInGrid($data->id)',
             'selectableRows' => '50',
             'selectableRows' => 2,
             'value' => '$data->id',
             'headerTemplate' => '<label>{item}<span></span></label>',
-            'checked' => 'true',
+            'htmlOptions' => array('style' => 'width: 20px', 'class' => 'chandran'),
         ),
         array(
             'name' => 'contract_number',

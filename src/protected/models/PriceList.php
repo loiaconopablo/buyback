@@ -4,12 +4,12 @@ Yii::import('application.models._base.BasePriceList');
 
 class PriceList extends BasePriceList
 {
-    public static function model($className = __CLASS__) 
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
 
-    public function relations() 
+    public function relations()
     {
         return array(
         'purchase' => array(self::HAS_MANY, 'Purchase', 'price_list_id'),
@@ -18,25 +18,25 @@ class PriceList extends BasePriceList
         );
     }
 
-    public static function label($n = 1) 
+    public static function label($n = 1)
     {
         return Yii::t('app', 'Price|Price list', $n);
     }
 
     // public function getBrandsList()
     // {
-    // 	$criteria = new CDbCriteria;
+    //  $criteria = new CDbCriteria;
 
-    // 	$criteria->distinct = true;
-    // 	//$criteria->compare('brand', $this->brand, true);
-    // 	$criteria->select = 'brand';
+    //  $criteria->distinct = true;
+    //  //$criteria->compare('brand', $this->brand, true);
+    //  $criteria->select = 'brand';
 
-    // 	return new CActiveDataProvider($this, array(
-    // 		'criteria' => $criteria,
-    // 	));
+    //  return new CActiveDataProvider($this, array(
+    //      'criteria' => $criteria,
+    //  ));
     // }
 
-    public function getBrandsList() 
+    public function getBrandsList()
     {
         $model = $this->findAll(
             array(
@@ -49,7 +49,7 @@ class PriceList extends BasePriceList
         return $model;
     }
 
-    public function getModelsByBrand($brand = null) 
+    public function getModelsByBrand($brand = null)
     {
         $model = $this->findAll(
             array(
@@ -64,7 +64,7 @@ class PriceList extends BasePriceList
         return $model;
     }
 
-    public function attributeLabels() 
+    public function attributeLabels()
     {
         return CMap::mergeArray(parent::attributeLabels(), array('user_update_id' => Yii::t('app', 'User|Users', 1)));
     }
@@ -72,8 +72,20 @@ class PriceList extends BasePriceList
     /*
     * Truncate Table
     */
-    public function truncateTable() 
+    public function truncateTable()
     {
         $this->getDbConnection()->createCommand()->truncateTable($this->tableName());
+    }
+
+    /**
+     * Mantiene la base de datos de lista de precios con paridad en el webservice
+     * gracias al atributo 'imeiws_name'
+     * @param  string $imeiws_name Nombre del equipo en el webservice
+     * @param  string $brand       Nombre de la marca en la lista de precios
+     * @param  string $model       Nombre del modelo en la lista de precios
+     */
+    public function matchWithImeiWebservice($imeiws_name, $brand, $model)
+    {
+        // TODO: Lo que va aca adentro 26-06-2015
     }
 }

@@ -16,7 +16,7 @@ $this->menu = array(
 <?php $form = $this->beginWidget(
     'CActiveForm',
     array(
-    'action' => Yii::app()->createUrl('/retail/admin/dispatchpurchases'),
+    'action' => Yii::app()->createUrl('/purchase/purchase/dispatch'),
     //'enableAjaxValidation'=>true,
     )
 );?>
@@ -25,15 +25,19 @@ $this->menu = array(
     'bootstrap.widgets.TbGridView',
     array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
+    'id' => 'selectableGrid',
     'dataProvider' => $model->admin(),
     'filter' => $model,
+    'ajaxUpdate'=>true,
+    'beforeAjaxUpdate'=>'function(){setCheckedItems()}',
     'template' => "{items}\n{pager}",
     'columns' => array(
         array(
             'header' => 'html',
             'id' => 'purchase_selected',
             'class' => 'CCheckBoxColumn',
-            'selectableRows' => '50',
+            'checked' => 'Helper::checkedInGrid($data->id)',
+            //'selectableRows' => '50',
             'selectableRows' => 2,
             'value' => '$data->id',
             'headerTemplate' => '<label>{item}<span></span></label>',

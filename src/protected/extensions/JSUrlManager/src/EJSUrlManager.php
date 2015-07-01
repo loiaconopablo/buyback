@@ -11,7 +11,7 @@ class EJSUrlManager extends CApplicationComponent
 
         foreach ($managerVars['rules'] as $pattern => $route) {
             //Ignore custom URL classes
-            if(is_array($route) && isset($route['class'])) {
+            if (is_array($route) && isset($route['class'])) {
                 unset($managerVars['rules'][$pattern]);
             }
         }
@@ -31,6 +31,7 @@ class EJSUrlManager extends CApplicationComponent
         $scriptUrl = Yii::app()->getRequest()->getScriptUrl();
         $hostInfo = Yii::app()->getRequest()->getHostInfo();
 
+        // $cs->registerScriptFile($asset . '/Yii.UrlManager.min.js', CClientScript::POS_HEAD);
         $cs->registerScriptFile($asset . '/Yii.UrlManager.min.js', CClientScript::POS_HEAD);
         $cs->registerScript(
             "yiijs.create.js",
@@ -43,5 +44,4 @@ class EJSUrlManager extends CApplicationComponent
         );
 
     }
-
 }

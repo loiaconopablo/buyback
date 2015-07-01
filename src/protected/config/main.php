@@ -82,6 +82,7 @@ return array(
             'class' => 'bootstrap.components.TbApi',
         ),
 
+
         'user' => array(
             // enable cookie-based authentication
             'loginUrl' => 'auth/auth/login',
@@ -113,6 +114,10 @@ return array(
         'ePdf' => include dirname(__FILE__) . '/epdf.php',
 
         'curl' => include dirname(__FILE__) . '/curl.php',
+        
+        'imeiws' => include dirname(__FILE__) . '/wsgif.php',
+
+        'wsfe' => include dirname(__FILE__) . '/wsfe.php',
 
         'authManager' => array(
             'class' => 'CDbAuthManager',
