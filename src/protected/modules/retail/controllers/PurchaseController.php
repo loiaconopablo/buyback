@@ -308,7 +308,7 @@ class PurchaseController extends Controller
             $cae_array = Yii::app()->wsfe->getCaeParaContrato($purchase_price, $seller);
 
         } catch (Exception $e) {
-            Yii::app()->user->setFlash('error', $e);
+            Yii::app()->user->setFlash('error', 'Ha ocurrido un error guardando la compra. Intente nuevamente más tarde. Si el problema persiste contactese con el administrador.');
 
             return;
 
