@@ -215,61 +215,67 @@ class WsfeClient
      */
     public function getCaeParaContrato($purchase_price, Seller $seller)
     {
-
-        $contract_number = $this->getProximoComprobante();
-
-        $cae_request_data = $this->getCaeRequestData($contract_number, $purchase_price, $seller);
-
-        $cae_json_response = $this->getCaeDesdeAfip($cae_request_data);
-
-        $responseObj = CJSON::decode($cae_json_response, false);
+        try {
+            $contract_number = $this->getProximoComprobante();
         
-        if (!isset($responseObj->feDetResp->fecaedetResponse[0]->cae)) {
-            throw new Exception("La respuesta de la AFIP no trae CAE", 1);
-        }
 
-        /**
-         * Numero de contrato formateado:
-         * punto de venta - numero de contrato
-         * 0000-00000000
-         *
-         * @var string
-         */
-        $formated_contract_number = $this->formatearNumeroDeContrato($responseObj->feDetResp->fecaedetResponse[0]->cbteDesde);
+            $cae_request_data = $this->getCaeRequestData($contract_number, $purchase_price, $seller);
 
-         /**
-         * PROVISORIO
-         * Este código es provisorio mientras se tramita el CAE
-         */
-        $response_array = array(
-        'contract_number' => $formated_contract_number,
-        'cae' => self::CAI,
-        'json_response' => 'Este es un CAI fijo temporal mientras se tramita el CAE',
-        );
+            $cae_json_response = $this->getCaeDesdeAfip($cae_request_data);
 
-        return $response_array;
-
-        /**
-         * END PROVISORIO
-         */
-
-        if ($responseObj->feCabResp->resultado != 'A') {
-            // 'A': Respuesta del servicio de la AFIP APROBADO
-            $error_text = '';
-            foreach ($responseObj->errors->err as $error) {
-                $error_text .= ' - ERROR -' . $error->code . ' : ' . $error->msg;
+            $responseObj = CJSON::decode($cae_json_response, false);
+            
+            if (!isset($responseObj->feDetResp->fecaedetResponse[0]->cae)) {
+                throw new Exception("La respuesta de la AFIP no trae CAE", 1);
             }
 
-            throw new Exception($error_text, 1);
+            /**
+             * Numero de contrato formateado:
+             * punto de venta - numero de contrato
+             * 0000-00000000
+             *
+             * @var string
+             */
+            $formated_contract_number = $this->formatearNumeroDeContrato($responseObj->feDetResp->fecaedetResponse[0]->cbteDesde);
+
+             /**
+             * PROVISORIO
+             * Este código es provisorio mientras se tramita el CAE
+             */
+            $response_array = array(
+            'contract_number' => $formated_contract_number,
+            'cae' => self::CAI,
+            'json_response' => 'Este es un CAI fijo temporal mientras se tramita el CAE',
+            );
+
+            return $response_array;
+
+            /**
+             * END PROVISORIO
+             */
+
+            if ($responseObj->feCabResp->resultado != 'A') {
+                // 'A': Respuesta del servicio de la AFIP APROBADO
+                $error_text = '';
+                foreach ($responseObj->errors->err as $error) {
+                    $error_text .= ' - ERROR -' . $error->code . ' : ' . $error->msg;
+                }
+
+                throw new Exception($error_text, 1);
+            }
+
+            $response_array = array(
+            'contract_number' => $formated_contract_number,
+            'cae' => $responseObj->feDetResp->fecaedetResponse[0]->cae,
+            'json_response' => $cae_json_response,
+            );
+
+            return $response_array;
+
+        } catch (Exception $e) {
+            Yii::log($e, CLogger::LEVEL_ERROR, 'WSFE ERROR');
+            throw $e;
         }
-
-        $response_array = array(
-        'contract_number' => $formated_contract_number,
-        'cae' => $responseObj->feDetResp->fecaedetResponse[0]->cae,
-        'json_response' => $cae_json_response,
-        );
-
-        return $response_array;
 
     }
 
