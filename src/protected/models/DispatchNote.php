@@ -324,55 +324,104 @@ class DispatchNote extends BaseDispatchNote
     }
 
     /**
-     * recibe un remito
+     * Marca la nota de envio y todos los equipos seleccionados de esta como recibidos
+     * @param  array  $purchases colección de Purchase.id
      */
-    public function receive(array $purchases)
+    public function receive(array $purchases_to_be_recived)
     {
         $purchases_cancelled = 0;
         $purchases_received = 0;
         $purchases_pending_to_be_received = 0;
 
         // si no hay nada marcado no hace nada
-        if (!count($purchases)) {
-            return false;
+        if (!count($purchases_to_be_recived)) {
+            throw new Exception("No se pasó ningún Purchase.id al metodo", 1);
         }
 
-        foreach ($this->purchases as $purchase) {
-            if ($purchase->current_status_id != Status::CANCELLED) {
-                if (in_array($purchase->id, $purchases)) {
-                    // La compra esta tildada como recibida cambia su estado a recibida y la ultima locacion es el lugar del usuario
-                    $purchase->last_location_id = Yii::app()->user->point_of_sale_id;
-                    $purchase->setStatus(Status::RECEIVED, $this->id);
-                    $purchases_received++;
+        // Inicio la transacción para poder hacer rollback si algún model->save() dispara una excepción
+        $transaction = Yii::app()->db->beginTransaction();
 
-                } else {
-                    if ($purchase->current_status_id != Status::RECEIVED) {
-                        // Si todavia no esta recibido
-                        $purchase->setStatus(Status::PENDING_TO_BE_RECEIVED, $this->id);
-                        $purchases_pending_to_be_received++;
+        try {
+
+            foreach ($this->purchases as $purchase) {
+
+                if ($purchase->current_status_id != Status::CANCELLED) {
+
+                    if (in_array($purchase->id, $purchases_to_be_recived)) {
+
+                        try {
+                            /*
+                            La compra esta tildada como recibida 
+                            Se cambia su estado a recibida y la última locación por la locación del usuario
+                             */
+                            $purchase->last_location_id = Yii::app()->user->point_of_sale_id;
+                            $purchase->setStatus(Status::RECEIVED, $this->id);
+
+                            // Suma uno a recibidos
+                            $purchases_received++;
+
+                        } catch (Exception $e) {
+                            throw $e;
+                        }
+
+                    } else {
+
+                        if ($purchase->current_status_id != Status::RECEIVED) {
+                            try {
+                                // La compra no esta tildada como recibida
+                                // No está recibida actualmente
+                                // No esta cancelada
+                                // Se marca como pendiente a ser recibida
+                                $purchase->setStatus(Status::PENDING_TO_BE_RECEIVED, $this->id);
+                                // Suma uno a los pendientes
+                                $purchases_pending_to_be_received++;
+
+                            } catch (Exception $e) {
+                                throw $e;
+                            }
+                            
+                        }
+
                     }
 
+                } else {
+                    // Suma una cancelada
+                    $purchases_cancelled++;
+
                 }
-
-            } else {
-                $purchases_cancelled++;
-
             }
+        } catch (Exception $e) {
+            // Restaura los cambios porque hubo un error
+            $transaction->rollback();
+
+            throw $e;
         }
 
-        if ($purchases_pending_to_be_received) {
+        if ($purchases_pending_to_be_received && $purchases_received) {
+            // Si hay algún pendiente y almenos un recibido
+            // la nota de envío se marca como parcialmente recibida
             $this->status = self::PARTIALLY_RECEIVED;
 
-        } else {
-            // Esta completamente recibido y ya no tiene compras pendientes
+        } elseif ($purchases_received) {
+            // Las compras estan recibido o cancelados
+            // y ya no tiene compras pendientes
             $this->status = self::RECEIVED;
             $this->finished_at = new CDbExpression('UTC_TIMESTAMP()');
-
         }
 
-        if ($this->save()) {
-            return true;
+        try {
+            // Guarda el estado de la nota de envío
+            $this->save();
+
+        } catch (Exception $e) {
+            // Restaura los cambios porque hubo un error
+            $transaction->rollback();
+            throw $e;
         }
+    
+        // No ocurrió ningún error y no se disparó ninguna excepción
+        // Se ejecuta la transacción
+        $transaction->commit();
     }
 
     /**
@@ -436,5 +485,19 @@ class DispatchNote extends BaseDispatchNote
             // Si alguno no se puede guardar se hace rollback a todos los saves
             throw $e;
         }
+    }
+
+    /**
+     * Devuelve un dataprovider con las purchases que integran la nota de envío
+     * Se utiliza sobre todo para armar grillas y tablas
+     * @return CActiveDataProvider Purchases que integran la nota de envío
+     */
+    public function purchasesDataProvider()
+    {
+
+        $purchasesDataProvider = new CActiveDataProvider('PurchaseStatus');
+        $purchasesDataProvider->setData($this->purchases);
+
+        return $purchasesDataProvider;
     }
 }

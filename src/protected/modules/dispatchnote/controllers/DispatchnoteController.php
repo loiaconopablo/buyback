@@ -8,21 +8,30 @@ class DispatchnoteController extends Controller
     public function actionView($id, $receiving = false) 
     {
         $dispatch_note = DispatchNote::model()->findByPk($id);
-        if (Yii::app()->request->isPostRequest) {
 
+        if (Yii::app()->request->isPostRequest) {
+            // Se marca la nota de envio como recibida
+            
             $purchases_array = array();
 
             if (isset($_POST['dispatch_selected'])) {
                 $purchases_array = $_POST['dispatch_selected'];
             }
 
-            if ($dispatch_note->receive($purchases_array)) {
+            try {
+                // Cambia el estado de Dispatchote y todos sus Purchase
+                $dispatch_note->receive($purchases_array);
+                // Redirecciona a el listado de notas de envio por recibir
                 $this->redirect(array('/headquarter/dispatchnote/expecting'));
-            } else {
-                Yii::app()->user->setFlash('receiving', 'Hubo un error recibiendo la Nota de envío');
+
+            } catch(Exception $e) {
+                // Setea el error para mostrar
+                Yii::app()->user->setFlash('error', $e->getMessage());
+                // Vuelve a la url que lo llamó
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
         }
+
 
         $criteria = new CDbCriteria;
         $criteria->compare('last_dispatch_note_id', $id);
@@ -38,22 +47,21 @@ class DispatchnoteController extends Controller
 
         $view_data = array(
             'dispatch_note' => $dispatch_note,
-            'purchasesDataProvider' => $purchasesDataProvider,
-            'dispatchnote_model' => $dispatch_note,
+            //'purchasesDataProvider' => $purchasesDataProvider,
             'model' => new Purchase,
         );
 
         if (Yii::app()->request->isAjaxRequest) {
             if ($receiving) {
-                $this->renderPartial('view-receiving', $view_data);
+                $this->renderPartial('./receiving.view', $view_data);
             } else {
-                $this->renderPartial('view', $view_data);
+                $this->renderPartial('./view.view', $view_data);
             }
         } else {
             if ($receiving) {
-                $this->render('view-receiving', $view_data);
+                $this->render('./receiving.view', $view_data);
             } else {
-                $this->render('view', $view_data);
+                $this->render('./view.view', $view_data);
             }
         }
 
