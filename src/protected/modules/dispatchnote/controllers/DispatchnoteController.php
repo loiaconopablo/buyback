@@ -3,7 +3,9 @@
 class DispatchnoteController extends Controller
 {
     /**
-     * Muestra el Nota de envío
+     * Muestra la nota de envio segun quien y cuando la este solicitando
+     * @param  integer  $id       DispatchNote.id
+     * @param  boolean $receiving True: si la nota se puede recibir
      */
     public function actionView($id, $receiving = false) 
     {
@@ -88,10 +90,7 @@ class DispatchnoteController extends Controller
                 'dispatchnote_pdf_wrap',
                 array(
                 'dispatch_note' => $dispatch_note,
-                'purchases' => $purchases,
-                // 'company_from' => $company_from,
-                'from' => $from,
-                'to' => $to), true
+                ), true
             )
         );
 
