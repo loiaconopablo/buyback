@@ -69,9 +69,10 @@ class DispatchnoteController extends Controller
 
     }
 
-    /**
-     *
-     */
+   /**
+    * Genera la nota de envío por triplicado
+    * @param  integer $id DispatchNote.id
+    */
     public function actionGeneratePdf($id) 
     {
         $dispatch_note = DispatchNote::model()->findByPk($id);
@@ -98,7 +99,8 @@ class DispatchnoteController extends Controller
     }
 
     /**
-     *
+     * Marca la nota de envío y sus copras como enviadas
+     * @param  [integer] $id DispatchNote.id
      */
     public function actionSetAsSent($id) 
     {
@@ -106,48 +108,43 @@ class DispatchnoteController extends Controller
 
         header('Content-Type: application/json');
 
-        if ($dispatch_note->setAsSent()) {
-            $response['status'] = 1;
-            $response['message'] = 'Nota de envío marcado como enviado';
-            die(CJSON::encode($response));
+        try {
+            // Marca la nota de envío y sus compras como enviadas
+            $dispatch_note->setAsSent();
 
-        } else {
+        } catch (Exception $e) {
+            // Ocurrió un error
             $response['status'] = 0;
-            $response['errors'] = $dispatch_note->getErrors();
-            die(CJSON::encode($response));
+            $response['errors'] = $e->getMessage();
+            die(CJSON::encode($response));     
         }
+    
+        // No ocurrió ningún error
+        $response['status'] = 1;
+        $response['message'] = 'Nota de envío marcado como enviado';
+        die(CJSON::encode($response));
+
     }
 
     /**
-     * ESTO CREO QUE NO VA MAS 17-02-2015
+     * Cancela la nota de envío y todas sus compras
+     * @param  integer $id DispatchNote.id
      */
-    // public function actionSetAsReceivedInHeadquarter($id) {
-    // 	die(var_dump($_POST));
-    // 	$dispatch_note = DispatchNote::model()->findByPk($id);
-
-    // 	header('Content-Type: application/json');
-
-    // 	if ($dispatch_note->setAsReceivedInHeadquarter()) {
-    //   			$response['status'] = 1;
-    //   			$response['message'] = 'Nota de envío marcado como recibido';
-    //  			die(CJSON::encode($response));
-
-    // 	} else {
-    // 		$response['status'] = 0;
-    // 		$response['errors'] = $dispatch_note->getErrors();
-    // 		die(CJSON::encode($response));
-    // 	}
-    // }
-
     public function actionCancel($id) 
     {
-        if (DispatchNote::model()->findByPk($id)->cancel()) {
-            return true;
-            $this->redirect(array('/headquarter/dispatchnote/expecting'));
-        } else {
-            Yii::app()->user->setFlash('receiving', 'Hubo un error cancelando la Nota de envío');
+        try {
+            DispatchNote::model()->findByPk($id)->cancel();
+            // No ocurrió ningún error
+            $response['status'] = 1;
+            $response['message'] = 'Nota de envío anulada';
+            die(CJSON::encode($response));
 
-            $this->redirect(Yii::app()->request->urlReferrer);
+        } catch (Exception $e) {
+            // Ocurrió un error
+            $response['status'] = 0;
+            $response['errors'] = $e->getMessage();
+            die(CJSON::encode($response));     
+
         }
     }
 }

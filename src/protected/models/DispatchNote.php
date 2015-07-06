@@ -235,38 +235,34 @@ class DispatchNote extends BaseDispatchNote
         return null;
     }
 
-    /**
-     *    Marca el remito como ENVIADO A LA CABECERA
-     */
+   /**
+    * Marca la nota de envío y sus compras como enviadas
+    */
     public function setAsSent()
     {
-        // Esto creo que no va mas y todos son iguales 17-02-2015
-
-        // if (Yii::app()->user->is_headquarter) {
-        //  // Si el remito lo esta despachando una cabecera lo esta enviando a BGH
-        //  $this->status = self::SENT_TO_OWNER;
-        //  $purchase_status = Status::REMOVED_FROM_HEADQUARTER;
-
-        // } else {
-        //  // Si el remito lo esta despachando un punto de venta comun lo esta enviando a su cabecera
-        //  $this->status = self::SENT_TO_HEADQUARTER;
-        //  $purchase_status = Status::SENT_TO_HEADQUARTER;
-
-        // }
 
         $this->status = self::SENT;
         $this->sent_at = new CDbExpression('UTC_TIMESTAMP()');
 
-        if ($this->save()) {
-            foreach ($this->purchases as $purchase) {
-                $purchase->setStatus(Status::SENT, $this->id);
+        // Inicio la transacción para poder hacer rollback si algún model->save() dispara una excepción
+        $transaction = Yii::app()->db->beginTransaction();
+
+        try {
+            if ($this->save()) {
+                foreach ($this->purchases as $purchase) {
+                    $purchase->setStatus(Status::SENT, $this->id);
+                }
+            } else {
+                throw new Exception("Error actualizando el estado de la nota de envío: ID = " . $this->id, 1);
             }
-        } else {
-            return false;
+        } catch (Exception $e) {
+            // Vuelve atras los registros modificados porque ocurrió un error
+            $transaction->rollback();
+            throw $e;
         }
 
-        return true;
-        //$purchases = Purchase::model()->findAllByAttributes(array('dispatch_note_to_headquarter_id' => $id));
+        // Ejecuta las modificacione sen la base de datos porque no hubieron errores
+        $transaction->commit();
 
     }
 
@@ -305,22 +301,35 @@ class DispatchNote extends BaseDispatchNote
         return false;
     }
 
+    /**
+     * Marca la nota de envío y sus compras como canceladas
+     */
     public function cancel()
     {
         $this->status = self::CANCELLED;
         $this->finished_at = new CDbExpression('UTC_TIMESTAMP()');
 
-        if ($this->save()) {
-            foreach ($this->purchases as $purchase) {
-                if ($purchase->current_status_id != Status::CANCELLED) {
-                    $purchase->setStatus(Status::PENDING);
+        // Inicio la transacción para poder hacer rollback si algún model->save() dispara una excepción
+        $transaction = Yii::app()->db->beginTransaction();
+
+        try {
+            if ($this->save()) {
+                foreach ($this->purchases as $purchase) {
+                    if ($purchase->current_status_id != Status::CANCELLED) {
+                        $purchase->setStatus(Status::PENDING);
+                    }
                 }
+            } else {
+                throw new Exception("Error actualizando el estado de la nota de envío: ID = " . $this->id, 1);
             }
-        } else {
-            return false;
+        } catch (Exception $e) {
+            // Vuelve atras los registros modificados porque ocurrió un error
+            $transaction->rollback();
+            throw $e;
         }
 
-        return true;
+        // Ejecuta las modificacione sen la base de datos porque no hubieron errores
+        $transaction->commit();
     }
 
     /**
