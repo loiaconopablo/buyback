@@ -1,12 +1,12 @@
 <?php
 // change the following paths if necessary
-$yii = dirname(__FILE__) . '/../vendor/yiisoft/yii/framework/yii.php';
-$config = dirname(__FILE__) . '/protected/config/main.php';
+$yii = dirname(__FILE__) . '/../00_private/buyback/vendor/yiisoft/yii/framework/yii.php';
+$config = dirname(__FILE__) . '/../00_private/buyback/src/protected/config/main.php';
 
 /**
  * Composer autoloader 
 */
-$composerAutoload = realpath(dirname(__FILE__) . '/../vendor/autoload.php');
+$composerAutoload = realpath(dirname(__FILE__) . '/../00_private/buyback/vendor/autoload.php');
 
 if (file_exists(($composerAutoload))) {
     include_once $composerAutoload;
