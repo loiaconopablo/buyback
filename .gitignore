@@ -3,3 +3,4 @@ assets
 uploads
 runtime
 /src/js/jquery.min.js
+/src/protected/config
