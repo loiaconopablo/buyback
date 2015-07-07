@@ -9,7 +9,6 @@ $(document).ready(function() {
 
 	/**
 	 * Submit de los formularios con columna de checks  Grid
-	 * 
 	 */
 	$('.checks-submit').on('click', function(ev) {
 
@@ -24,25 +23,6 @@ $(document).ready(function() {
 
 	// Activa los tooltips de las tablas
 	$('table').tooltip({'selector':'[rel=tooltip]'});
-
-	// Comentado 16-06-2015
-	// $("#in-observation-purchase").on('click', function() {
-
-	// 	console.log($(this).parents('.modal').children('#purchase-comment').value);
-	// 	// $.ajax({
-	// 	// 	url: Yii.app.createUrl('purchase/purchase/setinobservation', {'id': $('#purchase-id').val()}),
-	// 	// 	type: 'POST',
-	// 	// 	//data: {comment: $('#purchase-comment')},
-	// 	// 	dataType: 'json',
-	// 	// 	success: function(data) {
-	// 	// 		$.fn.yiiGridView.update('owner-purchase-grid');
-	// 	// 		$('#modal-purchase').modal('hide');
-	// 	// 	},
-	// 	// 	error: function() {
-	// 	// 		//console.log('error');
-	// 	// 	}
-	// 	// });
-	// });
 
 });
 

@@ -63,7 +63,7 @@ class WsfeClient
             $output = Yii::app()->curl->get($this->url . '/wsfe/cae/ultimo/' . $this->tipo_de_comprobante . '/' . $this->punto_de_venta);
         } catch (Exception $e) {
             Yii::log('error obteniendo ultimo cae - punto_de_venta: ' . $this->punto_de_venta, CLogger::LEVEL_ERROR, 'WSFE ERROR');
-            throw new Exception($e->message, 1);
+            throw new Exception($e->getMessage(), 1);
         }
 
         $ultimo = CJSON::decode($output, false);

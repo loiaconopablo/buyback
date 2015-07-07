@@ -68,10 +68,16 @@ return array(
             'cookieMode' => 'only',
         ),
 
+        // Descomentar esto en producción
+        // Para que funcione el script de entrada (src/index.php) debe tener comentada la linea de debug
+        // 'assetManager' => array(
+        //     'linkAssets' => true,
+        // ),
+
         'clientScript'=>array(
             'packages'=>array(
                 'jquery'=>array(
-                    'baseUrl'=> '../vendor/yiisoft/jquery/',
+                    'baseUrl'=> './js/',
                     'js'=>array('jquery.min.js')
                 )
             )
