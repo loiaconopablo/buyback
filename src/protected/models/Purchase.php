@@ -49,7 +49,6 @@ class Purchase extends BasePurchase
             parent::rules(),
             array(
                 array('', 'safe', 'on' => 'search'),
-                array('imei', 'unique'),
                 array('contract_number', 'unique'),
             )
         );

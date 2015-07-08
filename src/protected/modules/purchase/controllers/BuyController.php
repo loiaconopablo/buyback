@@ -78,6 +78,8 @@ class BuyController extends Controller
      */
     public function actionBrandModel()
     {
+        $this->checkSession();
+        
         $model = new StepBrandModelForm;
 
         if (isset($_POST['StepBrandModelForm'])) {
@@ -135,11 +137,13 @@ class BuyController extends Controller
     }
 
     /**
-     *  PASO 3
+     * Muestra las condiciones que debe cumplir un equipo para ser comprado
+     * Tiene un checkbox para acetparlas
      */
     public function actionQuestionary()
     {
-            
+        $this->checkSession();
+
         $model = new StepQuestionaryForm;
 
         if (isset($_POST['StepQuestionaryForm'])) {
@@ -158,10 +162,12 @@ class BuyController extends Controller
     }
 
     /**
-     *  PASO 4
+     * En este paso se elique el prestdor del servicio o si esta liberado
      */
     public function actionCarrier()
     {
+        $this->checkSession();
+
         $model = new StepCarrierForm;
 
         if (isset($_POST['StepCarrierForm'])) {
@@ -190,10 +196,12 @@ class BuyController extends Controller
     }
 
     /**
-     *  PASO 5
+     * Se guardan los datos del cliente y si todo está bien se guarda la compra
      */
     public function actionSeller()
     {
+        $this->checkSession();
+
         // Personal
         if (isset($_POST['StepCarrierForm'])) {
             Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], $_POST['StepCarrierForm']);
@@ -203,18 +211,34 @@ class BuyController extends Controller
         $model = new Seller;
 
         if (isset($_POST['Seller'])) {
+
             $model->setAttributes($_POST['Seller']);
 
-            if ($model->save()) {
-                if ($purchase = $this->savePurchase($model)) {
-                    //Guardo el estado
-                    $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
+            // Inicia la transacción de DisptchNote
+            $transaction = Yii::app()->getDb()->beginTransaction();
 
-                    // if(Yii::app()->user->is_headquarter) {
-                    //  $purchase->setStatus(Status::RECEIVED_IN_HEADQUARTER);
-                    // }
+            try {
+                if ($model->save()) {
+                    // Guarda la compra
+                    $purchase = $this->savePurchase($model);
                 }
+
+                // Ejecuta las transacciones en la base de datos
+                $transaction->commit();
+
+                //Destruye la variable de session para evitar duplicados
+                unset(Yii::app()->session['purchase']);
+
+                $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
+
+            } catch (Exception $e) {
+                Yii::app()->user->setFlash('error', $e->getMessage());
+                // vuelve atras lo guardado del cliente
+                $transaction->rollback();
             }
+
+            
+    
         }
         //Setting correct price
         $price_list = PriceList::model()->find('brand = :brand AND  model = :model', array(':brand' => Yii::app()->session['purchase']['brand'], ':model' => Yii::app()->session['purchase']['model']));
@@ -270,10 +294,7 @@ class BuyController extends Controller
             $cae_array = Yii::app()->wsfe->getCaeParaContrato($purchase_price, $seller);
 
         } catch (Exception $e) {
-            Yii::app()->user->setFlash('error', 'Ha ocurrido un error guardando la compra. Intente nuevamente más tarde. Si el problema persiste contactese con el administrador.');
-
-            return;
-
+            throw $e;
         }
 
         /**
@@ -463,6 +484,13 @@ class BuyController extends Controller
         if (($gif_dictionary_brand != $current_price_list_device_brand) || ($gif_dictionary_model != $current_price_list_device_model)) {
             echo 'mira el log';
             Yii::log('GIF_DICTIONARY brand: ' . $gif_dictionary_brand . ' model: ' . $gif_dictionary_model . ' | USER SELECTION brand: ' . $current_price_list_device_brand . ' model: ' . $current_price_list_device_model, CLogger::LEVEL_WARNING, 'GIF_DICTIONARY USER SELECTION NOT MATCHING');
+        }
+    }
+
+    public function checkSession()
+    {
+        if (!isset(Yii::app()->session['purchase'])) {
+            $this->redirect('purchase/buy/imei');
         }
     }
 }
