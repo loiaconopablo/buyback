@@ -8,12 +8,12 @@
     $form = $this->beginWidget(
         'GxActiveForm', array(
         'id' => 'purchase-form',
-        'action' => array('/retail/purchase/brandmodel'),
+        'action' => array('/purchase/buy/brandmodel'),
         'enableAjaxValidation' => true,
              'clientOptions'=>array(
                 'validateOnSubmit'=>true,
                 'validateOnChange' => false,
-                'validationUrl' => array('/retail/purchase/imei'),
+                'validationUrl' => array('/purchase/buy/imei'),
                 'afterValidate'=>'js:formSend'
              )
         )

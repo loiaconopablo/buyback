@@ -7,7 +7,7 @@ $(document).ready(function(){
 		var brand = $(this).find(":selected").val();
 
 		$.ajax({
-			url: Yii.app.createUrl('retail/purchase/getmodels', {'brand': brand}),
+			url: Yii.app.createUrl('purchase/buy/getmodels', {'brand': brand}),
 			type: 'POST',
 			dataType: 'json',
 			success: function(data) {

@@ -2,7 +2,7 @@
 
 class RetailModule extends CWebModule
 {
-    public $defaultController = 'purchase';
+    public $defaultController = 'admin';
 
     public function init()
     {

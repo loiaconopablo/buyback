@@ -34,22 +34,11 @@ class PurchaseController extends Controller
         );
     }
 
-    /**
-    * action
-    */
-    public function actionCancel($id)
-    {
-        Purchase::model()->findByPk($id)->setAsCancelled();
-    }
+    // public function actionCancel($id)
+    // {
+    //     Purchase::model()->findByPk($id)->setAsCancelled();
+    // }
 
-    /**
-    *
-    */
-    public function actionSetInObservation($id)
-    {
-        var_dump($_POST);
-        return true;
-    }
 
     /**
      * Lista los equipos (purchase) listados en la tabla de admin

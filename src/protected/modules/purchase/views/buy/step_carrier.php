@@ -9,12 +9,12 @@ $priceList = new PriceList;
         'bootstrap.widgets.TbActiveForm', array(
         'id' => 'purchase-form',
         'enableAjaxValidation' => true,
-        'action' => array('/retail/purchase/seller'),
+        'action' => array('/purchase/buy/seller'),
         'clientOptions' => array(
         'validateOnSubmit' => true,
         'validateOnChange' => false,
         'afterValidate' => 'js:formSend',
-        'validationUrl' => array('/retail/purchase/carrier'),
+        'validationUrl' => array('/purchase/buy/carrier'),
         ),
         )
     );
