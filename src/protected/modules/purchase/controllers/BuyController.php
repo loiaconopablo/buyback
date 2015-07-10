@@ -30,14 +30,6 @@ class BuyController extends Controller
     }
 
     /**
-     *  Solo redireccionla al paso 01
-     */
-    public function actionIndex()
-    {  
-        $this->redirect('purchase/buy/imei');
-    }
-
-    /**
      * Muestra el formulario para ingresar el IMEI
      * Valida el formato del imei
      * Valida el imei contra el webservice chequeando que no esté en la BLACKLIST
@@ -487,6 +479,11 @@ class BuyController extends Controller
         }
     }
 
+    /**
+     * Chequea que la variable de session que mantiene los datos de la compra atraves de los 
+     * formularios exista
+     * De lo contrario redirecciona a el action imei
+     */
     public function checkSession()
     {
         if (!isset(Yii::app()->session['purchase'])) {
