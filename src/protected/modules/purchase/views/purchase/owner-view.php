@@ -32,7 +32,8 @@
     )
 );?>
 
-<?php if ($model->current_status_id != Status::CANCELLED): ?>
+
+<?php if (($model->current_status_id != Status::CANCELLED) && ($model->current_status_id != Status::CANCELLATION)): ?>
     <?php 
         echo TbHtml::linkButton(Yii::t('app', 'Anular compra'),
             array(
@@ -43,7 +44,8 @@
             )
         );
     ?>
-<?php else: ?>
+<?php endif; ?>
+<?php if ($model->current_status_id == Status::CANCELLED): ?>
     <?php 
         echo TbHtml::linkButton(Yii::t('app', 'Ver anulación'),
             array(
@@ -52,6 +54,20 @@
              'block' => true, 
              'target' => '_blank',
              'url' => $this->createUrl('/purchase/contract/generatecancellationcontract', array('purchase_id' => $model->associate_purchase->id)),
+            )
+        );
+    ?>
+<?php endif; ?>
+
+<?php if ($model->current_status_id == Status::CANCELLATION): ?>
+    <?php 
+        echo TbHtml::linkButton(Yii::t('app', 'Imprimir anulación'),
+            array(
+             'color' => TbHtml::BUTTON_COLOR_INFO, 
+             'size' => TbHtml::BUTTON_SIZE_LARGE, 
+             'block' => true, 
+             'target' => '_blank',
+             'url' => $this->createUrl('/purchase/contract/generatecancellationcontract', array('purchase_id' => $model->id)),
             )
         );
     ?>
