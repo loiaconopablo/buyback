@@ -72,7 +72,9 @@ class StepImeiForm extends CFormModel
      */
     public function validateImeiBlacklist($attribute, $params)
     {
-        $imeiws_response = Yii::app()->imeiws->check($this->imei);
+        $imeiws_response_json = Yii::app()->imeiws->check($this->imei);
+
+        $imeiws_response = CJSON::decode($imeiws_response_json, false);
 
         if ($imeiws_response->error !== 0) {
             // No valida como negativo pero loguea que hubo un error utilizando el webservice
@@ -87,6 +89,6 @@ class StepImeiForm extends CFormModel
 
         // Guarda la respuesta del webservice
         // para que la aplicacion lo pueda usar para matchar con sus equipos en la lista de precios
-        $this->gif_data = $imeiws_response;
+        $this->gif_data = $imeiws_response_json;
     }
 }

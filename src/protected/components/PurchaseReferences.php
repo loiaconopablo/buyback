@@ -45,7 +45,14 @@ class PurchaseReferences extends CWidget
     {
         $estados = array();
 
-        foreach (Yii::app()->controller->purchase_references->data as $purchase) {
+        $dataProvider = Yii::app()->controller->purchase_references;
+        $criteria = $dataProvider->getCriteria();
+
+        $criteria->group = 'current_status_id';
+
+        $dataProvider->setCriteria($criteria);
+
+        foreach ($dataProvider->data as $purchase) {
             $estados[$purchase->current_status_id] = '';
         }
 

@@ -32,6 +32,31 @@
     )
 );?>
 
+<?php if ($model->current_status_id != Status::CANCELLED): ?>
+    <?php 
+        echo TbHtml::linkButton(Yii::t('app', 'Anular compra'),
+            array(
+             'color' => TbHtml::BUTTON_COLOR_DANGER, 
+             'size' => TbHtml::BUTTON_SIZE_LARGE, 
+             'block' => true, 
+             'id' => 'cancel_purchase',
+            )
+        );
+    ?>
+<?php else: ?>
+    <?php 
+        echo TbHtml::linkButton(Yii::t('app', 'Ver anulación'),
+            array(
+             'color' => TbHtml::BUTTON_COLOR_WARNING, 
+             'size' => TbHtml::BUTTON_SIZE_LARGE, 
+             'block' => true, 
+             'target' => '_blank',
+             'url' => $this->createUrl('/purchase/contract/generatecancellationcontract', array('purchase_id' => $model->associate_purchase->id)),
+            )
+        );
+    ?>
+<?php endif; ?>
+
 <?php foreach ($model->purchase_statuses as $status) :
 ?>
 	<div class="well <?php echo $status->status->constant_name; ?>">
@@ -57,8 +82,6 @@
 <?php
 endforeach;?>
 
-<!--
-<?php echo CHtml::hiddenField('purchase-id', $model->id);?>
-<?php echo CHtml::label(Yii::t('app', 'Comentario'), 'purchase-comment');?>
-<?php echo CHtml::textarea('comment', null, array('id' => 'purchase-comment', 'class' => 'purchase-comment', 'style' => 'width:100%; height: 70px'));?>
--->
+<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'purchase_form')); ?>
+    <?php echo CHtml::hiddenField('purchase_id', $model->id, array('id' => 'purchase_id')); ?>
+<?php $this->endWidget();?>

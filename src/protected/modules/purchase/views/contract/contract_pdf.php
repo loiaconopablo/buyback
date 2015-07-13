@@ -43,7 +43,7 @@
 				<tr>
 					<td><?php echo $model->brand;?></td>
 					<td><?php echo $model->model;?></td>
-					<td><?php echo $carrier_name;?></td>
+					<td><?php echo $model->carrier_name;?></td>
 					<td><?php echo $model->imei;?></td>
 					<td align="right">$ <?php echo $model->purchase_price;?></td>
 				</tr>

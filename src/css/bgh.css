@@ -409,6 +409,19 @@ tr.CANCELLED td:last-child {
 	-moz-box-shadow: inset -5px 0px 0px 0px  #CB2F3A;
 }
 
+/* CANCELLATION */
+tr.CANCELLATION td:first-child, li.CANCELLATION, div.well.CANCELLATION {
+	box-shadow: inset 5px 0px 0px 0px  #FF9900;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #FF9900;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #FF9900;
+}
+
+tr.CANCELLATION td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #FF9900;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #FF9900;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #FF9900;
+}
+
 /* IN_OBSERVATION */
 tr.IN_OBSERVATION td:first-child, li.IN_OBSERVATION, div.well.IN_OBSERVATION {
 	box-shadow: inset 5px 0px 0px 0px  #5D5C6E;

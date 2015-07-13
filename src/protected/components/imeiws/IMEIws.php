@@ -45,6 +45,6 @@ class IMEIws extends CApplicationComponent
                 
         $output = Yii::app()->curl->setOption(CURLOPT_HTTPHEADER, array())->post($this->url, $request->toArray());
 
-        return CJSON::decode($output, false);
+        return $output;
     }
 }
