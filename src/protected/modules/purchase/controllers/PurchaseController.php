@@ -73,10 +73,14 @@ class PurchaseController extends Controller
         // los equipos (purchase) en una nota de envío (dispatchnote)      
         if (isset($_POST['DispatchNote'])) {
             $dispatch_note_model->setAttributes($_POST['DispatchNote']);
-   
-            $dispatch_note_id = $dispatch_note_model->create($purchases);
+            
+            try {
+                $dispatch_note_id = $dispatch_note_model->create($purchases);
+            } catch (Exception $e) {
+                Yii::app()->user->setFlash('error', $e->getMessage());
+            }
 
-            if ($dispatch_note_id) {
+            if (isset($dispatch_note_id)) {
                 $this->redirect(array('/dispatchnote/dispatchnote/view', 'id' => $dispatch_note_id));
             }
         }

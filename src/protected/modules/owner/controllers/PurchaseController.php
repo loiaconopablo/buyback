@@ -5,11 +5,6 @@
  */
 class PurchaseController extends Controller
 {
-    /**
-     * Define el layout que van a rederizar las vistas dl controller
-     * @var string
-     */
-    public $layout = '//layouts/column2';
 
     /**
      * Redirecciona a actionAdmin

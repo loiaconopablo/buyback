@@ -50,25 +50,25 @@
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Empresa Origen:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $from->company->name;?></td>
+		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->company->name;?></td>
 		<td style="text-align:right; font-size:11px;">N&deg; de Empresa:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $from->company->company_code;?></td>
+		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->company->company_code;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">CUIT:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $from->company->cuit;?></td>
+		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->company->cuit;?></td>
 		<td style="text-align:right; font-size:11px;">Tel&eacute;fono:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $from->phone;?></td>
+		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->phone;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Domicilio:</td>
-		<td style="font-weight:bold;" colspan="3"><?php echo $from->address;?></td>
+		<td style="font-weight:bold;" colspan="3"><?php echo $dispatch_note->point_of_sale->address;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Provincia:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $from->province;?></td>
+		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->province;?></td>
 		<td style="text-align:right; font-size:11px;">Localidad:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $from->locality;?></td>
+		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->locality;?></td>
 	</tr>
 </table>
 
@@ -78,26 +78,26 @@
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Señor/es:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $to->name;?></td>
+		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->name;?></td>
 		<td style="text-align:right; font-size:11px;">N&deg; de Empresa:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $to->company->company_code;?></td>
+		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->company->company_code;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">CUIT:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $to->company->cuit;?></td>
+		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->company->cuit;?></td>
 		<td style="text-align:right; font-size:11px;">Tel&eacute;fono:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $to->phone;?></td>
+		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->destination->phone;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Domicilio:</td>
-		<td style="font-weight:bold;" colspane="3"><?php echo $to->address;?></td>
+		<td style="font-weight:bold;" colspane="3"><?php echo $dispatch_note->destination->address;?></td>
 
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Provincia:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $to->province;?></td>
+		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->province;?></td>
 		<td style="text-align:right; font-size:11px;">Localidad:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $to->locality;?></td>
+		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->locality;?></td>
 	</tr>
 </table>
 
@@ -109,7 +109,7 @@
 		<th style="width:15%; height:2%;">IMEI</th>
 		<th style="width:15%; height:2%;">Vendedor</th>
 	</tr>
-    <?php foreach ($purchases as $purchase): ?>
+    <?php foreach ($dispatch_note->purchases as $purchase): ?>
 	<	<tr>
 			<td><?php echo $purchase->contract_number;?></td>
 			<td><?php echo $purchase->brand;?></td>

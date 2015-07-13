@@ -3,26 +3,37 @@
 class DispatchnoteController extends Controller
 {
     /**
-     * Muestra el Nota de envío
+     * Muestra la nota de envio segun quien y cuando la este solicitando
+     * @param  integer  $id       DispatchNote.id
+     * @param  boolean $receiving True: si la nota se puede recibir
      */
     public function actionView($id, $receiving = false) 
     {
         $dispatch_note = DispatchNote::model()->findByPk($id);
-        if (Yii::app()->request->isPostRequest) {
 
+        if (Yii::app()->request->isPostRequest) {
+            // Se marca la nota de envio como recibida
+            
             $purchases_array = array();
 
             if (isset($_POST['dispatch_selected'])) {
                 $purchases_array = $_POST['dispatch_selected'];
             }
 
-            if ($dispatch_note->receive($purchases_array)) {
+            try {
+                // Cambia el estado de Dispatchote y todos sus Purchase
+                $dispatch_note->receive($purchases_array);
+                // Redirecciona a el listado de notas de envio por recibir
                 $this->redirect(array('/headquarter/dispatchnote/expecting'));
-            } else {
-                Yii::app()->user->setFlash('receiving', 'Hubo un error recibiendo la Nota de envío');
+
+            } catch(Exception $e) {
+                // Setea el error para mostrar
+                Yii::app()->user->setFlash('error', $e->getMessage());
+                // Vuelve a la url que lo llamó
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
         }
+
 
         $criteria = new CDbCriteria;
         $criteria->compare('last_dispatch_note_id', $id);
@@ -38,30 +49,30 @@ class DispatchnoteController extends Controller
 
         $view_data = array(
             'dispatch_note' => $dispatch_note,
-            'purchasesDataProvider' => $purchasesDataProvider,
-            'dispatchnote_model' => $dispatch_note,
+            //'purchasesDataProvider' => $purchasesDataProvider,
             'model' => new Purchase,
         );
 
         if (Yii::app()->request->isAjaxRequest) {
             if ($receiving) {
-                $this->renderPartial('view-receiving', $view_data);
+                $this->renderPartial('./receiving.view', $view_data);
             } else {
-                $this->renderPartial('view', $view_data);
+                $this->renderPartial('./view.view', $view_data);
             }
         } else {
             if ($receiving) {
-                $this->render('view-receiving', $view_data);
+                $this->render('./receiving.view', $view_data);
             } else {
-                $this->render('view', $view_data);
+                $this->render('./view.view', $view_data);
             }
         }
 
     }
 
-    /**
-     *
-     */
+   /**
+    * Genera la nota de envío por triplicado
+    * @param  integer $id DispatchNote.id
+    */
     public function actionGeneratePdf($id) 
     {
         $dispatch_note = DispatchNote::model()->findByPk($id);
@@ -80,10 +91,7 @@ class DispatchnoteController extends Controller
                 'dispatchnote_pdf_wrap',
                 array(
                 'dispatch_note' => $dispatch_note,
-                'purchases' => $purchases,
-                // 'company_from' => $company_from,
-                'from' => $from,
-                'to' => $to), true
+                ), true
             )
         );
 
@@ -91,7 +99,8 @@ class DispatchnoteController extends Controller
     }
 
     /**
-     *
+     * Marca la nota de envío y sus copras como enviadas
+     * @param  [integer] $id DispatchNote.id
      */
     public function actionSetAsSent($id) 
     {
@@ -99,48 +108,43 @@ class DispatchnoteController extends Controller
 
         header('Content-Type: application/json');
 
-        if ($dispatch_note->setAsSent()) {
-            $response['status'] = 1;
-            $response['message'] = 'Nota de envío marcado como enviado';
-            die(CJSON::encode($response));
+        try {
+            // Marca la nota de envío y sus compras como enviadas
+            $dispatch_note->setAsSent();
 
-        } else {
+        } catch (Exception $e) {
+            // Ocurrió un error
             $response['status'] = 0;
-            $response['errors'] = $dispatch_note->getErrors();
-            die(CJSON::encode($response));
+            $response['errors'] = $e->getMessage();
+            die(CJSON::encode($response));     
         }
+    
+        // No ocurrió ningún error
+        $response['status'] = 1;
+        $response['message'] = 'Nota de envío marcado como enviado';
+        die(CJSON::encode($response));
+
     }
 
     /**
-     * ESTO CREO QUE NO VA MAS 17-02-2015
+     * Cancela la nota de envío y todas sus compras
+     * @param  integer $id DispatchNote.id
      */
-    // public function actionSetAsReceivedInHeadquarter($id) {
-    // 	die(var_dump($_POST));
-    // 	$dispatch_note = DispatchNote::model()->findByPk($id);
-
-    // 	header('Content-Type: application/json');
-
-    // 	if ($dispatch_note->setAsReceivedInHeadquarter()) {
-    //   			$response['status'] = 1;
-    //   			$response['message'] = 'Nota de envío marcado como recibido';
-    //  			die(CJSON::encode($response));
-
-    // 	} else {
-    // 		$response['status'] = 0;
-    // 		$response['errors'] = $dispatch_note->getErrors();
-    // 		die(CJSON::encode($response));
-    // 	}
-    // }
-
     public function actionCancel($id) 
     {
-        if (DispatchNote::model()->findByPk($id)->cancel()) {
-            return true;
-            $this->redirect(array('/headquarter/dispatchnote/expecting'));
-        } else {
-            Yii::app()->user->setFlash('receiving', 'Hubo un error cancelando la Nota de envío');
+        try {
+            DispatchNote::model()->findByPk($id)->cancel();
+            // No ocurrió ningún error
+            $response['status'] = 1;
+            $response['message'] = 'Nota de envío anulada';
+            die(CJSON::encode($response));
 
-            $this->redirect(Yii::app()->request->urlReferrer);
+        } catch (Exception $e) {
+            // Ocurrió un error
+            $response['status'] = 0;
+            $response['errors'] = $e->getMessage();
+            die(CJSON::encode($response));     
+
         }
     }
 }

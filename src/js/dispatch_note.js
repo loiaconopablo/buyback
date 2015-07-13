@@ -6,6 +6,10 @@ $(document).ready(function() {
 			type: 'POST',
 			dataType: 'json',
 			success: function(data) {
+				if (data.status == 0) {
+					alert(data.errors);
+				}
+
 				$.fn.yiiGridView.update('dispatch_notes_grid');
 				$('#modal-dispatch-note').modal('hide');
 			},
@@ -21,6 +25,9 @@ $(document).ready(function() {
 			type: 'POST',
 			dataType: 'json',
 			success: function(data) {
+				if (data.status == 0) {
+					alert(data.errors);
+				}
 				$.fn.yiiGridView.update('dispatch_notes_grid');
 				$('#modal-dispatch-note').modal('hide');
 			},
