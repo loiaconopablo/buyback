@@ -6,6 +6,9 @@ class Purchase extends BasePurchase
 {
     const DEFAULT_PAID_PRICE = 0;
 
+    const COMPROBANTE_TIPO_COMPRA = 'C';
+    const COMPROBANTE_TIPO_NOTA_DE_CREDITO = 'NC';
+
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -16,6 +19,7 @@ class Purchase extends BasePurchase
     {
         return array(
         'purchase_statuses' => array(self::HAS_MANY, 'PurchaseStatus', 'purchase_id'),
+        'purchase' => array(self::HAS_ONE, 'Purchase', 'associate_row'),
 
         'company' => array(self::BELONGS_TO, 'Company', 'company_id'),
         'point_of_sale' => array(self::BELONGS_TO, 'PointOfSale', 'point_of_sale_id'),
@@ -27,6 +31,7 @@ class Purchase extends BasePurchase
         'price_list' => array(self::BELONGS_TO, 'PriceList', 'price_list_id'),
         'current_status' => array(self::BELONGS_TO, 'Status', 'current_status_id'),
         'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
+        'associate_purchase' => array(self::BELONGS_TO, 'Purchase', 'associate_row'),
         );
     }
 
@@ -49,7 +54,6 @@ class Purchase extends BasePurchase
             parent::rules(),
             array(
                 array('', 'safe', 'on' => 'search'),
-                array('imei', 'unique'),
                 array('contract_number', 'unique'),
             )
         );
@@ -152,6 +156,7 @@ class Purchase extends BasePurchase
 
         $criteria->addCondition('last_location_id != :user_point_of_sale');
         $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
+        $criteria->order = 'created_at DESC';
 
         return new CActiveDataProvider(
             $this,

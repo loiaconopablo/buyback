@@ -18,7 +18,7 @@ class Home
         }
 
         if (Yii::app()->user->checkAccess('retail')) {
-                return array('/retail');
+                return array('/purchase/buy/imei');
         }
 
         //Si no esta logueado o no se reconoce el rol
@@ -69,7 +69,7 @@ class Home
                 * MENU DE CABECEERA (HEADQUARTER)
                 */
                 return array(
-                array('label'=>Yii::t('app', 'Start'), 'url'=>array('/retail'), 'active' => false),
+                array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
                 array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/headquarter/admin/admin'), 'active' => self::isActive('/headquarter/admin/admin')),
                 array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/headquarter/dispatchnote/admin'), 'active' => self::isActive('/headquarter/dispatchnote/admin')),
                 array('label'=>Yii::t('app', 'Notas de envío pendientes'), 'url'=>array('/headquarter/dispatchnote/expecting'), 'active' => self::isActive('/headquarter/dispatchnote/expecting')),
@@ -81,7 +81,7 @@ class Home
                 * MENU DE PUNTO DE VENTA (COMUN)
                 */
                 return array(
-                array('label'=>Yii::t('app', 'Start'), 'url'=>array('/retail'), 'active' => false),
+                array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
                 array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/retail/admin/admin'), 'active' => self::isActive('/retail/admin/admin')),
                 array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/retail/dispatchnote/admin'), 'active' => self::isActive('/retail/dispatchnote/admin')),
                 array('label'=>Yii::t('app', 'History'), 'url'=>array('/retail/dispatchnote/history'), 'active' => self::isActive('/retail/dispatchnote/history')),

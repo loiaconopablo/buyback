@@ -15,7 +15,6 @@
  * @property string $headquarter_id
  * @property string $user_create_id
  * @property string $seller_id
- * @property string $contract_id
  * @property string $last_dispatch_note_id
  * @property string $carrier_id
  * @property string $price_list_id
@@ -38,6 +37,11 @@
  * @property string $importe_neto
  * @property string $importe_iva
  * @property string $cae_response_json
+ * @property string $gif_response_json
+ * @property string $pricelist_log
+ * @property string $user_ip
+ * @property string $comprobante_tipo
+ * @property string $associate_row
  *
  */
 abstract class BasePurchase extends GxActiveRecord {
@@ -68,14 +72,15 @@ abstract class BasePurchase extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, price_list_id, imei, brand, model, carrier_name, price_type, contract_number', 'required'),
-			array('company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, contract_id, last_dispatch_note_id, carrier_id, price_list_id, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id', 'length', 'max'=>10),
+			array('company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, last_dispatch_note_id, carrier_id, price_list_id, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id', 'length', 'max'=>10),
 			array('imei', 'length', 'max'=>16),
 			array('brand, model, carrier_name', 'length', 'max'=>255),
-			array('price_type, contract_number, cae', 'length', 'max'=>20),
+			array('price_type, contract_number, cae, user_ip, associate_row', 'length', 'max'=>20),
 			array('purchase_price, paid_price, importe_neto, importe_iva', 'length', 'max'=>8),
-			array('created_at, updated_at, cae_response_json', 'safe'),
-			array('contract_id, last_dispatch_note_id, carrier_id, purchase_price, paid_price, created_at, updated_at, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, contract_id, last_dispatch_note_id, carrier_id, price_list_id, imei, brand, model, carrier_name, price_type, purchase_price, paid_price, created_at, updated_at, user_update_id, contract_number, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json', 'safe', 'on'=>'search'),
+			array('comprobante_tipo', 'length', 'max'=>2),
+			array('created_at, updated_at, cae_response_json, gif_response_json, pricelist_log', 'safe'),
+			array('last_dispatch_note_id, carrier_id, purchase_price, paid_price, created_at, updated_at, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, last_dispatch_note_id, carrier_id, price_list_id, imei, brand, model, carrier_name, price_type, purchase_price, paid_price, created_at, updated_at, user_update_id, contract_number, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -97,7 +102,6 @@ abstract class BasePurchase extends GxActiveRecord {
 			'headquarter_id' => Yii::t('app', 'Headquarter'),
 			'user_create_id' => Yii::t('app', 'User Create'),
 			'seller_id' => Yii::t('app', 'Seller'),
-			'contract_id' => Yii::t('app', 'Contract'),
 			'last_dispatch_note_id' => Yii::t('app', 'Last Dispatch Note'),
 			'carrier_id' => Yii::t('app', 'Carrier'),
 			'price_list_id' => Yii::t('app', 'Price List'),
@@ -120,6 +124,11 @@ abstract class BasePurchase extends GxActiveRecord {
 			'importe_neto' => Yii::t('app', 'Importe Neto'),
 			'importe_iva' => Yii::t('app', 'Importe Iva'),
 			'cae_response_json' => Yii::t('app', 'Cae Response Json'),
+			'gif_response_json' => Yii::t('app', 'Gif Response Json'),
+			'pricelist_log' => Yii::t('app', 'Pricelist Log'),
+			'user_ip' => Yii::t('app', 'User Ip'),
+			'comprobante_tipo' => Yii::t('app', 'Comprobante Tipo'),
+			'associate_row' => Yii::t('app', 'Associate Row'),
 		);
 	}
 
@@ -132,7 +141,6 @@ abstract class BasePurchase extends GxActiveRecord {
 		$criteria->compare('headquarter_id', $this->headquarter_id, true);
 		$criteria->compare('user_create_id', $this->user_create_id, true);
 		$criteria->compare('seller_id', $this->seller_id, true);
-		$criteria->compare('contract_id', $this->contract_id, true);
 		$criteria->compare('last_dispatch_note_id', $this->last_dispatch_note_id, true);
 		$criteria->compare('carrier_id', $this->carrier_id, true);
 		$criteria->compare('price_list_id', $this->price_list_id, true);
@@ -155,6 +163,11 @@ abstract class BasePurchase extends GxActiveRecord {
 		$criteria->compare('importe_neto', $this->importe_neto, true);
 		$criteria->compare('importe_iva', $this->importe_iva, true);
 		$criteria->compare('cae_response_json', $this->cae_response_json, true);
+		$criteria->compare('gif_response_json', $this->gif_response_json, true);
+		$criteria->compare('pricelist_log', $this->pricelist_log, true);
+		$criteria->compare('user_ip', $this->user_ip, true);
+		$criteria->compare('comprobante_tipo', $this->comprobante_tipo, true);
+		$criteria->compare('associate_row', $this->associate_row, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

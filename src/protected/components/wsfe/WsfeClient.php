@@ -4,10 +4,7 @@ Yii::import('application.components.wsfe.models.*', true);
 
 class WsfeClient
 {
-    /**
-     * TODO: pasar todos estas constantes a un archivo de configuracion
-     */
-    
+
     /**
      * PROVISORIO
      * Esto es provisorio mientras se tramita el CAE
@@ -69,7 +66,7 @@ class WsfeClient
         $ultimo = CJSON::decode($output, false);
 
         if (!$ultimo) {
-            throw new Exception("No se pudo obtener el último número de comprobante", 1);
+            throw new Exception("Ocurrió un error guardando la transacción. Intentelo nuevamente. Si el problema persiste comuniquese con el administrador.", 1);
         }
 
         $cbteNro = $ultimo->cbteNro;

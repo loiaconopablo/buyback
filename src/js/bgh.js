@@ -24,19 +24,46 @@ $(document).ready(function() {
 	// Activa los tooltips de las tablas
 	$('table').tooltip({'selector':'[rel=tooltip]'});
 
+	/**
+	 * Anula una compra generando su respectiva NOTA DE CREDITO y asociandola
+	 */
+	 $('#cancel_purchase').live('click', function(ev) {
+	 	if (!confirm('Cancelar compra emitiendo un comprobante negativo?')) {
+	 		return;
+	 	}
+
+	 	$.ajax({
+			url: Yii.app.createUrl('purchase/buy/cancel', {'id': $('#purchase_id').val()}),
+			type: 'POST',
+			dataType: 'json',
+			success: function(data) {
+				if (data.status == 0) {
+					alert(data.errors);
+				}
+				var win = window.open(Yii.app.createUrl('purchase/contract/generatecancellationcontract', {'id': data.purchase_id}), '_blank');
+				$.fn.yiiGridView.update('owner-purchase-grid');
+				$('#modal-purchase').modal('hide');
+
+			},
+			error: function() {
+				//console.log('error');
+			}
+		});
+	 });
+
 });
 
 function refreshGrid () {
 	$('.grid-view').each(function() {
 		$.fn.yiiGridView.update($(this).attr('id'));
 	})
-}
+};
 
 function resetDateFilter() {
 	$.removeCookie("from");
 	$.removeCookie("to");
 	location.reload();
-}
+};
 
 /**
  * Guarda en una cookie los checkbox seleccionados en un Grid
@@ -63,7 +90,7 @@ function setCheckedItems() {
 	checkedItems = arrayDiff(checkedItems, getUncheckeds());
 	
 	$.cookie('checkedItems', checkedItems, { path: '/' });
-}
+};
 
 
 /**
@@ -81,12 +108,12 @@ function uniq(a) {
         else
             return objs.indexOf(item) >= 0 ? false : objs.push(item);
     });
-}
+};
 
 
 function arrayDiff(a1, a2) {
 	return a1.filter(function(i) {return a2.indexOf(i) < 0;});
-}
+};
 
 
 /**
@@ -98,4 +125,4 @@ function getUncheckeds() {
     var unch = [];
     $('[name^=purchase_selected]').not(':checked,[name$=all]').each(function(){unch.push($(this).val());});
     return unch.toString();
-}
+};

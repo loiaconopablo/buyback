@@ -43,9 +43,9 @@
                 <tr>
 					<td><?php echo $model->brand;?></td>
 					<td><?php echo $model->model;?></td>
-					<td><?php echo $carrier_name;?></td>
+					<td><?php echo $model->carrier_name;?></td>
 					<td><?php echo $model->imei;?></td>
-					<td align="right">- $ <?php echo $model->purchase_price;?></td>
+					<td align="right">$ <?php echo $model->purchase_price;?></td>
                 </tr>
             </table>
 
@@ -67,12 +67,12 @@
                     <td style="width:33%">Fecha</td>
                 </tr>
                 <tr>
-					<td><?php echo $contract_number;?></td>
+					<td><?php echo $model->contract_number;?></td>
                     <td>-1</td>
 					<td><?php echo $date->format('d/m/Y');?></td>
                 </tr>
                 <tr>
-                    <td colspan="3">Emitido a los efectos de anular comprobante <?php echo $model->contract_number;?> emitido erróneamente</td>
+                    <td colspan="3">Emitido a los efectos de anular comprobante <?php echo $model->associate_purchase->contract_number;?> emitido erróneamente</td>
                 </tr>
             </table>
             <table style="width:100%; font-size:10pt; line-height:2pt; padding-top:12px;">

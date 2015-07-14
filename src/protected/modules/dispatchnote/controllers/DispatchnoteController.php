@@ -79,12 +79,6 @@ class DispatchnoteController extends Controller
 
         $purchases = Purchase::model()->findAllByAttributes(array('last_dispatch_note_id' => $id));
 
-        // $company_from = Company::model()->findByPk($dispatch_note->company_id);
-
-        $from = PointOfSale::model()->findByPk($dispatch_note->source_id);
-
-        $to = PointOfSale::model()->findByPk($dispatch_note->destination_id);
-
         $html2pdf = Yii::app()->ePdf->HTML2PDF('P');
         $html2pdf->WriteHTML(
             $this->renderPartial(

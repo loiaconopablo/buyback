@@ -10,6 +10,7 @@ class Status extends BaseStatus
     const RECEIVED                         = 40;
     const PENDING_TO_BE_RECEIVED           = 50;
     const CANCELLED                        = 60;
+    const CANCELLATION                     = 61;
     const IN_OBSERVATION                   = 70;
     const APPROVED                         = 80;
     const REJECTED                         = 90;
