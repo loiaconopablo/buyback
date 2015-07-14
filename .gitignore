@@ -4,3 +4,6 @@ uploads
 runtime
 /src/js/jquery.min.js
 /src/protected/config
+.settings
+/.buildpath
+/.project
