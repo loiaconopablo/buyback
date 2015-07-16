@@ -4,7 +4,8 @@
     "keywords":[ "yii", "application", "web" ],
     "type":"yii-application",
     "config":{
-      "vendor-dir":"vendor"
+      "vendor-dir":"vendor",
+      "process-timeout": 4000
     },
     "authors":[
     {
