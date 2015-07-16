@@ -21,7 +21,6 @@ class StepImeiForm extends CFormModel
             // username and password are required
             array('imei', 'required'),
             array('imei', 'validateImeiFormat'),
-            array('imei', 'validateDuplication'),
             array('imei', 'validateImeiBlacklist'),
         );
     }
@@ -67,27 +66,15 @@ class StepImeiForm extends CFormModel
 
 
     /**
-     * Valida que el imei no este ya comprado
-     * @param  [type] $attribute [description]
-     * @param  [type] $params    [description]
-     */
-    public function validateDuplication($attribute, $params)
-    {
-        $purchase_found = Purchase::model()->findByAttributes(array('imei' => $this->imei));
-
-        if (count($purchase_found)) {
-            $this->addError($attribute, 'El imei ya fue comprado anteriormente');
-        }
-    }
-
-    /**
      * Valida que el imei contra el webservice para ver si no esta en la blacklist
      * @param  [type] $attribute [description]
      * @param  [type] $params    [description]
      */
     public function validateImeiBlacklist($attribute, $params)
     {
-        $imeiws_response = Yii::app()->imeiws->check($this->imei);
+        $imeiws_response_json = Yii::app()->imeiws->check($this->imei);
+
+        $imeiws_response = CJSON::decode($imeiws_response_json, false);
 
         if ($imeiws_response->error !== 0) {
             // No valida como negativo pero loguea que hubo un error utilizando el webservice
@@ -102,6 +89,6 @@ class StepImeiForm extends CFormModel
 
         // Guarda la respuesta del webservice
         // para que la aplicacion lo pueda usar para matchar con sus equipos en la lista de precios
-        $this->gif_data = $imeiws_response;
+        $this->gif_data = $imeiws_response_json;
     }
 }

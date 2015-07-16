@@ -35,12 +35,12 @@ endif;?>
     'bootstrap.widgets.TbActiveForm', array(
     'id' => 'seller-form',
     'enableAjaxValidation' => true,
-    'action' => array('/retail/purchase/seller'),
+    'action' => array('/purchase/buy/seller'),
     'clientOptions' => array(
         'validateOnSubmit' => true,
         'validateOnChange' => false,
         'afterValidate' => 'js:formSend',
-        'validationUrl' => array('/retail/purchase/seller'),
+        'validationUrl' => array('/purchase/buy/seller'),
     ),
     )
 );

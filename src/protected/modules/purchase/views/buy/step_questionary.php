@@ -26,7 +26,7 @@
         'bootstrap.widgets.TbActiveForm', array(
         'id' => 'purchase-form',
         'enableAjaxValidation' => false,
-        'action' => array('/retail/purchase/questionary'),
+        'action' => array('/purchase/buy/questionary'),
         )
     );
     ?>

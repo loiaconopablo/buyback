@@ -1,16 +1,37 @@
 <?php
 
-class PurchaseController extends Controller
+class BuyController extends Controller
 {
 
     public $layout = '//layouts/column1.view';
 
     /**
-     *  Solo redireccionla al paso 01
-     */
-    public function actionIndex()
+    * @return array action filters
+    */
+    public function filters()
     {
-        $this->redirect('retail/purchase/imei');
+            return array(
+                    'accessControl', // perform access control for CRUD operations
+            );
+    }
+
+    public function accessRules()
+    {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'imei', 'brandmodel', 'questionary', 'carrier', 'seller', 'showprice', 'getmodels'),
+                'expression' => "Yii::app()->user->checkAccess('retail')",
+            ),
+             array(
+                'allow',
+                'actions' => array('cancel'),
+                'expression' => "Yii::app()->user->checkAccess('admin')",
+            ),
+            array('deny',  // deny all users
+                'users'=>array('*'),
+            ),
+        );
     }
 
     /**
@@ -32,7 +53,10 @@ class PurchaseController extends Controller
                 Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], array('imei' => $model->imei));
 
                 // Guarda la respuesta de gif (webservice) en session
-                Yii::app()->session['gif_data'] = $model->gif_data;
+                Yii::app()->session['gif_data'] = CJSON::decode($model->gif_data, false);
+
+                // Agrega gif_response_json a la session para luego guardarlo en registro
+                Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], array('gif_response_json' => $model->gif_data));
                 
                 if (Yii::app()->getRequest()->getIsAjaxRequest()) {
                     Yii::app()->end();
@@ -54,6 +78,8 @@ class PurchaseController extends Controller
      */
     public function actionBrandModel()
     {
+        $this->checkSession();
+        
         $model = new StepBrandModelForm;
 
         if (isset($_POST['StepBrandModelForm'])) {
@@ -111,11 +137,13 @@ class PurchaseController extends Controller
     }
 
     /**
-     *  PASO 3
+     * Muestra las condiciones que debe cumplir un equipo para ser comprado
+     * Tiene un checkbox para acetparlas
      */
     public function actionQuestionary()
     {
-            
+        $this->checkSession();
+
         $model = new StepQuestionaryForm;
 
         if (isset($_POST['StepQuestionaryForm'])) {
@@ -134,10 +162,12 @@ class PurchaseController extends Controller
     }
 
     /**
-     *  PASO 4
+     * En este paso se elique el prestdor del servicio o si esta liberado
      */
     public function actionCarrier()
     {
+        $this->checkSession();
+
         $model = new StepCarrierForm;
 
         if (isset($_POST['StepCarrierForm'])) {
@@ -166,10 +196,12 @@ class PurchaseController extends Controller
     }
 
     /**
-     *  PASO 5
+     * Se guardan los datos del cliente y si todo está bien se guarda la compra
      */
     public function actionSeller()
     {
+        $this->checkSession();
+
         // Personal
         if (isset($_POST['StepCarrierForm'])) {
             Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], $_POST['StepCarrierForm']);
@@ -179,18 +211,34 @@ class PurchaseController extends Controller
         $model = new Seller;
 
         if (isset($_POST['Seller'])) {
+
             $model->setAttributes($_POST['Seller']);
 
-            if ($model->save()) {
-                if ($purchase = $this->savePurchase($model)) {
-                    //Guardo el estado
-                    $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
+            // Inicia la transacción de DisptchNote
+            $transaction = Yii::app()->getDb()->beginTransaction();
 
-                    // if(Yii::app()->user->is_headquarter) {
-                    //  $purchase->setStatus(Status::RECEIVED_IN_HEADQUARTER);
-                    // }
+            try {
+                if ($model->save()) {
+                    // Guarda la compra
+                    $purchase = $this->savePurchase($model, Yii::app()->request->userHostAddress);
                 }
+
+                // Ejecuta las transacciones en la base de datos
+                $transaction->commit();
+
+                //Destruye la variable de session para evitar duplicados
+                unset(Yii::app()->session['purchase']);
+
+                $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
+
+            } catch (Exception $e) {
+                Yii::app()->user->setFlash('error', $e->getMessage());
+                // vuelve atras lo guardado del cliente
+                $transaction->rollback();
             }
+
+            
+    
         }
         //Setting correct price
         $price_list = PriceList::model()->find('brand = :brand AND  model = :model', array(':brand' => Yii::app()->session['purchase']['brand'], ':model' => Yii::app()->session['purchase']['model']));
@@ -212,73 +260,11 @@ class PurchaseController extends Controller
         $this->render('step_showprice', array('price' => $price, 'purchase_id' => $purchase_id, 'personal_select' => $personal_select));
     }
 
-    public function actionGenerateContract($purchase_id)
-    {
-        $purchase = Purchase::model()->findByPk($purchase_id);
-        $retail = PointOfSale::model()->findByPk($purchase->point_of_sale_id);
-        $seller = Seller::model()->findByPk($purchase->seller_id);
-
-        $carrier = Carrier::model()->findByPk($purchase->carrier_id);
-
-        if (!$carrier) {
-            $carrier_name = Yii::t('app', 'Unlocked');
-        } else {
-            $carrier_name = $carrier->name;
-        }
-
-        //$this->renderPartial('contract', array('model' => $purchase, 'retail' => $retail, 'seller' => $seller, 'carrier_name' => $carrier_name));
-        //die();
-
-        $html2pdf = Yii::app()->ePdf->HTML2PDF();
-        $html2pdf->WriteHTML($this->renderPartial('contract_wrap', array('model' => $purchase, 'retail' => $retail, 'seller' => $seller, 'carrier_name' => $carrier_name), true));
-        $html2pdf->Output();
-    }
-
-    public function actionGenerateUnContract($purchase_id)
-    {
-        if (!Yii::app()->user->checkAccess('admin')) {
-            return false;
-        }
-
-        $purchase = Purchase::model()->findByPk($purchase_id);
-        $retail = PointOfSale::model()->findByPk($purchase->point_of_sale_id);
-        $seller = Seller::model()->findByPk($purchase->seller_id);
-
-        $carrier = Carrier::model()->findByPk($purchase->carrier_id);
-
-        try {
-            /**
-             * Array con la respuesta de la AFIP con los siguienes items
-             * ['contract_munber'] : integer
-             * ['cae'] : integer
-             * ['json_response'] : string : json raw del json que devuelve la afip con todos sus datos incluido el CAE
-             *
-             * @var array
-             */
-            $cae_array = Yii::app()->wsfe->getCaeParaContrato($purchase->purchase_price, $seller);
-
-        } catch (Exception $e) {
-            Yii::app()->user->setFlash('error', $e);
-
-            return;
-
-        }
-
-        if (!$carrier) {
-            $carrier_name = Yii::t('app', 'Unlocked');
-        } else {
-            $carrier_name = $carrier->name;
-        }
-
-        //$this->renderPartial('contract', array('model' => $purchase, 'retail' => $retail, 'seller' => $seller, 'carrier_name' => $carrier_name));
-        //die();
-
-        $html2pdf = Yii::app()->ePdf->HTML2PDF();
-        $html2pdf->WriteHTML($this->renderPartial('uncontract_wrap', array('model' => $purchase, 'retail' => $retail, 'seller' => $seller, 'carrier_name' => $carrier_name, 'contract_number' => $cae_array['contract_number']), true));
-        $html2pdf->Output();
-    }
-
-    public function savePurchase($seller)
+    /**
+     * Guarda la compra y la comunica a GIF
+     * @param  Seller $seller AR Seller
+     */
+    public function savePurchase($seller, $user_ip)
     {
 
         $model = new Purchase;
@@ -308,10 +294,7 @@ class PurchaseController extends Controller
             $cae_array = Yii::app()->wsfe->getCaeParaContrato($purchase_price, $seller);
 
         } catch (Exception $e) {
-            Yii::app()->user->setFlash('error', 'Ha ocurrido un error guardando la compra. Intente nuevamente más tarde. Si el problema persiste contactese con el administrador.');
-
-            return;
-
+            throw $e;
         }
 
         /**
@@ -335,6 +318,10 @@ class PurchaseController extends Controller
             'paid_price' => Purchase::DEFAULT_PAID_PRICE,
             'last_location_id' => Yii::app()->user->point_of_sale_id,
             'cae_response_json' => $cae_array['json_response'],
+            'gif_response_json' => trim(Yii::app()->session['purchase']['gif_response_json']),
+            'pricelist_log' => CJSON::encode(Yii::app()->session['current_price_list_device']),
+            'user_ip' => $user_ip,
+            'comprobante_tipo' => Purchase::COMPROBANTE_TIPO_COMPRA,
             'cae' => $cae_array['cae'],
         );
 
@@ -375,6 +362,73 @@ class PurchaseController extends Controller
             echo CJSON::encode($models);
         } else {
             throw new CHttpException(400, Yii::t('app', 'Your request is invalid.'));
+        }
+    }
+
+    /**
+     * Anula una compra generando su respectiva nota de credito asociada
+     * @param  int $id Purchase.id
+     */
+    public function actionCancel($id)
+    {
+        $associate_purchase = Purchase::model()->findByPk($id);
+        
+        $new_purchase = new Purchase;
+        // Duplica los datos sin id
+        $data = $associate_purchase->attributes;
+        unset($data['id']);
+        $new_purchase->setAttributes($data, false);
+
+        // Inicia la transacción de DisptchNote
+        $transaction = Yii::app()->getDb()->beginTransaction();
+
+        try {
+            /**
+             * Array con la respuesta de la AFIP con los siguienes items
+             * ['contract_munber'] : integer
+             * ['cae'] : integer
+             * ['json_response'] : string : json raw del json que devuelve la afip con todos sus datos incluido el CAE
+             *
+             * @var array
+             */
+            $cae_array = Yii::app()->wsfe->getCaeParaContrato($associate_purchase->purchase_price, $associate_purchase->seller);
+
+            // Guarda los datos del CAE
+            $new_purchase->contract_number = $cae_array['contract_number'];
+            $new_purchase->cae_response_json = $cae_array['json_response'];
+            $new_purchase->cae = $cae_array['cae'];
+            // Pone el precio en negativo
+            $new_purchase->purchase_price = -($associate_purchase->purchase_price);
+            // Marca el contrato como NOTA DE CREDITO
+            $new_purchase->comprobante_tipo = 'NC';
+            // Guarda el contrato asociado que debe anular
+            $new_purchase->associate_row = $associate_purchase->id;
+
+            $new_purchase->save();
+            // Crea el estado canclation
+            $new_purchase->setStatus(Status::CANCELLATION);
+
+            // Actualiza la compra anulada
+            $associate_purchase->associate_row = $new_purchase->id;
+            $associate_purchase->setStatus(Status::CANCELLED);
+
+            // No ocurrió ningún error
+            // Ejecuta la transacción
+            $transaction->commit();
+            // Genera la respuesta para el javascript
+            $response['status'] = 1;
+            $response['purchase_id'] = $new_purchase->id;
+            $response['message'] = 'Cancelación de compra generada.';
+            //$this->renderJSON($response);
+            die(CJSON::encode($response));
+
+        } catch (Exception $e) {
+            $transaction->rollback();
+            // Genera la respuesta para el javascript
+            $response['status'] = 0;
+            $response['errors'] = $e->getMessage();
+            // $this->renderJSON($response);
+            die(CJSON::encode($response));
         }
     }
 
@@ -499,8 +553,19 @@ class PurchaseController extends Controller
         // TODO: Se levanta un ticket en la plataforma GIF
         // Se escribe en el log de la aplicacion
         if (($gif_dictionary_brand != $current_price_list_device_brand) || ($gif_dictionary_model != $current_price_list_device_model)) {
-            echo 'mira el log';
             Yii::log('GIF_DICTIONARY brand: ' . $gif_dictionary_brand . ' model: ' . $gif_dictionary_model . ' | USER SELECTION brand: ' . $current_price_list_device_brand . ' model: ' . $current_price_list_device_model, CLogger::LEVEL_WARNING, 'GIF_DICTIONARY USER SELECTION NOT MATCHING');
+        }
+    }
+
+    /**
+     * Chequea que la variable de session que mantiene los datos de la compra atraves de los 
+     * formularios exista
+     * De lo contrario redirecciona a el action imei
+     */
+    public function checkSession()
+    {
+        if (!isset(Yii::app()->session['purchase'])) {
+            $this->redirect('purchase/buy/imei');
         }
     }
 }

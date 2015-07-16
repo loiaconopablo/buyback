@@ -15,9 +15,6 @@ class DispatchNote extends BaseDispatchNote
         return parent::model($className);
     }
 
-    /**
-     * relations
-     */
     public function relations()
     {
         return array(

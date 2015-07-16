@@ -8,7 +8,7 @@
     $form = $this->beginWidget(
         'GxActiveForm', array(
         'id' => 'purchase-form',
-        'action' => array('/retail/purchase/brandmodel'),
+        'action' => array('/purchase/buy/brandmodel'),
         'enableAjaxValidation' => false,
              // 'clientOptions'=>array(
         //             'validateOnSubmit'=>true,
