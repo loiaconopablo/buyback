@@ -24,6 +24,7 @@ class Purchase extends BasePurchase
         'company' => array(self::BELONGS_TO, 'Company', 'company_id'),
         'point_of_sale' => array(self::BELONGS_TO, 'PointOfSale', 'point_of_sale_id'),
         'last_location' => array(self::BELONGS_TO, 'PointOfSale', 'last_location_id'),
+        'last_dispatch_note' => array(self::BELONGS_TO, 'DispatchNote', 'last_dispatch_note_id'),
         'headquarter' => array(self::BELONGS_TO, 'PointOfSale', 'headquarter_id'),
         'user' => array(self::BELONGS_TO, 'User', 'user_create_id'),
         'seller' => array(self::BELONGS_TO, 'Seller', 'seller_id'),
@@ -240,5 +241,32 @@ class Purchase extends BasePurchase
         }
 
         return false;
+    }
+
+    /**
+     * Devuelve el AR de PurchaseStatus con mayor id donde la compra tiene el estado RECIVED
+     * o null si no encuentra nada
+     * @return timestamp la fecha del ultimo estado RECIVED
+     */
+    public function getLastRecivedDate()
+    {
+        $PurchaseStatusModel = new PurchaseStatus;
+
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('purchase_id = :purchase_id');
+        $criteria->addCondition('status_id = :status');
+        $criteria->params = array(
+            ':status' => Status::RECEIVED,
+            ':purchase_id' => $this->id,
+        );
+        $criteria->order = 'id DESC';
+
+        $purchase_status_model = $PurchaseStatusModel->find($criteria);
+
+        if ($purchase_status_model) {
+            return date("d-m-Y", strtotime($purchase_status_model->created_at));
+        }
+
+        return;
     }
 }
