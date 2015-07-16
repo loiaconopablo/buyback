@@ -58,127 +58,127 @@ class PurchaseController extends Controller
         );
     }
 
-    /**
-     * Renderiza la vista con la lista de equipos a pasar al estado IN_OBSERVATION
-     * Tambien muestra un textarea para escribir un comentario en el estado de cada equipo
-     * @author Richard Grinberg <rggrinberg@gmail.com>
-     */
-    public function actionSetInObservation()
-    {
-        /**
-         * Modelo (no table) del formulario que contiene el comentario
-         * con su validacion especifica
-         * @var CommentForm
-         */
-        $comment_model = new CommentForm;
+    // /**
+    //  * Renderiza la vista con la lista de equipos a pasar al estado IN_OBSERVATION
+    //  * Tambien muestra un textarea para escribir un comentario en el estado de cada equipo
+    //  * @author Richard Grinberg <rggrinberg@gmail.com>
+    //  */
+    // public function actionSetInObservation()
+    // {
+    //     /**
+    //      * Modelo (no table) del formulario que contiene el comentario
+    //      * con su validacion especifica
+    //      * @var CommentForm
+    //      */
+    //     $comment_model = new CommentForm;
 
-        $model = new Purchase;
+    //     $model = new Purchase;
 
-        /**
-         * Array con las ids de los equipos que se quieren pasar al estado IN_OBSERVATION
-         * @var array
-         */
-        $purchases = array();
+    //     /**
+    //      * Array con las ids de los equipos que se quieren pasar al estado IN_OBSERVATION
+    //      * @var array
+    //      */
+    //     $purchases = array();
 
-        // Se fija si recibio purchases en el post del admin
-        if (isset($_POST['purchase_selected'])) {
-            $purchases = $_POST['purchase_selected'];
-        }
+    //     // Se fija si recibio purchases en el post del admin
+    //     if (isset($_POST['purchase_selected'])) {
+    //         $purchases = $_POST['purchase_selected'];
+    //     }
 
-        // Si no recibe este POST el request viene de admin
-        if (isset($_POST['CommentForm'])) {
-            $comment_model->setAttributes($_POST['CommentForm']);
+    //     // Si no recibe este POST el request viene de admin
+    //     if (isset($_POST['CommentForm'])) {
+    //         $comment_model->setAttributes($_POST['CommentForm']);
 
-            if ($comment_model->validate()) {
-                // setea el comentario y el estado de todas las purchases del array
-                $model->setPurchasesInObservation($purchases, $comment_model->comment);
+    //         if ($comment_model->validate()) {
+    //             // setea el comentario y el estado de todas las purchases del array
+    //             $model->setPurchasesInObservation($purchases, $comment_model->comment);
 
-                $this->redirect(array('inobservation'));
-            }
-        }
+    //             $this->redirect(array('inobservation'));
+    //         }
+    //     }
 
-        /*
-        Genera el dataProvider con las purchase_id del request para popular la grilla en la vista
-        */
-        $criteria = new CDbCriteria;
-        $criteria->addInCondition('id', $purchases);
+    //     /*
+    //     Genera el dataProvider con las purchase_id del request para popular la grilla en la vista
+    //     */
+    //     $criteria = new CDbCriteria;
+    //     $criteria->addInCondition('id', $purchases);
 
-        $dataProvider = new CActiveDataProvider(
-            new Purchase,
-            array(
-            'criteria' => $criteria,
-            )
-        );
+    //     $dataProvider = new CActiveDataProvider(
+    //         new Purchase,
+    //         array(
+    //         'criteria' => $criteria,
+    //         )
+    //     );
 
-        $this->render(
-            'set_in_observation',
-            array(
-            'dataProvider' => $dataProvider,
-            'model' => $model,
-            'comment_model' => $comment_model,
-            )
-        );
-    }
+    //     $this->render(
+    //         'set_in_observation',
+    //         array(
+    //         'dataProvider' => $dataProvider,
+    //         'model' => $model,
+    //         'comment_model' => $comment_model,
+    //         )
+    //     );
+    // }
 
     /**
      * Renderiza la vista con la lista de equipos a pasar al estado APPROVED
      * Tambien muestra un textarea para escribir un comentario en el estado de cada equipo
      * @author Richard Grinberg <rggrinberg@gmail.com>
      */
-    public function actionSetApproved()
-    {
-        /**
-         * Modelo (no table) del formulario que contiene el comentario
-         * con su validacion especifica
-         * @var CommentForm
-         */
-        $comment_model = new CommentForm;
+    // public function actionSetApproved()
+    // {
+    //     /**
+    //      * Modelo (no table) del formulario que contiene el comentario
+    //      * con su validacion especifica
+    //      * @var CommentForm
+    //      */
+    //     $comment_model = new CommentForm;
 
-        $model = new Purchase;
+    //     $model = new Purchase;
 
-        /**
-         * Array con las ids de los equipos que se quieren pasar al estado IN_OBSERVATION
-         * @var array
-         */
-        $purchases = array();
+    //     /**
+    //      * Array con las ids de los equipos que se quieren pasar al estado IN_OBSERVATION
+    //      * @var array
+    //      */
+    //     $purchases = array();
 
-        // Se fija si recibio purchases en el post del admin
-        if (isset($_POST['purchase_selected'])) {
-            $purchases = $_POST['purchase_selected'];
-        }
+    //     // Se fija si recibio purchases en el post del admin
+    //     if (isset($_POST['purchase_selected'])) {
+    //         $purchases = $_POST['purchase_selected'];
+    //     }
 
-        // Si no recibe este POST el request viene de admin
-        if (isset($_POST['CommentForm'])) {
-            $comment_model->setAttributes($_POST['CommentForm']);
+    //     // Si no recibe este POST el request viene de admin
+    //     if (isset($_POST['CommentForm'])) {
+    //         $comment_model->setAttributes($_POST['CommentForm']);
 
-            if ($comment_model->validate()) {
-                // setea el comentario y el estado de todas las purchases del array
-                $model->setPurchasesApproved($purchases, $comment_model->comment);
-            }
-        }
+    //         if ($comment_model->validate()) {
+    //             // setea el comentario y el estado de todas las purchases del array
+    //             $model->setPurchasesApproved($purchases, $comment_model->comment);
+    //         }
+    //     }
 
-        /*
-        Genera el dataProvider con las purchase_id del request para popular la grilla en la vista
-        */
-        $criteria = new CDbCriteria;
-        $criteria->addInCondition('id', $purchases);
+    //     /*
+    //     Genera el dataProvider con las purchase_id del request para popular la grilla en la vista
+    //     */
+    //     $criteria = new CDbCriteria;
+    //     $criteria->addInCondition('id', $purchases);
 
-        $dataProvider = new CActiveDataProvider(
-            new Purchase,
-            array(
-            'criteria' => $criteria,
-            )
-        );
+    //     $dataProvider = new CActiveDataProvider(
+    //         new Purchase,
+    //         array(
+    //         'criteria' => $criteria,
+    //         )
+    //     );
 
-        $this->render(
-            'set_approved',
-            array(
-            'dataProvider' => $dataProvider,
-            'model' => $model,
-            'comment_model' => $comment_model,
-            )
-        );
-    }
+    //     $this->render(
+    //         'set_approved',
+    //         array(
+    //         'dataProvider' => $dataProvider,
+    //         'model' => $model,
+    //         'comment_model' => $comment_model,
+    //         )
+    //     );
+    // }
 
     /**
      * Muestra la tabla de equipos en poder de los puntos de ventas de las empresas que no son owner
