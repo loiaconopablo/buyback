@@ -3,39 +3,45 @@
 class PurchaseController extends Controller
 {
 	// Uncomment the following methods and override them if needed
-	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
+	
+	/**
+    * @return array action filters
+    */
+    public function filters()
+    {
+            return array(
+                    'accessControl', // perform access control for CRUD operations
+            );
+    }
 
-	public function actions()
-	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-	*/
+    public function accessRules()
+    {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index'),
+                'expression' => "Yii::app()->user->checkAccess('admin')",
+            ),
+            array('deny',  // deny all users
+                'users'=>array('*'),
+            ),
+        );
+    }
+	
 
 	public function actionIndex()
 	{
+
 		$model = new Purchase('search');
         $model->unsetAttributes();
 
         if (isset($_GET['Purchase'])) {
             $model->setAttributes($_GET['Purchase']);
+        }
+
+        if(!Yii::app()->request->isAjaxRequest) {
+        	// Limpia la cookie de filtro por estado
+			unset(Yii::app()->request->cookies['checkedPurchaseStatuses']);
         }
 
         $this->render(

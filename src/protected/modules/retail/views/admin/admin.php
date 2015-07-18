@@ -124,7 +124,7 @@ $this->menu = array(
     </div>
 </div>
 
-<?php $this->date_filter = true;?>
+<?php $this->created_at_filter = true;?>
 <?php //$this->advanced_search = true; ?>
 
 <?php $this->renderPartial(

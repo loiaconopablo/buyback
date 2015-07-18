@@ -51,17 +51,36 @@ $(document).ready(function() {
 		});
 	 });
 
+	 /** Filtra por status purchase */
+	 $('input[name*=status_search]').on('click', function() {
+
+	 	var checked_purchase_statuses = new Array();
+
+	 	$('input[name*=status_search]:checked').each(function() {
+	 		checked_purchase_statuses.push($(this).val());
+	 	});
+
+	 	$.cookie('checkedPurchaseStatuses', checked_purchase_statuses, { path: '/' });
+
+	 	refreshGrid();
+	 });
+
 });
 
+
+/**
+ * DATE FILTER FUNCTIONS
+ * @return {[type]} [description]
+ */
 function refreshGrid () {
 	$('.grid-view').each(function() {
 		$.fn.yiiGridView.update($(this).attr('id'));
 	})
 };
 
-function resetDateFilter() {
-	$.removeCookie("from");
-	$.removeCookie("to");
+function resetDateFilter(prefix) {
+	$.removeCookie(prefix + "from");
+	$.removeCookie(prefix + "to");
 	location.reload();
 };
 
