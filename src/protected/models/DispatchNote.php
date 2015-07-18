@@ -15,6 +15,12 @@ class DispatchNote extends BaseDispatchNote
         return parent::model($className);
     }
 
+    public static function representingColumn() 
+    {
+        return 'dispatch_note_number';
+    }
+
+
     public function relations()
     {
         return array(

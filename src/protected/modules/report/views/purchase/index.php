@@ -73,43 +73,36 @@ $this->menu = array(
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
          array(
-         	'name' => 'point_of_sale',
+         	'name' => 'point_of_sale_id',
+         	'value' => '$data->point_of_sale',
          	'header' => Yii::t('app', 'Comprado en...'),
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.point_of_sale_id'), 'point_of_sale_id', 'point_of_sale'),
         ),
          array(
-            'name' => 'company',
+            'name' => 'company_id',
+            'value' => '$data->company',
+            'header' => Yii::t('app', 'Empresa'),
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.company_id'), 'company_id', 'company'),
         ),
          //'user',
         array(
             'name' => 'user_create_id',
             'header' => 'Comprado por...',
-            'value' => '$data->user->username',
-            //'filter' => CHtml::listData($model->getRetailAdminPurchases(), 'user.id', 'user.username'),
+            'value' => '$data->user',
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.user_create_id'), 'user_create_id', 'user'),
         ),
-        array(
-        	'name' => 'last_dispatch_note',
-        	'header' => Yii::t('app', 'Última NE'),
-        	'value' => '$data->last_dispatch_note != null ? $data->last_dispatch_note->dispatch_note_number : ""',
-        ),
-         array(
-            'header' => Yii::t('app', 'Fecha recepción'),
-            'value' => '$data->getLastRecivedDate()',
-            'filter' => false,
-            'htmlOptions' => array('style' => 'text-align: center'),
-        ),
-        
-         array(
-            'name' => 'last_location',
-            'header' => Yii::t('app', 'Última ubicación'),
-            //'value' => '$data->point_of_sale->name',
-            //'filter' => CHtml::listData($model->getRetailAdminPurchases(), 'point_of_sale.id', 'point_of_sale.name'),
-        ),
-        
-        
 
+
+        /**
+         * BOTON VER INICIO
+         */
         array(
             'class' => 'TbButtonColumn',
             'template' => '{view-purchase}',
+            'header' => 'Ver',
+            'headerHtmlOptions' => array(
+            	'style' => 'text-align: center',
+            ),
             'buttons' => array
             (
                 'view-purchase' => array
@@ -125,14 +118,41 @@ $this->menu = array(
                 ),
             ),
         ),
+        /**
+         * BOTON VER END
+         */
+
+
+
+        array(
+        	'name' => 'last_dispatch_note_id',
+        	'header' => Yii::t('app', 'Nota'),
+        	'value' => '$data->last_dispatch_note',
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.last_dispatch_note_id'), 'last_dispatch_note_id', 'last_dispatch_note.dispatch_note_number'),
+        ),
+         array(
+            'header' => Yii::t('app', 'F. recepción'),
+            'value' => '$data->getLastRecivedDate()',
+            'filter' => false,
+            'htmlOptions' => array('style' => 'text-align: center'),
+        ),
+        
+         array(
+            'name' => 'last_location_id',
+            'value' => '$data->last_location',
+            'header' => Yii::t('app', 'Última ubicación'),
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.last_location_id'), 'last_location_id', 'last_location'),
+        ),
+        
     ),
     )
 );?>
 
 
 <?php //$this->advanced_search = true; ?>
-<?php $this->date_filter = true;?>
-<?php $this->purchase_references = $model->pending();?>
+<?php $this->created_at_filter = true; ?>
+<?php $this->recived_at_filter = true; ?>
+<?php $this->purchase_references = $model->searchReferences();?>
 
 <div id="modal-purchase" class="modal hide fade" style="">
     <div class="modal-header">

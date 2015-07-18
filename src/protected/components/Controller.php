@@ -29,7 +29,8 @@ class Controller extends CController
      * Habilita el filtro entre fechas si es TRUE
      * @var boolean
      */
-    public $date_filter = false;
+    public $created_at_filter = false;
+    public $recived_at_filter = false;
 
     public $main_menu = array();
     public $submenu = array();
