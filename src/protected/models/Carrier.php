@@ -12,7 +12,7 @@ class Carrier extends BaseCarrier
     public function relations() 
     {
         return array(
-        'purchase' => array(self::HAS_MANY, 'Contract', 'carrier_id'),
+        'purchase' => array(self::HAS_MANY, 'Purchase', 'seller_id'),
             
         'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
         );
