@@ -65,13 +65,6 @@ $(document).ready(function() {
 	 	refreshGrid();
 	 });
 
-	 // Actualiza las consulta antes de ir al actin export
-	 $('.export_to_excel').on('click', function() {
-	 	$('.grid-view').each(function() {
-			$.fn.yiiGridView.update($(this).attr('id'));
-		})
-	 });
-
 	 // Evita que los links deshabilitados funcionen
 	 $('.disabled a').on('click', function(ev) {
 	 	ev.preventDefault();

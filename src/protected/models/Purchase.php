@@ -36,6 +36,10 @@ class Purchase extends BasePurchase
         );
     }
 
+    public static function representingColumn() {
+        return 'contract_number';
+    }
+
     public function attributeLabels()
     {
         return CMap::mergeArray(
