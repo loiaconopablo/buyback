@@ -21,7 +21,7 @@
             'header' => 'html',
             'id' => 'purchase_selected',
             'class' => 'CCheckBoxColumn',
-            'checked' => 'Helper::checkedInGrid($data->id)',
+            'checked' => 'Helper::checkedInCookie($data->id, "checkedItems")',
             'selectableRows' => '50',
             'selectableRows' => 2,
             'value' => '$data->id',

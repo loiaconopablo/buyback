@@ -44,9 +44,9 @@ class OwnerModule extends CWebModule
 
                 $controller->submenu = array(
                 array('label' => Yii::t('app', 'Recibidos'), 'url' => array('/owner/purchase/admin'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/admin'),
-                array('label' => Yii::t('app', 'En observación'), 'url' => array('/owner/purchase/inobservation'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/inobservation'),
-                array('label' => Yii::t('app', 'Para liquidar'), 'url' => array('/owner/purchase/topay'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/topay'),
-                array('label' => Yii::t('app', 'Historial'), 'url' => array('/owner/purchase/history'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/history'),
+                array('disabled' => true, 'label' => Yii::t('app', 'En observación'), 'url' => array('#')/*array('/owner/purchase/inobservation')*/, 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/inobservation'),
+                array('disabled' => true, 'label' => Yii::t('app', 'Para liquidar'), 'url' => array('#')/*array('/owner/purchase/topay')*/, 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/topay'),
+                array('disabled' => true, 'label' => Yii::t('app', 'Historial'), 'url' => array('#')/*array('/owner/purchase/history')*/, 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/history'),
                 array('label' => Yii::t('app', 'Pendientes'), 'url' => array('/owner/purchase/pending'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/purchase/pending'),
                 );
             }
