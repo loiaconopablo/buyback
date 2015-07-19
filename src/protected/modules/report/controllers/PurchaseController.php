@@ -19,7 +19,7 @@ class PurchaseController extends Controller
         return array(
             array(
                 'allow',
-                'actions' => array('index'),
+                'actions' => array('index', 'export'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
             array('deny',  // deny all users
@@ -28,7 +28,9 @@ class PurchaseController extends Controller
         );
     }
 	
-
+    /**
+     * Muestra la grilla con todos los filtros para realizar reportes
+     */
 	public function actionIndex()
 	{
 
@@ -37,11 +39,9 @@ class PurchaseController extends Controller
 
         if (isset($_GET['Purchase'])) {
             $model->setAttributes($_GET['Purchase']);
-        }
 
-        if(!Yii::app()->request->isAjaxRequest) {
-        	// Limpia la cookie de filtro por estado
-			unset(Yii::app()->request->cookies['checkedPurchaseStatuses']);
+            Yii::app()->request->cookies['purchase_filters'] = new CHttpCookie('purchase_filters', CJSON::encode($_GET['Purchase']));
+
         }
 
         $this->render(
@@ -51,5 +51,19 @@ class PurchaseController extends Controller
             )
         );
 	}
+
+    public function actionExport()
+    {
+        $model = new Purchase;
+        $model->unsetAttributes();
+
+        $model->setAttributes(CJSON::decode(Yii::app()->request->cookies['purchase_filters']));
+
+        foreach ($model->search()->data as $purchase) {
+            echo $purchase->contract_number . '<br>';
+        }
+
+        die();
+    }
 
 }

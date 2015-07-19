@@ -149,6 +149,9 @@ $this->menu = array(
 );?>
 
 
+<?php echo TbHtml::linkButton(Yii::t('app', 'Exportar a Excel'), array('class' => 'export_to_excel' ,'color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'url' => array('export')));?>
+
+
 <?php //$this->advanced_search = true; ?>
 <?php $this->created_at_filter = true; ?>
 <?php $this->recived_at_filter = true; ?>

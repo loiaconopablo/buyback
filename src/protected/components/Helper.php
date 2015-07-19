@@ -56,9 +56,9 @@ class Helper
      * @param  integer $id Id del tipo de registro que se este seleccionando en la Grid
      * @return boolean     Devuelve si dicho item esta selecionado o no
      */
-    public static function checkedInGrid($id)
+    public static function checkedInCookie($id, $cookie_name)
     {
-        $checkedItemsCookie = Yii::app()->request->cookies['checkedItems'];
+        $checkedItemsCookie = Yii::app()->request->cookies[$cookie_name];
 
         if ($checkedItemsCookie) {
             $checkedItemsArray = explode(',', $checkedItemsCookie->value);
