@@ -29,7 +29,7 @@ $this->menu = array(
         'purchase_price' => Yii::t('app', 'Precio'),
         'created_at' => Yii::t('app', 'Fecha de creación'),
         'user_ip' => Yii::t('app', 'IP'),
-        'associate_row' => Yii::t('app', 'Contrato asociado'),
+        // 'associate_row' => Yii::t('app', 'Contrato asociado'),
     );
 
     $attribute_carrier_options = array(

@@ -75,14 +75,14 @@ class PurchaseController extends Controller
 
                 // Attributos de la compra
                 foreach ($_POST['attributes'] as $purchase_attribute) {
-                    array_push($excel_row, $purchase->$purchase_attribute);
+                    array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
                 }
 
                 // Attributos del Operador
                 if (isset($_POST['carrier_attributes'])) {
                     foreach ($_POST['carrier_attributes'] as $carrier_attribute) {
                         if ($purchase->carrier) {
-                            array_push($excel_row, $purchase->carrier->$carrier_attribute);
+                            array_push($excel_row, $this->formatData($carrier_attribute, $purchase->carrier->$carrier_attribute));
                         } else {
                             array_push($excel_row, 'Liberado');
                         }
@@ -90,30 +90,30 @@ class PurchaseController extends Controller
                 }
 
                 // Attributos del punto de venta
-                if (isset($_POST['compay_attributes'])) {
-                    foreach ($_POST['compay_attributes'] as $compay_attribute) {
-                        array_push($excel_row, $purchase->company->$compay_attribute);
+                if (isset($_POST['point_of_sale_attributes'])) {
+                    foreach ($_POST['point_of_sale_attributes'] as $point_of_sale_attribute) {
+                        array_push($excel_row, $this->formatData($point_of_sale_attribute, $purchase->point_of_sale->$point_of_sale_attribute));
                     }
                 }
 
                 // Attributos de la empresa
-                if (isset($_POST['point_of_sale_attributes'])) {
-                    foreach ($_POST['point_of_sale_attributes'] as $point_of_sale_attribute) {
-                        array_push($excel_row, $purchase->point_of_sale->$point_of_sale_attribute);
+                 if (isset($_POST['compay_attributes'])) {
+                    foreach ($_POST['compay_attributes'] as $compay_attribute) {
+                        array_push($excel_row, $this->formatData($compay_attribute, $purchase->company->$compay_attribute));
                     }
                 }
 
                 // Attributos del usuario
                 if (isset($_POST['user_attributes'])) {
                     foreach ($_POST['user_attributes'] as $user_attribute) {
-                        array_push($excel_row, $purchase->user->$user_attribute);
+                        array_push($excel_row, $this->formatData($user_attribute, $purchase->user->$user_attribute));
                     }
                 }
 
                 // Attributos del cliente
                 if (isset($_POST['seller_attributes'])) {
                     foreach ($_POST['seller_attributes'] as $seller_attribute) {
-                        array_push($excel_row, $purchase->seller->$seller_attribute);
+                        array_push($excel_row, $this->formatData($seller_attribute, $purchase->seller->$seller_attribute));
                     }
                 }
 
@@ -121,7 +121,7 @@ class PurchaseController extends Controller
                 if (isset($_POST['dispatchnote_attributes'])) {
                     foreach ($_POST['dispatchnote_attributes'] as $dispatchnote_attribute) {
                         if ($purchase->last_dispatch_note) {
-                            array_push($excel_row, $purchase->last_dispatch_note->$dispatchnote_attribute);
+                            array_push($excel_row, $this->formatData($dispatchnote_attribute, $purchase->last_dispatch_note->$dispatchnote_attribute));
                         } else {
                             array_push($excel_row, '');
                         }
@@ -132,7 +132,7 @@ class PurchaseController extends Controller
                 if (isset($_POST['last_location_attributes'])) {
                     foreach ($_POST['last_location_attributes'] as $last_location_attribute) {
                         if ($purchase->last_location) {
-                            array_push($excel_row, $purchase->last_location->$last_location_attribute);
+                            array_push($excel_row, $this->formatData($last_location_attribute, $purchase->last_location->$last_location_attribute));
                         } else {
                             array_push($excel_row, '');
                         }
@@ -159,6 +159,16 @@ class PurchaseController extends Controller
         }
 
         $this->render('export', array('model' => $model));
+    }
+
+
+    public function formatData($attribute, $data)
+    {
+        if ($attribute == 'created_at' || $attribute == 'updated_at') {
+            return date("d-m-Y h:i", strtotime($data));
+        }
+
+        return $data;
     }
 
 }
