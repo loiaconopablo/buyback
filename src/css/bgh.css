@@ -10,6 +10,10 @@ table td.button-column {
   padding-right: 14px;
 }
 
+div#owner-purchase-grid {
+  overflow: auto;
+}
+
 input[type=number].no-spin::-webkit-inner-spin-button, 
 input[type=number].no-spin::-webkit-outer-spin-button,
 { 
@@ -496,4 +500,13 @@ tr.PAID td:last-child {
 .personal-selection {
 	background-color: #3a87ad;
 	color: #FFF;
+}
+
+#Purchase_last_dispatch_note_id {
+	width:20px;
+	min-width: 50px;
+}
+
+.grid-view .table .filters > td .filter-container select {
+	margin-right: -16px;
 }

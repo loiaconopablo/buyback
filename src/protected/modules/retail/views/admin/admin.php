@@ -37,7 +37,7 @@ $this->menu = array(
             'header' => 'html',
             'id' => 'purchase_selected',
             'class' => 'CCheckBoxColumn',
-            'checked' => 'Helper::checkedInGrid($data->id)',
+            'checked' => 'Helper::checkedInCookie($data->id, "checkedItems")',
             // 'selectableRows' => '50',
             'selectableRows' => 2,
             'value' => '$data->id',
@@ -124,7 +124,7 @@ $this->menu = array(
     </div>
 </div>
 
-<?php $this->date_filter = true;?>
+<?php $this->created_at_filter = true;?>
 <?php //$this->advanced_search = true; ?>
 
 <?php $this->renderPartial(

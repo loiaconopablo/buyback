@@ -107,7 +107,7 @@ $this->menu = array(
     )
 );?>
 
-<?php $this->date_filter = true;?>
+<?php $this->created_at_filter = true;?>
 
 <!-- MODAL PARA VER Y RECIBIR O RECHAZAR PURCHASES O EL Nota de Envío COMPLETO -->
 <!-- Por ahora no va a ser modal, es muy comoplejo y trae conflictos -->
