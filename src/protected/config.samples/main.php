@@ -51,6 +51,7 @@ return array(
         'purchase' => array(),
         'dispatchnote' => array(),
         'owner' => array(),
+        'report' => array(),
         // uncomment the following to enable the Gii tool
         'gii' => array(
             'class' => 'system.gii.GiiModule',

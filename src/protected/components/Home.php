@@ -54,9 +54,10 @@ class Home
         */
         if (Yii::app()->user->checkAccess('admin')) {
             return array(
-            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/owner/purchase/admin'), 'active' => Yii::app()->controller->id == 'purchase'),
-            array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/owner/dispatchnote/expecting'), 'active' => Yii::app()->controller->id == 'dispatchnote'),
-            array('label'=>Yii::t('app', 'Empresas'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
+            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/owner/purchase/admin'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'purchase')),
+            array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/owner/dispatchnote/expecting'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'dispatchnote')),
+            array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
+            array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
             );
         }
 
