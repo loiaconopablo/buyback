@@ -116,7 +116,8 @@ $this->menu = array(
 <?php $this->endWidget();?>
 
 <?php //$this->advanced_search = true; ?>
-<?php $this->date_filter = true;?>
+<?php $this->created_at_filter = true;?>
+<?php $this->purchase_references = $model->admin();?>
 
 <?php $this->renderPartial(
     '_search',

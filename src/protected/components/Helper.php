@@ -28,17 +28,17 @@ class Helper
         }
     }
 
-    public static function getDateFilterParams()
+    public static function getDateFilterParams($prefix)
     {
-        if (isset(Yii::app()->request->cookies['from']->value)) {
-            $date_from = DateTime::createFromFormat('d/m/Y', Yii::app()->request->cookies['from']->value);
+        if (isset(Yii::app()->request->cookies[$prefix . 'from']->value)) {
+            $date_from = DateTime::createFromFormat('d/m/Y', Yii::app()->request->cookies[$prefix . 'from']->value);
             $from = $date_from->format('Y-m-d');
         } else {
             $from = '000-00-00';
         }
 
-        if (isset(Yii::app()->request->cookies['to']->value)) {
-            $date_to = DateTime::createFromFormat('d/m/Y H:i:s', Yii::app()->request->cookies['to']->value . '24:59:59');
+        if (isset(Yii::app()->request->cookies[$prefix . 'to']->value)) {
+            $date_to = DateTime::createFromFormat('d/m/Y H:i:s', Yii::app()->request->cookies[$prefix . 'to']->value . '24:59:59');
             $to = $date_to->format('Y-m-d H:i:s');
         } else {
             $to = '9999-12-31';
@@ -56,9 +56,9 @@ class Helper
      * @param  integer $id Id del tipo de registro que se este seleccionando en la Grid
      * @return boolean     Devuelve si dicho item esta selecionado o no
      */
-    public static function checkedInGrid($id)
+    public static function checkedInCookie($id, $cookie_name)
     {
-        $checkedItemsCookie = Yii::app()->request->cookies['checkedItems'];
+        $checkedItemsCookie = Yii::app()->request->cookies[$cookie_name];
 
         if ($checkedItemsCookie) {
             $checkedItemsArray = explode(',', $checkedItemsCookie->value);
@@ -68,4 +68,22 @@ class Helper
         
         return false;
     }
+
+
+    /**
+     * Devuelve un modelo con los puntos de venta que aparecen en el dataprovider
+     * unique
+     * @param  CDataprovider $dataProvider
+     * @return Purchase::model()
+     */
+    public static function getUniqueInDataprovider($dataProvider, $field)
+    {
+        $criteria = $dataProvider->getCriteria();
+        $criteria->group = $field;
+
+        $dataProvider->setCriteria($criteria);
+
+        return $dataProvider->data;
+    }
+    
 }

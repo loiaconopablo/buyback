@@ -92,7 +92,7 @@ $this->menu = array(
     )
 );?>
 
-<?php $this->date_filter = true;?>
+<?php $this->created_at_filter = true;?>
 
 <div id="modal-dispatch-note" class="modal hide fade" style="">
     <div class="modal-body"></div>
