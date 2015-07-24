@@ -40,4 +40,20 @@ class DispatchnoteController extends Controller
             )
         );
     }
+    
+    public function actionReport()
+    {
+        $model = new DispatchNote('search');
+        $model->unsetAttributes();
+
+        if (isset($_GET['DispatchNote'])) {
+            $model->setAttributes($_GET['DispatchNote']);
+        }
+
+        $this->render(
+            'dispatch_note_report', array(
+            'model' => $model,
+            )
+        );
+    }
 }
