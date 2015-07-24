@@ -212,6 +212,25 @@ class WsfeClient
      */
     public function getCaeParaContrato($purchase_price, Seller $seller)
     {
+
+        /**
+         * PROVISORIO
+         * Este código es provisorio mientras se tramita el CAE
+         */
+
+        $response_array = array(
+        'contract_number' => $this->formatearNumeroDeContrato(Counters::model()->getNext('contract_number')),
+        'cae' => self::CAI,
+        'json_response' => 'Este es un CAI fijo temporal mientras se tramita el CAE',
+        );
+
+        return $response_array;
+
+        /**
+         * END PROVISORIO
+         */
+        
+
         try {
             $contract_number = $this->getProximoComprobante();
         
@@ -234,22 +253,6 @@ class WsfeClient
              * @var string
              */
             $formated_contract_number = $this->formatearNumeroDeContrato($responseObj->feDetResp->fecaedetResponse[0]->cbteDesde);
-
-             /**
-             * PROVISORIO
-             * Este código es provisorio mientras se tramita el CAE
-             */
-            $response_array = array(
-            'contract_number' => $formated_contract_number,
-            'cae' => self::CAI,
-            'json_response' => 'Este es un CAI fijo temporal mientras se tramita el CAE',
-            );
-
-            return $response_array;
-
-            /**
-             * END PROVISORIO
-             */
 
             if ($responseObj->feCabResp->resultado != 'A') {
                 // 'A': Respuesta del servicio de la AFIP APROBADO
