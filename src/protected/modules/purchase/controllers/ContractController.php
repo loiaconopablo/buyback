@@ -48,6 +48,7 @@ class ContractController extends Controller
         }
 
         $html2pdf = Yii::app()->ePdf->HTML2PDF();
+        $html2pdf->pdf->SetDisplayMode('fullpage');
         $html2pdf->WriteHTML($this->renderPartial('contract_wrap_pdf', array('model' => $purchase), true));
         $html2pdf->Output(Yii::t('app', 'contrato_' . $purchase->contract_number . '.pdf'));
     }
@@ -67,6 +68,7 @@ class ContractController extends Controller
         }
 
         $html2pdf = Yii::app()->ePdf->HTML2PDF();
+        $html2pdf->pdf->SetDisplayMode('fullpage');
         $html2pdf->WriteHTML($this->renderPartial('cancellation_wrap_pdf', array('model' => $purchase), true));
         $html2pdf->Output(Yii::t('app', 'anulacion_' . $purchase->contract_number . '.pdf'));
 
