@@ -31,8 +31,9 @@
     ),
     )
 );?>
-
-
+<!-- IMPRIMIR CONTRATO -->
+<?php echo TbHtml::linkButton(Yii::t('app', 'Imprimir contrato'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/contract/generate', 'purchase_id' => $model->id), 'target' => '_blank'));?>
+<!-- ANULAR COMPRA -->
 <?php if (($model->current_status_id != Status::CANCELLED) && ($model->current_status_id != Status::CANCELLATION)): ?>
     <?php 
         echo TbHtml::linkButton(Yii::t('app', 'Anular compra'),
@@ -45,6 +46,7 @@
         );
     ?>
 <?php endif; ?>
+<!-- VER ANULACION SI YA ESTA ANULADA -->
 <?php if ($model->current_status_id == Status::CANCELLED): ?>
     <?php 
         echo TbHtml::linkButton(Yii::t('app', 'Ver anulación'),
@@ -58,6 +60,7 @@
         );
     ?>
 <?php endif; ?>
+<!-- IMPRIMIR ANULACION -->
 <?php if ($model->current_status_id == Status::CANCELLATION): ?>
     <?php 
         echo TbHtml::linkButton(Yii::t('app', 'Imprimir anulación'),
@@ -72,7 +75,6 @@
     ?>
 <?php endif; ?>
 
-<?php echo TbHtml::linkButton(Yii::t('app', 'Imprimir contrato'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/contract/generate', 'purchase_id' => $model->id), 'target' => '_blank'));?>
 
 <?php foreach ($model->purchase_statuses as $status) :
 ?>
