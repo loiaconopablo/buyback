@@ -2,6 +2,35 @@
 
 class PurchaseController extends Controller
 {
+    /**
+    * @return array action filters
+    */
+    public function filters()
+    {
+            return array(
+                    'accessControl', // perform access control for CRUD operations
+            );
+    }
+
+    public function accessRules()
+    {
+        return array(
+            array(
+                'allow',
+                'actions' => array('view'),
+                'expression' => "Yii::app()->user->checkAccess('retail')",
+            ),
+             array(
+                'allow',
+                'actions' => array('ownerview'),
+                'expression' => "Yii::app()->user->checkAccess('admin')",
+            ),
+            array('deny',  // deny all users
+                'users'=>array('*'),
+            ),
+        );
+    }
+
    /**
     * Solo renderiza la vista de un purchase sin layout
     * porque va dentro de un modal
