@@ -1,5 +1,5 @@
 <p style="font-size:7pt;">
-<span style="font-size:10pt; font-weight:bold;">Condiciones Generales</span>
+<span style="font-size:10pt">Condiciones Generales</span>
 <br/><br/>
 PRIMERA. Mediante la suscripción del presente, el firmante procede a la venta a BGH S.A. con domicilio en la calle Brasil 731, Ciudad Autónoma de Buenos Aires (en adelante “BGH”), de los productos que se entregan en el punto de venta identificado en el presente documento (en adelante el/los “Punto/s de Venta”). Se deja expresa constancia que el Punto de Venta actúa como intermediario entre el cliente y BGH (en adelante “Contenido de la Operación”).
 <br/><br/>
