@@ -18,6 +18,9 @@ return array(
     'Parcialmente recibido' => 'Parcialmente recebido',
     'All rights reserved' => 'Todos os direitos reservados',
     'change to observation' => 'alterar a observação',
+    'Reset filter' => 'Restabelecer filtro',
+    'to' => 'do',
+    'Select' => 'Selecionar',
 
     'Yes' => 'Sim',
     'Dni'    => 'DNI',
@@ -97,7 +100,19 @@ return array(
     
     'Start purchase' => 'Iniciar compra',
     'Start another purchase' => 'Comece outra compra',
-    'Next' => 'Próximo',
+    'Next' => 'Seguinte',
+    'Back' => 'Retorna',
+    'The device owner has to present DNI' => 'O proprietário da equipe tem o DNI',
+    'The device has battery and back cover' => 'O dispositivo tem tampa da bateria e volta',
+    'The device starts and is able to call' => 'O dispositivo inicia e é capaz de chamar',
+    'The device has its screen in a good state (no broken)' => 'O dispositivo tem a sua tela em bom estado (sem partido)',
+    'The device doesnt look like it was wet' => 'A equipe não tem vestígios de estar molhado',
+    'The owner and the device qualifies' => 'o proprietário ea equipe a se classificar',
+    'Only Personal devices are acceptable' => 'Apenas os dispositivos pessoais são aceitáveis',
+    'Print Contract' => 'contrato de impressão',
+    'Quote another device' => 'Citação outros equipamentos',
+    'Double pack' => 'Double pack',
+    'Customer details' => 'Dados do cliente',
     
     'Is Password Validated'  => 'Senha alterada',
 
@@ -142,5 +157,30 @@ return array(
     'Source' => 'Fonte',
     'Destination' => 'Destino',
     'No carrier' => 'Nenhuma transportadora',
-    'Invalid file type' => 'Tipo de arquivo inválido'
+    'Invalid file type' => 'Tipo de arquivo inválido',
+    
+    'Delivery confirmation in Point of Sale products sold BGH' => 'Confirmação de entrega no ponto de venda de produtos vendidos BGH',
+    'Seller s sign' => 'assinatura do vendedor',
+    'seal and signature of the seller' => 'selo e assinatura do vendedor',
+    'receipt' => 'comprovante de compra',
+    'used goods to final consumers not registrable' => 'Bens usados não gravável para os consumidores finais',
+    'code' => 'Code',
+    'start date' =>'data de início',
+    'sell conditions' => 'CONDIÇÃO DE VENDA',
+    'cash' => 'dinheiro',
+    'Content of the sale' => 'Conteúdo da venda',
+    'general conditions' => 'condições Gerais',
+    'Firt Contract Condition' => 'PRIMEIRO. Ao assinar este, a venda signatário recursos para BGH SA residente no Brasil, Rua 731, Buenos Aires (a seguir "BGH"), de produtos que são entregues no ponto de venda aqui identificado (a seguir a / o "ponto / s de Venda" ). É expressamente referido que o POS atua como um intermediário entre o cliente ea BGH (doravante denominados "Conteúdo da Operação")',
+    'Second Contract Condition' => 'SEGUNDO. BGH vai pagar o preço acordado e indicado na casa deste documento "Content of Sale" (doravante denominado o "Valor") descontando esse montante na compra de um novo produto e / ou serviço feita no POS. A simples assinatura deste documento pelo cliente implica sua completa conhecimento e aceitação em relação aos termos do desconto feito',
+    'Third Contract Condition' => 'TERCEIRO. Os produtos serão qualificados pelo termo "obras" e "não funciona" nos produtos de POS. (I) que a bateria pode ser incorporado dentro e fora, (ii) o seu ecrã LCD está intacta e / ou um funcionamento adequado e (iii) o ecrã táctil estiver danificado (somente para smartphones: smartphones)., será acompanhada do termo "obras" Caso contrário, a / o produto / s é / n qualificados / s como "não está funcionando"',
+    'Fourth Contract Condition' => 'QUARTA. O abaixo-assinado declara que ele é o único proprietário dos produtos incluídos na ordem do cliente e afirma ser mais de 18 anos. O assinante não assume qualquer responsabilidade resultante da venda de produtos entregues no ponto de venda',
+    'Contract Responsability' => 'Ele também declarou expressamente que é da responsabilidade do pré-entrega do produto no ponto de venda signatário é permitido, (i) elaborar os cartões SIM apropriados para todos os produtos incluídos na venda e (ii) prosseguir para apagar todos os dados Os produtos que contêm tanto pessoais de informação, texto, imagens, jogos, músicas e / ou outras informações pessoais. Como tal, o signatário autoriza expressamente a BGH para remover permanentemente todas as informações que possam conter as / os produtos abrangidos pelo presente e exima BGH de responsabilidade por perda ou dano dos dados gravados ou contidos em produtos',
+    'Contract Responsability B' => 'Ou BGH ou no ponto de venda será responsável pelo custo, pagamento e qualquer outra consequência jurídica de qualquer comunicação feita antes e / ou após a entrega dos produtos pelo cliente',
+    'Contract Responsability C' => 'O Cliente é responsável pela veracidade dos dados fornecidos, assumindo qualquer responsabilidade pela imprecisão do mesmo',
+    'Contract fifth Condition' => 'QUINTO. Referência operação requer tratamento por BGH e / ou POS de dados pessoais solicitados pelo assinante. Estes dados serão geridos em conformidade com as disposições das normas vigentes em matéria de protecção de dados pessoais',
+    'Contract fifth Condition B' => 'Neste sentido, todos os dados que não exigem o consentimento prévio requerente de coleta, processamento e transferência -de acordo com o disposto nos artigos 5º, nº 2, alínea c), e 11 da Lei nº 25.326 proteção de-dados pessoais podem ser utilizadas por BGH, ou por terceiros a que o BGH tem atribuído para realizar atividades de marketing promocional, sem aviso prévio e / ou aprovação do cliente. Se o cliente quiser conhecer e dados de identificação do cessionário dos arquivos transferidos, você deve aplicar a BGH por meios confiáveis, ou pessoalmente no Centro de Atendimento ao Cliente.',
+    'Contract fifth Condition C' => 'Os dados pessoais fornecidos na forma acima mencionada serão incluídos em ficheiros automatizados, processado sob estritas regras de confidencialidade e protecção de dados. Os dados pessoais serão utilizados pela BGH com a finalidade de proporcionar e melhorar a prestação de produtos móveis para seus clientes e pode ser usado para ações de marketing promocional e / ou fins estatísticos. Portadores de dados pessoais pode a qualquer momento exercer o seu direito de acesso, rectificação, actualização, cancelar e / ou retirar esses dados, em conformidade com as disposições da Lei 25.326 e seu Decreto Regulamentar 1558/2001, através de nota escrita ou assinatura reconhecida, correio ou por meios telegráfica e / ou documento carta provando sua identidade de forma confiável no Brasil nº 731 CP 1154, apresentação Buenos Aires. O titular dos dados pessoais tem o direito de exercer o direito de acesso a eles de graça, com intervalos não inferiores a seis meses, a menos que um interesse legítimo a ser creditado ao abrigo das disposições do artigo 14, parágrafo 3 Lei nº 25.326. PROTECÇÃO DE ENDEREÇO ​​NACIONAL DE DADOS PESSOAIS, Lei No. 25.326 de controle do corpo, tem a autoridade para lidar com queixas e reclamações que são arquivados com respeito ao incumprimento das regras relativas à protecção de dados pessoais',
+    'Contract sixth Condition' => 'SEXTA. Estas condições gerais de funcionamento e comerciais regem-se pela lei da Argentina, e quaisquer reclamações que possam surgir no âmbito do presente serão sujeitos à jurisdição dos tribunais nacionais no comércio com sede em Buenos Aires',
+    'Contract seventh Condition' => 'SÉTIMA. BGH reserva-se o direito de terminar este relacionamento de negócio em caso de incumprimento por parte do signatário de qualquer um dos termos e condições estabelecidos nestes termos e condições'
+    
 );

@@ -54,7 +54,7 @@ endif; ?>
     $this->endWidget();
     ?>
 
-    <?php echo TbHtml::link('volver', array('imei'), array('class' => 'btn btn-large pull-right')); ?>
+    <?php echo TbHtml::link(Yii::t('app','Back'), array('imei'), array('class' => 'btn btn-large pull-right')); ?>
 	</div>
 </div>
 

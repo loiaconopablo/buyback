@@ -12,7 +12,7 @@ endif;?>
 
     <?php if ($personal_select == 2) : ?>
 				<div class="well text-center">
-					<h3>Pack Doble 500</h3>
+					<h3><?php echo Yii::t('app', 'Double pack'); ?> 500</h3>
 					<span class="badge badge-success"><h1>5000 SMS + Internet</h1></span>
 				</div>
     <?php 
@@ -35,10 +35,10 @@ endif;?>
 
 endif;?>
 
-    <?php echo TbHtml::linkButton(Yii::t('app', 'Imprimir contrato'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/contract/generate', 'purchase_id' => $purchase_id), 'target' => '_blank'));?>
+    <?php echo TbHtml::linkButton(Yii::t('app', 'Print Contract'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/contract/generate', 'purchase_id' => $purchase_id), 'target' => '_blank'));?>
 
 	</br>
 	</br>
 	</br>
-    <?php echo TbHtml::linkButton(Yii::t('app', 'COTIZAR OTRO EQUIPO'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/buy/imei')));?>
+    <?php echo TbHtml::linkButton(Yii::t('app', 'Quote another device'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/buy/imei')));?>
 </div>
