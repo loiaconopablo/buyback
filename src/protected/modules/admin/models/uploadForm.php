@@ -7,7 +7,7 @@ class uploadForm extends CFormModel
     public function rules()
     {
         return array(
-            array('file', 'file', 'types'=>'xlsx, xls', 'wrongType' => 'El tipo de archivo no es valido'),
+            array('file', 'file', 'types'=>'xlsx, xls', 'wrongType' => Yii::t('app', 'Invalid file type')),
         );
     }
 }

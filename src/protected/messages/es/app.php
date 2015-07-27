@@ -13,6 +13,12 @@ return array(
     'Notas de envío' => 'Notas de envío',
     'Reportes' => 'Reportes',
     
+    'References' => 'REFERENCIAS',
+    'En punto de venta' => 'En punto de venta',
+    'Parcialmente recibido' => 'Parcialmente recibido';
+    'All rights reserved' => 'Todos los derechos reservados',
+    'change to observation' => 'Pasar a observación',
+    
     'Yes' => 'Sí',
     'Dni'    => 'DNI',
     'Name'   => 'Nombre',
@@ -72,6 +78,8 @@ return array(
     'Purchase' => 'Compra',
 
     'Recibidos' => 'Recibidos',
+    'Recibido' => 'Recebido',
+    'received' => 'Recibido',
     'En observación' => 'En observación',
     'Para liquidar' => 'Para liquidar',
 
@@ -125,6 +133,7 @@ return array(
     'Comment' => 'Comentario',
     'Seller|Sellers' => 'Vendedor|Vendedores',
     'In transit' => 'En transito',
+    'Anulada' => 'Anulada',
     'Close' => 'Cerrar',
     'Dispatch Number' => 'Nº Remito',
     'Dispatch Notes to be Received' => 'Remitos por recibir',
@@ -134,4 +143,5 @@ return array(
     'Source' => 'Origen',
     'Destination' => 'Destino',
     'No carrier' => 'Liberado',
+    'Invalid file type' => 'El tipo de archivo no es valido'
 );

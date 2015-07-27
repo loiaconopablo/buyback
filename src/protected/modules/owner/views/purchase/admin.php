@@ -113,7 +113,7 @@ $this->menu = array(
     )
 );?>
 
-<?php echo TbHtml::submitButton(Yii::t('app', 'Pasar a observación'), array('class' => 'checks-submit btn-warning', 'data-checkcolumn' => 'purchase_selected'));?>
+<?php echo TbHtml::submitButton(Yii::t('app', 'change to observation'), array('class' => 'checks-submit btn-warning', 'data-checkcolumn' => 'purchase_selected'));?>
 
 <?php $this->endWidget();?>
 

@@ -162,3 +162,13 @@ div.wide.form .buttons, div.wide.form .hint, div.wide.form .errorMessage
 	clear: left;
 	padding-left: 110px;
 }
+
+#login-form .rememberMe 
+{
+    padding-bottom: 15px;
+}
+
+#login-form .rememberMe label 
+{
+    display: inline-block;
+}
