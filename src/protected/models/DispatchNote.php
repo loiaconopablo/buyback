@@ -442,7 +442,7 @@ class DispatchNote extends BaseDispatchNote
     public static function references()
     {
         $references = array(
-        array('label' => Yii::t('app', 'REFERENCIAS'), 'icon' => 'th-large', 'url' => '#', 'active' => true),
+        array('label' => Yii::t('app', 'References'), 'icon' => 'th-large', 'url' => '#', 'active' => true),
         array('label' => Yii::t('app', 'En punto de venta'), 'icon' => 'th-large', 'url' => '#', 'htmlOptions' => array('class' => 'pending reference')),
         array('label' => Yii::t('app', 'Parcialmente recibido'), 'icon' => 'th-large', 'url' => '#', 'htmlOptions' => array('class' => 'partially-recived reference')),
         array('label' => Yii::t('app', 'En transito'), 'icon' => 'th-large', 'url' => '#', 'htmlOptions' => array('class' => 'reference in-transit')),

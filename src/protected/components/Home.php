@@ -57,7 +57,7 @@ class Home
             array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/owner/purchase/admin'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'purchase')),
             array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/owner/dispatchnote/expecting'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'dispatchnote')),
             array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
-            array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
+            array('label'=>Yii::t('app', 'Management'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
             );
         }
 
@@ -95,9 +95,12 @@ class Home
     {
         $menu_options = array();
 
-        array_push($menu_options, array('label' => Yii::t('app', 'Cambiar contraseña'), 'url' => array('/auth/auth/changepassword','id'=>Yii::app()->user->id)));
+        array_push($menu_options, array('label' => Yii::t('app', 'Change password'), 'url' => array('/auth/auth/changepassword','id'=>Yii::app()->user->id)));
         array_push($menu_options, TbHtml::menuDivider());
-        array_push($menu_options, array('label' => Yii::t('app', 'Cerrar sesión'), 'url' => array('/auth/auth/logout')));
+        array_push($menu_options, array('label' => Yii::t('app', 'Spanish'), 'url' => array(Yii::app()->request->getPathInfo().'?lang=es')));
+        array_push($menu_options, array('label' => Yii::t('app', 'Portuguese'), 'url' => array(Yii::app()->request->getPathInfo().'?lang=pt')));
+        array_push($menu_options, TbHtml::menuDivider());
+        array_push($menu_options, array('label' => Yii::t('app', 'Logout'), 'url' => array('/auth/auth/logout')));
 
         return $menu_options;
                             

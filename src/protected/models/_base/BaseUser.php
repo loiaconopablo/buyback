@@ -97,9 +97,9 @@ abstract class BaseUser extends GxActiveRecord
         'last_login' => Yii::t('app', 'Last Login'),
         'user_update_id' => Yii::t('app', 'User Update'),
         'is_password_validated' => Yii::t('app', 'Is Password Validated'),
-        'old_password'=>'Password actual',
-        'new_password'=>'Nuevo Password',
-        'repeat_password'=>'Nuevo Password(repitalo)'
+        'old_password'=>Yii::t('app', 'Current Password'),
+        'new_password'=>Yii::t('app', 'New Password'),
+        'repeat_password'=>Yii::t('app', 'New Password').' ('.Yii::t('app', 'Repeat').')'
         );
     }
 

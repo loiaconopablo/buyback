@@ -1,11 +1,15 @@
 <page backtop="2mm" backbottom="5mm" backleft="5mm" backright="5mm" format="A4" orientation="landscape">
 <page_footer>
 	<table style="width:100%;">
-		<tr><td>Confirmación de la entrega en Punto de Venta de los productos vendidos a BGH</td></tr>
+		<tr><td><?php echo yii::t('app', 'Delivery confirmation in Point of Sale products sold BGH'); ?></td></tr>
 		<tr>
 			<td style="font-size:8pt;">
-			<div style="display:inline; width:250px; height:100px; background-color:#CCC; padding: 5px; margin-right:10px;">Firma del Vendedor</div>
-			<div style="float:right; display:inline; width:250px; height:100px; background-color:#CCC; padding: 5px">Sello y Firma Punto de Venta</div>
+			<div style="display:inline; width:250px; height:100px; background-color:#CCC; padding: 5px; margin-right:10px;"><?php
+            echo Yii::t('app', 'Seller s sign');
+            ?></div>
+			<div style="float:right; display:inline; width:250px; height:100px; background-color:#CCC; padding: 5px"><?php
+            echo Yii::t('app', 'seal and signature of the seller'); 
+            ?></div>
 			</td>
 		</tr>
 	</table>
@@ -16,7 +20,9 @@
 				<table style="width:100%; border-bottom:2px; border-color:#2e6da4;">
 				<tr>
 					<td colspan="2" style="text-align:center;">
-					<p style="font-size:9pt; line-height:10pt;">COMPROBANTE DE COMPRA<br/>BIENES USADOS NO REGISTRABLES A CONSUMIDORES FINALES<br/>CODIGO Nº 49, R.G. AFIP 3411</p>
+					<p style="font-size:9pt; line-height:10pt;"><?php
+                        echo Yii::t('app', 'receipt');
+                    ?><br/><?php echo Yii::t('app', 'used goods to final consumers not registrable'); ?><br/><b><?php echo Yii::t('app', 'code'); ?> Nº 49, R.G. AFIP 3411</b></p>
 					</td>
 				</tr>
 				<tr>
@@ -25,21 +31,23 @@
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align:center;">
-					<p style="font-size:8pt; line-height:10pt;">BGH SA &#8226; CUIT: 30-50361289-1 &#8226; BRASIL 731 &#8226; CABA<br/>IIBB: 901-918955-9 &#8226; INICIO DE ACTIVIDADES: 01/02/1974 &#8226; CONDICION DE VENTA: CONTADO</p>
+					<p style="font-size:8pt; line-height:10pt;"><b>BGH SA</b> &#8226; <b>CUIT:</b> 30-50361289-1 &#8226; <b>BRASIL 731</b> &#8226; CABA<br/><b>IIBB</b>: 901-918955-9 &#8226; <b><?php 
+                        echo Yii::t('app', 'start date'); ?></b>: 01/02/1974 &#8226; <b><?php echo Yii::t('app', 'sell conditions'); ?></b>: <?php
+                        echo Yii::t('app', 'cash'); ?></p>
 					</td>
 				</tr>
 				</table>
 
 				<table style="width:100%;">
 				<tr>
-					<td colspan="5"><span style="font-size:14pt">Contenido de la venta</span></td>
+					<td colspan=5><h3><?php echo Yii::t('app', 'Content of the sale'); ?></h3></td>
 				</tr>
 				<tr style="background-color:#CCC; padding: 5px 0;">
 					<td style="width:20%">Marca</td>
 					<td style="width:20%">Modelo</td>
 					<td style="width:20%">Operador</td>
 					<td style="width:20%">IMEI</td>
-					<td style="width:20%">Precio</td>
+					<td style="width:20%"><?php echo Yii::t('app', 'Price'); ?></td>
 				</tr>
 				<tr>
 					<td><?php echo $model->brand;?></td>
