@@ -15,7 +15,7 @@ return array(
     
     'References' => 'REFERENCIAS',
     'En punto de venta' => 'En punto de venta',
-    'Parcialmente recibido' => 'Parcialmente recibido';
+    'Parcialmente recibido' => 'Parcialmente recibido',
     'All rights reserved' => 'Todos los derechos reservados',
     'change to observation' => 'Pasar a observación',
     
