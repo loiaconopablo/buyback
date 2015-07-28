@@ -187,4 +187,5 @@ return array(
     'Monthly' => 'Mensual',
     'Year' => 'Año',
     'Show report' => 'Ver reporte',
+    'dispatch_note_' => 'nota_de_envio_',
 );
