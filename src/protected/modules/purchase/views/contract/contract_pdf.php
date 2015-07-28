@@ -1,9 +1,9 @@
 <page backtop="2mm" backbottom="5mm" backleft="5mm" backright="5mm" format="A4" orientation="landscape">
 <page_footer>
 	<table style="width:100%;">
-		<tr><td><?php echo yii::t('app', 'Delivery confirmation in Point of Sale products sold BGH'); ?></td></tr>
+		<tr><td colspan="2"><?php echo yii::t('app', 'Delivery confirmation in Point of Sale products sold BGH'); ?></td></tr>
 		<tr>
-			<td style="font-size:8pt;">
+			<td style="font-size:8pt; width:50%">
 			<div style="display:inline; width:250px; height:100px; background-color:#CCC; padding: 5px; margin-right:10px;"><?php
             echo Yii::t('app', 'Seller s sign');
             ?></div>
@@ -11,6 +11,7 @@
             echo Yii::t('app', 'seal and signature of the seller'); 
             ?></div>
 			</td>
+			<td style="text-align: right; vertical-align: bottom; width:50%; font-size:8pt;"><?php echo $footer;?></td>
 		</tr>
 	</table>
 </page_footer>
@@ -40,7 +41,7 @@
 
 				<table style="width:100%;">
 				<tr>
-					<td colspan=5><h3><?php echo Yii::t('app', 'Content of the sale'); ?></h3></td>
+					<td colspan=5><span style="font-size: 14pt"><?php echo Yii::t('app', 'Content of the sale'); ?></span></td>
 				</tr>
 				<tr style="background-color:#CCC; padding: 5px 0;">
 					<td style="width:20%">Marca</td>
@@ -115,7 +116,7 @@
 			</td><!-- fin col 1 -->
 			<td style="width:50%; vertical-align:top; padding-left:10px;"><!-- col 2 -->
 				<?php $this->renderPartial('condiciones_pdf');?>
-				<p><div style="text-align:right; font-size:8pt;"><?php echo $footer;?></div></p>
+				
 			</td><!-- fin col 2-->
 		</tr>
 	</table>
