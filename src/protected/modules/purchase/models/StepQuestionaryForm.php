@@ -37,7 +37,7 @@ class StepQuestionaryForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-        'questionary' => '¿El titular y el equípo cumplen con todos los requisitos enumerados?',
+        'questionary' => Yii::t('app', 'The owner and the device qualifies'),
         );
     }
 }

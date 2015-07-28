@@ -17,7 +17,7 @@ class PurchaseController extends Controller
         return array(
             array(
                 'allow',
-                'actions' => array('view'),
+                'actions' => array('view', 'dispatch'),
                 'expression' => "Yii::app()->user->checkAccess('retail')",
             ),
              array(

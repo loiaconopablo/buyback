@@ -10,13 +10,13 @@
 <!-- SIDEBAR begin -->
 <div class="span3">
     <!-- ACTIONS MENU begin -->
-    <?php array_unshift($this->menu, array('label' => 'ACCIONES', 'icon' => 'th-large', 'url' => '#', 'active' => true)); ?>
+    <?php array_unshift($this->menu, array('label' => Yii::t('app', 'ACCIONES'), 'icon' => 'th-large', 'url' => '#', 'active' => true)); ?>
     <?php echo TbHtml::stackedTabs($this->menu); ?>
     <!-- ACTIONS MENU end -->
 
     <!-- CREATED_AT begin -->
     <?php if (Yii::app()->controller->created_at_filter) : ?>
-        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'created_at', 'title' => 'Filtrar x fecha de creación')); ?>
+        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'created_at', 'title' => Yii::t('app', 'Filter by creation date'))); ?>
     <?php endif; ?>
     <!-- CREATED_AT end -->
 

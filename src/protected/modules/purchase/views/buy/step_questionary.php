@@ -6,19 +6,19 @@
 <div class="span12">
 
 <div class="alert alert-block alert-warning">
-  <strong>El titular del equipo tiene el DNI</strong>
+  <strong><?php echo Yii::t('app', 'The device owner has to present DNI'); ?></strong>
 </div>
 <div class="alert alert-block alert-warning">
-  <strong>El equipo tiene su batería y su tapa trasera</strong>
+  <strong><?php echo Yii::t('app', 'The device has battery and back cover'); ?></strong>
 </div>
 <div class="alert alert-block alert-warning">
-  <strong>El equipo enciende y puede realizar una llamada</strong>
+  <strong><?php echo Yii::t('app', 'The device starts and is able to call'); ?></strong>
 </div>
 <div class="alert alert-block alert-warning">
-  <strong>El equipo tiene su visor o display en buen estado (no estallado ni rajado).</strong>
+  <strong><?php echo Yii::t('app', 'The device has its screen in a good state (no broken)'); ?>.</strong>
 </div>
 <div class="alert alert-block alert-warning">
-  <strong>El equipo no tiene rastros de haber sido mojado.</strong>
+  <strong><?php echo Yii::t('app', 'The device doesnt look like it was wet'); ?>.</strong>
 </div>
 	
     <?php 
@@ -52,7 +52,7 @@ endforeach; ?>
     $this->endWidget();
     ?>
 
-    <?php echo TbHtml::link('volver', array('brandmodel'), array('class' => 'btn btn-large pull-right')); ?>
+    <?php echo TbHtml::link(Yii::t('app','Back'), array('brandmodel'), array('class' => 'btn btn-large pull-right')); ?>
 	</div>
 </div>
 
