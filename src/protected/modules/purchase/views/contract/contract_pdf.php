@@ -22,7 +22,7 @@
 					<td colspan="2" style="text-align:center;">
 					<p style="font-size:9pt; line-height:10pt;"><?php
                         echo Yii::t('app', 'receipt');
-                    ?><br/><?php echo Yii::t('app', 'used goods to final consumers not registrable'); ?><br/><b><?php echo Yii::t('app', 'code'); ?> Nº 49, R.G. AFIP 3411</b></p>
+                    ?><br/><?php echo Yii::t('app', 'used goods to final consumers not registrable'); ?><br/><?php echo Yii::t('app', 'code'); ?> Nº 49, R.G. AFIP 3411</p>
 					</td>
 				</tr>
 				<tr>
@@ -31,8 +31,8 @@
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align:center;">
-					<p style="font-size:8pt; line-height:10pt;"><b>BGH SA</b> &#8226; <b>CUIT:</b> 30-50361289-1 &#8226; <b>BRASIL 731</b> &#8226; CABA<br/><b>IIBB</b>: 901-918955-9 &#8226; <b><?php 
-                        echo Yii::t('app', 'start date'); ?></b>: 01/02/1974 &#8226; <b><?php echo Yii::t('app', 'sell conditions'); ?></b>: <?php
+					<p style="font-size:8pt; line-height:10pt;">BGH SA &#8226; CUIT: 30-50361289-1 &#8226; BRASIL 731 &#8226; CABA<br/>IIBB: 901-918955-9 &#8226; <?php 
+                        echo Yii::t('app', 'start date'); ?>: 01/02/1974 &#8226; <?php echo Yii::t('app', 'sell conditions'); ?>: <?php
                         echo Yii::t('app', 'cash'); ?></p>
 					</td>
 				</tr>

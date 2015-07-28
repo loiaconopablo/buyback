@@ -19,7 +19,7 @@ class PurchaseController extends Controller
         return array(
             array(
                 'allow',
-                'actions' => array('index', 'export'),
+                'actions' => array('index', 'export', 'monthly'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
             array('deny',  // deny all users
@@ -57,6 +57,9 @@ class PurchaseController extends Controller
         );
 	}
 
+    /**
+     * Exporta la busqueda a Excel
+     */
     public function actionExport()
     {
         $model = new Purchase('search');
@@ -169,6 +172,17 @@ class PurchaseController extends Controller
         }
 
         return $data;
+    }
+
+    public function actionMonthly()
+    {
+        $model = new MonthlyForm;
+
+        if (isset($_POST['MonthlyForm'])) {
+            $model->setAttributes($_POST['MonthlyForm']);
+        }
+
+        $this->render('monthly', array('model' => $model));
     }
 
 }

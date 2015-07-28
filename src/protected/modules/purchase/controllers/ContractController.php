@@ -43,14 +43,17 @@ class ContractController extends Controller
         $purchase = Purchase::model()->findByPk($purchase_id);
 
         // No permite imprimir contrato si no es el dueño o administrador
-        if (!$this->isOwner($purchase) && !Yii::app()->user->checkAccess('admin')) {
-            Yii::app()->end();
+        if ($this->isOwner($purchase) || Yii::app()->user->checkAccess('admin')) {
+
+            $html2pdf = Yii::app()->ePdf->HTML2PDF();
+            $html2pdf->pdf->SetDisplayMode('fullpage');
+            $html2pdf->WriteHTML($this->renderPartial('contract_wrap_pdf', array('model' => $purchase), true));
+            $html2pdf->Output(Yii::t('app', 'contrato_' . $purchase->contract_number . '.pdf'));
+            
         }
 
-        $html2pdf = Yii::app()->ePdf->HTML2PDF();
-        $html2pdf->pdf->SetDisplayMode('fullpage');
-        $html2pdf->WriteHTML($this->renderPartial('contract_wrap_pdf', array('model' => $purchase), true));
-        $html2pdf->Output(Yii::t('app', 'contrato_' . $purchase->contract_number . '.pdf'));
+        Yii::app()->end();
+
     }
 
     /**
@@ -79,6 +82,6 @@ class ContractController extends Controller
      */
    public function isOwner($purchase)
    {
-        return ($purchase->point_of_sale_id != Yii::app()->user->point_of_sale_id);
+        return ($purchase->point_of_sale_id == Yii::app()->user->point_of_sale_id);
    }
 }
