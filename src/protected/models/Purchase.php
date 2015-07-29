@@ -75,8 +75,10 @@ class Purchase extends BasePurchase
 
         $criteria->select = 't.*';
         
+        $params_created = Helper::getDateFilterParams('created_at');
         $params_recived = Helper::getDateFilterParams('recived_at');
         $criteria->join = 'LEFT JOIN purchase_status AS ps ON t.id = ps.purchase_id';
+        $criteria->addBetweenCondition('t.created_at',  $params_created[':from'], $params_created[':to']);
         $criteria->addBetweenCondition('ps.created_at',  $params_recived[':from'], $params_recived[':to']);
         $criteria->group = 't.id';
         

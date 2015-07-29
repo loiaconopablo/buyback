@@ -94,7 +94,7 @@ $this->menu = array(
                     ),
                     'received' => array(
                         'visible' => '$data->current_status_id == Status::RECEIVED',
-                        'label' => 'recibido',
+                        'label' => 'received',
                         'options' => array(
                             'class' => 'label label-success',
                         ),

@@ -128,6 +128,11 @@ div.form .rememberMe label
 	display: inline;
 }
 
+#login-form .rememberMe label {
+    display: inline-block;
+    color: blue;
+}
+
 div.view
 {
 	padding: 10px;

@@ -89,7 +89,7 @@ class DispatchnoteController extends Controller
             )
         );
 
-        $html2pdf->Output();
+        $html2pdf->Output(Yii::t('app', 'dispatch_note_') . $dispatch_note->dispatch_note_number . '.pdf');
     }
 
     /**

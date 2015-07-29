@@ -19,6 +19,6 @@ $this->menu = array(
     array(
         'dataProvider' => $dataProvider,
         'comment_model' => $comment_model,
-        'page_title' => Yii::t('app', 'Pasar a observación'),
+        'page_title' => Yii::t('app', 'change to observation'),
     )
 );?>

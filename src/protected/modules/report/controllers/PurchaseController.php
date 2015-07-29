@@ -19,7 +19,7 @@ class PurchaseController extends Controller
         return array(
             array(
                 'allow',
-                'actions' => array('index', 'export'),
+                'actions' => array('index', 'export', 'monthly'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
             array('deny',  // deny all users
@@ -57,20 +57,29 @@ class PurchaseController extends Controller
         );
 	}
 
+    /**
+     * Exporta la busqueda a Excel
+     */
     public function actionExport()
     {
-        $model = new Purchase('search');
+        $model = new Purchase;
+        
+        //var_dump($model->search()->pagination->setPageSize($model->search()->totalItemCount));
 
         if (isset($_POST['attributes'])) {
 
             Yii::import('vendor.phpoffice.phpexcel.Classes.PHPExcel', true);
 
+            
             $model->unsetAttributes();
             $model->setAttributes(CJSON::decode(Yii::app()->request->cookies['purchase_filters']));
 
+            $dataProvider = $model->search();
+            $dataProvider->setPagination(false);
+
             $excel_data = array();
 
-            foreach ($model->search()->data as $purchase) {
+            foreach ($dataProvider->data as $purchase) {
                 $excel_row = array();
 
                 // Attributos de la compra
@@ -169,6 +178,20 @@ class PurchaseController extends Controller
         }
 
         return $data;
+    }
+
+    /**
+     * Emite un reporte para el mes seleccionado
+     */
+    public function actionMonthly()
+    {
+        $model = new MonthlyForm;
+
+        if (isset($_POST['MonthlyForm'])) {
+            $model->setAttributes($_POST['MonthlyForm']);
+        }
+
+        $this->render('monthly', array('model' => $model));
     }
 
 }
