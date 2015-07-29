@@ -221,15 +221,15 @@ class BuyController extends Controller
                 if ($model->save()) {
                     // Guarda la compra
                     $purchase = $this->savePurchase($model, Yii::app()->request->userHostAddress);
-                }
 
-                // Ejecuta las transacciones en la base de datos
-                $transaction->commit();
+                    // Ejecuta las transacciones en la base de datos
+                    $transaction->commit();
 
-                //Destruye la variable de session para evitar duplicados
+                    $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
+
+                    //Destruye la variable de session para evitar duplicados
                 unset(Yii::app()->session['purchase']);
-
-                $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
+                }    
 
             } catch (Exception $e) {
                 Yii::app()->user->setFlash('error', $e->getMessage());

@@ -10,15 +10,21 @@
 <!-- SIDEBAR begin -->
 <div class="span3">
     <!-- ACTIONS MENU begin -->
-    <?php array_unshift($this->menu, array('label' => 'ACCIONES', 'icon' => 'th-large', 'url' => '#', 'active' => true)); ?>
+    <?php array_unshift($this->menu, array('label' => Yii::t('app', 'ACCIONES'), 'icon' => 'th-large', 'url' => '#', 'active' => true)); ?>
     <?php echo TbHtml::stackedTabs($this->menu); ?>
     <!-- ACTIONS MENU end -->
 
-    <!-- DATEFILTER begin -->
-    <?php if (Yii::app()->controller->date_filter) : ?>
-        <?php $this->renderPartial('application.views.default.timerange'); ?>
+    <!-- CREATED_AT begin -->
+    <?php if (Yii::app()->controller->created_at_filter) : ?>
+        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'created_at', 'title' => Yii::t('app', 'Filter by creation date'))); ?>
     <?php endif; ?>
-    <!-- DATEFILTER end -->
+    <!-- CREATED_AT end -->
+
+    <!-- RECIVED_AT begin -->
+    <?php if (Yii::app()->controller->recived_at_filter) : ?>
+        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'recived_at', 'title' => 'Filtrar x fecha de estado')); ?>
+    <?php endif; ?>
+    <!-- RECIVED_AT end -->
 
     <!-- PURCHASE REFERENCE begin -->
     <?php if (Yii::app()->controller->purchase_references) : ?>

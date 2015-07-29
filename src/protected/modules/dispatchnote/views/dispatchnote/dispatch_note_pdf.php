@@ -15,7 +15,7 @@
 	</page_footer>
 
 	<table style="width:100%; font-family: arial, sans-serif; border-bottom:1px solid #CCC; padding-bottom:5px;">
-			<tr><td colspan="4" style="padding-top:0px; margin-top:0px;"><p style="font-size:20px; font-weight:bold; text-align:center;">X</p></td></tr>
+			<tr><td colspan="4" style="padding-top:0px; margin-top:0px;"><p style="font-size:20px;  text-align:center;">X</p></td></tr>
 			<tr>
 				<td colspan="4" style="padding-bottom:20px;"><p style="font-size:10px; text-align:center;">DOCUMENTO NO V&Aacute;LIDO COMO FACTURA<br/>C&Oacute;DIGO N&deg; 91</p></td>
 			</tr>
@@ -23,7 +23,7 @@
 				<td style="width:13%; text-align:left;"><img id="logo-bgh" style="vertical-align:middle" src="<?php echo Yii::getPathOfAlias('webroot') . '/images/bgh_logo.png';?>"></td>
 				<td style="width:30%;">
 					<p style="font-size:10px; line-height:120%;">
-						<b>PIEDRAS 1450</b> CP: 1154 - CABA<br/>
+						PIEDRAS 1450 CP: 1154 - CABA<br/>
 						Tel: (5411) 43092027 - Fax: (5411) 4307660<br/>
 						IVA RESPONSABLE INSCRIPTO
 					</p>
@@ -46,63 +46,63 @@
 
 <table style="width:100%; font-family: arial, sans-serif; border-bottom:1px solid #CCC; padding:5px 0px 5px 0px;">
 	<tr>
-		<td colspan="4"><b>Origen</b></td>
+		<td colspan="4">Origen</td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Empresa Origen:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->company->name;?></td>
+		<td style=" width:37%;"><?php echo $dispatch_note->point_of_sale->company->name;?></td>
 		<td style="text-align:right; font-size:11px;">N&deg; de Empresa:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->company->company_code;?></td>
+		<td style=" width:37%;"><?php echo $dispatch_note->point_of_sale->company->company_code;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">CUIT:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->company->cuit;?></td>
+		<td style=" width:37%;"><?php echo $dispatch_note->point_of_sale->company->cuit;?></td>
 		<td style="text-align:right; font-size:11px;">Tel&eacute;fono:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->phone;?></td>
+		<td style=" width:37%;"><?php echo $dispatch_note->point_of_sale->phone;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Domicilio:</td>
-		<td style="font-weight:bold;" colspan="3"><?php echo $dispatch_note->point_of_sale->address;?></td>
+		<td style="" colspan="3"><?php echo $dispatch_note->point_of_sale->address;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Provincia:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->province;?></td>
+		<td style=" width:37%;"><?php echo $dispatch_note->point_of_sale->province;?></td>
 		<td style="text-align:right; font-size:11px;">Localidad:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->point_of_sale->locality;?></td>
+		<td style=" width:37%;"><?php echo $dispatch_note->point_of_sale->locality;?></td>
 	</tr>
 </table>
 
 <table style="width:100%; font-family: arial, sans-serif; border-bottom:1px solid #CCC; padding:5px 0px 5px 0px;">
 	<tr>
-		<td colspan="4"><b>Destinatario</b></td>
+		<td colspan="4">Destinatario</td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Señor/es:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->name;?></td>
+		<td style="width:37%; "><?php echo $dispatch_note->destination->name;?></td>
 		<td style="text-align:right; font-size:11px;">N&deg; de Empresa:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->company->company_code;?></td>
+		<td style="width:37%; "><?php echo $dispatch_note->destination->company->company_code;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">CUIT:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->company->cuit;?></td>
+		<td style="width:37%; "><?php echo $dispatch_note->destination->company->cuit;?></td>
 		<td style="text-align:right; font-size:11px;">Tel&eacute;fono:</td>
-		<td style="font-weight:bold; width:37%;"><?php echo $dispatch_note->destination->phone;?></td>
+		<td style=" width:37%;"><?php echo $dispatch_note->destination->phone;?></td>
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Domicilio:</td>
-		<td style="font-weight:bold;" colspane="3"><?php echo $dispatch_note->destination->address;?></td>
+		<td style="" colspane="3"><?php echo $dispatch_note->destination->address;?></td>
 
 	</tr>
 	<tr>
 		<td style="text-align:right; font-size:11px;">Provincia:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->province;?></td>
+		<td style="width:37%; "><?php echo $dispatch_note->destination->province;?></td>
 		<td style="text-align:right; font-size:11px;">Localidad:</td>
-		<td style="width:37%; font-weight:bold;"><?php echo $dispatch_note->destination->locality;?></td>
+		<td style="width:37%; "><?php echo $dispatch_note->destination->locality;?></td>
 	</tr>
 </table>
 
 <table style="width:100%; font-family: arial, sans-serif; border-bottom:3px double #CCC; padding:5px 0px 10px 0px;">
-	<tr style="font-size:10px; font-weight:bold; border-bottom:1px solid #CCC;">
+	<tr style="font-size:10px;  border-bottom:1px solid #CCC;">
 		<th style="width:10%; height:2%;">Nº Contrato</th>
 		<th style="width:30%; height:2%;">Marca</th>
 		<th style="width:30%; height:2%;">Modelo</th>

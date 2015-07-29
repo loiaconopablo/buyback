@@ -24,6 +24,7 @@ class Purchase extends BasePurchase
         'company' => array(self::BELONGS_TO, 'Company', 'company_id'),
         'point_of_sale' => array(self::BELONGS_TO, 'PointOfSale', 'point_of_sale_id'),
         'last_location' => array(self::BELONGS_TO, 'PointOfSale', 'last_location_id'),
+        'last_dispatch_note' => array(self::BELONGS_TO, 'DispatchNote', 'last_dispatch_note_id'),
         'headquarter' => array(self::BELONGS_TO, 'PointOfSale', 'headquarter_id'),
         'user' => array(self::BELONGS_TO, 'User', 'user_create_id'),
         'seller' => array(self::BELONGS_TO, 'Seller', 'seller_id'),
@@ -33,6 +34,10 @@ class Purchase extends BasePurchase
         'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
         'associate_purchase' => array(self::BELONGS_TO, 'Purchase', 'associate_row'),
         );
+    }
+
+    public static function representingColumn() {
+        return 'contract_number';
     }
 
     public function attributeLabels()
@@ -59,37 +64,48 @@ class Purchase extends BasePurchase
         );
     }
 
+    public function searchReferences()
+    {
+        return parent::search();
+    }
+
     public function search()
     {
         $criteria = parent::search()->getCriteria();
 
-        /*
-        Condiciones para filtrar entre fechas
-         */
-        $criteria->condition = 'created_at >= :from AND created_at <= :to';
-        $criteria->params = Helper::getDateFilterParams();
+        $criteria->select = 't.*';
+        
+        $params_created = Helper::getDateFilterParams('created_at');
+        $params_recived = Helper::getDateFilterParams('recived_at');
+        $criteria->join = 'LEFT JOIN purchase_status AS ps ON t.id = ps.purchase_id';
+        $criteria->addBetweenCondition('t.created_at',  $params_created[':from'], $params_created[':to']);
+        $criteria->addBetweenCondition('ps.created_at',  $params_recived[':from'], $params_recived[':to']);
+        $criteria->group = 't.id';
+        
 
-        /*
-        Condiciones para los filstros de la tabla
+        /**
+         * Filtra por estados si esta seteada la cookie
          */
-        $criteria->compare('contract_number', $this->contract_number, true);
-        $criteria->compare('brand', $this->brand, true);
-        $criteria->compare('model', $this->model, true);
-        $criteria->compare('purchase_price', $this->purchase_price, true);
-        $criteria->compare('user_create_id', $this->user_create_id, true);
-        $criteria->compare('point_of_sale_id', $this->point_of_sale_id, true);
+        if (isset(Yii::app()->request->cookies['checkedPurchaseStatuses'])) {
+            $checkedItemsArray = explode(',', Yii::app()->request->cookies['checkedPurchaseStatuses']->value);
+
+            $criteria->addInCondition('current_status_id', $checkedItemsArray);
+        }
 
         return new CActiveDataProvider(
             $this,
             array(
-            'criteria' => $criteria,
+                'criteria' => $criteria,
+                'pagination'=>array(
+                    'pageSize'=>20,
+                    ),
             )
         );
     }
 
     /**
      * Agrega condiciones al criterio de search para filtrar los equipos que estan en estado
-     * RECIVED o PENDING para en el point_of_sale_id del usuario de session
+     * RECEIVED o PENDING para en el point_of_sale_id del usuario de session
      * @author Richard Grinberg <rggrinberg@gmail.com>
      * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
      */
@@ -240,5 +256,32 @@ class Purchase extends BasePurchase
         }
 
         return false;
+    }
+
+    /**
+     * Devuelve el AR de PurchaseStatus con mayor id donde la compra tiene el estado RECEIVED
+     * o null si no encuentra nada
+     * @return timestamp la fecha del ultimo estado RECIVED
+     */
+    public function getLastRecivedDate()
+    {
+        $PurchaseStatusModel = new PurchaseStatus;
+
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('purchase_id = :purchase_id');
+        $criteria->addCondition('status_id = :status');
+        $criteria->params = array(
+            ':status' => Status::RECEIVED,
+            ':purchase_id' => $this->id,
+        );
+        $criteria->order = 'id DESC';
+
+        $purchase_status_model = $PurchaseStatusModel->find($criteria);
+
+        if ($purchase_status_model) {
+            return date("d-m-Y", strtotime($purchase_status_model->created_at));
+        }
+
+        return;
     }
 }

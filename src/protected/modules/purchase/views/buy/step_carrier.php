@@ -46,7 +46,7 @@ endif;?>
 
 		<div>
 			<div class="alert alert-block alert-info bold">
-				<?php echo Yii::t('app', 'SOLO SE ACEPTAN EQUIPOS DE PERSONAL');?>
+				<?php echo Yii::t('app', 'Only Personal devices are acceptable');?>
 			</div>
 		</div>
     <?php 
@@ -58,7 +58,7 @@ endif;?>
     $this->endWidget();
 ?>
 
-    <?php echo TbHtml::link('volver', array('questionary'), array('class' => 'btn btn-large pull-right'));?>
+    <?php echo TbHtml::link(Yii::t('app','Back'), array('questionary'), array('class' => 'btn btn-large pull-right'));?>
 	</div>
 </div>
 

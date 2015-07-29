@@ -26,11 +26,11 @@ class PurchaseReferences extends CWidget
     public static function references($estados)
     {
         $references = array(
-        array('label' => Yii::t('app', 'REFERENCIAS'), 'icon' => 'th-large', 'url' => '#', 'active' => true),
+        array('label' => Yii::t('app', 'References'), 'icon' => 'th-large', 'url' => '#', 'active' => true),
         );
 
         foreach ($estados as $key => $estado) {
-            array_push($references, array('label' => Yii::t('app', $estado->name), 'url' => '#', 'htmlOptions' => array('class' => 'pending ' . $estado->constant_name)));
+            array_push($references, array('label' => TbHtml::checkBox('status_search[' . $estado->constant_name . ']', Helper::checkedInCookie($estado->id, "checkedPurchaseStatuses"), array('value' => $estado->id, 'uncheckValue'=>'0', 'label' => Yii::t('app', $estado->name))), 'url' => '#', 'htmlOptions' => array('class' => 'pending ' . $estado->constant_name)));
         }
 
         return $references;
@@ -62,4 +62,5 @@ class PurchaseReferences extends CWidget
 
         return $estados;
     }
+
 }

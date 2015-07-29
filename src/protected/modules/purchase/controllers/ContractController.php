@@ -19,7 +19,7 @@ class ContractController extends Controller
             array(
                 'allow',
                 'actions' => array('generate'),
-                'expression' => "Yii::app()->user->checkAccess('retail')",
+                'expression' => "Yii::app()->user->checkAccess('retail') || Yii::app()->user->checkAccess('admin')",
             ),
             array(
                 'allow',
@@ -39,16 +39,21 @@ class ContractController extends Controller
      */
     public function actionGenerate($purchase_id)
     {
+        $this->layout = false;
         $purchase = Purchase::model()->findByPk($purchase_id);
 
-        // No permite imprimir contrato si no es el dueño
-        if ($purchase->point_of_sale_id != Yii::app()->user->point_of_sale_id) {
-            Yii::app()->end();
+        // No permite imprimir contrato si no es el dueño o administrador
+        if ($this->isOwner($purchase) || Yii::app()->user->checkAccess('admin')) {
+
+            $html2pdf = Yii::app()->ePdf->HTML2PDF();
+            $html2pdf->pdf->SetDisplayMode('fullpage');
+            $html2pdf->WriteHTML($this->renderPartial('contract_wrap_pdf', array('model' => $purchase), true));
+            $html2pdf->Output(Yii::t('app', 'contrato_' . $purchase->contract_number . '.pdf'));
+            
         }
 
-        $html2pdf = Yii::app()->ePdf->HTML2PDF();
-        $html2pdf->WriteHTML($this->renderPartial('contract_wrap_pdf', array('model' => $purchase), true));
-        $html2pdf->Output();
+        Yii::app()->end();
+
     }
 
     /**
@@ -66,9 +71,17 @@ class ContractController extends Controller
         }
 
         $html2pdf = Yii::app()->ePdf->HTML2PDF();
+        $html2pdf->pdf->SetDisplayMode('fullpage');
         $html2pdf->WriteHTML($this->renderPartial('cancellation_wrap_pdf', array('model' => $purchase), true));
-        $html2pdf->Output();
-    }
+        $html2pdf->Output(Yii::t('app', 'anulacion_' . $purchase->contract_number . '.pdf'));
 
-   
+    }
+    /**
+     * @param  integer Purchase AR
+     * @return boolean
+     */
+   public function isOwner($purchase)
+   {
+        return ($purchase->point_of_sale_id == Yii::app()->user->point_of_sale_id);
+   }
 }

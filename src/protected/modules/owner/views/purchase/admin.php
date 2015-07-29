@@ -43,7 +43,7 @@ $this->menu = array(
         array(
             'name' => 'contract_number',
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Nº de Contrato',
+                'title' => Yii::t('app', 'Order by contract number'),
             ),
             'htmlOptions' => array(
                 'class' => 'text-right',
@@ -52,21 +52,21 @@ $this->menu = array(
         array(
             'name' => 'brand',
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Marca',
+                'title' => Yii::t('app', 'Order by brand'),
             ),
         ),
 
         array(
             'name' => 'model',
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Modelo',
+                'title' => Yii::t('app', 'Order by model'),
             ),
         ),
         array(
             'name' => 'purchase_price',
-            'header' => 'Precio',
+            'header' => Yii::t('app', 'Price'),
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Precio',
+                'title' => Yii::t('app', 'Order by price'),
             ),
             'value' => '"$ " . $data->purchase_price',
             'htmlOptions' => array('style' => 'text-align: right'),
@@ -81,11 +81,13 @@ $this->menu = array(
         array(
             'name' => 'user_create_id',
             'value' => '$data->user->username',
+            'header' => Yii::t('app', 'User'),
             'filter' => CHtml::listData($model->getRetailAdminPurchases(), 'user.id', 'user.username'),
         ),
         array(
             'name' => 'point_of_sale_id',
             'value' => '$data->point_of_sale->name',
+            'header' => Yii::t('app', 'Point of sale'),
             'filter' => CHtml::listData($model->getRetailAdminPurchases(), 'point_of_sale.id', 'point_of_sale.name'),
         ),
 
@@ -111,12 +113,13 @@ $this->menu = array(
     )
 );?>
 
-<?php echo TbHtml::submitButton(Yii::t('app', 'Pasar a observación'), array('class' => 'checks-submit btn-warning', 'data-checkcolumn' => 'purchase_selected'));?>
+<?php echo TbHtml::submitButton(Yii::t('app', 'change to observation'), array('class' => 'checks-submit btn-warning', 'data-checkcolumn' => 'purchase_selected'));?>
 
 <?php $this->endWidget();?>
 
 <?php //$this->advanced_search = true; ?>
-<?php $this->date_filter = true;?>
+<?php $this->created_at_filter = true;?>
+<?php $this->purchase_references = $model->admin();?>
 
 <?php $this->renderPartial(
     '_search',

@@ -29,7 +29,8 @@ class Controller extends CController
      * Habilita el filtro entre fechas si es TRUE
      * @var boolean
      */
-    public $date_filter = false;
+    public $created_at_filter = false;
+    public $recived_at_filter = false;
 
     public $main_menu = array();
     public $submenu = array();
@@ -40,6 +41,20 @@ class Controller extends CController
      * for more details on how to specify this property.
      */
     public $breadcrumbs = array();
+
+    function init(){
+        if (isset($_GET['lang'])) {
+            $cookie = new CHttpCookie('language', $_GET['lang']);
+            $cookie->expire = time()+60*60*24*180; 
+            Yii::app()->request->cookies['language'] = $cookie;
+            $this->redirect (Yii::app()->request->getPathInfo());
+        }
+        if (isset(Yii::app()->request->cookies['language'])) {
+            Yii::app()->language = Yii::app()->request->cookies['language']->value;
+        } else {
+            Yii::app()->language = 'es';
+        }
+    }
 
     protected function beforeAction($action)
     {

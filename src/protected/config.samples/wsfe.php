@@ -2,7 +2,7 @@
 return array(
             'class' => 'application.components.wsfe.WsfeClient',
             'url' => 'http://localhost:8080',
-            'punto_de_venta' => 124,
+            'punto_de_venta' => NUNCA USAR EL NUMERO 1,
             'iva' => 0.17355,
             'tipo_de_comprobante' => 49,
             'tipo_iva' => 5,
