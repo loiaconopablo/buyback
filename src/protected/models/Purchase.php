@@ -86,11 +86,14 @@ class Purchase extends BasePurchase
         /**
          * Filtra por estados si esta seteada la cookie
          */
+        $checkedItemsArray = array();
+
         if (isset(Yii::app()->request->cookies['checkedPurchaseStatuses'])) {
             $checkedItemsArray = explode(',', Yii::app()->request->cookies['checkedPurchaseStatuses']->value);
 
-            $criteria->addInCondition('current_status_id', $checkedItemsArray);
         }
+
+        $criteria->addInCondition('current_status_id', $checkedItemsArray);
 
         return new CActiveDataProvider(
             $this,

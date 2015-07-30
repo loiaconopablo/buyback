@@ -21,7 +21,7 @@ $this->menu = array(
 	<div>
 		<div class="alert alert-block alert-info">
             <?php echo Yii::t('app', $form->labelEx($model, 'month')); ?>
-            <?php echo $form->dropDownList($model, 'month', CHtml::listData(Helper::getMonths(), 'month_number', 'month_name')); ?>
+            <?php echo $form->dropDownList($model, 'month', CHtml::listData(DateHelper::getMonths(), 'month_number', 'month_name')); ?>
 
             <?php echo Yii::t('app', $form->labelEx($model, 'year')); ?>
             <?php echo $form->dropDownList($model, 'year', CHtml::listData($model->getYearsList(), 'year', 'year')); ?>

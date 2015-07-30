@@ -188,9 +188,22 @@ class PurchaseController extends Controller
         $model = new MonthlyForm;
 
         if (isset($_POST['MonthlyForm'])) {
-            $model->setAttributes($_POST['MonthlyForm']);
-        }
 
+            $model->month = $_POST['MonthlyForm']['month'];
+            $model->year = $_POST['MonthlyForm']['year'];
+
+        } else {
+
+            $date['year'] = (int) date('Y', time());
+            $date['month'] = (int) date('m', time());
+
+            $model->month = $date['month'];
+            $model->year = $date['year'];
+        }
+        $my_date = new DateTime();
+        $my_date->modify("+ 7 weekday");
+
+        // die(var_dump($my_date));
         $this->render('monthly', array('model' => $model));
     }
 
