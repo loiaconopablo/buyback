@@ -15,7 +15,7 @@
 
 		<div>
     <?php echo CHtml::label(Yii::t('app', 'Permisos'), 'User_itemname');?>
-    <?php echo $form->dropDownList($Authassignment_model, 'itemname', GxHtml::listDataEx($roles, 'name', 'name'), array('empty' => 'Sin permisos'));?>
+    <?php echo $form->dropDownList($Authassignment_model, 'itemname', GxHtml::listDataEx($roles, 'role', 'name'), array('empty' => 'Sin permisos'));?>
     <?php echo $form->error($Authassignment_model, 'itemname');?>
 		</div><!-- row -->
 </div>

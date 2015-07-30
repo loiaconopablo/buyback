@@ -219,6 +219,10 @@ class BuyController extends Controller
 
             try {
                 if ($model->save()) {
+                    // Si es rol "requoter" puede haber cambiado el precio
+                    if (Yii::app()->user->checkAccess('requoter')) {
+                        $this->setRequotedPriceInSession($_POST['price']);
+                    }
                     // Guarda la compra
                     $purchase = $this->savePurchase($model, Yii::app()->request->userHostAddress);
 
@@ -248,7 +252,14 @@ class BuyController extends Controller
         Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], array('price_list_id' => $price_list->id));
         Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], $price_data);
 
-        $this->render('step_seller', array('model' => $model, 'price' => $price_data['purchase_price']));
+        // Si tiene este campo es porque tiene formulario de recotización
+        $price_value = null;
+        
+        if(isset($_POST['price'])) {
+            $price_value = $_POST['price'];
+        }
+
+        $this->render('step_seller', array('model' => $model, 'showprice' => $this->showPriceRender($price_value)));
 
     }
 
@@ -567,5 +578,41 @@ class BuyController extends Controller
         if (!isset(Yii::app()->session['purchase'])) {
             $this->redirect('purchase/buy/imei');
         }
+    }
+
+    /**
+     * Devuelve el renderizado de showprice dependiendo del rol
+     * @param  [type] $price_list [description]
+     * @return string            [Renderizado]
+     */
+    public function showPriceRender($price_value = null)
+    {
+        if (Yii::app()->user->checkAccess('personal')) {
+            return $this->renderPartial('showprice_personal', array('price' => Yii::app()->session['purchase']['purchase_price']), true);
+        }
+
+        if (Yii::app()->user->checkAccess('requoter')) {
+            if (!$price_value) {
+                $price_value = Yii::app()->session['purchase']['purchase_price'];
+            }
+            return $this->renderPartial('showprice_requoter', array('price' => $price_value), true);
+        }
+
+        return $this->renderPartial('showprice', array('price' => Yii::app()->session['purchase']['purchase_price']), true);
+    }
+
+    /**
+     * Cambia el precio de compra en la session
+     * @param string precio separado con punto
+     */
+    public function setRequotedPriceInSession($price)
+    {
+        $temp_purchase_session = Yii::app()->session['purchase'];
+
+        Yii::app()->session->remove('purchase');
+
+        $temp_purchase_session['purchase_price'] = $price;
+
+        Yii::app()->session['purchase'] = $temp_purchase_session;
     }
 }
