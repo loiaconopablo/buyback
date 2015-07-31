@@ -50,11 +50,11 @@ endif; ?>
 
 	<div class="alert alert-success">
     <?php
-    echo TbHtml::submitButton(Yii::t('app', 'Next'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));
+    echo TbHtml::submitButton(Yii::t('app', 'Siguiente'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));
     $this->endWidget();
     ?>
 
-    <?php echo TbHtml::link(Yii::t('app','Back'), array('imei'), array('class' => 'btn btn-large pull-right')); ?>
+    <?php echo TbHtml::link(Yii::t('app','Volver'), array('imei'), array('class' => 'btn btn-large pull-right')); ?>
 	</div>
 </div>
 

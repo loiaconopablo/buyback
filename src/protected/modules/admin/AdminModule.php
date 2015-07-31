@@ -36,10 +36,10 @@ class AdminModule extends CWebModule
             $controller->submenu_title = Yii::t('app', 'Admin');
 
             $controller->submenu = array(
-            array('label'=>Yii::t('app', 'Company|Companies', 2), 'url'=>array('/admin/company'), 'active' =>  Yii::app()->controller->id=='company'),
-            array('label'=>Yii::t('app', 'Point of sale|Points of sale', 2), 'url'=>array('/admin/pointofsale'), 'active' =>  Yii::app()->controller->id=='pointofsale'),
-            array('label'=>Yii::t('app', 'User|Users', 2), 'url'=>array('/admin/user/'), 'active' =>  Yii::app()->controller->id=='user'),
-            array('label'=>Yii::t('app', 'Price|Price list', 2), 'url'=>array('/admin/pricelist'), 'active' =>  Yii::app()->controller->id=='pricelist'),
+            array('label'=>Yii::t('app', 'Empresas', 2), 'url'=>array('/admin/company'), 'active' =>  Yii::app()->controller->id=='company'),
+            array('label'=>Yii::t('app', 'Puntos de venta'), 'url'=>array('/admin/pointofsale'), 'active' =>  Yii::app()->controller->id=='pointofsale'),
+            array('label'=>Yii::t('app', 'Usuarios'), 'url'=>array('/admin/user/'), 'active' =>  Yii::app()->controller->id=='user'),
+            array('label'=>Yii::t('app', 'Lista de precios', 2), 'url'=>array('/admin/pricelist'), 'active' =>  Yii::app()->controller->id=='pricelist'),
             );
 
             return true;

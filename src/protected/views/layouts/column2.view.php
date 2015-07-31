@@ -16,7 +16,7 @@
 
     <!-- CREATED_AT begin -->
     <?php if (Yii::app()->controller->created_at_filter) : ?>
-        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'created_at', 'title' => Yii::t('app', 'Filter by creation date'))); ?>
+        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'created_at', 'title' => Yii::t('app', 'Filtrar por fecha de creación'))); ?>
     <?php endif; ?>
     <!-- CREATED_AT end -->
 

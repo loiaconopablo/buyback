@@ -61,13 +61,7 @@ $this->menu = array(
     ),
     )
 );?>
-<?php echo TbHtml::button(
-    Yii::t('app', 'Advanced Search'), array(
-    'style' => TbHtml::BUTTON_COLOR_PRIMARY,
-    'data-toggle' => 'modal',
-    'data-target' => '#searchModal',
-    )
-);?>
+
 
 <?php $this->renderPartial(
     '_search', array(

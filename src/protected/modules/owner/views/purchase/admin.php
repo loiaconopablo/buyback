@@ -6,7 +6,7 @@ $this->breadcrumbs = array(
 );
 
 $this->menu = array(
-    array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
+    // array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
 );
 
 ?>
@@ -43,7 +43,7 @@ $this->menu = array(
         array(
             'name' => 'contract_number',
             'headerHtmlOptions' => array(
-                'title' => Yii::t('app', 'Order by contract number'),
+                //'title' => Yii::t('app', 'Order by contract number'),
             ),
             'htmlOptions' => array(
                 'class' => 'text-right',
@@ -52,19 +52,19 @@ $this->menu = array(
         array(
             'name' => 'brand',
             'headerHtmlOptions' => array(
-                'title' => Yii::t('app', 'Order by brand'),
+                //'title' => Yii::t('app', 'Order by brand'),
             ),
         ),
 
         array(
             'name' => 'model',
             'headerHtmlOptions' => array(
-                'title' => Yii::t('app', 'Order by model'),
+                //'title' => Yii::t('app', 'Order by model'),
             ),
         ),
         array(
             'name' => 'purchase_price',
-            'header' => Yii::t('app', 'Price'),
+            'header' => Yii::t('app', 'Precio'),
             'headerHtmlOptions' => array(
                 'title' => Yii::t('app', 'Order by price'),
             ),
@@ -81,7 +81,7 @@ $this->menu = array(
         array(
             'name' => 'user_create_id',
             'value' => '$data->user->username',
-            'header' => Yii::t('app', 'User'),
+            'header' => Yii::t('app', 'Usuario'),
             'filter' => CHtml::listData($model->getRetailAdminPurchases(), 'user.id', 'user.username'),
         ),
         array(

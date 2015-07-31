@@ -40,4 +40,21 @@ class DispatchnoteController extends Controller
             )
         );
     }
+    
+    public function actionReport() // http://buyback.com:8080/owner/dispatchnote/report
+    {
+        $model = new DispatchNote('search');
+        $model->unsetAttributes();
+
+        print_r($_GET); 
+        if (isset($_GET['DispatchNote'])) {
+            $model->setAttributes($_GET['DispatchNote']);
+        }
+
+        $this->render(
+            'dispatch_note_report', array(
+            'model' => $model,
+            )
+        );
+    }
 }

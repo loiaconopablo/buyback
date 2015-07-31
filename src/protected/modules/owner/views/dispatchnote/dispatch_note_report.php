@@ -7,14 +7,14 @@ $this->breadcrumbs = array(
 
 $this->menu = array(
     //array('label'=>Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url'=>array('index')),
-    array('label' => Yii::t('app', 'Create') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('/headquarter/admin/admin')),
+//    array('label' => Yii::t('app', 'Create') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('/headquarter/admin/admin')),
 );
 
 ?>
 
 <!--<h2><?php echo Yii::t('app', 'Manage') . ' ' . GxHtml::encode($model->label(2));?></h2>-->
 
-
+<?php // echo "<pre>"; print_r(Company::model()->findAll(), 'name', 'name'); die(); ?>
 <?php $this->widget(
     'bootstrap.widgets.TbGridView',
     array(
@@ -33,9 +33,21 @@ $this->menu = array(
             'htmlOptions' => array('class' => 'nro-Nota de Envío-weight text-right'),
         ),
         array(
+            'name' => 'company_id',
+            'value' => '$data->company->name',
+            'header' => Yii::t('app', 'Empresa'), 
+            'filter' => CHtml::listData(Company::model()->findAll(), 'id', 'name'),
+        ),
+        array(
             'name' => 'source_id',
             'value' => '$data->point_of_sale->name',
             'header' => Yii::t('app', 'Origen'),
+            'filter' => CHtml::listData(PointOfSale::model()->findAll(), 'id', 'name'),
+        ),
+        array(
+            'name' => 'source_id',
+            'value' => '$data->point_of_sale->name',
+            'header' => Yii::t('app', 'Destino'), //// corregir campo
             'filter' => CHtml::listData($model->getExpecting(), 'point_of_sale.id', 'point_of_sale.name'),
         ),
         array(
@@ -46,8 +58,47 @@ $this->menu = array(
             ),
         ),
         array(
+            'name' => 'source_id',
+            'value' => '$data->point_of_sale->name',
+            'header' => Yii::t('app', 'F. Creación'), //// corregir campo
+            'filter' => CHtml::listData($model->getExpecting(), 'point_of_sale.id', 'point_of_sale.name'),
+        ),
+        array(
+            'name' => 'source_id',
+            'value' => '$data->point_of_sale->name',
+            'header' => Yii::t('app', 'F. Envío'), //// corregir campo
+            'filter' => CHtml::listData($model->getExpecting(), 'point_of_sale.id', 'point_of_sale.name'),
+        ),
+        array(
+            'name' => 'source_id',
+            'value' => '$data->point_of_sale->name',
+            'header' => Yii::t('app', 'F. Finalización'), //// corregir campo
+            'filter' => CHtml::listData($model->getExpecting(), 'point_of_sale.id', 'point_of_sale.name'),
+        ),
+        array(
+            'name' => 'source_id',
+            'value' => '$data->point_of_sale->name',
+            'header' => Yii::t('app', 'Usuario creación'), //// corregir campo
+            'filter' => CHtml::listData($model->getExpecting(), 'point_of_sale.id', 'point_of_sale.name'),
+        ),
+        array(
+            'name' => 'source_id',
+            'value' => '$data->point_of_sale->name',
+            'header' => Yii::t('app', 'Usuario Envío'), //// corregir campo
+            'filter' => CHtml::listData($model->getExpecting(), 'point_of_sale.id', 'point_of_sale.name'),
+        ),
+        array(
+            'name' => 'source_id',
+            'value' => '$data->point_of_sale->name',
+            'header' => Yii::t('app', 'Usuario Recepción'), //// corregir campo
+            'filter' => CHtml::listData($model->getExpecting(), 'point_of_sale.id', 'point_of_sale.name'),
+        ),
+        
+        
+        
+        array(
             'type' => 'raw',
-            'header' => Yii::t('app', 'Comentario'),
+            'header' => Yii::t('app', 'Comment'),
             'filter' => CHtml::activeTextField($model, 'comment'),
             'value' => function ($data) {
                 return '<a rel="popover" title="Nota de envío Nº ' . $data->dispatch_note_number . '" data-content="' . $data->comment . '">' . $data->comment . '</a>';

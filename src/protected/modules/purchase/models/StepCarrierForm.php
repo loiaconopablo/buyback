@@ -38,8 +38,8 @@ class StepCarrierForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-        'unlocked' => 'Liberado',
-        'carrier' => Yii::t('app', 'Carrier|Carriers', 1),
+        'unlocked' => Yii::t('app', 'Liberado'),
+        'carrier' => Yii::t('app', 'Operador'),
         );
     }
 }

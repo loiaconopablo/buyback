@@ -47,6 +47,10 @@ class Purchase extends BasePurchase
             array(
             'user_update_id' => Yii::t('app', 'User|Users', 1),
             'user_create_id' => Yii::t('app', 'Usuario'),
+            'contract_number' => Yii::t('app', 'Nº Contrato'),
+            'brand' => Yii::t('app', 'Marca'),
+            'model' => Yii::t('app', 'Modelo'),
+            'point_of_sale_id' => Yii::t('app', 'Punto de Venta'),
             'user' => Yii::t('app', 'Seller|Sellers', 1),
             'created_at' => Yii::t('app', 'F. de compra'),
             )
@@ -86,11 +90,14 @@ class Purchase extends BasePurchase
         /**
          * Filtra por estados si esta seteada la cookie
          */
+        $checkedItemsArray = array();
+
         if (isset(Yii::app()->request->cookies['checkedPurchaseStatuses'])) {
             $checkedItemsArray = explode(',', Yii::app()->request->cookies['checkedPurchaseStatuses']->value);
 
-            $criteria->addInCondition('current_status_id', $checkedItemsArray);
         }
+
+        $criteria->addInCondition('current_status_id', $checkedItemsArray);
 
         return new CActiveDataProvider(
             $this,

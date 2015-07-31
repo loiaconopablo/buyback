@@ -20,7 +20,13 @@ class Carrier extends BaseCarrier
 
     public function attributeLabels()
     {
-        return CMap::mergeArray(parent::attributeLabels(), array('user_update_id' => Yii::t('app', 'User|Users', 1)));
+        return CMap::mergeArray(
+            parent::attributeLabels(), 
+            array(
+                'user_update_id' => Yii::t('app', 'User|Users', 1),
+                'Name' => Yii::t('app', 'Nombre'),
+            )
+        );
     }
 
 }

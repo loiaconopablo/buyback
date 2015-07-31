@@ -6,7 +6,7 @@ $this->breadcrumbs = array(
 );
 
 $this->menu = array(
-    array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
+    array('label' => Yii::t('app', 'Comprar'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
 );
 
 ?>
@@ -46,7 +46,7 @@ $this->menu = array(
         array(
             'name' => 'contract_number',
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Nº de Contrato',
+                //'title' => 'Ordenar por Nº de Contrato',
             ),
             'htmlOptions' => array(
                 'class' => 'text-right',
@@ -55,21 +55,21 @@ $this->menu = array(
         array(
             'name' => 'brand',
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Marca',
+                //'title' => 'Ordenar por Marca',
             ),
         ),
 
         array(
             'name' => 'model',
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Modelo',
+                //'title' => 'Ordenar por Modelo',
             ),
         ),
         array(
             'name' => 'purchase_price',
-            'header' => 'Precio',
+            'header' => Yii::t('app', 'Precio'),
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Precio',
+                //'title' => 'Ordenar por Precio',
             ),
             'value' => '"$ " . $data->purchase_price',
             'htmlOptions' => array('style' => 'text-align: right'),
@@ -114,7 +114,7 @@ $this->menu = array(
     )
 );?>
 
-<?php echo TbHtml::submitButton(Yii::t('app', 'Confeccionar Nota de Envío'), array('class' => 'checks-submit btn-warning', 'data-checkcolumn' => 'purchase_selected'));?>
+<?php echo TbHtml::submitButton(Yii::t('app', 'Confeccionar Nota de envío'), array('class' => 'checks-submit btn-warning', 'data-checkcolumn' => 'purchase_selected'));?>
 
 <?php $this->endWidget();?>
 

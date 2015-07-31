@@ -36,8 +36,17 @@ class Seller extends BaseSeller
     {
         return CMap::mergeArray(
             parent::attributeLabels(), array(
-            'user_update_id' => Yii::t('app', 'User|Users', 1),
-            'name' => 'Apellido y Nombre',
+            'id' => Yii::t('app', 'ID'),
+            'name' => Yii::t('app', 'Apellido y Nombre'),
+            'dni' => Yii::t('app', 'DNI'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+            'user_update_id' => Yii::t('app', 'User Update'),
+            'address' => Yii::t('app', 'Dirección'),
+            'province' => Yii::t('app', 'Provincia'),
+            'locality' => Yii::t('app', 'Localidad'),
+            'phone' => Yii::t('app', 'Teléfono'),
+            'mail' => Yii::t('app', 'Mail'),
             )
         );
     }

@@ -49,8 +49,8 @@ class DispatchNote extends BaseDispatchNote
         return CMap::mergeArray(
             parent::attributeLabels(),
             array(
-            'user_update_id' => Yii::t('app', 'User|Users', 1),
-            'user_create_id' => Yii::t('app', 'Vendedor'),
+            'user_update_id' => Yii::t('app', 'Usuario'),
+            'user_create_id' => Yii::t('app', 'Usuario'),
             'created_at' => Yii::t('app', 'Fecha'),
             )
         );
