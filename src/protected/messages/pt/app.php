@@ -141,7 +141,7 @@ return array(
     'Cliente' => 'Cliente',
     'Nº Contrato' => 'Nº do Contrato',
     'Precio de compra' => 'Preço de Compra',
-    //'Precio' => 'Preço',
+    'Precio' => 'Preço',
     'Order by price' => 'Ordem por preço',
     'Order by contract number' => 'Ordem por número de contrato',
     'Order by brand' => 'Ordem por marca',
