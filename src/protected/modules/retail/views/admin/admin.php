@@ -47,7 +47,7 @@ $this->menu = array(
         array(
             'name' => 'contract_number',
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Nº de Contrato',
+                //'title' => 'Ordenar por Nº de Contrato',
             ),
             'htmlOptions' => array(
                 'class' => 'text-right',
@@ -56,21 +56,21 @@ $this->menu = array(
         array(
             'name' => 'brand',
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Marca',
+                //'title' => 'Ordenar por Marca',
             ),
         ),
 
         array(
             'name' => 'model',
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Modelo',
+                //'title' => 'Ordenar por Modelo',
             ),
         ),
         array(
             'name' => 'purchase_price',
-            'header' => 'Precio',
+            'header' => Yii::t('app', 'Precio'),
             'headerHtmlOptions' => array(
-                'title' => 'Ordenar por Precio',
+                //'title' => 'Ordenar por Precio',
             ),
             'value' => '"$ " . $data->purchase_price',
             'htmlOptions' => array('style' => 'text-align: right'),

@@ -7,7 +7,7 @@ $this->breadcrumbs = array(
 
 $this->menu = array(
     //array('label'=>Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url'=>array('index')),
-    array('label' => Yii::t('app', 'Create') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('/headquarter/admin/admin')),
+    //array('label' => Yii::t('app', 'Create') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('/headquarter/admin/admin')),
 );
 
 ?>
@@ -38,7 +38,7 @@ $this->menu = array(
         ),
         array(
             'type' => 'raw',
-            'header' => Yii::t('app', 'Comment'),
+            'header' => Yii::t('app', 'Comentario'),
             'filter' => CHtml::activeTextField($model, 'comment'),
             'value' => function ($data) {
                 return '<a rel="popover" title="Nota de envío Nº ' . $data->dispatch_note_number . '" data-content="' . $data->comment . '">' . $data->comment . '</a>';

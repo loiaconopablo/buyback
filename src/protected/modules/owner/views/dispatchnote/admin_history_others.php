@@ -47,7 +47,7 @@ $this->menu = array(
         ),
         array(
             'type' => 'raw',
-            'header' => Yii::t('app', 'Comment'),
+            'header' => Yii::t('app', 'Comentario'),
             'filter' => CHtml::activeTextField($model, 'comment'),
             'value' => function ($data) {
                 return '<a rel="popover" title="Nota de envío Nº ' . $data->dispatch_note_number . '" data-content="' . $data->comment . '">' . $data->comment . '</a>';

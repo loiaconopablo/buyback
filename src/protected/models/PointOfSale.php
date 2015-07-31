@@ -40,7 +40,7 @@ class PointOfSale extends BasePointOfSale
 
     public static function label($n = 1)
     {
-        return Yii::t('app', 'Point of sale|Points of sale', $n);
+        return Yii::t('app', 'Puntos de venta', $n);
     }
 
     public function getHeadquartersByCompany($company_id)
@@ -93,7 +93,7 @@ class PointOfSale extends BasePointOfSale
         // NO tiene headquarter asignado
         // NO pertenece a la empresa owner (BGH)
         // DEBE tener headquarter asignado (Propio o del owner)
-        $this->addError($attribute, 'Debe seleccionar una cabecera');
+        $this->addError($attribute, Yii::t('app', 'Debe seleccionar una cabecera'));
     }
 
     public function attributeLabels()
@@ -101,8 +101,18 @@ class PointOfSale extends BasePointOfSale
         return CMap::mergeArray(
             parent::attributeLabels(),
             array(
-            'user_update_id' => Yii::t('app', 'User|Users', 1),
-            'headquarter' => Yii::t('app', 'Headquarter|Headquarters', 1),
+            'user_update_id' => Yii::t('app', 'Usuario'),
+            'headquarter_id' => Yii::t('app', 'Cabecera'),
+            'name' => Yii::t('app', 'Nombre'),
+            'address' => Yii::t('app', 'Dirección'),
+            'province' => Yii::t('app', 'Provincia'),
+            'locality' => Yii::t('app', 'Localidad'),
+            'phone' => Yii::t('app', 'Teléfono'),
+            'company_id' => Yii::t('app', 'Empresa'),
+            'company' => Yii::t('app', 'Empresa'),
+            'reference_mail' => Yii::t('app', 'Mail'),
+            'is_headquarter' => Yii::t('app', 'Es Cabecera'),
+            'user_log' => Yii::t('app', 'Usuario'),
             )
         );
     }

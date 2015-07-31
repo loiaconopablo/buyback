@@ -60,7 +60,7 @@
 
 
 <?php
-echo TbHtml::submitButton(Yii::t('app', 'Save'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY));
+echo TbHtml::submitButton(Yii::t('app', 'Guardar'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY));
 $this->endWidget();
 ?>
 </div><!-- form -->

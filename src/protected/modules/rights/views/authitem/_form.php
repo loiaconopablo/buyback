@@ -34,7 +34,7 @@
             <?php echo $form->textAreaControlGroup($model, 'data', array('rows'=>6,'span'=>8)); ?>
 
         <div class="form-actions">
-        <?php echo TbHtml::submitButton(Yii::t('app', 'Save'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY)); ?>
+        <?php echo TbHtml::submitButton(Yii::t('app', 'Guardar'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY)); ?>
         </div>
 
     <?php $this->endWidget(); ?>

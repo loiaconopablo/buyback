@@ -141,11 +141,11 @@ endif;?>
 
 		<div class="alert alert-success">
     <?php
-    echo TbHtml::submitButton(Yii::t('app', 'Save'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));
+    echo TbHtml::submitButton(Yii::t('app', 'Guardar') array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));
     $this->endWidget();
 ?>
 
-    <?php echo TbHtml::link(Yii::t('app','Back'), array('carrier'), array('class' => 'btn btn-large pull-right'));?>
+    <?php echo TbHtml::link(Yii::t('app','Volver'), array('carrier'), array('class' => 'btn btn-large pull-right'));?>
 		</div>
 </div><!-- form -->
 

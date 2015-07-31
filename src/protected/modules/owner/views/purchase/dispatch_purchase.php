@@ -62,6 +62,6 @@ $this->menu = array(
     <?php echo $form->error($dispatch_note_model, 'comment');?>
 	</div><!-- row -->
 
-<?php echo TbHtml::submitButton(Yii::t('app', 'Save'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));?>
+<?php echo TbHtml::submitButton(Yii::t('app', 'Guardar'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));?>
 
 <?php $this->endWidget();?>

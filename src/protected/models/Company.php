@@ -37,9 +37,28 @@ class Company extends BaseCompany
         );
     }
 
+    public static function label($n = 1) 
+    {
+        return Yii::t('app', 'Empresa|Empresas', $n);
+    }
+
     public function attributeLabels() 
     {
-        return CMap::mergeArray(parent::attributeLabels(), array('user_update_id' => Yii::t('app', 'User|Users', 1)));
+        return CMap::mergeArray(
+            parent::attributeLabels(),
+            array(
+                'user_update_id' => Yii::t('app', 'Usuario'),
+                'social_reason' => Yii::t('app', 'Razón Social'),
+                'company_code' => Yii::t('app', 'Código de Empresa'),
+                'cuit' => Yii::t('app', 'C.U.I.T.'),
+                'name' => Yii::t('app', 'Nombre'),
+                'address' => Yii::t('app', 'Dirección'),
+                'province' => Yii::t('app', 'Provincia'),
+                'locality' => Yii::t('app', 'Localidad'),
+                'phone' => Yii::t('app', 'Teléfono'),
+                'percent_fee' => Yii::t('app', 'Comisión'),
+            )
+        );
     }
 
     public static function representingColumn() 
