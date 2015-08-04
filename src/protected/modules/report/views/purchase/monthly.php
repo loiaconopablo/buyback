@@ -26,10 +26,89 @@ $this->menu = array(
             <?php echo Yii::t('app', $form->labelEx($model, 'year')); ?>
             <?php echo $form->dropDownList($model, 'year', CHtml::listData($model->getYearsList(), 'year', 'year')); ?>
 
-            <?php echo TbHtml::submitButton(Yii::t('app', 'Show report'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true)); ?>
+            <?php echo TbHtml::submitButton(Yii::t('app', 'Ver reporte'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true)); ?>
 		</div>
 	</div>
 
+    <div class="span span6 nospace">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <th><?php echo Yii::t('app', 'Mes'); ?></th>
+                <th><?php echo Yii::t('app', 'Días hábiles'); ?></th>
+                <th><?php echo Yii::t('app', 'Días hábiles transcurridos'); ?></th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><?php echo Yii::t('app', DateHelper::getMonthName($model->month)); ?></td>
+                    <td style="text-align: center"><?php echo $view_data['dias_habiles_del_mes'] ?></td>
+                    <td style="text-align: center"><?php echo $view_data['dias_habiles_transcurridos'] ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="span span6">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <th><?php echo Yii::t('app', 'Total compras'); ?></th>
+                <th><?php echo Yii::t('app', 'Promedio diario'); ?></th>
+                <th><?php echo Yii::t('app', 'Proyección cierre'); ?></th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align: center"><?php echo TbHtml::labelTb($view_data['total_compras'], array('color' => TbHtml::LABEL_COLOR_INFO)); ?></td>
+                    <td style="text-align: center"><?php echo $view_data['promedio_diario'] ?></td>
+                    <td style="text-align: center"><?php echo $view_data['proyeccion_cierre'] ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="span span6 nospace">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <th><?php echo Yii::t('app', 'Marca'); ?></th>
+                <th><?php echo Yii::t('app', 'Cantidad'); ?></th>
+                <th><?php echo Yii::t('app', 'Participación'); ?></th>
+            </thead>
+            <tbody>
+                <?php foreach($view_data['cantidad_por_marca'] as $registro): ?>
+                <tr>
+                    <td style="text-align: center"><?php echo $registro->brand; ?></td>
+                    <td style="text-align: center"><?php echo $registro->quantity; ?></td>
+                    <td style="text-align: center"><?php echo round(($registro->quantity * 100) / $view_data['total_compras'], 2); ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="span span6">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <th><?php echo Yii::t('app', 'Marca'); ?></th>
+                <th><?php echo Yii::t('app', 'Precio promedio'); ?></th>
+            </thead>
+            <tbody>
+                <?php foreach($view_data['precio_promedio_por_marca'] as $registro): ?>
+                <tr>
+                    <td style="text-align: center"><?php echo $registro->brand; ?></td>
+                    <td style="text-align: center">$ <?php echo round($registro->price_average, 2); ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="span span6 nospace">
+        <?php $this->renderPartial('charts/brands_pie', array('cantidad_por_marca' => $view_data['cantidad_por_marca'])); ?>
+    </div>
+
+    <div class="span span6">
+        <?php $this->renderPartial('charts/brands_price_average_bars', array('precio_promedio_por_marca' => $view_data['precio_promedio_por_marca'])); ?>
+    </div>
+
+    
 
     <?php $this->endWidget(); ?>
 

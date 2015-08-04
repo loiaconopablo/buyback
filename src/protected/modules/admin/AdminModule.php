@@ -40,6 +40,7 @@ class AdminModule extends CWebModule
             array('label'=>Yii::t('app', 'Puntos de venta'), 'url'=>array('/admin/pointofsale'), 'active' =>  Yii::app()->controller->id=='pointofsale'),
             array('label'=>Yii::t('app', 'Usuarios'), 'url'=>array('/admin/user/'), 'active' =>  Yii::app()->controller->id=='user'),
             array('label'=>Yii::t('app', 'Lista de precios', 2), 'url'=>array('/admin/pricelist'), 'active' =>  Yii::app()->controller->id=='pricelist'),
+            array('label'=>Yii::t('app', 'Forecast', 2), 'url'=>array('/admin/forecast/admin'), 'active' =>  Yii::app()->controller->id=='forecast'),
             );
 
             return true;

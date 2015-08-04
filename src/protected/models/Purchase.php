@@ -9,6 +9,9 @@ class Purchase extends BasePurchase
     const COMPROBANTE_TIPO_COMPRA = 'C';
     const COMPROBANTE_TIPO_NOTA_DE_CREDITO = 'NC';
 
+    public $quantity;
+    public $price_average;
+
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -290,5 +293,57 @@ class Purchase extends BasePurchase
         }
 
         return;
+    }
+
+    /**
+     * Devuelve las compras concretadas entre 2 fechas
+     * @param  string $from Fecha desde
+     * @param  string $to   Fecha hasta
+     * @return  Purcahse AR
+     */
+    public function getTotalPurchaseBetweenDates($from, $to)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->order = 'brand';
+
+        return $this->findAll($criteria);
+    }
+
+    /**
+     * Devuelve la cantidad entre 2 fechas agrupadas por marca
+     * @param  string $from Fecha desde
+     * @param  string $to   Fecha hasta
+     * @return  Purcahse AR
+     */
+    public function getBrandQuantitiesBetweenDates($from, $to)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.brand, COUNT(t.id) AS "quantity"';
+        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->group = 't.brand';
+        $criteria->order = 'quantity DESC';
+
+        return $this->findAll($criteria);
+    }
+
+    /**
+     * Devuelve el promedio de precio entre 2 fechas agrupadas por marca
+     * @param  string $from Fecha desde
+     * @param  string $to   Fecha hasta
+     * @return  Purcahse AR
+     */
+    public function getBrandPriceAverageBetweenDates($from, $to)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.brand, AVG(t.purchase_price) AS "price_average"';
+        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->group = 't.brand';
+        $criteria->order = 'price_average DESC';
+
+        return $this->findAll($criteria);
     }
 }

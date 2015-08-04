@@ -23,9 +23,10 @@ class DateHelper
         return $weekdays+20;
     }
 
-    public static function number_of_working_days($from, $to) {
-	    //$workingDays = [1, 2, 3, 4, 5]; # date format = N (1 = Monday, ...)
-	    // $holidayDays = ['*-12-25', '*-01-01', '2013-12-23']; # variable and fixed holidays
+    public static function numberOfWorkingDaysBetweenDates($from, $to) {
+	    $workingDays = array(1,2,3,4,5); # date format = N (1 = Monday, ...)
+        //$holidayDays = ['*-12-25', '*-01-01', '2013-12-23']; # variable and fixed holidays
+	    $holidayDays = array(); # variable and fixed holidays
 
 	    $from = new DateTime($from);
 	    $to = new DateTime($to);
@@ -63,6 +64,40 @@ class DateHelper
                 array('month_number' => 12, 'month_name' => 'Diciembre'),
 
             );
+    }
+
+    public static function getYears()
+    {
+        $years = array();
+
+        for ($year = 2050; $year >= 2015; $year--) {
+            array_push($years, array('year' => $year));
+        }
+
+        return $years;
+    }
+
+     /**
+     * @return Devuelve el nombre del mes
+     */
+    public static function getMonthName($month_number)
+    {
+        $meses = array(
+                '1' => 'Enero',
+                '2' => 'Febrero',
+                '3' => 'Marzo',
+                '4' => 'Abril',
+                '5' => 'Mayo',
+                '6' => 'Junio',
+                '7' => 'Julio',
+                '8' => 'Agosto',
+                '9' => 'Septiembre',
+                '10' => 'Octubre',
+                '11' => 'Noviembre',
+                '12' => 'Diciembre',
+            );
+
+        return $meses[$month_number];
     }
 
     /**

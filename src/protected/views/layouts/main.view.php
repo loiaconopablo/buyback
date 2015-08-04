@@ -8,9 +8,13 @@
     <?php Yii::app()->bootstrap->register();?>
 
 	<title><?php echo CHtml::encode($this->pageTitle);?></title>
-
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl;?>/css/bgh.css">
 </head>
+
+<script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart"]});
+</script>
 
 <body>
 
