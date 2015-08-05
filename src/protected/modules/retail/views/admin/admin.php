@@ -126,8 +126,7 @@ $this->menu = array(
 
 <?php $this->created_at_filter = true; ?>
 <?php $this->recived_at_filter = true; ?>
-<?php $this->purchase_references = $model->searchReferences();?><?php $this->created_at_filter = true;?>
-<?php //$this->advanced_search = true; ?>
+<?php $this->purchase_references = $model->admin();?>
 
 <?php $this->renderPartial(
     '_search',
