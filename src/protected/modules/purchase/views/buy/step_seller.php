@@ -141,7 +141,7 @@ endif;?>
 
 		<div class="alert alert-success">
     <?php
-    echo TbHtml::submitButton(Yii::t('app', 'Guardar') array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));
+    echo TbHtml::submitButton(Yii::t('app', 'Guardar'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));
     $this->endWidget();
 ?>
 
