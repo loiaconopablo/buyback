@@ -92,7 +92,7 @@
 			</table>
 			<table style="width:100%; margin:0px; padding:0px;">
 				<tr>
-					<td style="width:12%;">Telefono:</td>
+					<td style="width:12%;">Teléfono:</td>
 					<td style="width:15%;"><?php echo $model->seller->phone;?></td>
 					<td style="width:9%;"><?php echo Yii::t('app', 'E-mail');?>:</td>
 					<td style="width:66%;"><?php echo $model->seller->mail;?></td>

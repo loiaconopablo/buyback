@@ -124,7 +124,9 @@ $this->menu = array(
     </div>
 </div>
 
-<?php $this->created_at_filter = true;?>
+<?php $this->created_at_filter = true; ?>
+<?php $this->recived_at_filter = true; ?>
+<?php $this->purchase_references = $model->searchReferences();?><?php $this->created_at_filter = true;?>
 <?php //$this->advanced_search = true; ?>
 
 <?php $this->renderPartial(
