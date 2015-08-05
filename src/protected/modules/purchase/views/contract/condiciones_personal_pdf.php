@@ -1,5 +1,5 @@
 <p style="font-size:7pt;">
-<span style="font-size:10pt; font-weight:bold;"><?php echo Yii::t('app', 'general conditions'); ?></span>
+<span style="font-size:10pt;"><?php echo Yii::t('app', 'general conditions'); ?></span>
 <br/><br/><?php
     echo Yii::t('app', 'Firt Contract Condition');
 ?><br/><br/><?php
