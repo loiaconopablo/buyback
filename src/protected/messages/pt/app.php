@@ -113,7 +113,7 @@ return array(
     '¿El titular y el equípo cumplen con todos los requisitos enumerados?' => 'O titular e o equipamento cumpre com todos os requisitos acima?',
     'Only Personal devices are acceptable' => 'Apenas os equipamento pessoais são aceitáveis',
     'Print Contract' => 'contrato de impressão',
-    'Quote another device' => 'Novo orçamento',
+    'COTIZAR OTRO EQUIPO' => 'Novo orçamento',
     'Double pack' => 'Double pack',
     'Customer details' => 'Dados do cliente',
     
