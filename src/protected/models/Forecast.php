@@ -21,4 +21,29 @@ class Forecast extends BaseForecast
             )
         );
     }
+
+    /**
+     * Devuelve la cantidad del forecast buscandolo por año y mes o 0 si no lo encuentra
+     * @param  integer $year  Año
+     * @param  integer $month Mes
+     * @return integer La cantidad estimada para ese periododo
+     */
+    public function getForecastByYearMonth($year, $month)
+    {
+    	$criteria = new CDbCriteria;
+        $criteria->addCondition('year = :year');
+        $criteria->addCondition('month = :month');
+        $criteria->params = array(
+            ':year' => $year,
+            ':month' => $month,
+        );
+
+    	$forecast = $this->find($criteria);
+
+    	if (!count($forecast)) {
+    		return 1;
+    	} else {
+    		return $forecast->quantity;
+    	}
+    }
 }

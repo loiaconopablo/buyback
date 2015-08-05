@@ -346,4 +346,22 @@ class Purchase extends BasePurchase
 
         return $this->findAll($criteria);
     }
+
+    /**
+     * Devuelve las compras agrupadas por punto de venta entre determinadas fecahas
+     * @param  string $from Fecha desde
+     * @param  string $to   Fecha hasta
+     * @return Purcahse AR  Compras agrupadas por PDV
+     */
+    public function getWorkingPointsOfSaleBetweenDates($from, $to)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.brand, COUNT(t.id) AS "quantity"';
+        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->group = 't.point_of_sale_id';
+        $criteria->order = 'quantity DESC';
+
+        return $this->findAll($criteria);
+    }
 }
