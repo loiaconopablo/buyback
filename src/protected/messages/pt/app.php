@@ -12,7 +12,7 @@ return array(
     'Reportes' => 'Relatórios',
     'Confeccionar Nota de envío' => 'Elaborar NF para envio',
 
-    'References' => 'Referências',
+    'Referencias' => 'Referências',
     'En punto de venta' => 'em ponto de venda',
     'Parcialmente recibido' => 'Parcialmente recebido',
     'All rights reserved' => 'Todos os direitos reservados',
