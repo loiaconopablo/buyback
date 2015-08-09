@@ -17,7 +17,7 @@ return array(
     'Parcialmente recibido' => 'Parcialmente recebido',
     'Todos los derechos reservados.' => 'Todos os direitos reservados',
     'change to observation' => 'alterar a observação',
-    'Reset filter' => 'Restabelecer filtro',
+    'Reiniciar filtro' => 'Restabelecer filtro',
     'to' => 'do',
     'Select' => 'Selecionar',
 

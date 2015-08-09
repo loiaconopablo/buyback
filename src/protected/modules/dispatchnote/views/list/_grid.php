@@ -1,3 +1,4 @@
+<?php count($data_provider->data); ?>
 <?php $this->widget(
     'bootstrap.widgets.TbGridView',
     array(

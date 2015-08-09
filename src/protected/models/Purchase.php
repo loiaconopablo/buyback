@@ -254,15 +254,6 @@ class Purchase extends BasePurchase
         $this->setStatus(Status::CANCELLED, $this->last_dispatch_note_id);
     }
 
-    // TODO: Revisar si este metodo no deberia er reemplazado por los que extienden el criteria de search
-    // commented: 07-05-2015
-    public function getRetailAdminPurchases()
-    {
-        $criteria = $this->admin()->getCriteria();
-
-        return $this->findAll($criteria);
-    }
-
     /**
      * TODO: hacer que a este metodo se le pase el estado y sea generico
      * TODO: cambir nombre a setPurchasesStatus

@@ -14,14 +14,15 @@ class Home
         Si es administrador (BGH) va al controler purchase
          */
         if (Yii::app()->user->checkAccess('admin')) {
-            return array('/owner/purchase');
+            return array('/purchase/list/inpointofsale');
         }
 
         if (Yii::app()->user->checkAccess('retail')) {
                 return array('/purchase/buy/imei');
         }
+        
         if (Yii::app()->user->checkAccess('technical_supervisor')) {
-                return array('/supervision');
+                return array('/purchase/list/inpointofsale');
         }
 
         //Si no esta logueado o no se reconoce el rol
@@ -57,7 +58,7 @@ class Home
         */
         if (Yii::app()->user->checkAccess('admin')) {
             return array(
-            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/owner/purchase/admin'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'purchase')),
+            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => (Yii::app()->controller->module->id == 'purchase')),
             array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
             array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
@@ -69,7 +70,7 @@ class Home
         */
         if (Yii::app()->user->checkAccess('technical_supervisor')) {
             return array(
-            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/supervision/purchase/admin'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'purchase')),
+            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/headquarter/admin/admin')),
             array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
             );
@@ -79,25 +80,11 @@ class Home
         * MENU DE RETAIL Y HEADQUARTER
         */
         if (Yii::app()->user->checkAccess('retail')) {
-            if (Yii::app()->user->is_headquarter) {
-                /**
-                * MENU DE CABECEERA (HEADQUARTER)
-                */
-                return array(
+            return array(
                 array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
-                array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/headquarter/admin/admin'), 'active' => self::isActive('/headquarter/admin/admin')),
+                array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/headquarter/admin/admin')),
                 array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
-                );
-            } else {
-                /**
-                * MENU DE PUNTO DE VENTA (COMUN)
-                */
-                return array(
-                array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
-                array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/retail/admin/admin'), 'active' => self::isActive('/retail/admin/admin')),
-                array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
-                );
-            }
+            );
         }
     }
 

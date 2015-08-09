@@ -1,11 +1,12 @@
 <?php
 
-class PurchaseController extends Controller
+class ListController extends Controller
 {
-    /**
+
+       /**
      * Lista los equipos en el lugar listos para ser enviados a la cabecera
      */
-    public function actionAdmin()
+    public function actionInPointOfSale()
     {
         // Limpia la cookie de checkbox seleccionados en Grid
         // Para que esto funcione 'ajaxUpdate'=>true en el Grid de la vista
@@ -21,7 +22,7 @@ class PurchaseController extends Controller
         }
         
         $this->render(
-            'admin',
+            'in_point_of_sale',
             array(
             'model' => $model,
             )

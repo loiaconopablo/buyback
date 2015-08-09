@@ -66,17 +66,9 @@ class DispatchNote extends BaseDispatchNote
          /*
         Condiciones para filtrar entre fechas
          */
-        $criteria->condition = 'created_at >= :from AND created_at <= :to';
-        $criteria->params = Helper::getDateFilterParams('created_at');
+        $params_created = Helper::getDateFilterParams('created_at');
+        $criteria->addBetweenCondition('t.created_at',  $params_created[':from'], $params_created[':to']);
 
-         /*
-        Condiciones para los filstros de la tabla
-         */
-        $criteria->compare('dispatch_note_number', $this->dispatch_note_number, true);
-        $criteria->compare('source_id', $this->source_id, true);
-        $criteria->compare('comment', $this->comment, true);
-        $criteria->compare('created_at', $this->created_at, true);
-        $criteria->compare('user_create_id', $this->user_create_id, true);
 
         /**
          * Filtra por estados si esta seteada la cookie
@@ -94,6 +86,9 @@ class DispatchNote extends BaseDispatchNote
             $this,
             array(
             'criteria' => $criteria,
+            'pagination'=>array(
+                'pageSize'=>20,
+            ),
             )
         );
     }
