@@ -65,6 +65,20 @@ $(document).ready(function() {
 	 	refreshGrid();
 	 });
 
+	 /** Filtra por status dispatchnote */
+	 $('input[name*=dispatchnote_search]').on('click', function() {
+
+	 	var checked_statuses = new Array();
+
+	 	$('input[name*=dispatchnote_search]:checked').each(function() {
+	 		checked_statuses.push($(this).val());
+	 	});
+
+	 	$.cookie('checkedDispatchnoteStatuses', checked_statuses, { path: '/' });
+
+	 	refreshGrid();
+	 });
+
 	 // Evita que los links deshabilitados funcionen
 	 $('.disabled a').on('click', function(ev) {
 	 	ev.preventDefault();

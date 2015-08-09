@@ -8,15 +8,11 @@
 );
 ?>
 
-	<p class="note">
-    <?php echo Yii::t('app', 'Fields with'); ?> <span class="required">*</span> <?php echo Yii::t('app', 'are required'); ?>.
-	</p>
-
-    <?php echo $form->errorSummary($model); ?>
+   <?php echo $form->errorSummary($model); ?>
 
 		<div>
     <?php echo $form->labelEx($model, 'company_id'); ?>
-    <?php echo $form->dropDownList($model, 'company_id', GxHtml::listDataEx(Company::model()->findAll()), array('size' => TbHtml::INPUT_SIZE_XXLARGE, 'empty' => Yii::t('app', 'Select').'...')); ?>
+    <?php echo $form->dropDownList($model, 'company_id', GxHtml::listDataEx(Company::model()->findAll()), array('size' => TbHtml::INPUT_SIZE_XXLARGE, 'empty' => Yii::t('app', 'Seleccionar').'...')); ?>
     <?php echo $form->error($model, 'company_id'); ?>
 		</div><!-- row -->
 		<div>
@@ -26,7 +22,7 @@
 		</div><!-- row -->
 		<div>
     <?php echo $form->labelEx($model, 'headquarter_id'); ?>
-    <?php echo $form->dropDownList($model, 'headquarter_id', GxHtml::listDataEx($model->company_id ? Company::model()->findByPk($model->company_id)->getHeadquarters() : array()), array('size' => TbHtml::INPUT_SIZE_XXLARGE, 'empty' => Yii::t('app', 'Select').'...')); ?>
+    <?php echo $form->dropDownList($model, 'headquarter_id', GxHtml::listDataEx($model->company_id ? Company::model()->findByPk($model->company_id)->getHeadquarters() : array()), array('size' => TbHtml::INPUT_SIZE_XXLARGE, 'empty' => Yii::t('app', 'Seleccionar').'...')); ?>
     <?php echo $form->error($model, 'headquarter_id'); ?>
 		</div><!-- row -->
 		<div>
@@ -60,7 +56,7 @@
     <?php echo $form->error($model, 'mail'); ?>
 		</div><!-- row -->
 
-		<h4><?php echo Yii::t('app', 'Attendant Data'); ?></h4>
+		<h4><?php echo Yii::t('app', 'Datos de referencia'); ?></h4>
 		<!-- ACA PONER UN TITULO PARA SEPARAR -->
 		<div>
     <?php echo $form->labelEx($model, 'reference_name'); ?>

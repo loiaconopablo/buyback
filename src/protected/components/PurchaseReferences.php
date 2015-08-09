@@ -14,7 +14,7 @@ class PurchaseReferences extends CWidget
         
         $estados = $this->getStados();
 
-        $this->render('application.views.widgets.purchase_references', array('menu_items' => $this->references($estados)));
+        $this->render('application.views.widgets.references', array('menu_items' => $this->references($estados)));
     }
 
     /**

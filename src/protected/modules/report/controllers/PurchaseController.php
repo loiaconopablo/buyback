@@ -254,11 +254,15 @@ class PurchaseController extends Controller
         $cantidad_pdv_habilitados = count($pdv);
         $view_data['cantidad_pdv_habilitados'] = $cantidad_pdv_habilitados;
 
-        $pdv_operativos = Purchase::model()->getWorkingPointsOfSaleBetweenDates($fromDate, $toDate);
+        $pdv_operativos = Purchase::model()->getWorkingPointsOfSaleBetweenDates('000-00-00', date('Y-m-t', time()));
         $cantidad_pdv_operativos = count($pdv_operativos) ? count($pdv_operativos) : 1 ;
         $view_data['cantidad_pdv_operativos'] = $cantidad_pdv_operativos;
+        
+        $pdv_efectivos = Purchase::model()->getWorkingPointsOfSaleBetweenDates($fromDate, $toDate);
+        $cantidad_pdv_efectivos = count($pdv_efectivos) ? count($pdv_efectivos) : 1 ;
+        $view_data['cantidad_pdv_efectivos'] = $cantidad_pdv_efectivos;
 
-        $promedio_por_pdv = round($view_data['total_compras'] / $cantidad_pdv_operativos, 2);
+        $promedio_por_pdv = round($view_data['total_compras'] / $cantidad_pdv_efectivos, 2);
         $view_data['promedio_por_pdv'] = $promedio_por_pdv;
 
         $this->render('monthly', array('model' => $model, 'view_data' => $view_data));

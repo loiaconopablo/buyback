@@ -1,14 +1,10 @@
 <?php
 
-class DispatchnoteController extends Controller
+class ListController extends Controller
 {
 
-    public function actionIndex() 
-    {
-        $this->redirect(array('admin'));
-    }
 
-    public function actionAdmin() 
+    public function actionPending() 
     {
         $model = new DispatchNote('search');
         $model->unsetAttributes();
@@ -18,13 +14,13 @@ class DispatchnoteController extends Controller
         }
 
         $this->render(
-            'admin', array(
+            'pending', array(
             'model' => $model,
             )
         );
     }
 
-    public function actionExpecting() 
+    public function actionExpecting()
     {
         $model = new DispatchNote('search');
         $model->unsetAttributes();
@@ -34,13 +30,13 @@ class DispatchnoteController extends Controller
         }
 
         $this->render(
-            'admin _expecting', array(
+            'expecting', array(
             'model' => $model,
             )
         );
     }
 
-    public function actionHistoryOwn() 
+    public function actionHistory() 
     {
         $model = new DispatchNote('search');
         $model->unsetAttributes();
@@ -50,23 +46,7 @@ class DispatchnoteController extends Controller
         }
 
         $this->render(
-            'admin_history_own', array(
-            'model' => $model,
-            )
-        );
-    }
-
-    public function actionHistoryOthers() 
-    {
-        $model = new DispatchNote('search');
-        $model->unsetAttributes();
-
-        if (isset($_GET['DispatchNote'])) {
-            $model->setAttributes($_GET['DispatchNote']);
-        }
-
-        $this->render(
-            'admin_history_others', array(
+            'history', array(
             'model' => $model,
             )
         );

@@ -9,6 +9,9 @@ class DispatchNote extends BaseDispatchNote
     const CANCELLED = 40;
     const PARTIALLY_RECEIVED = 50;
     const RECEIVED = 60;
+    /**
+     * Si se agrega o cambia algo reflejarlo en widget de las referencias components/DispatchnoteReferences.php
+     */
 
     public static function model($className = __CLASS__)
     {
@@ -32,10 +35,6 @@ class DispatchNote extends BaseDispatchNote
         'destination' => array(self::BELONGS_TO, 'PointOfSale', 'destination_id'),
         'user' => array(self::BELONGS_TO, 'User', 'user_create_id'),
         'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
-
-        //TODO: estas relaciones van a volar porque los campos no van a existir mas en Purchase
-        //'dispatch_note_to_owner'   => array(self::HAS_MANY, 'Purchase', 'dispatch_note_to_owner_id'),
-
         );
     }
 
@@ -51,6 +50,7 @@ class DispatchNote extends BaseDispatchNote
             array(
             'user_update_id' => Yii::t('app', 'Usuario'),
             'user_create_id' => Yii::t('app', 'Usuario'),
+            'comment' => Yii::t('app', 'Comentario'),
             'created_at' => Yii::t('app', 'Fecha'),
             )
         );
@@ -78,32 +78,18 @@ class DispatchNote extends BaseDispatchNote
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('user_create_id', $this->user_create_id, true);
 
+        /**
+         * Filtra por estados si esta seteada la cookie
+         */
+        $checkedItemsArray = array();
 
-        return new CActiveDataProvider(
-            $this,
-            array(
-            'criteria' => $criteria,
-            )
-        );
-    }
-
-    /**
-     * ADMIN DataProvider
-     */
-    public function admin()
-    {
-        $criteria = $this->search()->getCriteria();
-
-        if (Yii::app()->user->checkAccess('retail')) {
-            //=====================================//
-            //  CABECERA  y PUNTO DE VENTA SIMPLE  //
-            //=====================================//
-
-            $criteria->compare('source_id', Yii::app()->user->point_of_sale_id);
-            $criteria->compare('status', self::PENDING_TO_SEND);
+        if (isset(Yii::app()->request->cookies['checkedDispatchnoteStatuses'])) {
+            $checkedItemsArray = explode(',', Yii::app()->request->cookies['checkedDispatchnoteStatuses']->value);
 
         }
 
+        $criteria->addInCondition('status', $checkedItemsArray);
+
         return new CActiveDataProvider(
             $this,
             array(
@@ -113,20 +99,68 @@ class DispatchNote extends BaseDispatchNote
     }
 
     /**
-     * HISTORY OWN DataProvider
+     * PENDING DataProvider
+     */
+    public function pending()
+    {
+        $criteria = $this->search()->getCriteria();
+
+        return $this->pendingSearch($criteria);
+    }
+
+    public function pendingReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->pendingSearch($criteria);
+    }
+    /**
+     * Devuelve las notas de envio confeccionadas en este punto de venta y que todavia no se enviaron
+     * @param  Criteria $criteria [description]
+     * @return Dataprovider          [description]
+     */
+    public function pendingSearch($criteria)
+    {
+        $criteria->compare('source_id', Yii::app()->user->point_of_sale_id);
+        $criteria->compare('status', self::PENDING_TO_SEND);
+
+
+        return new CActiveDataProvider(
+            $this,
+            array(
+            'criteria' => $criteria,
+            )
+        );
+    }
+
+
+    /**
+     *  EXPECTING
      */
     public function expecting()
     {
         $criteria = $this->search()->getCriteria();
 
-        if (Yii::app()->user->is_headquarter) {
-            //============//
-            //  CABECERA  //
-            //============//
-            $criteria->compare('destination_id', Yii::app()->user->point_of_sale_id);
-            $criteria->addInCondition('status', array(self::PENDING_TO_SEND, self::SENT, self::PARTIALLY_RECEIVED));
+        return $this->expectingSearch($criteria);
+    }
 
-        }
+    public function expectingReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->expectingSearch($criteria);
+    }
+
+    /**
+     * Devuelve las que se pueden recibir o deberian enviarse para ser recibidas
+     * @return DataProvider
+     */
+    public function expectingSearch($criteria)
+    {
+              
+        $criteria->compare('destination_id', Yii::app()->user->point_of_sale_id);
+        $criteria->addInCondition('status', array(self::PENDING_TO_SEND, self::SENT, self::PARTIALLY_RECEIVED));
+
 
         return new CActiveDataProvider(
             $this,
@@ -139,18 +173,28 @@ class DispatchNote extends BaseDispatchNote
     /**
      * HISTORY OWN DataProvider
      */
-    public function historyOwn()
+    public function history()
     {
         $criteria = $this->search()->getCriteria();
 
-        if (Yii::app()->user->checkAccess('retail')) {
-            //=====================================//
-            //  CABECERA  y PUNTO DE VENTA SIMPLE  //
-            //=====================================//
-            $criteria->compare('source_id', Yii::app()->user->point_of_sale_id);
-            $criteria->addNotInCondition('status', array(self::PENDING_TO_SEND));
+        return $this->historySearch($criteria);
+    }
 
-        }
+    public function historyReference()
+    {
+        $criteria = parent::search()->getCriteria();
+
+       return $this->historySearch($criteria);
+    }
+
+    public function historySearch($criteria)
+    {
+        $criteria->addCondition('source_id = :source_id OR destination_id = :destination_id');
+        $criteria->params = CMap::mergeArray($criteria->params, array(
+            ':source_id' => Yii::app()->user->point_of_sale_id,
+            ':destination_id' => Yii::app()->user->point_of_sale_id
+        ));
+        $criteria->addNotInCondition('status', array(self::PENDING_TO_SEND));
 
         return new CActiveDataProvider(
             $this,
@@ -160,29 +204,6 @@ class DispatchNote extends BaseDispatchNote
         );
     }
 
-    /**
-     * HISTORY OTHERS DataProvider
-     */
-    public function historyOthers()
-    {
-        $criteria = $this->search()->getCriteria();
-
-        if (Yii::app()->user->is_headquarter) {
-            //=============//
-            //  CABECERA   //
-            //=============//
-            $criteria->compare('destination_id', Yii::app()->user->point_of_sale_id);
-            $criteria->addNotInCondition('status', array(self::PENDING_TO_SEND, self::SENT));
-
-        }
-
-        return new CActiveDataProvider(
-            $this,
-            array(
-            'criteria' => $criteria,
-            )
-        );
-    }
 
     /**
      * Crea una nueva nota de envio
@@ -269,35 +290,18 @@ class DispatchNote extends BaseDispatchNote
 
     }
 
-    public static function getRowClass($status)
+    public static function availableToReception($dispatchnote)
     {
-        if ($status == self::PENDING_TO_SEND) {
-            return 'pending';
+        // Si no se la enviaron al usuario no la puede recibir
+        if (Yii::app()->user->point_of_sale_id != $dispatchnote->destination_id) {
+            return false;
         }
-
-        if ($status == self::RECEIVED) {
-            return 'pending';
-        }
-
-        if ($status == self::PARTIALLY_RECEIVED) {
-            return 'partially-recived';
-        }
-
-        if ($status == self::CANCELLED) {
-            return 'cancelled';
-        }
-
-        return 'in-transit';
-    }
-
-    public static function availableToReception($status)
-    {
         // Si me lo enviarn lo puedo recibir
-        if ($status == self::SENT) {
+        if ($dispatchnote->status == self::SENT) {
             return true;
         }
         // Si habia quedado parcialmente recibido lo puedo recibir
-        if ($status == self::PARTIALLY_RECEIVED) {
+        if ($dispatchnote->status == self::PARTIALLY_RECEIVED) {
             return true;
         }
         // En cualquier otro caso no lo puedo recibir
@@ -437,50 +441,6 @@ class DispatchNote extends BaseDispatchNote
     }
 
     /**
-     * Referencias de colores
-     */
-    public static function references()
-    {
-        $references = array(
-        array('label' => Yii::t('app', 'References'), 'icon' => 'th-large', 'url' => '#', 'active' => true),
-        array('label' => Yii::t('app', 'En punto de venta'), 'icon' => 'th-large', 'url' => '#', 'htmlOptions' => array('class' => 'pending reference')),
-        array('label' => Yii::t('app', 'Parcialmente recibido'), 'icon' => 'th-large', 'url' => '#', 'htmlOptions' => array('class' => 'partially-recived reference')),
-        array('label' => Yii::t('app', 'En transito'), 'icon' => 'th-large', 'url' => '#', 'htmlOptions' => array('class' => 'reference in-transit')),
-        array('label' => Yii::t('app', 'Anulada'), 'icon' => 'th-large', 'url' => '#', 'htmlOptions' => array('class' => 'cancelled reference')),
-        );
-
-        return $references;
-    }
-
-    public function getPending()
-    {
-        $criteria = $this->admin()->getCriteria();
-
-        return $this->findAll($criteria);
-    }
-
-    public function getExpecting()
-    {
-        $criteria = $this->expecting()->getCriteria();
-
-        return $this->findAll($criteria);
-    }
-
-    public function getOwnHistory()
-    {
-        $criteria = $this->historyOwn()->getCriteria();
-
-        return $this->findAll($criteria);
-    }
-
-    public function getOthersHistory()
-    {
-        $criteria = $this->historyOthers()->getCriteria();
-
-        return $this->findAll($criteria);
-    }
-
-    /**
      * Actualiza el AR Purchase que se le pasa y crea un registro de PurchaseStatus
      * @param Purchase $purchase AR de Purchase
      */
@@ -511,5 +471,17 @@ class DispatchNote extends BaseDispatchNote
         $purchasesDataProvider->setData($this->purchases);
 
         return $purchasesDataProvider;
+    }
+
+    /**
+     * Devuelve el nombre de la constante de estado
+     * @return string nombre le la constante de estado
+     */
+    public function getStatusName()
+    {
+        $reflection = new ReflectionClass(__CLASS__);
+        $constants = $reflection->getConstants();
+
+        return array_search($this->status, $constants);;
     }
 }

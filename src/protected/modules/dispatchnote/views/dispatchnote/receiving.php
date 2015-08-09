@@ -1,16 +1,3 @@
-<?php
-
-$this->breadcrumbs = array(
-    $model->label(2) => array('index'),
-    GxHtml::valueEx($model),
-);
-
-$this->menu = array(
-    array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
-    array('label' => Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
-);
-?>
-
 <div class="well">
     <h4>Nota de envío Nº <?php echo $dispatch_note->dispatch_note_number;?></h4>
 </div>

@@ -1,44 +1,30 @@
-<?php
-
-$this->breadcrumbs = array(
-    $model->label(2) => array('index'),
-    Yii::t('app', 'Manage'),
-);
-
-$this->menu = array(
-    //array('label'=>Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url'=>array('index')),
-    array('label' => Yii::t('app', 'Create') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('/retail/admin/admin')),
-);
-
-?>
-
-<!--<h2><?php echo Yii::t('app', 'Manage') . ' ' . GxHtml::encode($model->label(2));?></h2>-->
-
-
 <?php $this->widget(
     'bootstrap.widgets.TbGridView',
     array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'id' => 'dispatch_notes_grid',
-    'dataProvider' => $model->historyOwn(),
+    'dataProvider' => $data_provider,
     'filter' => $model,
+    'rowCssClassExpression' => '
+        ( $data->getStatusName() )
+    ',
     'template' => "{items}\n{pager}",
     'columns' => array(
         array(
             'name' => 'dispatch_note_number',
             'header' => Yii::t('app', 'Nº Nota'),
-            'htmlOptions' => array('class' => 'nro-Nota de Envío-weight text-right'),
+            'htmlOptions' => array('class' => 'span1 text-right'),
         ),
         array(
             'header' => 'Items',
             'value' => 'count($data->purchases)',
             'htmlOptions' => array(
-                'style' => 'text-align:center',
+                'class' => 'span1 text-right',
             ),
         ),
         array(
             'type' => 'raw',
-            'header' => Yii::t('app', 'Comment'),
+            'header' => Yii::t('app', 'Comentario'),
             'filter' => CHtml::activeTextField($model, 'comment'),
             'value' => function ($data) {
                 return '<a rel="popover" title="Nota de envío Nº ' . $data->dispatch_note_number . '" data-content="' . $data->comment . '">' . $data->comment . '</a>';
@@ -47,34 +33,42 @@ $this->menu = array(
                 'title' => $model->comment,
             ),
         ),
-        // array(
-        // 	'name' => 'destination',
-        // 	'header' => Yii::t('app', 'Destino'),
-        // ),
+
         array(
             'name' => 'created_at',
             'value' => 'date("d-m-Y", strtotime($data->created_at))',
-            'htmlOptions' => array('style' => 'text-align: center'),
+            'htmlOptions' => array('class' => 'text-center span2'),
+            'filter' => false,
         ),
         array(
             'name' => 'user_create_id',
             'value' => '$data->user->username',
-            'filter' => CHtml::listData($model->getOwnHistory(), 'user.id', 'user.username'),
+            'htmlOptions' => array('class' => 'span1'),
+            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.user_create_id'), 'user_create_id', 'user'),
         ),
         array(
             'class' => 'TbButtonColumn',
-            'template' => '{view-dispatch}',
-            'buttons' => array
-            (
-                'view-dispatch' => array
-                (
+            'template' => '{view-dispatch-receiving}{view-dispatch}',
+            'htmlOptions' => array('class' => 'text-center span1'),
+            'buttons' => array(
+                'view-dispatch-receiving' => array(
+                    'visible' => 'DispatchNote::availableToReception($data)',
+                    'label' => 'ver',
+                    'url' => 'Yii::app()->createUrl("/dispatchnote/dispatchnote/receiving", array("id"=>$data->id, "receiving" => true))',
+                    'options' => array(
+                        'class' => 'btn btn-small',
+                        'title' => 'ver y/o recibir o cancelar Nota de envío',
+                    ),
+                ),
+                'view-dispatch' => array(
+                    'visible' => '!DispatchNote::availableToReception($data)',
                     'label' => 'ver',
                     'url' => 'Yii::app()->createUrl("/dispatchnote/dispatchnote/view", array("id"=>$data->id))',
                     'options' => array(
                         'data-toggle' => 'modal',
                         'data-target' => '#modal-dispatch-note',
                         'class' => 'btn btn-small',
-                        'title' => 'ver y/o despachar Nota de Envío',
+                        'title' => 'ver Nota de envío',
                     ),
                 ),
             ),
@@ -82,21 +76,3 @@ $this->menu = array(
     ),
     )
 );?>
-
-<?php $this->renderPartial(
-    '_search',
-    array(
-    'model' => $model,
-    )
-);?>
-
-<?php $this->created_at_filter = true;?>
-
-<div id="modal-dispatch-note" class="modal hide fade" style="">
-	<div class="modal-body"></div>
-	<div class="modal-footer">
-	    <a href="#" data-dismiss="modal" class="btn"><?php echo Yii::t('app', 'Close');?></a>
-	</div>
-</div>
-
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl;?>/js/dispatch_note.js"></script>

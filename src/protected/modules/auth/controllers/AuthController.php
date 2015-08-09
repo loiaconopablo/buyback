@@ -80,11 +80,11 @@ class AuthController extends Controller
                 $model->password = $model->hashPassword($model->new_password);
 
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', 'Su password fue actualizado con exito!');
+                    Yii::app()->user->setFlash('success', Yii::t('app', 'Su contraseña fue actualizada con exito!'));
 
                     $this->redirect(Home::getRoleHome());
                 } else {
-                    Yii::app()->user->setFlash('success', 'Su password no pudo ser actualizado');
+                    Yii::app()->user->setFlash('success', Yii::t('app', 'Su contraseña no pudo ser actualizada'));
                     //$this->redirect(array('changepassword','id'=>$id));
                 }
             }

@@ -20,6 +20,9 @@ class Home
         if (Yii::app()->user->checkAccess('retail')) {
                 return array('/purchase/buy/imei');
         }
+        if (Yii::app()->user->checkAccess('technical_supervisor')) {
+                return array('/supervision');
+        }
 
         //Si no esta logueado o no se reconoce el rol
         return array('/login');
@@ -55,9 +58,20 @@ class Home
         if (Yii::app()->user->checkAccess('admin')) {
             return array(
             array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/owner/purchase/admin'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'purchase')),
-            array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/owner/dispatchnote/expecting'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'dispatchnote')),
+            array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
             array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
+            );
+        }
+
+         /**
+        * MENU DE SUPERVISOR TECNICO BGH
+        */
+        if (Yii::app()->user->checkAccess('technical_supervisor')) {
+            return array(
+            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/supervision/purchase/admin'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'purchase')),
+            array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
+            array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
             );
         }
 
@@ -72,10 +86,7 @@ class Home
                 return array(
                 array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
                 array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/headquarter/admin/admin'), 'active' => self::isActive('/headquarter/admin/admin')),
-                array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/headquarter/dispatchnote/admin'), 'active' => self::isActive('/headquarter/dispatchnote/admin')),
-                array('label'=>Yii::t('app', 'Notas de envío pendientes'), 'url'=>array('/headquarter/dispatchnote/expecting'), 'active' => self::isActive('/headquarter/dispatchnote/expecting')),
-                array('label'=>Yii::t('app', 'Historial Notas emitidas'), 'url'=>array('/headquarter/dispatchnote/historyown'), 'active' => self::isActive('/headquarter/dispatchnote/historyown')),
-                array('label'=>Yii::t('app', 'Historial Notas recibidas'), 'url'=>array('/headquarter/dispatchnote/historyothers'), 'active' => self::isActive('/headquarter/dispatchnote/historyothers')),
+                array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
                 );
             } else {
                 /**
@@ -84,8 +95,7 @@ class Home
                 return array(
                 array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
                 array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/retail/admin/admin'), 'active' => self::isActive('/retail/admin/admin')),
-                array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/retail/dispatchnote/admin'), 'active' => self::isActive('/retail/dispatchnote/admin')),
-                array('label'=>Yii::t('app', 'Historial'), 'url'=>array('/retail/dispatchnote/history'), 'active' => self::isActive('/retail/dispatchnote/history')),
+                array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
                 );
             }
         }
@@ -98,7 +108,7 @@ class Home
         array_push($menu_options, array('label' => Yii::t('app', 'Cambiar contraseña'), 'url' => array('/auth/auth/changepassword','id'=>Yii::app()->user->id)));
         array_push($menu_options, TbHtml::menuDivider());
         array_push($menu_options, array('label' => Yii::t('app', 'Español'), 'url' => array(Yii::app()->request->getPathInfo().'?lang=es')));
-        array_push($menu_options, array('label' => Yii::t('app', 'Portuguêse'), 'url' => array(Yii::app()->request->getPathInfo().'?lang=pt')));
+        array_push($menu_options, array('label' => Yii::t('app', 'Português'), 'url' => array(Yii::app()->request->getPathInfo().'?lang=pt')));
         array_push($menu_options, TbHtml::menuDivider());
         array_push($menu_options, array('label' => Yii::t('app', 'Cerrar sesión'), 'url' => array('/auth/auth/logout')));
 

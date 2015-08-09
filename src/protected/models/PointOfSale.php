@@ -113,6 +113,7 @@ class PointOfSale extends BasePointOfSale
             'reference_mail' => Yii::t('app', 'Mail'),
             'is_headquarter' => Yii::t('app', 'Es Cabecera'),
             'user_log' => Yii::t('app', 'Usuario'),
+            'reference_name' => Yii::t('app', 'Referencia'),
             )
         );
     }

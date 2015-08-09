@@ -95,13 +95,15 @@ $this->menu = array(
         <table class="table table-bordered table-striped">
             <thead>
                 <th><?php echo Yii::t('app', 'Puntos de Venta habilitados'); ?></th>
-                <th><?php echo Yii::t('app', 'Puntos de Venta operativos'); ?></th>
+                <th><?php echo Yii::t('app', 'Operativos'); ?></th>
+                <th><?php echo Yii::t('app', 'Efectivos'); ?></th>
                 <th><?php echo Yii::t('app', 'Promedio de compras'); ?></th>
             </thead>
             <tbody>
                 <tr>
                     <td style="text-align: center"><?php echo $view_data['cantidad_pdv_habilitados'] ?></td>
                     <td style="text-align: center"><?php echo $view_data['cantidad_pdv_operativos'] ?></td>
+                    <td style="text-align: center"><?php echo $view_data['cantidad_pdv_efectivos'] ?></td>
                     <td style="text-align: center"><?php echo $view_data['promedio_por_pdv'] ?></td>
                 </tr>
             </tbody>

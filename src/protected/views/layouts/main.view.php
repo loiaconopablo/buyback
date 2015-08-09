@@ -98,7 +98,7 @@
     <!-- FOOTER begin -->
     <footer class="container">
         <div class="">
-            Copyright &copy; <?php echo date('Y'); ?> by BGH BuyBack. <?php echo Yii::t('app', 'All rights reserved'); ?>.
+            Copyright &copy; <?php echo date('Y'); ?> by BGH BuyBack. <?php echo Yii::t('app', 'Todos los derechos reservados.'); ?>.
         </div>
     </footer>
     <!-- FOOTER end -->

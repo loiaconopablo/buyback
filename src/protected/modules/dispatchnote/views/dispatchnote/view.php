@@ -1,16 +1,3 @@
-<?php
-
-    $this->breadcrumbs = array(
-        $model->label(2) => array('index'),
-        GxHtml::valueEx($model),
-    );
-
-    $this->menu = array(
-        array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
-        array('label' => Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
-    );
-?>
-
 <div class="well">
 	<h4>Nota de envío Nº <?php echo $dispatch_note->dispatch_note_number;?></h4>
 </div>
@@ -19,30 +6,30 @@
     <?php echo CHtml::hiddenField('dispatch_note_id', $dispatch_note->id, array('id' => 'dispatch_note_id')); ?>
 <?php $this->endWidget();?>
 
-<h4>Origen</h4>
+<h4><?php echo Yii::t('app', 'Origen'); ?></h4>
 <?php 
     $this->widget(
         'bootstrap.widgets.TbDetailView', array(
             'data' => $dispatch_note,
             'attributes' => array(
                 array(
-                    'label' => Yii::t('app', 'Company'),
+                    'label' => Yii::t('app', 'Empresa'),
                     'value' => $dispatch_note->point_of_sale->company->name,
                 ),
                 array(
-                    'label' => Yii::t('app', 'Point Of Sale'),
+                    'label' => Yii::t('app', 'Punto de venta'),
                     'value' => $dispatch_note->point_of_sale->name,
                 ),
                 array(
-                    'label' => Yii::t('app', 'Province'),
+                    'label' => Yii::t('app', 'Provincia'),
                     'value' => $dispatch_note->point_of_sale->province,
                 ),
                 array(
-                    'label' => Yii::t('app', 'Locality'),
+                    'label' => Yii::t('app', 'Localidad'),
                     'value' => $dispatch_note->point_of_sale->locality,
                 ),
                 array(
-                    'label' => Yii::t('app', 'Address'),
+                    'label' => Yii::t('app', 'Dirección'),
                     'value' => $dispatch_note->point_of_sale->address,
                 ),
             ),
@@ -50,26 +37,26 @@
     );
 ?>
 
-<h4>Destino</h4>
+<h4><?php echo Yii::t('app', 'Destino'); ?></h4>
 <?php 
     $this->widget(
         'bootstrap.widgets.TbDetailView', array(
         'data' => $dispatch_note->destination,
             'attributes' => array(
                 array(
-                    'label' => Yii::t('app', 'Point Of Sale'),
+                    'label' => Yii::t('app', 'Punto de venta'),
                     'value' => $dispatch_note->destination->name,
                 ),
                 array(
-                    'label' => Yii::t('app', 'Province'),
+                    'label' => Yii::t('app', 'Provincia'),
                     'value' => $dispatch_note->destination->province,
                 ),
                 array(
-                    'label' => Yii::t('app', 'Locality'),
+                    'label' => Yii::t('app', 'Localidad'),
                     'value' => $dispatch_note->destination->locality,
                 ),
                 array(
-                    'label' => Yii::t('app', 'Address'),
+                    'label' => Yii::t('app', 'Dirección'),
                     'value' => $dispatch_note->destination->address,
                 ),
             ),
@@ -77,7 +64,7 @@
     );
 ?>
 
-<h4>Detalle</h4>
+<h4><?php echo Yii::t('app', 'Detalle'); ?></h4>
 <?php 
     $this->widget(
         'bootstrap.widgets.TbGridView', array(
@@ -85,11 +72,26 @@
             'dataProvider' => $dispatch_note->purchasesDataProvider(),
             'template' => "{items}\n{pager}",
             'columns' => array(
-                'contract_number',
-                'brand',
-                'model',
-                'imei',
-                'user',
+                array(
+                    'header' => Yii::t('app', 'N° Contrato'),
+                    'name' => 'contract_number',
+                ),
+                array(
+                    'header' => Yii::t('app', 'Marca'),
+                    'name' => 'brand',
+                ),
+                array(
+                    'header' => Yii::t('app', 'Modelo'),
+                    'name' => 'model',
+                ),
+                array(
+                    'header' => Yii::t('app', 'IMEI'),
+                    'name' => 'imei',
+                ),
+                array(
+                    'header' => Yii::t('app', 'Usuario'),
+                    'name' => 'user',
+                ),
             ),
         )
     );

@@ -30,14 +30,15 @@ class OwnerModule extends CWebModule
 
             $controller->main_menu = Home::getMainMenu();
 
-            if (Yii::app()->controller->id == 'dispatchnote') {
-                $controller->submenu_title = Yii::t('app', 'Notas de envío');
+            // if (Yii::app()->controller->id == 'dispatchnote') {
+            //     $controller->submenu_title = Yii::t('app', 'Notas de envío');
 
-                $controller->submenu = array(
-                array('label' => Yii::t('app', 'Pendientes', 2), 'url' => array('/owner/dispatchnote/expecting'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/dispatchnote/expecting'),
-                array('label' => Yii::t('app', 'Historial', 2), 'url' => array('/owner/dispatchnote/historyothers'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/dispatchnote/historyothers'),
-                );
-            }
+            //     $controller->submenu = array(
+            //     array('label' => Yii::t('app', 'Por enviar', 2), 'url' => array('/owner/dispatchnote/admin'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/dispatchnote/admin'),
+            //     array('label' => Yii::t('app', 'Por recibir', 2), 'url' => array('/owner/dispatchnote/expecting'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/dispatchnote/expecting'),
+            //     array('label' => Yii::t('app', 'Historial', 2), 'url' => array('/owner/dispatchnote/historyothers'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'owner/dispatchnote/historyothers'),
+            //     );
+            // }
 
             if (Yii::app()->controller->id == 'purchase') {
                 $controller->submenu_title = Yii::t('app', 'Notas de envío');

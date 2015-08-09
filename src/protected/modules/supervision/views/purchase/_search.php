@@ -15,45 +15,48 @@
     	<p><?php echo Yii::t('app', 'You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&gt; or =) at the beginning of each of your search values to specify how the comparison should be done.'); ?>
 </p>
 
-															<div>
-        <?php echo $form->label($model, 'id'); ?>
-        <?php echo $form->textField($model, 'id', array('maxlength' => 10)); ?>
+			
+				<div>
+        <?php echo $form->label($model, 'contract_number'); ?>
+        <?php echo $form->textField($model, 'contract_number', array('maxlength' => 20)); ?>
 				</div>
-			
-															<div>
-        <?php echo $form->label($model, 'company_id'); ?>
-        <?php echo $form->textField($model, 'company_id', array('maxlength' => 10)); ?>
-				</div>
-			
-			
-															<div>
+
+				<div>
         <?php echo $form->label($model, 'user'); ?>
         <?php echo $form->textField($model, 'user', array('maxlength' => 10)); ?>
 				</div>
 			
-															<div>
-        <?php echo $form->label($model, 'comment'); ?>
-        <?php echo $form->textArea($model, 'comment'); ?>
+				<div>
+        <?php echo $form->label($model, 'brand'); ?>
+        <?php echo $form->textField($model, 'brand', array('maxlength' => 255)); ?>
 				</div>
-			
-								
-								
-																			<div>
-        <?php echo $form->label($model, 'sent_at'); ?>
-        <?php echo $form->textField($model, 'sent_at'); ?>
+
+				<div>
+        <?php echo $form->label($model, 'model'); ?>
+        <?php echo $form->textField($model, 'model', array('maxlength' => 255)); ?>
 				</div>
-			
-															<div>
-        <?php echo $form->label($model, 'finished_at'); ?>
-        <?php echo $form->textField($model, 'finished_at'); ?>
+
+				<div>
+        <?php echo $form->label($model, 'purchase_price'); ?>
+        <?php echo $form->textField($model, 'purchase_price'); ?>
 				</div>
-			
-															<div>
-        <?php echo $form->label($model, 'destination_id'); ?>
-        <?php echo $form->textField($model, 'destination_id', array('maxlength' => 10)); ?>
-				</div>
-			
 		
+			
+				<div>
+        <?php echo $form->label($model, 'carrier'); ?>
+        <?php echo $form->textField($model, 'carrier', array('maxlength' => 10)); ?>
+				</div>
+			
+			
+				<div>
+        <?php echo $form->label($model, 'imei'); ?>
+        <?php echo $form->textField($model, 'imei'); ?>
+				</div>
+
+				<div>
+        <?php echo $form->label($model, 'created_at'); ?>
+        <?php echo $form->textField($model, 'created_at'); ?>
+				</div>
 		
     </p>
   </div>

@@ -78,7 +78,7 @@ endif; ?>
 		</div>
 
 		<div class=" buttons">
-    <?php echo TbHtml::button(Yii::t('app', 'Login'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'block' => true, 'type' => 'submit')); ?>
+    <?php echo TbHtml::button(Yii::t('app', 'Entrar'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'block' => true, 'type' => 'submit')); ?>
 		</div>
 
     <?php $this->endWidget(); ?>

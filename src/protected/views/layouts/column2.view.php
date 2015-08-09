@@ -49,8 +49,8 @@
     <!-- ADVANCED SEARCH end -->
 
     <!-- DISPATCHNOTE REFERENCES begin -->
-    <?php if (Yii::app()->controller->id == 'dispatchnote') : ?>
-        <?php echo TbHtml::stackedTabs(Dispatchnote::references()); ?>
+    <?php if (Yii::app()->controller->dispatchnote_references) : ?>
+        <?php Yii::app()->controller->widget('DispatchnoteReferences'); ?>
     <?php endif; ?>
     <!-- DISPATCHNOTE REFERENCES begin -->
 </div>

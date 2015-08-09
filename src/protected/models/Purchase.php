@@ -52,9 +52,10 @@ class Purchase extends BasePurchase
             'user_create_id' => Yii::t('app', 'Usuario'),
             'contract_number' => Yii::t('app', 'Nº Contrato'),
             'brand' => Yii::t('app', 'Marca'),
+            'imei' => Yii::t('app', 'IMEI'),
             'model' => Yii::t('app', 'Modelo'),
             'point_of_sale_id' => Yii::t('app', 'Punto de Venta'),
-            'user' => Yii::t('app', 'Seller|Sellers', 1),
+            'user' => Yii::t('app', 'Usuario', 1),
             'created_at' => Yii::t('app', 'F. de compra'),
             )
         );
@@ -121,13 +122,22 @@ class Purchase extends BasePurchase
      */
     public function admin()
     {
-        /**
-         * Criterio del metodo search
-         * @var CCriteria
-         */
+
         $criteria = $this->search()->getCriteria();
 
-        /*
+        return $this->adminSearch($criteria);
+    }
+    
+    public function adminReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->adminSearch($criteria);
+    }
+
+    public function adminSearch($criteria)
+    {
+         /*
         Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
          */
         $criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
@@ -174,12 +184,23 @@ class Purchase extends BasePurchase
      */
     public function pending()
     {
-        /**
-         * Criterio del metodo search
-         * @var CCriteria
-         */
+
         $criteria = $this->search()->getCriteria();
 
+        return $this->pendingSearch($criteria);
+
+
+    }
+
+    public function pendingReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->pendingSearch($criteria);
+    }
+
+    public function pendingSearch($criteria)
+    {
         $criteria->addCondition('last_location_id != :user_point_of_sale');
         $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
         $criteria->order = 'created_at DESC';

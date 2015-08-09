@@ -16,7 +16,7 @@ $this->menu = array(
 <?php $form = $this->beginWidget(
     'CActiveForm',
     array(
-    'action' => Yii::app()->createUrl('/owner/purchase/setinobservation'),
+    'action' => Yii::app()->createUrl('/purchase/purchase/dispatch'),
     //'enableAjaxValidation'=>true,
     )
 );?>
@@ -25,16 +25,19 @@ $this->menu = array(
     'bootstrap.widgets.TbGridView',
     array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
-    'id' => 'owner-purchase-grid',
+    'id' => 'selectableGrid',
     'dataProvider' => $model->admin(),
     'filter' => $model,
+    'ajaxUpdate'=>true,
+    'beforeAjaxUpdate'=>'function(){setCheckedItems()}',
     'template' => "{items}\n{pager}",
     'columns' => array(
         array(
             'header' => 'html',
             'id' => 'purchase_selected',
             'class' => 'CCheckBoxColumn',
-            'selectableRows' => '50',
+            'checked' => 'Helper::checkedInCookie($data->id, "checkedItems")',
+            //'selectableRows' => '50',
             'selectableRows' => 2,
             'value' => '$data->id',
             'headerTemplate' => '<label>{item}<span></span></label>',
@@ -113,13 +116,13 @@ $this->menu = array(
     )
 );?>
 
-<?php echo TbHtml::submitButton(Yii::t('app', 'change to observation'), array('class' => 'checks-submit btn-warning', 'data-checkcolumn' => 'purchase_selected'));?>
+<?php echo TbHtml::submitButton(Yii::t('app', 'Confeccionar Nota de envío'), array('class' => 'checks-submit btn-warning', 'data-checkcolumn' => 'purchase_selected'));?>
 
 <?php $this->endWidget();?>
 
 <?php //$this->advanced_search = true; ?>
 <?php $this->created_at_filter = true;?>
-<?php $this->purchase_references = $model->admin();?>
+<?php $this->purchase_references = $model->adminReferences();?>
 
 <?php $this->renderPartial(
     '_search',
