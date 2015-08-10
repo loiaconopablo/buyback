@@ -461,9 +461,16 @@ class DispatchNote extends BaseDispatchNote
      */
     public function purchasesDataProvider()
     {
+        $purchase_statuses = PurchaseStatus::model()->findAllByAttributes(array("dispatch_note_id" => $this->id, "status_id" => Status::PENDING_TO_SEND));
+
+        $purchases = array();
+
+        foreach($purchase_statuses as $purchase_status) {
+            array_push($purchases, $purchase_status->purchase);
+        }
 
         $purchasesDataProvider = new CActiveDataProvider('PurchaseStatus');
-        $purchasesDataProvider->setData($this->purchases);
+        $purchasesDataProvider->setData($purchases);
 
         return $purchasesDataProvider;
     }

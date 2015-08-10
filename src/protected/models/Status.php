@@ -33,6 +33,9 @@ class Status extends BaseStatus
 
     public function attributeLabels()
     {
-        return CMap::mergeArray(parent::attributeLabels(), array('user_update_id' => Yii::t('app', 'User|Users', 1)));
+        return CMap::mergeArray(parent::attributeLabels(), array(
+            'user_update_id' => Yii::t('app', 'Usuario'),
+            'status' => Yii::t('app', 'Estado'),
+        ));
     }
 }

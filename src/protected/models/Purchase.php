@@ -54,6 +54,7 @@ class Purchase extends BasePurchase
             'brand' => Yii::t('app', 'Marca'),
             'imei' => Yii::t('app', 'IMEI'),
             'model' => Yii::t('app', 'Modelo'),
+            'carrier' => Yii::t('app', 'Operador'),
             'point_of_sale_id' => Yii::t('app', 'Punto de Venta'),
             'user' => Yii::t('app', 'Usuario', 1),
             'created_at' => Yii::t('app', 'F. de compra'),
@@ -142,31 +143,6 @@ class Purchase extends BasePurchase
          */
         $criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
         $criteria->addInCondition('current_status_id', array(Status::PENDING, Status::RECEIVED));
-
-        return new CActiveDataProvider(
-            $this,
-            array(
-            'criteria' => $criteria,
-            )
-        );
-    }
-
-    /**
-     * Agrega condiciones al crieria de search para filtrar los equipos IN_OBSERVATION
-     * para el point_of_sale de user session
-     * @author Richard Grinberg <rggrinberg@gmail.com>
-     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
-     */
-    public function inObservation()
-    {
-        /**
-         * Criterio del metodo search
-         * @var CCriteria
-         */
-        $criteria = $this->search()->getCriteria();
-
-        $criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
-        $criteria->addInCondition('current_status_id', array(Status::IN_OBSERVATION));
 
         return new CActiveDataProvider(
             $this,

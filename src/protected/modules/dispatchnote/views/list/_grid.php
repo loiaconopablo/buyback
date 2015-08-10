@@ -18,7 +18,7 @@
         ),
         array(
             'header' => 'Items',
-            'value' => 'count($data->purchases)',
+            'value' => 'count(PurchaseStatus::model()->findAllByAttributes(array("dispatch_note_id" => $data->id, "status_id" => Status::PENDING_TO_SEND)))',
             'htmlOptions' => array(
                 'class' => 'span1 text-right',
             ),

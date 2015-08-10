@@ -58,7 +58,7 @@ class Home
         */
         if (Yii::app()->user->checkAccess('admin')) {
             return array(
-            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => (Yii::app()->controller->module->id == 'purchase')),
+            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/purchase/list/inpointofsale')),
             array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
             array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
@@ -70,7 +70,7 @@ class Home
         */
         if (Yii::app()->user->checkAccess('technical_supervisor')) {
             return array(
-            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/headquarter/admin/admin')),
+            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/purchase/list/inpointofsale')),
             array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
             );
@@ -82,7 +82,7 @@ class Home
         if (Yii::app()->user->checkAccess('retail')) {
             return array(
                 array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
-                array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/headquarter/admin/admin')),
+                array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/purchase/list/inpointofsale')),
                 array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             );
         }
