@@ -346,7 +346,7 @@ class DispatchNote extends BaseDispatchNote
 
         // si no hay nada marcado no hace nada
         if (!count($purchases_to_be_recived)) {
-            throw new Exception("No se pasó ningún Purchase.id al metodo", 1);
+            throw new Exception("Seleccione al menos un equipo a ser recibido", 1);
         }
 
         // Inicio la transacción para poder hacer rollback si algún model->save() dispara una excepción

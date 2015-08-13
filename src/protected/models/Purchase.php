@@ -55,9 +55,14 @@ class Purchase extends BasePurchase
             'imei' => Yii::t('app', 'IMEI'),
             'model' => Yii::t('app', 'Modelo'),
             'carrier' => Yii::t('app', 'Operador'),
+            'carrier_id' => Yii::t('app', 'Operador'),
+            'carrier_name' => Yii::t('app', 'Operador'),
             'point_of_sale_id' => Yii::t('app', 'Punto de Venta'),
             'user' => Yii::t('app', 'Usuario', 1),
             'created_at' => Yii::t('app', 'F. de compra'),
+            'peoplesoft_order' => Yii::t('app', 'Nº PeopleSoft'),
+            'to_refurbish' => Yii::t('app', 'Apto para refabricación'),
+            'seller' => Yii::t('app', 'Cliente'),
             )
         );
     }
@@ -68,7 +73,8 @@ class Purchase extends BasePurchase
             parent::rules(),
             array(
                 array('', 'safe', 'on' => 'search'),
-                array('contract_number', 'unique'),
+                array('imei_checked, peoplesoft_order', 'required', 'on' => 'checking'),
+                array('contract_number', 'unique', 'on' => 'insert'),
             )
         );
     }
@@ -351,5 +357,21 @@ class Purchase extends BasePurchase
         $criteria->order = 'quantity DESC';
 
         return $this->findAll($criteria);
+    }
+
+    /**
+     * Devuelve el precio solicitado recuperandolo del campo de log pricelist_log
+     * @param  string $price_type [locked, unlocked]
+     * @return integer            El precio
+     */
+    public function getLoggedPrice($price_type)
+    {
+        $price_log_obj = CJSON::decode($this->pricelist_log);
+
+        if (strlen(trim($this->pricelist_log))) {
+            return $price_log_obj[$price_type];
+        }
+        
+        return false;
     }
 }

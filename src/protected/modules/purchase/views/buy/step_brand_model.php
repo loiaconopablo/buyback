@@ -23,7 +23,7 @@
 	<div>
 		<div class="alert alert-block alert-info">
     <?php echo Yii::t('app', $form->labelEx($model, 'brand')); ?>
-    <?php echo $form->dropDownList($model, 'brand', CHtml::listData($priceList->getBrandsList(), 'brand', 'brand'), array('empty'=>'Marca...')); ?>
+    <?php echo $form->dropDownList($model, 'brand', CHtml::listData(PriceList::model()->findAll(), 'brand', 'brand'), array('empty'=>'Marca...', 'class' => 'brand_select')); ?>
 		</div>
     <?php if($model->hasErrors('brand')) : ?>
 			<div class="alert alert-block alert-error">
@@ -37,7 +37,8 @@ endif; ?>
 	<div>
 		<div class="alert alert-block alert-info">
     <?php echo Yii::t('app', $form->labelEx($model, 'model')); ?>
-    <?php echo $form->dropDownList($model, 'model', CHtml::listData($priceList->getModelsByBrand($model->brand), 'model', 'model'), array('empty'=>'Modelo...')); ?>
+    <?php echo $form->dropDownList($model, 'model', CHtml::listData(PriceList::model()->findAllByAttributes(array('brand' => $model->brand)), 'model', 'model'), array('empty'=>'Modelo...', 'class' => 'model_select')); ?>
+    <?php //echo $form->dropDownList($model, 'model', CHtml::listData($priceList->getModelsByBrand($model->brand), 'model', 'model'), array('empty'=>'Modelo...')); ?>
 		</div>
     <?php if($model->hasErrors('model')) : ?>
 			<div class="alert alert-block alert-error">
@@ -58,4 +59,4 @@ endif; ?>
 	</div>
 </div>
 
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/retail.js"></script>
+

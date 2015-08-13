@@ -13,6 +13,8 @@ class ListController extends Controller
             $model->setAttributes($_GET['DispatchNote']);
         }
 
+        Helper::pushInCookie(DispatchNote::PENDING_TO_SEND, 'checkedDispatchnoteStatuses');
+
         $this->render(
             'pending', array(
             'model' => $model,
@@ -28,6 +30,9 @@ class ListController extends Controller
         if (isset($_GET['DispatchNote'])) {
             $model->setAttributes($_GET['DispatchNote']);
         }
+
+        Helper::pushInCookie(DispatchNote::SENT, 'checkedDispatchnoteStatuses');
+        Helper::pushInCookie(DispatchNote::PARTIALLY_RECEIVED, 'checkedDispatchnoteStatuses');
 
         $this->render(
             'expecting', array(

@@ -58,4 +58,4 @@ endforeach; ?>
 
 
 
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/retail.js"></script>
+

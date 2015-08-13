@@ -69,6 +69,27 @@ class Helper
         return false;
     }
 
+    /**
+     * Inserta un valor en una cookie dada
+     * @param  mixed $value       El valor a insertar
+     * @param  string $cookie_name el nombre de la cookie
+     */
+    public static function pushInCookie($value, $cookie_name)
+    {
+        $checkedItemsCookie = Yii::app()->request->cookies[$cookie_name];
+
+        if ($checkedItemsCookie) {
+            $checkedItemsArray = explode(',', $checkedItemsCookie->value);
+        } else {
+            $checkedItemsArray = array();
+        }
+
+        array_push($checkedItemsArray, $value);
+
+        Yii::app()->request->cookies[$cookie_name] = new CHttpCookie($cookie_name, implode(',', $checkedItemsArray), array('path' => '/'));
+
+    }
+
 
     /**
      * Devuelve un modelo con los puntos de venta que aparecen en el dataprovider

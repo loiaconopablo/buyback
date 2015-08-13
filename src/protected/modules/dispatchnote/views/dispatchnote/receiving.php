@@ -12,11 +12,11 @@
         'data' => $dispatch_note->company,
         'attributes' => array(
             array(
-                'label' => Yii::t('app', 'Source'),
+                'label' => Yii::t('app', 'Origen'),
                 'value' => $dispatch_note->company->name . ' - ' . $dispatch_note->point_of_sale->name,
             ),
             array(
-                'label' => Yii::t('app', 'Destination'),
+                'label' => Yii::t('app', 'Destino'),
                 'value' => $dispatch_note->destination->name,
             ),
         ),
@@ -39,6 +39,8 @@
                 //'header'=>'html',
                 'id' => 'dispatch_selected',
                 'class' => 'CCheckBoxColumn',
+                'htmlOptions' => array('class' => 'span1 text-center'),
+                'headerHtmlOptions' => array('class' => 'span1 text-center'),
                 'checked' => '$data->current_status_id == Status::SENT',
                 'disabled' => '$data->current_status_id != Status::SENT && $data->current_status_id != Status::PENDING_TO_BE_RECEIVED',
                 'selectableRows' => '50',
@@ -49,6 +51,12 @@
             array(
                 'header' => Yii::t('app', 'Nº Contrato'),
                 'value' => '$data->contract_number',
+                'htmlOptions' => array('class' => 'span2 text-left'),
+            ),
+            array(
+                'header' => Yii::t('app', 'IMEI'),
+                'value' => '$data->imei',
+                'htmlOptions' => array('class' => 'span2 text-left'),
             ),
             array(
                 'header' => Yii::t('app', 'Marca'),
@@ -58,10 +66,7 @@
                 'header' => Yii::t('app', 'Modelo'),
                 'value' => '$data->model',
             ),
-            array(
-                'header' => Yii::t('app', 'IMEI'),
-                'value' => '$data->imei',
-            ),
+
             array(
                 'header' => Yii::t('app', 'Usuario'),
                 'value' => '$data->user',
@@ -70,6 +75,7 @@
             array(
                 'class' => 'TbButtonColumn',
                 'template' => '{cancelled}{received}',
+                'htmlOptions' => array('class' => 'span1 text-center'),
                 'buttons' => array
                 (
                     'cancelled' => array(

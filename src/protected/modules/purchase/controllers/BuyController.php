@@ -23,10 +23,15 @@ class BuyController extends Controller
                 'actions' => array('index', 'imei', 'brandmodel', 'questionary', 'carrier', 'seller', 'showprice', 'getmodels'),
                 'expression' => "Yii::app()->user->checkAccess('retail')",
             ),
-             array(
+            array(
                 'allow',
                 'actions' => array('cancel'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
+            ),
+            array(
+                'allow',
+                'actions' => array('getmodels'),
+                'expression' => "Yii::app()->user->checkAccess('technical_supervisor')",
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
@@ -58,13 +63,19 @@ class BuyController extends Controller
                 // Agrega gif_response_json a la session para luego guardarlo en registro
                 Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], array('gif_response_json' => $model->gif_data));
                 
-                if (Yii::app()->getRequest()->getIsAjaxRequest()) {
-                    Yii::app()->end();
-                }
+                $response = array(
+                    'error' => 0,
+                    'message' => Yii::t('app', 'Todo bien')
+                );
+                echo CJSON::encode($response);
+                Yii::app()->end();
 
             } else {
-                header('Content-type: application/json');
-                echo CJSON::encode($model->getErrors());
+                $response = array(
+                    'error' => count($model->getErrors()),
+                    'message' => $model->getErrors()
+                );
+                echo CJSON::encode($response);
                 Yii::app()->end();
 
             }
@@ -173,18 +184,24 @@ class BuyController extends Controller
         if (isset($_POST['StepCarrierForm'])) {
             $model->setAttributes($_POST['StepCarrierForm']);
 
-            Yii::app()->session['unlocked'] = $model->unlocked;
+            //Yii::app()->session['unlocked'] = $model->unlocked;
 
             if ($model->validate()) {
                 Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], $_POST['StepCarrierForm']);
 
-                if (Yii::app()->getRequest()->getIsAjaxRequest()) {
-                    Yii::app()->end();
-                }
+                $response = array(
+                    'error' => 0,
+                    'message' => Yii::t('app', 'Todo bien')
+                );
+                echo CJSON::encode($response);
+                Yii::app()->end();
 
             } else {
-                header('Content-type: application/json');
-                echo CJSON::encode($model->getErrors());
+                $response = array(
+                    'error' => count($model->getErrors()),
+                    'message' => $model->getErrors()
+                );
+                echo CJSON::encode($response);
                 Yii::app()->end();
 
             }
@@ -281,12 +298,12 @@ class BuyController extends Controller
         $model = new Purchase;
 
         $point_of_sale = PointOfSale::model()->findByPk(Yii::app()->user->point_of_sale_id);
-        $carrier = Carrier::model()->findByPk(Yii::app()->session['purchase']['carrier']);
+        $carrier = Carrier::model()->findByPk(Yii::app()->session['purchase']['carrier_id']);
 
         if ($carrier) {
             $carrier_name = $carrier->name;
         } else {
-            $carrier_name = Yii::t('app', 'No carrier');
+            $carrier_name = Yii::t('app', 'Liberado');
         }
 
         $company = Company::model()->findByPk(Yii::app()->user->company_id);
@@ -318,7 +335,7 @@ class BuyController extends Controller
             'point_of_sale_id' => Yii::app()->user->point_of_sale_id,
             'headquarter_id' => $point_of_sale->headquarter_id,
             'seller_id' => $seller->getPrimaryKey(),
-            'carrier_id' => Yii::app()->session['purchase']['carrier'],
+            'carrier_id' => Yii::app()->session['purchase']['carrier_id'],
             'price_list_id' => Yii::app()->session['purchase']['price_list_id'],
             'imei' => Yii::app()->session['purchase']['imei'],
             'brand' => Yii::app()->session['purchase']['brand'],
@@ -365,10 +382,8 @@ class BuyController extends Controller
     public function actionGetmodels($brand)
     {
         if (Yii::app()->getRequest()->getIsPostRequest()) {
-            $model = new PriceList();
 
-            $models = $model->getModelsByBrand($brand);
-            //array_unshift($models, array('name' => 'Modelo...', 'id' => null));
+            $models = PriceList::model()->findAllByAttributes(array('brand' => $brand));
 
             echo CJSON::encode($models);
         } else {
@@ -484,7 +499,7 @@ class BuyController extends Controller
                 'price_type' => 'broken',
             );
 
-        } elseif (Yii::app()->session['unlocked']) {
+        } elseif (Yii::app()->session['purchase']['carrier_id'] == Carrier::model()->findByAttributes(array('name' => 'Liberado'))->id) {
             $price_data = array(
                 'purchase_price' => $price_list->unlocked_price,
                 'price_type' => 'unlocked',
