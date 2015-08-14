@@ -35,7 +35,7 @@
 	<h3><?php echo Yii::t('app', 'Customer details'); ?></h3>
 
 	<p class="note">
-    <?php echo Yii::t('app', 'Fields with');?> <span class="required">*</span> <?php echo Yii::t('app', 'are required');?>.
+    <?php echo Yii::t('app', 'Los campos con ');?> <span class="required">*</span> <?php echo Yii::t('app', 'son requeridos');?>.
 	</p>
 
     <?php //echo $form->errorSummary($model); ?>

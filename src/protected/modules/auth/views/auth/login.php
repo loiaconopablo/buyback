@@ -32,10 +32,10 @@ $this->pageTitle=Yii::app()->name . ' - Login';
 
 <?php  
 if($data['showNewpassword']) {   
-          Yii::app()->user->setFlash(TbHtml::ALERT_COLOR_INFO, '<strong>Atenci&oacute;n!</strong> Debe ingresar un nuevo password.');
+          Yii::app()->user->setFlash(TbHtml::ALERT_COLOR_INFO, Yii::t('app', 'Bienvenido!. Debe cambiar la contraseña.'));
 }
 if($data['successNewpassword']) {
-    Yii::app()->user->setFlash(TbHtml::ALERT_COLOR_INFO, '<strong>Felicitaciones!</strong> Su password fue cambiado con exito. Logueese');
+    Yii::app()->user->setFlash(TbHtml::ALERT_COLOR_INFO, Yii::t('app', 'Su contraseña fue cambiado con exito.'));
 }
     ?>
 
@@ -49,16 +49,16 @@ if($data['successNewpassword']) {
     'validateOnSubmit'=>true,
     ),
     )
-); ?>
+); ?>|
 		<div class="">
     <?php // echo $form->labelEx($model,'usuario'); ?>
-    <?php echo $form->textField($model, 'username', array('class'=>'input-block-level', 'placeholder'=>'Nombre de usuario')); ?>
+    <?php echo $form->textField($model, 'username', array('class'=>'input-block-level', 'placeholder'=> Yii::t('app', 'Nombre de usuario'))); ?>
     <?php echo $form->error($model, 'username'); ?>
 		</div>
 
 		<div class="">
     <?php // echo $form->labelEx($model,'contraseña'); ?>
-    <?php echo $form->passwordField($model, 'password', array('class'=>'input-block-level', 'placeholder'=>'Contraseña')); ?>
+    <?php echo $form->passwordField($model, 'password', array('class'=>'input-block-level', 'placeholder'=>Yii::t('app', 'Contraseña'))); ?>
     <?php echo $form->error($model, 'password'); ?>
 		</div>
 
@@ -71,7 +71,7 @@ if($data['successNewpassword']) {
     <?php 
 endif; ?>
 
-		<div class=" rememberMe">
+		<div class="rememberMe form-inline">
     <?php echo $form->checkBox($model, 'rememberMe'); ?>
     <?php echo $form->label($model, 'rememberMe'); ?>
     <?php echo $form->error($model, 'rememberMe'); ?>

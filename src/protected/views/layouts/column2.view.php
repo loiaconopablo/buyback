@@ -22,7 +22,7 @@
 
     <!-- RECIVED_AT begin -->
     <?php if (Yii::app()->controller->recived_at_filter) : ?>
-        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'recived_at', 'title' => 'Filtrar x fecha de estado')); ?>
+        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'recived_at', 'title' => Yii::t('app', 'Filtrar x fecha de estado'))); ?>
     <?php endif; ?>
     <!-- RECIVED_AT end -->
 

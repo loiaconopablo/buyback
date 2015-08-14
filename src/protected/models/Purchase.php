@@ -374,4 +374,19 @@ class Purchase extends BasePurchase
         
         return false;
     }
+
+    /**
+     * Devuelve el request_id extrayendolo del json de la respuesta de GIF
+     * @return string GIF request id
+     */
+    public function getGifRequestId()
+    {
+        $gif_response_json = CJSON::decode($this->gif_response_json);
+
+        if (strlen(trim($this->gif_response_json))) {
+            return $gif_response_json['respuesta']['id_request'];
+        }
+        
+        return false;
+    }
 }

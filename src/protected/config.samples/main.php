@@ -46,11 +46,8 @@ return array(
         'rights' => array(),
         'admin_root' => array(),
         'admin' => array(),
-        'retail' => array(),
-        'headquarter' => array(),
         'purchase' => array(),
         'dispatchnote' => array(),
-        'owner' => array(),
         'report' => array(),
         // uncomment the following to enable the Gii tool
         'gii' => array(

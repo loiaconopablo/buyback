@@ -246,6 +246,18 @@ class BuyController extends Controller
                     // Ejecuta las transacciones en la base de datos
                     $transaction->commit();
 
+                    // Envia los datos de la compra a GIF
+                    $imeiws_response_json = Yii::app()->imeiws->postPurchase($purchase);
+
+                    $imeiws_response = CJSON::decode($imeiws_response_json, false);
+
+                    if ($imeiws_response->error !== 0) {
+                        // No valida como negativo pero loguea que hubo un error utilizando el webservice
+                        Yii::log('IMEI WEBSERVICE', CLogger::LEVEL_ERROR, $imeiws_response->error_desc);
+
+                        return true;
+                    }
+
                     $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
 
                     //Destruye la variable de session para evitar duplicados
