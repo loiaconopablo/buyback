@@ -31,8 +31,8 @@ class StepBrandModelForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-        'brand' => Yii::t('app', 'Brand'),
-        'model' => Yii::t('app', 'Model'),
+        'brand' => Yii::t('app', 'Marca'),
+        'model' => Yii::t('app', 'Modelo'),
         );
     }
 }

@@ -19,7 +19,7 @@ class User extends BaseUser
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.userid'; // select fields which you want in output
-        $criteria->addInCondition('itemname', array('admin', 'supervisor', 'retail', 'personal','compamyadmin'));
+        $criteria->addInCondition('itemname', array('admin', 'retail', 'personal', 'requoter', 'technical_supervisor','compamyadmin'));
 
         $users = Authassignment::model()->findAll($criteria);
 
@@ -171,6 +171,7 @@ class User extends BaseUser
             'username' => Yii::t('app', 'Usuario'),
             'password' => Yii::t('app', 'Contraseña'),
             'last_login' => Yii::t('app', 'Último login'),
+            'employee_identification' => Yii::t('app', 'Código de empleado'),
             )
         );
     }

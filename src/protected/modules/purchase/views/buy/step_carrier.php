@@ -21,27 +21,21 @@ $priceList = new PriceList;
 ?>
 
     <?php if (!Yii::app()->user->checkAccess('personal')) : ?>
-		<div>
-			<div class="alert alert-block alert-info bold">
-				<?php echo $form->checkBoxControlGroup($model, 'unlocked');?>
-			</div>
-		</div>
 
 		<div>
 			<div class="alert alert-block alert-info bold">
-            <?php echo Yii::t('app', $form->labelEx($model, 'carrier'));?>
-            <?php echo $form->dropDownList($model, 'carrier', CHtml::listData(Carrier::model()->findAll(), 'id', 'name'), array('empty' => Yii::t('app', 'Operador') . '...'));?>
+            <?php echo Yii::t('app', $form->labelEx($model, 'carrier_id'));?>
+            <?php echo $form->dropDownList($model, 'carrier_id', CHtml::listData(Carrier::model()->findAll(), 'id', 'name'), array('empty' => Yii::t('app', 'Operador') . '...'));?>
 			</div>
-            <?php if ($model->hasErrors('carrier')) : ?>
+            <?php if ($model->hasErrors('carrier_id')) : ?>
 				<div class="alert alert-block alert-error">
 				  <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <?php echo $form->error($model, 'carrier');?>
+            <?php echo $form->error($model, 'carrier_id');?>
 				</div>
         <?php endif; ?>
 		</div>
     <?php else: ?>
-    <?php echo $form->hiddenField($model, 'unlocked', array('value' => 0));?>
-    <?php echo $form->hiddenField($model, 'carrier', array('value' => 1));?>
+    <?php echo $form->hiddenField($model, 'carrier_id', array('value' => 1));?>
 
 		<div>
 			<div class="alert alert-block alert-info bold">

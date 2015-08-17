@@ -26,6 +26,11 @@ class Controller extends CController
      */
     public $purchase_references = false;
     /**
+     * Habilita el cuadro de referencia de estados de las notas de envio si tiene datos
+     * @var boolean
+     */
+    public $dispatchnote_references = false;
+    /**
      * Habilita el filtro entre fechas si es TRUE
      * @var boolean
      */

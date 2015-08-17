@@ -22,7 +22,7 @@
 
     <!-- RECIVED_AT begin -->
     <?php if (Yii::app()->controller->recived_at_filter) : ?>
-        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'recived_at', 'title' => 'Filtrar x fecha de estado')); ?>
+        <?php $this->renderPartial('application.views.default.timerange', array('prefix' => 'recived_at', 'title' => Yii::t('app', 'Filtrar x fecha de estado'))); ?>
     <?php endif; ?>
     <!-- RECIVED_AT end -->
 
@@ -49,8 +49,8 @@
     <!-- ADVANCED SEARCH end -->
 
     <!-- DISPATCHNOTE REFERENCES begin -->
-    <?php if (Yii::app()->controller->id == 'dispatchnote') : ?>
-        <?php echo TbHtml::stackedTabs(Dispatchnote::references()); ?>
+    <?php if (Yii::app()->controller->dispatchnote_references) : ?>
+        <?php Yii::app()->controller->widget('DispatchnoteReferences'); ?>
     <?php endif; ?>
     <!-- DISPATCHNOTE REFERENCES begin -->
 </div>

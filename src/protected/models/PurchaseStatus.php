@@ -31,6 +31,12 @@ class PurchaseStatus extends BasePurchaseStatus
 
     public function attributeLabels()
     {
-        return CMap::mergeArray(parent::attributeLabels(), array('user_update_id' => Yii::t('app', 'User|Users', 1)));
+        return CMap::mergeArray(parent::attributeLabels(), array(
+            'user_update_id' => Yii::t('app', 'Usuario'),
+            'status' => Yii::t('app', 'Estado'),
+            'dispatch_note' => Yii::t('app', 'Nota de envío'),
+            'point_of_sale' => Yii::t('app', 'Punto de venta'),
+            'comment' => Yii::t('app', 'Comentario'),
+        ));
     }
 }

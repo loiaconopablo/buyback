@@ -52,10 +52,17 @@ class Purchase extends BasePurchase
             'user_create_id' => Yii::t('app', 'Usuario'),
             'contract_number' => Yii::t('app', 'Nº Contrato'),
             'brand' => Yii::t('app', 'Marca'),
+            'imei' => Yii::t('app', 'IMEI'),
             'model' => Yii::t('app', 'Modelo'),
+            'carrier' => Yii::t('app', 'Operador'),
+            'carrier_id' => Yii::t('app', 'Operador'),
+            'carrier_name' => Yii::t('app', 'Operador'),
             'point_of_sale_id' => Yii::t('app', 'Punto de Venta'),
-            'user' => Yii::t('app', 'Seller|Sellers', 1),
+            'user' => Yii::t('app', 'Usuario', 1),
             'created_at' => Yii::t('app', 'F. de compra'),
+            'peoplesoft_order' => Yii::t('app', 'Nº PeopleSoft'),
+            'to_refurbish' => Yii::t('app', 'Apto para refabricación'),
+            'seller' => Yii::t('app', 'Cliente'),
             )
         );
     }
@@ -66,7 +73,8 @@ class Purchase extends BasePurchase
             parent::rules(),
             array(
                 array('', 'safe', 'on' => 'search'),
-                array('contract_number', 'unique'),
+                array('imei_checked, peoplesoft_order', 'required', 'on' => 'checking'),
+                array('contract_number', 'unique', 'on' => 'insert'),
             )
         );
     }
@@ -121,42 +129,26 @@ class Purchase extends BasePurchase
      */
     public function admin()
     {
-        /**
-         * Criterio del metodo search
-         * @var CCriteria
-         */
+
         $criteria = $this->search()->getCriteria();
 
-        /*
+        return $this->adminSearch($criteria);
+    }
+    
+    public function adminReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->adminSearch($criteria);
+    }
+
+    public function adminSearch($criteria)
+    {
+         /*
         Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
          */
         $criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
         $criteria->addInCondition('current_status_id', array(Status::PENDING, Status::RECEIVED));
-
-        return new CActiveDataProvider(
-            $this,
-            array(
-            'criteria' => $criteria,
-            )
-        );
-    }
-
-    /**
-     * Agrega condiciones al crieria de search para filtrar los equipos IN_OBSERVATION
-     * para el point_of_sale de user session
-     * @author Richard Grinberg <rggrinberg@gmail.com>
-     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
-     */
-    public function inObservation()
-    {
-        /**
-         * Criterio del metodo search
-         * @var CCriteria
-         */
-        $criteria = $this->search()->getCriteria();
-
-        $criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
-        $criteria->addInCondition('current_status_id', array(Status::IN_OBSERVATION));
 
         return new CActiveDataProvider(
             $this,
@@ -174,12 +166,23 @@ class Purchase extends BasePurchase
      */
     public function pending()
     {
-        /**
-         * Criterio del metodo search
-         * @var CCriteria
-         */
+
         $criteria = $this->search()->getCriteria();
 
+        return $this->pendingSearch($criteria);
+
+
+    }
+
+    public function pendingReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->pendingSearch($criteria);
+    }
+
+    public function pendingSearch($criteria)
+    {
         $criteria->addCondition('last_location_id != :user_point_of_sale');
         $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
         $criteria->order = 'created_at DESC';
@@ -231,15 +234,6 @@ class Purchase extends BasePurchase
     public function setAsCancelled()
     {
         $this->setStatus(Status::CANCELLED, $this->last_dispatch_note_id);
-    }
-
-    // TODO: Revisar si este metodo no deberia er reemplazado por los que extienden el criteria de search
-    // commented: 07-05-2015
-    public function getRetailAdminPurchases()
-    {
-        $criteria = $this->admin()->getCriteria();
-
-        return $this->findAll($criteria);
     }
 
     /**
@@ -363,5 +357,36 @@ class Purchase extends BasePurchase
         $criteria->order = 'quantity DESC';
 
         return $this->findAll($criteria);
+    }
+
+    /**
+     * Devuelve el precio solicitado recuperandolo del campo de log pricelist_log
+     * @param  string $price_type [locked, unlocked]
+     * @return integer            El precio
+     */
+    public function getLoggedPrice($price_type)
+    {
+        $price_log_obj = CJSON::decode($this->pricelist_log);
+
+        if (strlen(trim($this->pricelist_log))) {
+            return $price_log_obj[$price_type];
+        }
+        
+        return false;
+    }
+
+    /**
+     * Devuelve el request_id extrayendolo del json de la respuesta de GIF
+     * @return string GIF request id
+     */
+    public function getGifRequestId()
+    {
+        $gif_response_json = CJSON::decode($this->gif_response_json);
+
+        if (strlen(trim($this->gif_response_json))) {
+            return $gif_response_json['respuesta']['id_request'];
+        }
+        
+        return false;
     }
 }

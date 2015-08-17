@@ -48,16 +48,7 @@ class ImeiRequest
      */
     public function toJson()
     {
-        return CJSON::encode(array(
-            'user' => $this->user,
-            'password' => $this->password,
-            'imeinumber' => $this->imeinumber,
-            'fiscal_number' => $this->fiscal_number,
-            'name' => $this->name,
-            'customer_id' => $this->customer_id,
-            'terminal_id' => $this->terminal_id,
-            'user_id' => $this->user_id,
-        ));
+        return CJSON::encode($this->toArray());
     }
 
     /**

@@ -76,8 +76,7 @@
 <?php endif; ?>
 
 
-<?php foreach ($model->purchase_statuses as $status) :
-?>
+<?php foreach ($model->purchase_statuses as $status) : ?>
 	<div class="well <?php echo $status->status->constant_name; ?>">
         
     <?php $this->widget(
@@ -92,14 +91,13 @@
         ),
     'user',
     'point_of_sale',
-    'dispatch_note_id',
+    'dispatch_note',
     'comment',
     ),
     )
 );?>
 	</div>
-<?php
-endforeach;?>
+<?php endforeach; ?>
 
 <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'purchase_form')); ?>
     <?php echo CHtml::hiddenField('purchase_id', $model->id, array('id' => 'purchase_id')); ?>

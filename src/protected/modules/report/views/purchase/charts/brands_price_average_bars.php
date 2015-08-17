@@ -17,8 +17,6 @@
 
       var options = {
         title: "<?php echo Yii::t('app', 'Precio promedio por marca'); ?>",
-        width: 750,
-        height: 400,
         bar: {groupWidth: "95%"},
         legend: { position: "none" },
       };

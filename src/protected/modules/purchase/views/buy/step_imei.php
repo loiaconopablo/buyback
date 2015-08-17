@@ -37,4 +37,4 @@
     <?php echo TbHtml::link(Yii::t('app','Volver'), array('/retail'), array('class' => 'btn btn-large pull-right')); ?>
 	</div>
 </div>
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/retail.js"></script>
+

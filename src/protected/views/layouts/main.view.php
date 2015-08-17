@@ -13,7 +13,7 @@
 </head>
 
 <script type="text/javascript">
-    google.load("visualization", "1", {packages:["corechart"]});
+    google.load("visualization", "1", {packages:["corechart","bar"]});
 </script>
 
 <body>
@@ -98,7 +98,7 @@
     <!-- FOOTER begin -->
     <footer class="container">
         <div class="">
-            Copyright &copy; <?php echo date('Y'); ?> by BGH BuyBack. <?php echo Yii::t('app', 'All rights reserved'); ?>.
+            Copyright &copy; <?php echo date('Y'); ?> by BGH BuyBack. <?php echo Yii::t('app', 'Todos los derechos reservados.'); ?>.
         </div>
     </footer>
     <!-- FOOTER end -->

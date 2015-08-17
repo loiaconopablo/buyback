@@ -22,7 +22,7 @@ class PurchaseController extends Controller
             ),
              array(
                 'allow',
-                'actions' => array('ownerview'),
+                'actions' => array('ownerview', 'dispatch'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
             array('deny',  // deny all users
@@ -63,6 +63,8 @@ class PurchaseController extends Controller
      */
     public function actionDispatch()
     {
+        $this->layout = '//layouts/column1.view';
+        
         $dispatch_note_model = new DispatchNote;
 
         /**
