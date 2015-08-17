@@ -9,6 +9,18 @@ return array(
     // preloading 'log' component
     'preload'=>array('log'),
 
+    // path aliases
+    'aliases' => array(
+        'giix' => realpath(__DIR__ . '/../../../vendor/assisrafael/giix'),
+    ),
+
+    // preloading 'log' component
+    'preload'=>array('log'),
+    'import' => array(
+        'application.models.*',
+        'giix.components.*', // giix components
+    ),
+
     // application components
     'components'=>array(
 
