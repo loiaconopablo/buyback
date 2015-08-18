@@ -67,7 +67,7 @@
     <?php echo TbHtml::checkBoxList('questionary', array(true), array(
         Yii::t('app', 'El equipo NO TIENE su batería o su tapa trasera') => Yii::t('app', 'El equipo NO TIENE su batería o su tapa trasera'),
         Yii::t('app', 'El equipo NO ENCIENDE o NO PUEDE realizar una llamada') => Yii::t('app', 'El equipo NO ENCIENDE y puede realizar una llamada'),
-        Yii::t('app', 'El equipo NO TIENE su visor o display en buen estado (está estallado o rajado)') => Yii::t('app', 'El equipo NO TIENE su visor o display en buen estado (no estallado ni rajado)'),
+        Yii::t('app', 'El equipo TIENE su visor o display en buen estado (está estallado o rajado)') => Yii::t('app', 'El equipo NO TIENE su visor o display en buen estado (no estallado ni rajado)'),
         Yii::t('app', 'El equipo TIENE rastros de haber sido mojado') => Yii::t('app', 'El equipo TIENE rastros de haber sido mojado'),
     )); ?>
     </div>
