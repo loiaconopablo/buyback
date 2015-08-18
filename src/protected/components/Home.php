@@ -25,6 +25,10 @@ class Home
                 return array('/purchase/list/insupervision');
         }
 
+        if (Yii::app()->user->checkAccess('company_admin')) {
+                return array('/report/purchase/');
+        }
+
         //Si no esta logueado o no se reconoce el rol
         return array('/login');
 
@@ -62,6 +66,15 @@ class Home
             array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
             array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
+            );
+        }
+
+        /**
+        * MENU DE ADMINISTRADOR DE EMPRESA
+        */
+        if (Yii::app()->user->checkAccess('company_admin')) {
+            return array(
+            array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
             );
         }
 

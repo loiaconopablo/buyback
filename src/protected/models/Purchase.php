@@ -159,6 +159,42 @@ class Purchase extends BasePurchase
     }
 
     /**
+     * Agrega condiciones al criterio de search para filtrar los equipos que estan en estado
+     * RECEIVED o PENDING para en el point_of_sale_id del usuario de session
+     * @author Richard Grinberg <rggrinberg@gmail.com>
+     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
+     */
+    public function company()
+    {
+
+        $criteria = $this->search()->getCriteria();
+
+        return $this->companySearch($criteria);
+    }
+    
+    public function companyReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->companySearch($criteria);
+    }
+
+    public function companySearch($criteria)
+    {
+         /*
+        Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
+         */
+        $criteria->compare('t.company_id', Yii::app()->user->company_id);
+
+        return new CActiveDataProvider(
+            $this,
+            array(
+            'criteria' => $criteria,
+            )
+        );
+    }
+
+    /**
      * Agrega condiciones al criterio de search para filtrar los equipos que estan en los estados
      * donde no se encuentra aún en la cabecera del Owner
      * @author Richard Grinberg <rggrinberg@gmail.com>
