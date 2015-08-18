@@ -65,10 +65,54 @@ $(document).ready(function() {
 	 	refreshGrid();
 	 });
 
+	 /** Filtra por status dispatchnote */
+	 $('input[name*=dispatchnote_search]').on('click', function() {
+
+	 	var checked_statuses = new Array();
+
+	 	$('input[name*=dispatchnote_search]:checked').each(function() {
+	 		checked_statuses.push($(this).val());
+	 	});
+
+	 	$.cookie('checkedDispatchnoteStatuses', checked_statuses, { path: '/' });
+
+	 	refreshGrid();
+	 });
+
 	 // Evita que los links deshabilitados funcionen
 	 $('.disabled a').on('click', function(ev) {
 	 	ev.preventDefault();
 	 });
+
+	 /**
+	  * Popula un <select class="model_select">
+	  * Cuando un <select class="brand_select"> dispara el evento "change"
+	  */
+	 $('.brand_select').on('change', function() {
+		var brand = $(this).find(":selected").val();
+
+		$.ajax({
+			url: Yii.app.createUrl('purchase/buy/getmodels', {'brand': brand}),
+			type: 'POST',
+			dataType: 'json',
+			success: function(data) {
+				$('.model_select option').each(function() {
+					if ($(this).val()) {
+						$(this).remove();
+					}
+				});
+
+				jQuery.each(data, function(key, val) {
+					var o = new Option(val.model);
+					o.value = val.model;
+					$('.model_select').append(o);
+				});
+			},
+			error: function() {
+				//console.log('error');
+			}
+		});
+	});
 
 });
 
@@ -150,3 +194,28 @@ function getUncheckeds() {
     $('[name^=purchase_selected]').not(':checked,[name$=all]').each(function(){unch.push($(this).val());});
     return unch.toString();
 };
+
+/**
+ * Esta función la invocan los formularios validados por ajax
+ * Si tiene errores los muestra
+ * Si no tiene errores redirecciona el sitio al action del form
+ * @param  form element  form     El formulario que la invoca
+ * @param  json  data     Lo que devuelve la validación
+ * @param  {Boolean} hasError [description]
+ */
+function formSend(form, data, hasError)
+{
+	if (data.error != 0) {
+		$.ajax({
+			url: Yii.app.createUrl('default/message', { 'type': 'alert-error' }),
+			type: 'POST',
+			data: data.message,
+			dataType: 'html',
+			success: function(data) {
+				$('#messages-wrapper').append(data);
+			}
+		});
+	} else {
+		window.location = $(form).attr('action');
+	}
+}

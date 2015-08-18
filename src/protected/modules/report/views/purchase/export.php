@@ -21,7 +21,7 @@ $this->menu = array(
 
 <?php
     $attribute_options = array(
-        'contract_number' => Yii::t('app', 'Nro. Contrato'),
+        'contract_number' => Yii::t('app', 'Nº Contrato'),
         'cae' => Yii::t('app', 'C.A.E.'),
         'imei' => Yii::t('app', 'IMEI'),
         'brand' => Yii::t('app', 'Marca'),
@@ -63,7 +63,7 @@ $this->menu = array(
     );
 
     $attribute_user_options = array(
-        'username' => Yii::t('app', 'Nombre de usuario'),
+        'username' => Yii::t('app', 'Nombre'),
         'mail' => Yii::t('app', 'Mail'),
         // 'last_login' => Yii::t('app', 'Último login'),
     );

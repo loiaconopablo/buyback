@@ -185,13 +185,87 @@ class PurchaseController extends Controller
      */
     public function actionMonthly()
     {
+        $this->layout = '//layouts/column1.view';
+
         $model = new MonthlyForm;
 
         if (isset($_POST['MonthlyForm'])) {
-            $model->setAttributes($_POST['MonthlyForm']);
-        }
 
-        $this->render('monthly', array('model' => $model));
+            $model->month = $_POST['MonthlyForm']['month'];
+            $model->year = $_POST['MonthlyForm']['year'];
+
+        } else {
+
+            $date['year'] = (int) date('Y', time());
+            $date['month'] = (int) date('m', time());
+
+            $model->month = $date['month'];
+            $model->year = $date['year'];
+        }
+        
+        $view_data = array();
+
+        // Calcula los dias habiles sin descontar los feriados
+        $fromDate = $model->year . '-' . $model->month . '-01';
+        $toDate = date("Y-m-t", strtotime($fromDate)) . ' 23:59:59';
+       // die(var_dump($toDate));
+        $dias_habiles_del_mes = DateHelper::numberOfWorkingDaysBetweenDates($fromDate, $toDate);
+
+        // Calcula los dias habiles transcurridos
+        if (strtotime($toDate) > time()) {
+            $toDate = date("Y-m-d", time());
+        }
+        $dias_habiles_transcurridos = DateHelper::numberOfWorkingDaysBetweenDates($fromDate, $toDate);
+
+        $view_data['dias_habiles_del_mes'] = $dias_habiles_del_mes;
+        $view_data['dias_habiles_transcurridos'] = $dias_habiles_transcurridos;
+
+        // Obtiene el forecast para el mes
+        $forecast = Forecast::model()->getForecastByYearMonth($model->year, $model->month);
+        $view_data['forecast'] = $forecast;
+
+        // Calcula la cantidad de las compras
+        $total_compras = Purchase::model()->getTotalPurchaseBetweenDates($fromDate, $toDate);
+
+        $view_data['total_compras'] = count($total_compras);
+
+        // Calcula el promedio diario
+        $promedio_diario = $view_data['total_compras'] / $dias_habiles_transcurridos;
+        $view_data['promedio_diario'] = round($promedio_diario, 2);
+        // Calcula la proyección al cierre
+        $proyeccion_cierre = $dias_habiles_del_mes * $promedio_diario;
+        $view_data['proyeccion_cierre'] = round($proyeccion_cierre, 2);
+
+        $cierre_forecast = $view_data['total_compras'] / $forecast;
+        $view_data['cierre_forecast'] = round($cierre_forecast, 2);
+
+        // Calcula la cantidad de equipos compradospor marca en el mes
+        $cantidad_por_marca = Purchase::model()->getBrandQuantitiesBetweenDates($fromDate, $toDate);
+      
+        $view_data['cantidad_por_marca'] = $cantidad_por_marca;
+
+        // Calcula el promedio de precio por marca en el mes
+        $precio_promedio_por_marca = Purchase::model()->getBrandPriceAverageBetweenDates($fromDate, $toDate);
+
+        $view_data['precio_promedio_por_marca'] = $precio_promedio_por_marca;
+
+        // Compras por punto de venta
+        $pdv = PointOfSale::model()->findAll();
+        $cantidad_pdv_habilitados = count($pdv);
+        $view_data['cantidad_pdv_habilitados'] = $cantidad_pdv_habilitados;
+
+        $pdv_operativos = Purchase::model()->getWorkingPointsOfSaleBetweenDates('000-00-00', date('Y-m-t', time()));
+        $cantidad_pdv_operativos = count($pdv_operativos) ? count($pdv_operativos) : 1 ;
+        $view_data['cantidad_pdv_operativos'] = $cantidad_pdv_operativos;
+        
+        $pdv_efectivos = Purchase::model()->getWorkingPointsOfSaleBetweenDates($fromDate, $toDate);
+        $cantidad_pdv_efectivos = count($pdv_efectivos) ? count($pdv_efectivos) : 1 ;
+        $view_data['cantidad_pdv_efectivos'] = $cantidad_pdv_efectivos;
+
+        $promedio_por_pdv = round($view_data['total_compras'] / $cantidad_pdv_efectivos, 2);
+        $view_data['promedio_por_pdv'] = $promedio_por_pdv;
+
+        $this->render('monthly', array('model' => $model, 'view_data' => $view_data));
     }
 
 }

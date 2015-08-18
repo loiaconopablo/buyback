@@ -40,7 +40,7 @@
     <?php echo $form->checkBoxList($model, 'purchase_status', GxHtml::encodeEx(GxHtml::listDataEx(PurchaseStatus::model()->findAllAttributes(null, true)), false, true)); ?>
 
 <?php
-echo TbHtml::submitButton(Yii::t('app', 'Save'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY));
+echo TbHtml::submitButton(Yii::t('app', 'Guardar'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY));
 $this->endWidget();
 ?>
 </div><!-- form -->

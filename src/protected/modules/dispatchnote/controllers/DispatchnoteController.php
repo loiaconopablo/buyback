@@ -3,12 +3,35 @@
 class DispatchnoteController extends Controller
 {
     /**
-     * Muestra la nota de envio segun quien y cuando la este solicitando
+     * Muestra la nota de envio para ver el detalle e imprimirla
      * @param  integer  $id       DispatchNote.id
-     * @param  boolean $receiving True: si la nota se puede recibir
      */
-    public function actionView($id, $receiving = false) 
+    public function actionView($id) 
     {
+        $this->layout = '//layouts/column1.view';
+        
+        $dispatch_note = DispatchNote::model()->findByPk($id);
+
+        $view_data = array(
+            'dispatch_note' => $dispatch_note,
+        );
+
+        if (Yii::app()->request->isAjaxRequest) {
+            $this->renderPartial('view', $view_data);
+        } else {
+            $this->render('view', $view_data);
+        }
+
+    }
+
+    /**
+     * Muestra la nota de envio para ser recibida
+     * @param  integer  $id       DispatchNote.id
+     */
+    public function actionReceiving($id) 
+    {
+        $this->layout = '//layouts/column1.view';
+        
         $dispatch_note = DispatchNote::model()->findByPk($id);
 
         if (Yii::app()->request->isPostRequest) {
@@ -24,7 +47,7 @@ class DispatchnoteController extends Controller
                 // Cambia el estado de Dispatchote y todos sus Purchase
                 $dispatch_note->receive($purchases_array);
                 // Redirecciona a el listado de notas de envio por recibir
-                $this->redirect(array('/headquarter/dispatchnote/expecting'));
+                $this->redirect(array('/dispatchnote/list/expecting'));
 
             } catch(Exception $e) {
                 // Setea el error para mostrar
@@ -34,38 +57,11 @@ class DispatchnoteController extends Controller
             }
         }
 
-
-        $criteria = new CDbCriteria;
-        $criteria->compare('last_dispatch_note_id', $id);
-
-        $purchasesDataProvider = new CActiveDataProvider(
-            new Purchase, array(
-                'criteria' => $criteria,
-                'Pagination' => array(
-                    'PageSize' => 5000
-                )
-            )
-        );
-
         $view_data = array(
             'dispatch_note' => $dispatch_note,
-            //'purchasesDataProvider' => $purchasesDataProvider,
-            'model' => new Purchase,
         );
 
-        if (Yii::app()->request->isAjaxRequest) {
-            if ($receiving) {
-                $this->renderPartial('./receiving.view', $view_data);
-            } else {
-                $this->renderPartial('./view.view', $view_data);
-            }
-        } else {
-            if ($receiving) {
-                $this->render('./receiving.view', $view_data);
-            } else {
-                $this->render('./view.view', $view_data);
-            }
-        }
+        $this->render('receiving', $view_data);
 
     }
 

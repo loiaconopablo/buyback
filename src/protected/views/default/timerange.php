@@ -25,7 +25,7 @@ if (isset(Yii::app()->request->cookies[$prefix . 'from']) || isset(Yii::app()->r
         'value' => isset(Yii::app()->request->cookies[$prefix . 'from']) ? Yii::app()->request->cookies[$prefix . 'from']->value : null,
         'htmlOptions' => array(
         'class' => 'block',
-        'placeholder' => 'desde',
+        'placeholder' => Yii::t('app', 'desde'),
         ),
         'options' => array(
         'showButtonPanel' => true,
@@ -43,7 +43,7 @@ if (isset(Yii::app()->request->cookies[$prefix . 'from']) || isset(Yii::app()->r
         'value' => isset(Yii::app()->request->cookies[$prefix . 'to']->value) ? Yii::app()->request->cookies[$prefix . 'to']->value : null,
         'htmlOptions' => array(
         'class' => 'block',
-        'placeholder' => Yii::t('app', 'to'),
+        'placeholder' => Yii::t('app', 'hasta'),
         ),
         'options' => array(
         'showButtonPanel' => true,
@@ -57,7 +57,7 @@ if (isset(Yii::app()->request->cookies[$prefix . 'from']) || isset(Yii::app()->r
 	
 
     <?php echo TbHtml::button(Yii::t('app', 'Filtrar'), array('block' => true, 'onClick' => 'javascript: refreshGrid();')); ?>
-    <?php echo TbHtml::button(Yii::t('app', 'Reset filter'), array('block' => true, 'onClick' => 'javascript: resetDateFilter("' . $prefix . '");')); ?>
+    <?php echo TbHtml::button(Yii::t('app', 'Reiniciar filtro'), array('block' => true, 'onClick' => 'javascript: resetDateFilter("' . $prefix . '");')); ?>
 
     <?php $this->endWidget(); ?>
       </div>

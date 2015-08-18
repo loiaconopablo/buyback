@@ -60,7 +60,7 @@ class StepImeiForm extends CFormModel
         }
 
         if (!(($sum % 10) === 0)) {
-            $this->addError($attribute, 'IMEI Formato invalido.');
+            $this->addError($attribute, Yii::t('app', 'IMEI Formato invalido.'));
         }
     }
 
@@ -84,7 +84,7 @@ class StepImeiForm extends CFormModel
         }
 
         if (strtoupper(trim($imeiws_response->respuesta->blacklist)) == 'YES') {
-            $this->addError($attribute, 'El equipo no se puede comprar. Validar con el operador.');
+            //$this->addError($attribute, 'El equipo no se puede comprar. Validar con el operador.');
         }
 
         // Guarda la respuesta del webservice

@@ -99,8 +99,8 @@ abstract class BasePointOfSale extends GxActiveRecord
         'updated_at' => Yii::t('app', 'Updated At'),
         'user_update_id' => Yii::t('app', 'User Update'),
         'reference_name' => Yii::t('app', 'Reference Name'),
-        'reference_phone' => Yii::t('app', 'Reference Phone'),
-        'reference_mail' => Yii::t('app', 'Reference Mail'),
+        'reference_phone' => Yii::t('app', 'Teléfono'),
+        'reference_mail' => Yii::t('app', 'Mail'),
         'is_owner' => Yii::t('app', 'Is Owner'),
         );
     }

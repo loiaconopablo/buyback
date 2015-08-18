@@ -2,6 +2,19 @@
 	width: 95%;
 }
 
+.alert .close {
+    top: auto;
+    right: auto;
+}
+
+footer {
+	width: 100%;
+}
+
+.span.nospace {
+	margin-left: 0px;
+}
+
 table td.chandran {
   padding-left: 14px;
 }
@@ -164,6 +177,10 @@ color: #777777;
 text-decoration: none;
 text-shadow: 0 1px 0 #ffffff;
 }
+.navbar .nav > li.disabled > a {
+	color:#CCC;
+}
+
 .navbar .brand {
 display: block;
 float: left;
@@ -263,69 +280,16 @@ h2.logo-retail {
 .table th.text-right, .table td.text-right{
 	text-align: right;
 }
+.table th.text-center, .table td.text-center{
+	text-align: center;
+}
+.table th.text-left, .table td.text-left{
+	text-align: left;
+}
+
 
 
 
-/* REMITOS row class*/
-tr.pending .btn,tr.pending .btn:hover, li.pending a i{
-	background-image: linear-gradient(to bottom, #f5ef78, #f5ef78);
-}
-
-tr.pending td:first-child {
-	box-shadow: inset 3px 0px 0px 0px  #f5ef78;
-	-webkit-box-shadow: inset 3px 0px 0px 0px  #f5ef78;
-	-moz-box-shadow: inset 3px 0px 0px 0px  #f5ef78;
-}
-tr.pending td:last-child {
-	box-shadow: inset -3px 0px 0px 0px  #f5ef78;
-	-webkit-box-shadow: inset -3px 0px 0px 0px  #f5ef78;
-	-moz-box-shadow: inset -3px 0px 0px 0px  #f5ef78;
-}
-
-tr.partially-recived .btn, tr.partially-recived .btn:hover, li.partially-recived a i{
-	background-image: linear-gradient(to bottom, #ff6347, #ff6347);
-}
-
-tr.partially-recived td:first-child {
-	box-shadow: inset 3px 0px 0px 0px  #ff6347;
-	-webkit-box-shadow: inset 3px 0px 0px 0px  #ff6347;
-	-moz-box-shadow: inset 3px 0px 0px 0px  #ff6347;
-}
-tr.partially-recived td:last-child {
-	box-shadow: inset -3px 0px 0px 0px  #ff6347;
-	-webkit-box-shadow: inset -3px 0px 0px 0px  #ff6347;
-	-moz-box-shadow: inset -3px 0px 0px 0px  #ff6347;
-}
-
-tr.cancelled .btn, tr.cancelled .btn:hover, li.cancelled a i{
-	background-image: linear-gradient(to bottom, #aaa, #aaa);
-}
-
-tr.cancelled td:first-child {
-	box-shadow: inset 3px 0px 0px 0px  #aaa;
-	-webkit-box-shadow: inset 3px 0px 0px 0px  #aaa;
-	-moz-box-shadow: inset 3px 0px 0px 0px  #aaa;
-}
-tr.cancelled td:last-child {
-	box-shadow: inset -3px 0px 0px 0px  #aaa;
-	-webkit-box-shadow: inset -3px 0px 0px 0px  #aaa;
-	-moz-box-shadow: inset -3px 0px 0px 0px  #aaa;
-}
-
-tr.in-transit .btn, tr.in-transit .btn:hover, li.in-transit a i{
-	background-image: linear-gradient(to bottom, #eee, #eee);
-}
-
-tr.in-transit td:first-child {
-	box-shadow: inset 3px 0px 0px 0px  #eee;
-	-webkit-box-shadow: inset 3px 0px 0px 0px  #eee;
-	-moz-box-shadow: inset 3px 0px 0px 0px  #eee;
-}
-tr.in-transit td:last-child {
-	box-shadow: inset -3px 0px 0px 0px  #eee;
-	-webkit-box-shadow: inset -3px 0px 0px 0px  #eee;
-	-moz-box-shadow: inset -3px 0px 0px 0px  #eee;
-}
 
 .reference a i{
 	background-position: 0;
@@ -347,6 +311,19 @@ tr.PENDING td:last-child {
 	box-shadow: inset -5px 0px 0px 0px  #eee;
 	-webkit-box-shadow: inset -5px 0px 0px 0px  #eee;
 	-moz-box-shadow: inset -5px 0px 0px 0px  #eee;
+}
+
+/* PARTIALLY_RECEIVED PURCHASES */
+tr.PARTIALLY_RECEIVED td:first-child, li.PARTIALLY_RECEIVED, div.well.PARTIALLY_RECEIVED {
+	box-shadow: inset 5px 0px 0px 0px  #ff6347;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #ff6347;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #ff6347;
+}
+
+tr.PARTIALLY_RECEIVED td:last-child {
+	box-shadow: inset -5px 0px 0px 0px  #ff6347;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #ff6347;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #ff6347;
 }
 
 /* PENDING_TO_SEND */

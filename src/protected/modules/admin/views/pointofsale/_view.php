@@ -4,15 +4,10 @@
 		<tbody>
 		<tr class="info">
 			<td><b><?php echo GxHtml::encode($data->getAttributeLabel('id')); ?>:</b></td>
-			<td><?php echo GxHtml::link(GxHtml::encode($data->id), array('view', 'id' => $data->id)); ?>
-</td>
+			<td><?php echo GxHtml::link(GxHtml::encode($data->id), array('view', 'id' => $data->id)); ?></td>
 		</tr>
-				<tr>
-			<td>
-				<b>
-        <?php echo GxHtml::encode($data->getAttributeLabel('company_id')); ?>:
-				</b>
-			</td>
+		<tr>
+			<td><b><?php echo GxHtml::encode($data->getAttributeLabel('company_id')); ?>:</b></td>
 			<td>
 								<?php echo GxHtml::encode(GxHtml::valueEx($data->company)); ?>
 					</td>

@@ -19,7 +19,7 @@ class User extends BaseUser
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.userid'; // select fields which you want in output
-        $criteria->addInCondition('itemname', array('admin', 'supervisor', 'retail', 'personal','compamyadmin'));
+        $criteria->addInCondition('itemname', array('admin', 'retail', 'personal', 'requoter', 'technical_supervisor','compamyadmin'));
 
         $users = Authassignment::model()->findAll($criteria);
 
@@ -156,13 +156,22 @@ class User extends BaseUser
         return $this->findAll($criteria, true);
     }
 
+    public static function label($n = 1) 
+    {
+        return Yii::t('app', 'Usuario|Usuarios', $n);
+    }
+
     public function attributeLabels() 
     {
         return CMap::mergeArray(
             parent::attributeLabels(), array(
-            'user_update_id' => Yii::t('app', 'User|Users', 1),
-            'company_id' => Yii::t('app', 'Company|Companies', 1),
-            'point_of_sale_id' => Yii::t('app', 'Headquarter|Headquarters', 1),
+            'user_update_id' => Yii::t('app', 'Usuario|Usuaios', 1),
+            'company_id' => Yii::t('app', 'Empresa'),
+            'point_of_sale_id' => Yii::t('app', 'Cabecera'),
+            'username' => Yii::t('app', 'Usuario'),
+            'password' => Yii::t('app', 'Contraseña'),
+            'last_login' => Yii::t('app', 'Último login'),
+            'employee_identification' => Yii::t('app', 'Código de empleado'),
             )
         );
     }

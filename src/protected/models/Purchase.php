@@ -9,6 +9,9 @@ class Purchase extends BasePurchase
     const COMPROBANTE_TIPO_COMPRA = 'C';
     const COMPROBANTE_TIPO_NOTA_DE_CREDITO = 'NC';
 
+    public $quantity;
+    public $price_average;
+
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -47,8 +50,19 @@ class Purchase extends BasePurchase
             array(
             'user_update_id' => Yii::t('app', 'User|Users', 1),
             'user_create_id' => Yii::t('app', 'Usuario'),
-            'user' => Yii::t('app', 'Seller|Sellers', 1),
+            'contract_number' => Yii::t('app', 'Nº Contrato'),
+            'brand' => Yii::t('app', 'Marca'),
+            'imei' => Yii::t('app', 'IMEI'),
+            'model' => Yii::t('app', 'Modelo'),
+            'carrier' => Yii::t('app', 'Operador'),
+            'carrier_id' => Yii::t('app', 'Operador'),
+            'carrier_name' => Yii::t('app', 'Operador'),
+            'point_of_sale_id' => Yii::t('app', 'Punto de Venta'),
+            'user' => Yii::t('app', 'Usuario', 1),
             'created_at' => Yii::t('app', 'F. de compra'),
+            'peoplesoft_order' => Yii::t('app', 'Nº PeopleSoft'),
+            'to_refurbish' => Yii::t('app', 'Apto para refabricación'),
+            'seller' => Yii::t('app', 'Cliente'),
             )
         );
     }
@@ -59,7 +73,8 @@ class Purchase extends BasePurchase
             parent::rules(),
             array(
                 array('', 'safe', 'on' => 'search'),
-                array('contract_number', 'unique'),
+                array('imei_checked, peoplesoft_order', 'required', 'on' => 'checking'),
+                array('contract_number', 'unique', 'on' => 'insert'),
             )
         );
     }
@@ -86,11 +101,14 @@ class Purchase extends BasePurchase
         /**
          * Filtra por estados si esta seteada la cookie
          */
+        $checkedItemsArray = array();
+
         if (isset(Yii::app()->request->cookies['checkedPurchaseStatuses'])) {
             $checkedItemsArray = explode(',', Yii::app()->request->cookies['checkedPurchaseStatuses']->value);
 
-            $criteria->addInCondition('current_status_id', $checkedItemsArray);
         }
+
+        $criteria->addInCondition('current_status_id', $checkedItemsArray);
 
         return new CActiveDataProvider(
             $this,
@@ -111,42 +129,26 @@ class Purchase extends BasePurchase
      */
     public function admin()
     {
-        /**
-         * Criterio del metodo search
-         * @var CCriteria
-         */
+
         $criteria = $this->search()->getCriteria();
 
-        /*
+        return $this->adminSearch($criteria);
+    }
+    
+    public function adminReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->adminSearch($criteria);
+    }
+
+    public function adminSearch($criteria)
+    {
+         /*
         Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
          */
         $criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
         $criteria->addInCondition('current_status_id', array(Status::PENDING, Status::RECEIVED));
-
-        return new CActiveDataProvider(
-            $this,
-            array(
-            'criteria' => $criteria,
-            )
-        );
-    }
-
-    /**
-     * Agrega condiciones al crieria de search para filtrar los equipos IN_OBSERVATION
-     * para el point_of_sale de user session
-     * @author Richard Grinberg <rggrinberg@gmail.com>
-     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
-     */
-    public function inObservation()
-    {
-        /**
-         * Criterio del metodo search
-         * @var CCriteria
-         */
-        $criteria = $this->search()->getCriteria();
-
-        $criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
-        $criteria->addInCondition('current_status_id', array(Status::IN_OBSERVATION));
 
         return new CActiveDataProvider(
             $this,
@@ -164,12 +166,23 @@ class Purchase extends BasePurchase
      */
     public function pending()
     {
-        /**
-         * Criterio del metodo search
-         * @var CCriteria
-         */
+
         $criteria = $this->search()->getCriteria();
 
+        return $this->pendingSearch($criteria);
+
+
+    }
+
+    public function pendingReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->pendingSearch($criteria);
+    }
+
+    public function pendingSearch($criteria)
+    {
         $criteria->addCondition('last_location_id != :user_point_of_sale');
         $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
         $criteria->order = 'created_at DESC';
@@ -223,15 +236,6 @@ class Purchase extends BasePurchase
         $this->setStatus(Status::CANCELLED, $this->last_dispatch_note_id);
     }
 
-    // TODO: Revisar si este metodo no deberia er reemplazado por los que extienden el criteria de search
-    // commented: 07-05-2015
-    public function getRetailAdminPurchases()
-    {
-        $criteria = $this->admin()->getCriteria();
-
-        return $this->findAll($criteria);
-    }
-
     /**
      * TODO: hacer que a este metodo se le pase el estado y sea generico
      * TODO: cambir nombre a setPurchasesStatus
@@ -283,5 +287,106 @@ class Purchase extends BasePurchase
         }
 
         return;
+    }
+
+    /**
+     * Devuelve las compras concretadas entre 2 fechas
+     * @param  string $from Fecha desde
+     * @param  string $to   Fecha hasta
+     * @return  Purcahse AR
+     */
+    public function getTotalPurchaseBetweenDates($from, $to)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->order = 'brand';
+
+        return $this->findAll($criteria);
+    }
+
+    /**
+     * Devuelve la cantidad entre 2 fechas agrupadas por marca
+     * @param  string $from Fecha desde
+     * @param  string $to   Fecha hasta
+     * @return  Purcahse AR
+     */
+    public function getBrandQuantitiesBetweenDates($from, $to)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.brand, COUNT(t.id) AS "quantity"';
+        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->group = 't.brand';
+        $criteria->order = 'quantity DESC';
+
+        return $this->findAll($criteria);
+    }
+
+    /**
+     * Devuelve el promedio de precio entre 2 fechas agrupadas por marca
+     * @param  string $from Fecha desde
+     * @param  string $to   Fecha hasta
+     * @return  Purcahse AR
+     */
+    public function getBrandPriceAverageBetweenDates($from, $to)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.brand, AVG(t.purchase_price) AS "price_average"';
+        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->group = 't.brand';
+        $criteria->order = 'price_average DESC';
+
+        return $this->findAll($criteria);
+    }
+
+    /**
+     * Devuelve las compras agrupadas por punto de venta entre determinadas fecahas
+     * @param  string $from Fecha desde
+     * @param  string $to   Fecha hasta
+     * @return Purcahse AR  Compras agrupadas por PDV
+     */
+    public function getWorkingPointsOfSaleBetweenDates($from, $to)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->select = 't.brand, COUNT(t.id) AS "quantity"';
+        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->group = 't.point_of_sale_id';
+        $criteria->order = 'quantity DESC';
+
+        return $this->findAll($criteria);
+    }
+
+    /**
+     * Devuelve el precio solicitado recuperandolo del campo de log pricelist_log
+     * @param  string $price_type [locked, unlocked]
+     * @return integer            El precio
+     */
+    public function getLoggedPrice($price_type)
+    {
+        $price_log_obj = CJSON::decode($this->pricelist_log);
+
+        if (strlen(trim($this->pricelist_log))) {
+            return $price_log_obj[$price_type];
+        }
+        
+        return false;
+    }
+
+    /**
+     * Devuelve el request_id extrayendolo del json de la respuesta de GIF
+     * @return string GIF request id
+     */
+    public function getGifRequestId()
+    {
+        $gif_response_json = CJSON::decode($this->gif_response_json);
+
+        if (strlen(trim($this->gif_response_json))) {
+            return $gif_response_json['respuesta']['id_request'];
+        }
+        
+        return false;
     }
 }

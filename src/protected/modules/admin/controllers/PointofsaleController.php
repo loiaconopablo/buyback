@@ -123,7 +123,7 @@ class PointOfSaleController extends Controller
 
             $headquarters = Company::model()->findByPk($company_id)->getHeadquarters();
 
-            array_unshift($headquarters, array('name' => Yii::t('app', 'Select') . '...', 'id' => null));
+            array_unshift($headquarters, array('name' => Yii::t('app', 'Seleccionar') . '...', 'id' => null));
 
             echo CJSON::encode($headquarters);
         } else {
@@ -137,7 +137,7 @@ class PointOfSaleController extends Controller
             $model = new PointOfSale();
 
             $headquarters = $model->getPointsOfSaleByCompany($company_id);
-            array_unshift($headquarters, array('name' => Yii::t('app', 'Select').'...', 'id' => null));
+            array_unshift($headquarters, array('name' => Yii::t('app', 'Seleccionar').'...', 'id' => null));
 
             echo CJSON::encode($headquarters);
         } else {

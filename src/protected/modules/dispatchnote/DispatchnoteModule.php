@@ -27,14 +27,13 @@ class DispatchnoteModule extends CWebModule
             // Ese metodo tambien setea el subtitulo de la seccion Ej. "Garbarino / Sucursal Primera Junta"
             $controller->main_menu = Home::getMainMenu();
 
-            if(Yii::app()->user->checkAccess('admin')) {
-                $controller->submenu_title = Yii::t('app', 'Notas de envío');
-                
-                $controller->submenu = array(
-                array('label'=>Yii::t('app', 'Pendientes', 2), 'url'=>array('/owner/dispatchnote/expecting'), 'active' =>  Yii::app()->controller->id=='expecting'),
-                array('label'=>Yii::t('app', 'Historial', 2), 'url'=>array('/owner/dispatchnote/admin'), 'active' =>  Yii::app()->controller->id=='pointofsale'),
-                );
-            }
+           $controller->submenu_title = Yii::t('app', 'Notas de envío');
+
+            $controller->submenu = array(
+                array('label' => Yii::t('app', 'Por enviar', 2), 'url' => array('list/pending'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'dispatchnote/list/pending'),
+                array('label' => Yii::t('app', 'Por recibir', 2), 'url' => array('list/expecting'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'dispatchnote/list/expecting', 'disabled' => !Yii::app()->user->is_headquarter),
+                array('label' => Yii::t('app', 'Todas', 2), 'url' => array('list/history'), 'active' => Yii::app()->urlManager->parseUrl(Yii::app()->request) == 'dispatchnote/list/history'),
+            );
 
             return true;
         }

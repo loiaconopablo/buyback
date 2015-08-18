@@ -7,8 +7,7 @@
  */
 class StepCarrierForm extends CFormModel
 {
-    public $unlocked;
-    public $carrier;
+    public $carrier_id;
 
     /**
      * Declares the validation rules.
@@ -19,27 +18,17 @@ class StepCarrierForm extends CFormModel
     {
         return array(
         // username and password are required
-        array('unlocked', 'boolean'),
-        array('carrier', 'validateCarrier'),
+        array('carrier_id', 'required'),
         );
     }
 
-    public function validateCarrier($attribute,$params)
-    {
-        if (!$this->unlocked) {
-            if (!$this->carrier) {
-                $this->addError($attribute, 'Si el equipo no esta liberado debe indicar a que operador pertenece.');
-            }
-        }
-    }
     /**
      * Declares attribute labels.
      */
     public function attributeLabels()
     {
         return array(
-        'unlocked' => 'Liberado',
-        'carrier' => Yii::t('app', 'Carrier|Carriers', 1),
+        'carrier_id' => Yii::t('app', 'Operador'),
         );
     }
 }

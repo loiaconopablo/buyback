@@ -14,7 +14,7 @@ class PurchaseReferences extends CWidget
         
         $estados = $this->getStados();
 
-        $this->render('application.views.widgets.purchase_references', array('menu_items' => $this->references($estados)));
+        $this->render('application.views.widgets.references', array('menu_items' => $this->references($estados)));
     }
 
     /**
@@ -26,7 +26,7 @@ class PurchaseReferences extends CWidget
     public static function references($estados)
     {
         $references = array(
-        array('label' => Yii::t('app', 'References'), 'icon' => 'th-large', 'url' => '#', 'active' => true),
+        array('label' => Yii::t('app', 'Referencias'), 'icon' => 'th-large', 'url' => '#', 'active' => true),
         );
 
         foreach ($estados as $key => $estado) {

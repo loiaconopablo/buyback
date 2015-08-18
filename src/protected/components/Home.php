@@ -14,11 +14,15 @@ class Home
         Si es administrador (BGH) va al controler purchase
          */
         if (Yii::app()->user->checkAccess('admin')) {
-            return array('/owner/purchase');
+            return array('/purchase/list/inpointofsale');
         }
 
         if (Yii::app()->user->checkAccess('retail')) {
                 return array('/purchase/buy/imei');
+        }
+        
+        if (Yii::app()->user->checkAccess('technical_supervisor')) {
+                return array('/purchase/list/insupervision');
         }
 
         //Si no esta logueado o no se reconoce el rol
@@ -54,10 +58,21 @@ class Home
         */
         if (Yii::app()->user->checkAccess('admin')) {
             return array(
-            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/owner/purchase/admin'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'purchase')),
-            array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/owner/dispatchnote/expecting'), 'active' => (Yii::app()->controller->module->id == 'owner' && Yii::app()->controller->id == 'dispatchnote')),
+            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/purchase/list/inpointofsale')),
+            array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
-            array('label'=>Yii::t('app', 'Management'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
+            array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
+            );
+        }
+
+         /**
+        * MENU DE SUPERVISOR TECNICO BGH
+        */
+        if (Yii::app()->user->checkAccess('technical_supervisor')) {
+            return array(
+            array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/insupervision'), 'active' => self::isActive('/purchase/list/inpointofsale')),
+            array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
+            array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
             );
         }
 
@@ -65,29 +80,11 @@ class Home
         * MENU DE RETAIL Y HEADQUARTER
         */
         if (Yii::app()->user->checkAccess('retail')) {
-            if (Yii::app()->user->is_headquarter) {
-                /**
-                * MENU DE CABECEERA (HEADQUARTER)
-                */
-                return array(
+            return array(
                 array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
-                array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/headquarter/admin/admin'), 'active' => self::isActive('/headquarter/admin/admin')),
-                array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/headquarter/dispatchnote/admin'), 'active' => self::isActive('/headquarter/dispatchnote/admin')),
-                array('label'=>Yii::t('app', 'Notas de envío pendientes'), 'url'=>array('/headquarter/dispatchnote/expecting'), 'active' => self::isActive('/headquarter/dispatchnote/expecting')),
-                array('label'=>Yii::t('app', 'Historial Notas emitidas'), 'url'=>array('/headquarter/dispatchnote/historyown'), 'active' => self::isActive('/headquarter/dispatchnote/historyown')),
-                array('label'=>Yii::t('app', 'Historial Notas recibidas'), 'url'=>array('/headquarter/dispatchnote/historyothers'), 'active' => self::isActive('/headquarter/dispatchnote/historyothers')),
-                );
-            } else {
-                /**
-                * MENU DE PUNTO DE VENTA (COMUN)
-                */
-                return array(
-                array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
-                array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/retail/admin/admin'), 'active' => self::isActive('/retail/admin/admin')),
-                array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/retail/dispatchnote/admin'), 'active' => self::isActive('/retail/dispatchnote/admin')),
-                array('label'=>Yii::t('app', 'History'), 'url'=>array('/retail/dispatchnote/history'), 'active' => self::isActive('/retail/dispatchnote/history')),
-                );
-            }
+                array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/purchase/list/inpointofsale')),
+                array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
+            );
         }
     }
 
@@ -95,12 +92,12 @@ class Home
     {
         $menu_options = array();
 
-        array_push($menu_options, array('label' => Yii::t('app', 'Change password'), 'url' => array('/auth/auth/changepassword','id'=>Yii::app()->user->id)));
+        array_push($menu_options, array('label' => Yii::t('app', 'Cambiar contraseña'), 'url' => array('/auth/auth/changepassword','id'=>Yii::app()->user->id)));
         array_push($menu_options, TbHtml::menuDivider());
-        array_push($menu_options, array('label' => Yii::t('app', 'Spanish'), 'url' => array(Yii::app()->request->getPathInfo().'?lang=es')));
-        array_push($menu_options, array('label' => Yii::t('app', 'Portuguese'), 'url' => array(Yii::app()->request->getPathInfo().'?lang=pt')));
+        array_push($menu_options, array('label' => Yii::t('app', 'Español'), 'url' => array(Yii::app()->request->getPathInfo().'?lang=es')));
+        array_push($menu_options, array('label' => Yii::t('app', 'Português'), 'url' => array(Yii::app()->request->getPathInfo().'?lang=pt')));
         array_push($menu_options, TbHtml::menuDivider());
-        array_push($menu_options, array('label' => Yii::t('app', 'Logout'), 'url' => array('/auth/auth/logout')));
+        array_push($menu_options, array('label' => Yii::t('app', 'Cerrar sesión'), 'url' => array('/auth/auth/logout')));
 
         return $menu_options;
                             

@@ -120,16 +120,20 @@ class Authitem extends CActiveRecord
         return parent::model($className);
     }
 
+    /**
+     * Devuelve los roles que puede asignar el admin
+     * @return [type] [description]
+     */
     public function getRoles()
     {
-        $criteria = new CDbCriteria();
-        $criteria->addCondition(Authitem::ROLE);
+        $roles = array(
+            array('role' => 'retail', 'name' => 'Punto de Venta'),
+            array('role' => 'requoter', 'name' => 'Mercadolibre'),
+            array('role' => 'personal', 'name' => 'Personal'),
+            array('role' => 'admin', 'name' => 'Administrador BGH'),
+            array('role' => 'technical_supervisor', 'name' => 'Supervisor técnico'),
+        );
 
-        // Si es admin solo muestra los siguientes roles
-        if (Yii::app()->user->checkAccess('admin')) {
-            $criteria->addInCondition('name', array('retail', 'personal', 'admin'));
-        }
-
-        return $this->findAll($criteria);
+        return $roles;
     }
 }

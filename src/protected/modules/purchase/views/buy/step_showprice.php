@@ -4,7 +4,7 @@
     <?php if ($personal_select == 1) : ?>
 				<div class="well text-center">
 					<h3>Gifcard</h3>
-					<span class="badge badge-success"><h1> $ <?php echo $price;?></h1></span>
+					<span class="badge badge-success"><h1> <?php echo Yii::t('app', '$') . $price;?></h1></span>
 				</div>
     <?php 
 
@@ -29,16 +29,16 @@ endif;?>
 endif;?>
     <?php else: ?>
 		<div class="well text-center">
-			<h3>Precio de compra</h3><span class="badge badge-success"><h1> $ <?php echo $price;?></h1></span>
+			<h3><?php echo Yii::t('app', 'Precio de compra'); ?></h3><span class="badge badge-success"><h1> <?php echo Yii::t('app', '$') . $price;?></h1></span>
 		</div>
     <?php 
 
 endif;?>
 
-    <?php echo TbHtml::linkButton(Yii::t('app', 'Print Contract'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/contract/generate', 'purchase_id' => $purchase_id), 'target' => '_blank'));?>
+    <?php echo TbHtml::linkButton(Yii::t('app', 'Imprimir contrato'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/contract/generate', 'purchase_id' => $purchase_id), 'target' => '_blank'));?>
 
 	</br>
 	</br>
 	</br>
-    <?php echo TbHtml::linkButton(Yii::t('app', 'Quote another device'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/buy/imei')));?>
+    <?php echo TbHtml::linkButton(Yii::t('app', 'COTIZAR OTRO EQUIPO'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/buy/imei')));?>
 </div>

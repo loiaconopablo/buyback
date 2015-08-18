@@ -6,19 +6,19 @@
 <div class="span12">
 
 <div class="alert alert-block alert-warning">
-  <strong><?php echo Yii::t('app', 'The device owner has to present DNI'); ?></strong>
+  <strong><?php echo Yii::t('app', 'El titular del equipo tiene el DNI'); ?></strong>
 </div>
 <div class="alert alert-block alert-warning">
-  <strong><?php echo Yii::t('app', 'The device has battery and back cover'); ?></strong>
+  <strong><?php echo Yii::t('app', 'El equipo tiene su batería y su tapa trasera'); ?></strong>
 </div>
 <div class="alert alert-block alert-warning">
-  <strong><?php echo Yii::t('app', 'The device starts and is able to call'); ?></strong>
+  <strong><?php echo Yii::t('app', 'El equipo enciende y puede realizar una llamada'); ?></strong>
 </div>
 <div class="alert alert-block alert-warning">
-  <strong><?php echo Yii::t('app', 'The device has its screen in a good state (no broken)'); ?>.</strong>
+  <strong><?php echo Yii::t('app', 'El equipo tiene su visor o display en buen estado (no estallado ni rajado)'); ?>.</strong>
 </div>
 <div class="alert alert-block alert-warning">
-  <strong><?php echo Yii::t('app', 'The device doesnt look like it was wet'); ?>.</strong>
+  <strong><?php echo Yii::t('app', 'El equipo no tiene rastros de haber sido mojado'); ?>.</strong>
 </div>
 	
     <?php 
@@ -48,14 +48,14 @@ endforeach; ?>
 	<div class="alert alert-success">
 
     <?php
-    echo TbHtml::submitButton(Yii::t('app', 'Next'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));
+    echo TbHtml::submitButton(Yii::t('app', 'Siguiente'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));
     $this->endWidget();
     ?>
 
-    <?php echo TbHtml::link(Yii::t('app','Back'), array('brandmodel'), array('class' => 'btn btn-large pull-right')); ?>
+    <?php echo TbHtml::link(Yii::t('app','Volver'), array('brandmodel'), array('class' => 'btn btn-large pull-right')); ?>
 	</div>
 </div>
 
 
 
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/js/retail.js"></script>
+

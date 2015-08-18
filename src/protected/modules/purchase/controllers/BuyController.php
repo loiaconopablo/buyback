@@ -23,10 +23,15 @@ class BuyController extends Controller
                 'actions' => array('index', 'imei', 'brandmodel', 'questionary', 'carrier', 'seller', 'showprice', 'getmodels'),
                 'expression' => "Yii::app()->user->checkAccess('retail')",
             ),
-             array(
+            array(
                 'allow',
                 'actions' => array('cancel'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
+            ),
+            array(
+                'allow',
+                'actions' => array('getmodels'),
+                'expression' => "Yii::app()->user->checkAccess('technical_supervisor')",
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
@@ -58,13 +63,19 @@ class BuyController extends Controller
                 // Agrega gif_response_json a la session para luego guardarlo en registro
                 Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], array('gif_response_json' => $model->gif_data));
                 
-                if (Yii::app()->getRequest()->getIsAjaxRequest()) {
-                    Yii::app()->end();
-                }
+                $response = array(
+                    'error' => 0,
+                    'message' => Yii::t('app', 'Todo bien')
+                );
+                echo CJSON::encode($response);
+                Yii::app()->end();
 
             } else {
-                header('Content-type: application/json');
-                echo CJSON::encode($model->getErrors());
+                $response = array(
+                    'error' => count($model->getErrors()),
+                    'message' => $model->getErrors()
+                );
+                echo CJSON::encode($response);
                 Yii::app()->end();
 
             }
@@ -173,18 +184,24 @@ class BuyController extends Controller
         if (isset($_POST['StepCarrierForm'])) {
             $model->setAttributes($_POST['StepCarrierForm']);
 
-            Yii::app()->session['unlocked'] = $model->unlocked;
+            //Yii::app()->session['unlocked'] = $model->unlocked;
 
             if ($model->validate()) {
                 Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], $_POST['StepCarrierForm']);
 
-                if (Yii::app()->getRequest()->getIsAjaxRequest()) {
-                    Yii::app()->end();
-                }
+                $response = array(
+                    'error' => 0,
+                    'message' => Yii::t('app', 'Todo bien')
+                );
+                echo CJSON::encode($response);
+                Yii::app()->end();
 
             } else {
-                header('Content-type: application/json');
-                echo CJSON::encode($model->getErrors());
+                $response = array(
+                    'error' => count($model->getErrors()),
+                    'message' => $model->getErrors()
+                );
+                echo CJSON::encode($response);
                 Yii::app()->end();
 
             }
@@ -219,11 +236,27 @@ class BuyController extends Controller
 
             try {
                 if ($model->save()) {
+                    // Si es rol "requoter" puede haber cambiado el precio
+                    if (Yii::app()->user->checkAccess('requoter')) {
+                        $this->setRequotedPriceInSession($_POST['price']);
+                    }
                     // Guarda la compra
                     $purchase = $this->savePurchase($model, Yii::app()->request->userHostAddress);
 
                     // Ejecuta las transacciones en la base de datos
                     $transaction->commit();
+
+                    // Envia los datos de la compra a GIF
+                    $imeiws_response_json = Yii::app()->imeiws->postPurchase($purchase);
+
+                    $imeiws_response = CJSON::decode($imeiws_response_json, false);
+
+                    if ($imeiws_response->error !== 0) {
+                        // No valida como negativo pero loguea que hubo un error utilizando el webservice
+                        Yii::log('IMEI WEBSERVICE', CLogger::LEVEL_ERROR, $imeiws_response->error_desc);
+
+                        return true;
+                    }
 
                     $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
 
@@ -248,7 +281,14 @@ class BuyController extends Controller
         Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], array('price_list_id' => $price_list->id));
         Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], $price_data);
 
-        $this->render('step_seller', array('model' => $model, 'price' => $price_data['purchase_price']));
+        // Si tiene este campo es porque tiene formulario de recotización
+        $price_value = null;
+        
+        if(isset($_POST['price'])) {
+            $price_value = $_POST['price'];
+        }
+
+        $this->render('step_seller', array('model' => $model, 'showprice' => $this->showPriceRender($price_value)));
 
     }
 
@@ -270,12 +310,12 @@ class BuyController extends Controller
         $model = new Purchase;
 
         $point_of_sale = PointOfSale::model()->findByPk(Yii::app()->user->point_of_sale_id);
-        $carrier = Carrier::model()->findByPk(Yii::app()->session['purchase']['carrier']);
+        $carrier = Carrier::model()->findByPk(Yii::app()->session['purchase']['carrier_id']);
 
         if ($carrier) {
             $carrier_name = $carrier->name;
         } else {
-            $carrier_name = Yii::t('app', 'No carrier');
+            $carrier_name = Yii::t('app', 'Liberado');
         }
 
         $company = Company::model()->findByPk(Yii::app()->user->company_id);
@@ -307,7 +347,7 @@ class BuyController extends Controller
             'point_of_sale_id' => Yii::app()->user->point_of_sale_id,
             'headquarter_id' => $point_of_sale->headquarter_id,
             'seller_id' => $seller->getPrimaryKey(),
-            'carrier_id' => Yii::app()->session['purchase']['carrier'],
+            'carrier_id' => Yii::app()->session['purchase']['carrier_id'],
             'price_list_id' => Yii::app()->session['purchase']['price_list_id'],
             'imei' => Yii::app()->session['purchase']['imei'],
             'brand' => Yii::app()->session['purchase']['brand'],
@@ -354,10 +394,8 @@ class BuyController extends Controller
     public function actionGetmodels($brand)
     {
         if (Yii::app()->getRequest()->getIsPostRequest()) {
-            $model = new PriceList();
 
-            $models = $model->getModelsByBrand($brand);
-            //array_unshift($models, array('name' => 'Modelo...', 'id' => null));
+            $models = PriceList::model()->findAllByAttributes(array('brand' => $brand));
 
             echo CJSON::encode($models);
         } else {
@@ -473,7 +511,7 @@ class BuyController extends Controller
                 'price_type' => 'broken',
             );
 
-        } elseif (Yii::app()->session['unlocked']) {
+        } elseif (Yii::app()->session['purchase']['carrier_id'] == Carrier::model()->findByAttributes(array('name' => 'Liberado'))->id) {
             $price_data = array(
                 'purchase_price' => $price_list->unlocked_price,
                 'price_type' => 'unlocked',
@@ -567,5 +605,41 @@ class BuyController extends Controller
         if (!isset(Yii::app()->session['purchase'])) {
             $this->redirect('purchase/buy/imei');
         }
+    }
+
+    /**
+     * Devuelve el renderizado de showprice dependiendo del rol
+     * @param  [type] $price_list [description]
+     * @return string            [Renderizado]
+     */
+    public function showPriceRender($price_value = null)
+    {
+        if (Yii::app()->user->checkAccess('personal')) {
+            return $this->renderPartial('showprice_personal', array('price' => Yii::app()->session['purchase']['purchase_price']), true);
+        }
+
+        if (Yii::app()->user->checkAccess('requoter')) {
+            if (!$price_value) {
+                $price_value = Yii::app()->session['purchase']['purchase_price'];
+            }
+            return $this->renderPartial('showprice_requoter', array('price' => $price_value), true);
+        }
+
+        return $this->renderPartial('showprice', array('price' => Yii::app()->session['purchase']['purchase_price']), true);
+    }
+
+    /**
+     * Cambia el precio de compra en la session
+     * @param string precio separado con punto
+     */
+    public function setRequotedPriceInSession($price)
+    {
+        $temp_purchase_session = Yii::app()->session['purchase'];
+
+        Yii::app()->session->remove('purchase');
+
+        $temp_purchase_session['purchase_price'] = $price;
+
+        Yii::app()->session['purchase'] = $temp_purchase_session;
     }
 }
