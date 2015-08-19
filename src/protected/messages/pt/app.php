@@ -213,4 +213,5 @@ return array(
     // Estados de notas de envío
     'Pendiente de envío' => 'No ponto de venda',
     'Enviada' => 'Em transito',
+    'Cantidad de items' => 'Cantidad de items',
 );

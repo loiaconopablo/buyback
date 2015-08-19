@@ -128,8 +128,9 @@ class Authitem extends CActiveRecord
     {
         $roles = array(
             array('role' => 'retail', 'name' => 'Punto de Venta'),
+            array('role' => 'company_admin', 'name' => 'Administrador Empresa'),
             array('role' => 'requoter', 'name' => 'Mercadolibre'),
-            array('role' => 'personal', 'name' => 'Personal'),
+            //array('role' => 'personal', 'name' => 'Personal'),
             array('role' => 'admin', 'name' => 'Administrador BGH'),
             array('role' => 'technical_supervisor', 'name' => 'Supervisor técnico'),
         );

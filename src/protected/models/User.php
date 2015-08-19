@@ -19,7 +19,7 @@ class User extends BaseUser
     {
         $criteria = new CDbCriteria;
         $criteria->select = 't.userid'; // select fields which you want in output
-        $criteria->addInCondition('itemname', array('admin', 'retail', 'personal', 'requoter', 'technical_supervisor','compamyadmin'));
+        $criteria->addNotInCondition('itemname', array('superuser'));
 
         $users = Authassignment::model()->findAll($criteria);
 

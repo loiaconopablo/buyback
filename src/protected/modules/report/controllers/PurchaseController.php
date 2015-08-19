@@ -22,6 +22,11 @@ class PurchaseController extends Controller
                 'actions' => array('index', 'export', 'monthly'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
+             array(
+                'allow',
+                'actions' => array('index', 'export'),
+                'expression' => "Yii::app()->user->checkAccess('company_admin')",
+            ),
             array('deny',  // deny all users
                 'users'=>array('*'),
             ),
@@ -50,12 +55,27 @@ class PurchaseController extends Controller
         }
 
         $this->render(
-            'index',
+            $this->reportViewByRol(),
             array(
             'model' => $model,
             )
         );
 	}
+
+    /**
+     * Devuelve al nombre de la vista a renderizar dependiendo del rol
+     * @return string view name
+     */
+    public function reportViewByRol()
+    {
+        if (Yii::app()->user->checkAccess('admin')) {
+            return 'report_admin';
+        }
+
+        if (Yii::app()->user->checkAccess('company_admin')) {
+            return 'report_company_admin';
+        }
+    }
 
     /**
      * Exporta la busqueda a Excel
@@ -66,7 +86,7 @@ class PurchaseController extends Controller
         
         //var_dump($model->search()->pagination->setPageSize($model->search()->totalItemCount));
 
-        if (isset($_POST['attributes'])) {
+        if (isset($_POST['purchase'])) {
 
             Yii::import('vendor.phpoffice.phpexcel.Classes.PHPExcel', true);
 
@@ -83,13 +103,13 @@ class PurchaseController extends Controller
                 $excel_row = array();
 
                 // Attributos de la compra
-                foreach ($_POST['attributes'] as $purchase_attribute) {
+                foreach ($_POST['purchase'] as $purchase_attribute) {
                     array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
                 }
 
                 // Attributos del Operador
-                if (isset($_POST['carrier_attributes'])) {
-                    foreach ($_POST['carrier_attributes'] as $carrier_attribute) {
+                if (isset($_POST['carrier'])) {
+                    foreach ($_POST['carrier'] as $carrier_attribute) {
                         if ($purchase->carrier) {
                             array_push($excel_row, $this->formatData($carrier_attribute, $purchase->carrier->$carrier_attribute));
                         } else {
@@ -99,36 +119,36 @@ class PurchaseController extends Controller
                 }
 
                 // Attributos del punto de venta
-                if (isset($_POST['point_of_sale_attributes'])) {
-                    foreach ($_POST['point_of_sale_attributes'] as $point_of_sale_attribute) {
+                if (isset($_POST['point_of_sale'])) {
+                    foreach ($_POST['point_of_sale'] as $point_of_sale_attribute) {
                         array_push($excel_row, $this->formatData($point_of_sale_attribute, $purchase->point_of_sale->$point_of_sale_attribute));
                     }
                 }
 
                 // Attributos de la empresa
-                 if (isset($_POST['compay_attributes'])) {
-                    foreach ($_POST['compay_attributes'] as $compay_attribute) {
+                 if (isset($_POST['compay'])) {
+                    foreach ($_POST['compay'] as $compay_attribute) {
                         array_push($excel_row, $this->formatData($compay_attribute, $purchase->company->$compay_attribute));
                     }
                 }
 
                 // Attributos del usuario
-                if (isset($_POST['user_attributes'])) {
-                    foreach ($_POST['user_attributes'] as $user_attribute) {
+                if (isset($_POST['user'])) {
+                    foreach ($_POST['user'] as $user_attribute) {
                         array_push($excel_row, $this->formatData($user_attribute, $purchase->user->$user_attribute));
                     }
                 }
 
                 // Attributos del cliente
-                if (isset($_POST['seller_attributes'])) {
-                    foreach ($_POST['seller_attributes'] as $seller_attribute) {
+                if (isset($_POST['seller'])) {
+                    foreach ($_POST['seller'] as $seller_attribute) {
                         array_push($excel_row, $this->formatData($seller_attribute, $purchase->seller->$seller_attribute));
                     }
                 }
 
                 // Attributos de la nota de envío
-                if (isset($_POST['dispatchnote_attributes'])) {
-                    foreach ($_POST['dispatchnote_attributes'] as $dispatchnote_attribute) {
+                if (isset($_POST['last_dispatch_note'])) {
+                    foreach ($_POST['last_dispatch_note'] as $dispatchnote_attribute) {
                         if ($purchase->last_dispatch_note) {
                             array_push($excel_row, $this->formatData($dispatchnote_attribute, $purchase->last_dispatch_note->$dispatchnote_attribute));
                         } else {
@@ -138,8 +158,8 @@ class PurchaseController extends Controller
                 }
 
                 // Attributos de la última ubicaci;on
-                if (isset($_POST['last_location_attributes'])) {
-                    foreach ($_POST['last_location_attributes'] as $last_location_attribute) {
+                if (isset($_POST['last_location'])) {
+                    foreach ($_POST['last_location'] as $last_location_attribute) {
                         if ($purchase->last_location) {
                             array_push($excel_row, $this->formatData($last_location_attribute, $purchase->last_location->$last_location_attribute));
                         } else {
