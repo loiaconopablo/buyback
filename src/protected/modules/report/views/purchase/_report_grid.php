@@ -1,23 +1,10 @@
-<?php
-
-$this->breadcrumbs = array(
-    $model->label(2) => array('index'),
-    Yii::t('app', 'Manage'),
-);
-
-$this->menu = array(
-  //  array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
-);
-
-?>
-
-
+<?php count($data_provider->getData()); ?>
 <?php $this->widget(
     'bootstrap.widgets.TbGridView',
     array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'id' => 'owner-purchase-grid',
-    'dataProvider' => $model->search(),
+    'dataProvider' => $data_provider,
     'filter' => $model,
     'rowCssClassExpression' => '
         ( Status::model()->findByAttributes(array("id" => $data->current_status_id))->constant_name )
@@ -76,20 +63,20 @@ $this->menu = array(
          	'name' => 'point_of_sale_id',
          	'value' => '$data->point_of_sale',
          	'header' => Yii::t('app', 'Comprado en...'),
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.point_of_sale_id'), 'point_of_sale_id', 'point_of_sale'),
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.point_of_sale_id'), 'point_of_sale_id', 'point_of_sale'),
         ),
          array(
             'name' => 'company_id',
             'value' => '$data->company',
             'header' => Yii::t('app', 'Empresa'),
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.company_id'), 'company_id', 'company'),
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.company_id'), 'company_id', 'company'),
         ),
          //'user',
         array(
             'name' => 'user_create_id',
             'header' => Yii::t('app', 'Comprado por...'),
             'value' => '$data->user',
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.user_create_id'), 'user_create_id', 'user'),
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.user_create_id'), 'user_create_id', 'user'),
         ),
 
 
@@ -147,24 +134,3 @@ $this->menu = array(
     ),
     )
 );?>
-
-
-<?php echo TbHtml::linkButton(Yii::t('app', 'Exportar a Excel'), array('class' => 'export_to_excel' ,'color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'url' => array('export')));?>
-
-
-<?php //$this->advanced_search = true; ?>
-<?php $this->created_at_filter = true; ?>
-<?php $this->recived_at_filter = true; ?>
-<?php $this->purchase_references = $model->searchReferences();?>
-
-<div id="modal-purchase" class="modal hide fade" style="">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"><?php echo Yii::t('app', 'Compra');?></h4>
-      </div>
-    <div class="modal-body"></div>
-    <div class="modal-footer">
-	    <a href="#" data-dismiss="modal" class="btn"><?php echo Yii::t('app', 'Close');?></a>
-	    <!--<a href="#" id="in-observation-purchase" class="btn btn-warning"><?php echo Yii::t('app', 'En observación');?></a>-->
-    </div>
-</div>
