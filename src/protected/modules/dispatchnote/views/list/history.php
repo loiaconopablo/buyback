@@ -7,7 +7,7 @@ $this->menu = array(
 
 ?>
 
-<?php $this->renderPartial('_grid', array('model' => $model, 'data_provider' => $model->history())); ?>
+<?php $this->renderPartial('_grid_history', array('model' => $model, 'data_provider' => $model->history())); ?>
 
 <?php $this->dispatchnote_references = $model->historyReference();?>
 
