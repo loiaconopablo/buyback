@@ -123,13 +123,11 @@
 	    <?php endforeach;?>
 	</table>
 	<hr/>
-	<?php if (strlen(trim($dispatch_note->comment))) : ?>
 	<table>
 		<tr>
 			<td><?php echo Yii::t('app', 'Cantidad de items'); ?>: <?php echo count(PurchaseStatus::model()->findAllByAttributes(array("dispatch_note_id" => $dispatch_note->id, "status_id" => Status::PENDING_TO_SEND)))?></td>
 		</tr>
 	</table>
-	<?php endif; ?>
 	<hr/>
 
 	<?php if (strlen(trim($dispatch_note->comment))) : ?>

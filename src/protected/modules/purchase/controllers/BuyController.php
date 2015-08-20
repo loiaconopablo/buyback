@@ -254,8 +254,6 @@ class BuyController extends Controller
                     if ($imeiws_response->error !== 0) {
                         // No valida como negativo pero loguea que hubo un error utilizando el webservice
                         Yii::log('IMEI WEBSERVICE', CLogger::LEVEL_ERROR, $imeiws_response->error_desc);
-
-                        return true;
                     }
 
                     /**
@@ -312,6 +310,13 @@ class BuyController extends Controller
     {
 
         $model = new Purchase;
+
+        if ($model->checkIsDuplicate(Yii::app()->session['purchase']['imei'], $seller->dni)) {
+            throw new Exception("El equipo ya fue comprado al mismo vendedor", 1);
+            
+            return;
+        }
+        
 
         $point_of_sale = PointOfSale::model()->findByPk(Yii::app()->user->point_of_sale_id);
         $carrier = Carrier::model()->findByPk(Yii::app()->session['purchase']['carrier_id']);
