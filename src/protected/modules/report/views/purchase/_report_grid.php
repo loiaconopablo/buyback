@@ -85,17 +85,30 @@
          */
         array(
             'class' => 'TbButtonColumn',
-            'template' => '{view-purchase}',
+            'template' => '{view-purchase-admin}{view-purchase-company_admin}',
             'header' => 'Ver',
             'headerHtmlOptions' => array(
             	'style' => 'text-align: center',
             ),
             'buttons' => array
             (
-                'view-purchase' => array
+                'view-purchase-admin' => array
                 (
                     'label' => 'ver',
+                    'visible' => 'Yii::app()->user->checkAccess("admin")',
                     'url' => 'Yii::app()->createUrl("/purchase/purchase/ownerview", array("id"=>$data->id))',
+                    'options' => array(
+                        'data-toggle' => 'modal',
+                        'data-target' => '#modal-purchase',
+                        'class' => 'btn btn-small',
+                        'title' => 'ver compra',
+                    ),
+                ),
+                'view-purchase-company_admin' => array
+                (
+                    'label' => 'ver',
+                    'visible' => 'Yii::app()->user->checkAccess("company_admin")',
+                    'url' => 'Yii::app()->createUrl("/purchase/purchase/view", array("id"=>$data->id))',
                     'options' => array(
                         'data-toggle' => 'modal',
                         'data-target' => '#modal-purchase',
