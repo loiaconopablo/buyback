@@ -258,10 +258,14 @@ class BuyController extends Controller
                         return true;
                     }
 
-                    $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
+                    /**
+                     * SUMAMENTE IMPORATENE HACER ESTO ANTES DE REDIRECT
+                     *
+                     * Destruye la variable de session para evitar duplicados
+                     */
+                    unset(Yii::app()->session['purchase']);
 
-                    //Destruye la variable de session para evitar duplicados
-                unset(Yii::app()->session['purchase']);
+                    $this->redirect(array('showprice', 'purchase_id' => $purchase->id, 'price' => $purchase->purchase_price, 'personal_select' => $_POST['personal-select']));
                 }    
 
             } catch (Exception $e) {
