@@ -332,7 +332,6 @@ class BuyController extends Controller
              * @var array
              */
             $cae_array = Yii::app()->wsfe->getCaeParaContrato($purchase_price, $seller);
-
         } catch (Exception $e) {
             throw $e;
         }
