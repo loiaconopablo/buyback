@@ -51,9 +51,9 @@ class Home
         */
         if (Yii::app()->user->checkAccess('superuser')) {
             return array(
-            array('label'=>Yii::t('app', 'Setup'), 'url'=>array('/admin_root/carrier/admin'), 'active' => Yii::app()->controller->id == 'carrier'),
+            array('label'=>Yii::t('app', 'Configuración'), 'url'=>array('/admin_root/carrier/admin'), 'active' => Yii::app()->controller->id == 'carrier'),
             array('label'=>Yii::t('app', 'Roles'), 'url'=>array('/rights/authassignment/admin'), 'active' => Yii::app()->controller->id == 'authassignment'),
-            array('label'=>Yii::t('app', 'Manage'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
+            array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
             );
         }
 

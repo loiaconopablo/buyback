@@ -35,13 +35,13 @@ class Admin_rootModule extends CWebModule
 
             $controller->main_menu = Home::getMainMenu();
         
-            $controller->submenu_title = Yii::t('app', 'Setup');
+            $controller->submenu_title = Yii::t('app', 'Configuración');
             
             $controller->submenu = array(
-            array('label'=>Yii::t('app', 'Status|Statuses', 2), 'url'=>array('/admin_root/status'), 'active' =>  Yii::app()->controller->id=='status'),
-            array('label'=>Yii::t('app', 'Carrier|Carriers', 2), 'url'=>array('/admin_root/carrier'), 'active' =>  Yii::app()->controller->id=='carrier'),
-            array('label'=>Yii::t('app', 'Device status|Device statuses', 2), 'url'=>array('/admin_root/device_status'), 'active' =>  Yii::app()->controller->id=='device_status'),
-            array('label'=>Yii::t('app', 'Run migrations'), 'url'=>array('/admin_root/migrations/run'), 'active' =>  Yii::app()->controller->id=='migrations'),
+            array('label'=>Yii::t('app', 'Estados', 2), 'url'=>array('/admin_root/status'), 'active' =>  Yii::app()->controller->id=='status'),
+            array('label'=>Yii::t('app', 'Operadores', 2), 'url'=>array('/admin_root/carrier'), 'active' =>  Yii::app()->controller->id=='carrier'),
+            array('label'=>Yii::t('app', 'Estados de equipo', 2), 'url'=>array('/admin_root/device_status'), 'active' =>  Yii::app()->controller->id=='device_status'),
+            array('label'=>Yii::t('app', 'Migraciones'), 'url'=>array('/admin_root/migrations/run'), 'active' =>  Yii::app()->controller->id=='migrations'),
             );
             return true;
         }

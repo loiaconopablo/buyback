@@ -20,10 +20,10 @@ $this->menu = array(
 
 	<div>
 		<div class="alert alert-block alert-info">
-            <?php echo Yii::t('app', $form->labelEx($model, 'month')); ?>
+            <?php echo Yii::t('app', $form->labelEx($model, 'Mes')); ?>
             <?php echo $form->dropDownList($model, 'month', CHtml::listData(DateHelper::getMonths(), 'month_number', 'month_name')); ?>
 
-            <?php echo Yii::t('app', $form->labelEx($model, 'year')); ?>
+            <?php echo Yii::t('app', $form->labelEx($model, 'Año')); ?>
             <?php echo $form->dropDownList($model, 'year', CHtml::listData($model->getYearsList(), 'year', 'year')); ?>
 
             <?php echo TbHtml::submitButton(Yii::t('app', 'Ver reporte'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true)); ?>

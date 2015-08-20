@@ -12,7 +12,7 @@
 ); ?>
   <div class="modal-body">
     <p>
-    	<p><?php echo Yii::t('app', 'You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&gt; or =) at the beginning of each of your search values to specify how the comparison should be done.'); ?></p>
+    	<p><?php echo Yii::t('app', 'La búsqueda acepta los operadores de compracion (&lt;, &lt;=, &gt;, &gt;=, &lt;&gt; or =) delante de cada campo para especificarla.'); ?></p>
 
 															<div>
         <?php echo $form->label($model, 'id'); ?>
@@ -73,7 +73,7 @@
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo Yii::t('app', 'Cancel'); ?></button>
-    <?php echo TbHtml::submitButton(Yii::t('app', 'Search'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY)); ?>
+    <?php echo TbHtml::submitButton(Yii::t('app', 'Buscar'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY)); ?>
   </div>
     <?php $this->endWidget(); ?>
 </div>
