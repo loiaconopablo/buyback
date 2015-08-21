@@ -426,26 +426,4 @@ class Purchase extends BasePurchase
         return false;
     }
 
-    /**
-     * Chequea que el mismo cliente no intente vender el mismo imei 2 o más veces
-     * @param  string $imei       IMEI del equipo
-     * @param  integer $seller_dni DNI del cliente
-     * @return bollean            [description]
-     */
-    public function checkIsDuplicate($imei, $seller_dni)
-    {
-        $equipos = $this->findAllByAttributes(array('imei' => $imei));
-
-        if (count($equipos)) {
-            foreach ($equipos as $equipo) {
-                if ($equipo->seller->dni == $seller_dni) {
-                    // El equipo ya fue vendido con ese DNI
-                    return true;
-                }
-            }
-        }
-
-        // No existe el IMEI no es duplicado
-        return false;
-    }
 }
