@@ -1,12 +1,3 @@
-<?php
-
-
-$this->menu = array(
-  //  array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
-);
-
-?>
-
 <div class="span12">
 	
     <?php 

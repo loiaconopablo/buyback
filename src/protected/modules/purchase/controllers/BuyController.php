@@ -189,6 +189,8 @@ class BuyController extends Controller
             if ($model->validate()) {
                 Yii::app()->session['purchase'] = CMap::mergeArray(Yii::app()->session['purchase'], $_POST['StepCarrierForm']);
 
+                $this->redirect('seller');
+
                 $response = array(
                     'error' => 0,
                     'message' => Yii::t('app', 'Todo bien')
@@ -197,12 +199,12 @@ class BuyController extends Controller
                 Yii::app()->end();
 
             } else {
-                $response = array(
-                    'error' => count($model->getErrors()),
-                    'message' => $model->getErrors()
-                );
-                echo CJSON::encode($response);
-                Yii::app()->end();
+                // $response = array(
+                //     'error' => count($model->getErrors()),
+                //     'message' => $model->getErrors()
+                // );
+                // echo CJSON::encode($response);
+                // Yii::app()->end();
 
             }
 

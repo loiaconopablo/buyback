@@ -8,13 +8,13 @@ $priceList = new PriceList;
     $form = $this->beginWidget(
         'bootstrap.widgets.TbActiveForm', array(
         'id' => 'purchase-form',
-        'enableAjaxValidation' => true,
-        'action' => array('/purchase/buy/seller'),
+        'enableAjaxValidation' => false,
+        'action' => array('/purchase/buy/carrier'),
         'clientOptions' => array(
-        'validateOnSubmit' => true,
-        'validateOnChange' => false,
-        'afterValidate' => 'js:formSend',
-        'validationUrl' => array('/purchase/buy/carrier'),
+        // 'validateOnSubmit' => true,
+        // 'validateOnChange' => false,
+        // 'afterValidate' => 'js:formSend',
+        // 'validationUrl' => array('/purchase/buy/carrier'),
         ),
         )
     );
@@ -54,5 +54,3 @@ endif;?>
     <?php echo TbHtml::link(Yii::t('app','Volver'), array('questionary'), array('class' => 'btn btn-large pull-right'));?>
 	</div>
 </div>
-
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl;?>/js/retail.js"></script>

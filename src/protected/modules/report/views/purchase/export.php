@@ -1,16 +1,3 @@
-<?php
-
-$this->breadcrumbs = array(
-    $model->label(2) => array('index'),
-    Yii::t('app', 'Manage'),
-);
-
-$this->menu = array(
-   // array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
-);
-
-?>
-
 <?php $form = $this->beginWidget(
     'GxActiveForm', array(
     'id' => 'purchase-form',

@@ -1,11 +1,3 @@
-<?php
-$this->menu = array(
-  //  array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
-);
-
-?>
-
-
 <?php $this->renderPartial('_report_grid', array('data_provider' => $model->company(), 'model' => $model)); ?>
 
 

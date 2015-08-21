@@ -43,6 +43,12 @@ $this->menu = array(
             'headerHtmlOptions' => array('class' => 'text-center'),
         ),
         array(
+            'name' => 'contract_number',
+            'htmlOptions' => array(
+                'class' => 'text-center span2',
+            ),
+        ),
+        array(
             'name' => 'imei',
             'htmlOptions' => array(
                 'class' => 'text-center span2',
