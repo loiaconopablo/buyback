@@ -16,11 +16,12 @@ class UserController extends Controller
     public function actionCreate() 
     {
         $model = new User;
-
+        
         if (isset($_POST['User'])) {
             $model->setAttributes($_POST['User']);
-
-            if ($model->save()) {
+            if ($model->validate()) {
+                $model->resetPassword();
+                $model->save();
                 if (Yii::app()->getRequest()->getIsAjaxRequest()) {
                     Yii::app()->end();
                 } else {

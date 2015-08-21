@@ -32,11 +32,9 @@
     <?php echo $form->error($model, 'username');?>
 		</div><!-- row -->
 					<div>
-    <?php echo $form->labelEx($model, 'password');?>
     <?php
-    if ($model->isNewRecord) {
-        echo $form->passwordField($model, 'password', array('maxlength' => 64));
-    } else {
+    if (!$model->isNewRecord) {
+        echo $form->labelEx($model, 'password');
         echo $form->passwordField($model, 'password', array('maxlength' => 64, 'value' => ''));
     }
 ?>
