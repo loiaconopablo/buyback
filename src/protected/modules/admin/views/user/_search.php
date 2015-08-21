@@ -2,7 +2,7 @@
 <div id="searchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Búsqueda avanzada</h3>
+    <h3 id="myModalLabel"><?php echo Yii::t('app', 'Busqueda avanzada'); ?></h3>
   </div>
   <?php $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm', array(
