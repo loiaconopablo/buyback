@@ -159,42 +159,6 @@ class Purchase extends BasePurchase
     }
 
     /**
-     * Agrega condiciones al criterio de search para filtrar los equipos que estan en estado
-     * RECEIVED o PENDING para en el point_of_sale_id del usuario de session
-     * @author Richard Grinberg <rggrinberg@gmail.com>
-     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
-     */
-    public function company()
-    {
-
-        $criteria = $this->search()->getCriteria();
-
-        return $this->companySearch($criteria);
-    }
-    
-    public function companyReferences()
-    {
-        $criteria = parent::search()->getCriteria();
-
-        return $this->companySearch($criteria);
-    }
-
-    public function companySearch($criteria)
-    {
-         /*
-        Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
-         */
-        $criteria->compare('t.company_id', Yii::app()->user->company_id);
-
-        return new CActiveDataProvider(
-            $this,
-            array(
-            'criteria' => $criteria,
-            )
-        );
-    }
-
-    /**
      * Agrega condiciones al criterio de search para filtrar los equipos que estan en los estados
      * donde no se encuentra aún en la cabecera del Owner
      * @author Richard Grinberg <rggrinberg@gmail.com>
@@ -425,5 +389,27 @@ class Purchase extends BasePurchase
         
         return false;
     }
+    
+    /**
+     * Chequea que el mismo cliente no intente vender el mismo imei 2 o más veces
+     * @param  string $imei       IMEI del equipo
+     * @param  integer $seller_dni DNI del cliente
+     * @return bollean            [description]
+     */
+    public function checkIsDuplicate($imei, $seller_dni)
+    {
+        $equipos = $this->findAllByAttributes(array('imei' => $imei));
 
+        if (count($equipos)) {
+            foreach ($equipos as $equipo) {
+                if ($equipo->seller->dni == $seller_dni) {
+                    // El equipo ya fue vendido con ese DNI
+                    return true;
+                }
+            }
+        }
+
+        // No existe el IMEI no es duplicado
+        return false;
+    }
 }
