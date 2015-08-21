@@ -312,6 +312,12 @@ class BuyController extends Controller
     {
 
         $model = new Purchase;
+        
+        if ($model->checkIsDuplicate(Yii::app()->session['purchase']['imei'], $seller->dni)) {
+            throw new Exception("El equipo ya fue comprado al mismo vendedor", 1);
+            
+            return;
+        }
 
         $point_of_sale = PointOfSale::model()->findByPk(Yii::app()->user->point_of_sale_id);
         $carrier = Carrier::model()->findByPk(Yii::app()->session['purchase']['carrier_id']);
