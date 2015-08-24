@@ -204,9 +204,21 @@ return array(
     'Por enviar' => 'Para enviar',
     'Nº Nota' => 'Nº NF',
     '$' => 'R$',
+    'Contraseña autogenerada' => 'Senha gerada',
 
     // Estados de notas de envío
     'Pendiente de envío' => 'No ponto de venda',
     'Enviada' => 'Em transito',
     'Cantidad de items' => 'Cantidad de items',
+    
+    // Formulario de ChangePassword
+    'Minimo 15 caracteres, máximo 100' => '15 caracteres mínimo, máximo 100',
+    'Letras mayúsculas, minúsculas y números' => 'As letras maiúsculas e minúsculas e números',
+    'Caracteres especiales (ej. @.!/?#$)' => 'Caracteres especiais (ej. @.!/?#$)',
+    'Repetir contraseña debe contener al menos un digito' => 'A senha deve conter pelo menos um dígito',
+    'Repetir contraseña debe contener al menos un caracter especial' => 'A senha deve conter pelo menos um caractere especial',
+    'Repetir contraseña debe contener al menos una letra minúscula' => 'A senha deve conter pelo menos uma letra minúscula',
+    'Repetir contraseña debe contener al menos una letra mayúscula' => 'A senha deve conter pelo menos uma letra mayúscula',
+    'Repetir contraseña' => 'Repetir senha',
+    
 );

@@ -61,6 +61,14 @@ class User extends BaseUser {
                     array('mail', 'email'),
                     array('mail', 'required'),
                     array('password', 'required', 'on' => 'update'),
+                    array('old_password, new_password, repeat_password', 'required', 'on' => 'changePwd'),
+                    array('old_password', 'findPasswords', 'on' => 'changePwd'),
+                    array('repeat_password', 'compare', 'compareAttribute' => 'new_password', 'on' => 'changePwd'),
+                    array('repeat_password', 'length', 'min' => 15, 'max' => 100, 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/\d/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos un digito'), 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/\W/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos un caracter especial'), 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/(?=.[a-z])/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos una letra minúscula'), 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/(?=.[A-Z])/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos una letra mayúscula'), 'on' => 'changePwd'),
         ));
     }
 
@@ -127,7 +135,7 @@ class User extends BaseUser {
         $user = User::model()->findByPk(Yii::app()->user->id);
         //if ($user->password != md5($this->old_password))
         if (!($this->validateOldPassword($this->old_password, $user->password))) {
-            $this->addError($attribute, 'El password es incorrecto.');
+            $this->addError($attribute, Yii::t('app', 'La contraseña anterior es incorrecta.'));
         }
     }
 
@@ -165,8 +173,11 @@ class User extends BaseUser {
                     'password' => Yii::t('app', 'Contraseña'),
                     'last_login' => Yii::t('app', 'Último login'),
                     'employee_identification' => Yii::t('app', 'Código de empleado'),
-                        )
-        );
+                    'password_generated' => Yii::t('app', 'Contraseña autogenerada'),
+                    'old_password' => Yii::t('app', 'Contraseña actual'),
+                    'new_password' => Yii::t('app', 'Nueva contraseña'),
+                    'repeat_password' => Yii::t('app', 'Repetir contraseña'),
+        ));
     }
 
 }
