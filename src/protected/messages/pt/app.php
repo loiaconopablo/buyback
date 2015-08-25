@@ -212,7 +212,7 @@ return array(
     'Cantidad de items' => 'Cantidad de items',
     
     // Formulario de ChangePassword
-    'Minimo 15 caracteres, máximo 100' => '15 caracteres mínimo, máximo 100',
+    'Minimo 10 caracteres, máximo 100' => '15 caracteres mínimo, máximo 100',
     'Letras mayúsculas, minúsculas y números' => 'As letras maiúsculas e minúsculas e números',
     'Caracteres especiales (ej. @.!/?#$)' => 'Caracteres especiais (ej. @.!/?#$)',
     'Repetir contraseña debe contener al menos un digito' => 'A senha deve conter pelo menos um dígito',

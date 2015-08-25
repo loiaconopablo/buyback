@@ -42,7 +42,7 @@
             <div class="panel panel-warning">
                 <div class="panel-body">
                     <ul>
-                        <li> <?php echo Yii::t('app', 'Minimo 15 caracteres, máximo 100'); ?> </li>
+                        <li> <?php echo Yii::t('app', 'Minimo 10 caracteres, máximo 100'); ?> </li>
                         <li> <?php echo Yii::t('app', 'Letras mayúsculas, minúsculas y números'); ?> </li>
                         <li> <?php echo Yii::t('app', 'Caracteres especiales (ej. @.!/?#$)'); ?> </li>
                     </ul>

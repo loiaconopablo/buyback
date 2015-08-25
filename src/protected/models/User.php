@@ -64,11 +64,11 @@ class User extends BaseUser {
                     array('old_password, new_password, repeat_password', 'required', 'on' => 'changePwd'),
                     array('old_password', 'findPasswords', 'on' => 'changePwd'),
                     array('repeat_password', 'compare', 'compareAttribute' => 'new_password', 'on' => 'changePwd'),
-                    array('repeat_password', 'length', 'min' => 15, 'max' => 100, 'on' => 'changePwd'),
+                    array('repeat_password', 'length', 'min' => 10, 'max' => 100, 'on' => 'changePwd'),
                     array('repeat_password', 'match', 'pattern' => '/\d/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos un digito'), 'on' => 'changePwd'),
                     array('repeat_password', 'match', 'pattern' => '/\W/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos un caracter especial'), 'on' => 'changePwd'),
-                    array('repeat_password', 'match', 'pattern' => '/(?=.[a-z])/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos una letra minúscula'), 'on' => 'changePwd'),
-                    array('repeat_password', 'match', 'pattern' => '/(?=.[A-Z])/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos una letra mayúscula'), 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/(?=.*[a-z])/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos una letra minúscula'), 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/(?=.*[A-Z])/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos una letra mayúscula'), 'on' => 'changePwd'),
         ));
     }
 
@@ -101,9 +101,11 @@ class User extends BaseUser {
 
     public function resetPassword() {
         // genera password random
+        $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
         $randomPass = '';
         for ($i = 0; $i < 10; $i++) {
-            $randomPass .= chr(mt_rand(32, 126));
+            $n = rand(0, strlen($alphabet) - 1);
+            $randomPass .= $alphabet[$n];
         }
         $this->password_generated = $randomPass;
         $this->is_password_validated = 0;
