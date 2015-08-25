@@ -17,7 +17,7 @@ $this->menu = array(
 
 <?php
 $this->renderPartial(
-    '_form', array(
+    '_form-update', array(
         'model' => $model,
         'Authassignment_model' => $Authassignment_model,
         'roles' => $roles,
