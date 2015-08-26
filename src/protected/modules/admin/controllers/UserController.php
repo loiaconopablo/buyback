@@ -47,17 +47,19 @@ class UserController extends Controller {
             if (isset($_POST['submit'])) {
                 $model->setAttributes($_POST['User']);
 
-                if (empty($model->password)) {
-                    if ($model->save(true, array('company_id', 'username', 'mail', 'point_of_sale_id', 'employee_identification'))) {
-                        if ($this->saveAuthassigment($model, $_POST['Authassignment']['itemname'])) {
-                            $this->redirect(array('view', 'id' => $model->id));
-                        }
-                    }
-                } else {
-                    if ($model->save()) {
+//                if (empty($model->password)) {
+//                    
+//                    if ($model->save(true, array('company_id', 'username', 'mail', 'point_of_sale_id', 'employee_identification'))) {
+//                        if ($this->saveAuthassigment($model, $_POST['Authassignment']['itemname'])) {
+//                            $this->redirect(array('view', 'id' => $model->id));
+//                        }
+//                    }
+//                } else {
+                    if ($model->validate()) {
+                        $model->save();
                         $this->redirect(array('view', 'id' => $model->id));
                     }
-                }
+//                }
             } elseif (isset($_POST['resetPass'])) {
                 if ($model->validate()) {
                     $model->resetPassword();

@@ -81,18 +81,23 @@ class User extends BaseUser {
 
     protected function beforeSave() {
 
-        if ($this->isNewRecord) {
-
+//        if (!$this->isNewRecord){
+//            if (!empty($this->password)) {
+//                if (!isset($this->new_password)) {
+//                    //si no viene de changepassword
+//                    $this->password = $this->hashPassword($this->password_generated);
+//                } else {
+//                    // viene de changepassword
+//                    $this->is_password_validated = 1;
+//                }
+//            }
+//        }
+        if (!$this->is_password_validated){
+            //todavia tiene contraseña autogenerada
             $this->password = $this->hashPassword($this->password_generated);
-        } else {
-            if (!empty($this->password)) {
-                if (!isset($this->new_password)) {
-                    //si no viene de changepassword
-                    $this->password = $this->hashPassword($this->password);
-                } else {
-                    // viene de changepassword
-                    $this->is_password_validated = 1;
-                }
+            if(isset($this->new_password)){
+                $this->password = $this->hashPassword($this->new_password);
+                $this->is_password_validated = 1;
             }
         }
         $this->username = strtolower($this->username);
@@ -109,6 +114,7 @@ class User extends BaseUser {
         }
         $this->password_generated = $randomPass;
         $this->is_password_validated = 0;
+        $this->password = $this->hashPassword($this->password_generated);
     }
 
     /**
@@ -179,6 +185,7 @@ class User extends BaseUser {
                     'old_password' => Yii::t('app', 'Contraseña actual'),
                     'new_password' => Yii::t('app', 'Nueva contraseña'),
                     'repeat_password' => Yii::t('app', 'Repetir contraseña'),
+                    'is_password_validated' => Yii::t('app', 'Contraseña validada'),
         ));
     }
 

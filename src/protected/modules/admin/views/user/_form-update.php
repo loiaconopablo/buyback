@@ -32,16 +32,7 @@
     <?php echo $form->textField($model, 'username', array('maxlength' => 255, 'autocomplete' => 'off')); ?>
     <?php echo $form->error($model, 'username'); ?>
 </div><!-- row -->
-<div>
-    <?php
-    if (!$model->isNewRecord) {
-        echo $form->labelEx($model, 'password');
-        echo $form->passwordField($model, 'password', array('maxlength' => 64, 'value' => ''));
-    }
-    ?>
 
-    <?php echo $form->error($model, 'password'); ?>
-</div><!-- row -->
 <div>
     <?php echo $form->labelEx($model, 'mail'); ?>
     <?php echo $form->emailField($model, 'mail', array('maxlength' => 255)); ?>

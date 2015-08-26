@@ -37,7 +37,6 @@ $this->widget(
         'created_at',
         'updated_at',
         'last_login',
-        'user_log',
         'is_password_validated',
     ),
         )

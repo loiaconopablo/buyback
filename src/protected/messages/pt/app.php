@@ -220,5 +220,6 @@ return array(
     'Repetir contraseña debe contener al menos una letra minúscula' => 'A senha deve conter pelo menos uma letra minúscula',
     'Repetir contraseña debe contener al menos una letra mayúscula' => 'A senha deve conter pelo menos uma letra mayúscula',
     'Repetir contraseña' => 'Repetir senha',
+    'Contraseña validada' => 'Senha validado',
     
 );
