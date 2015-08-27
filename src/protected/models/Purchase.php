@@ -434,7 +434,11 @@ class Purchase extends BasePurchase
      */
     public function checkIsDuplicate($imei, $seller_dni)
     {
-        $equipos = $this->findAllByAttributes(array('imei' => $imei));
+        $criteria = new CDbCriteria;
+        $criteria->addNotInCondition('current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->compare('imei', $imei);
+        $equipos = $this->findAll($criteria);
+
 
         if (count($equipos)) {
             foreach ($equipos as $equipo) {
