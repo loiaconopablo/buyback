@@ -3,7 +3,7 @@ $(document).ready(function () {
     // cuando se cierra y se abre uno distinto
     // De otra manera siempre muestra el contenido del primer link cargado
     $('body').on('hidden.bs.modal', '.modal', function () {
-        console.log(this);
+        // console.log(this);
         $(this).removeData();
     });
 
@@ -84,6 +84,7 @@ $(document).ready(function () {
         ev.preventDefault();
     });
 
+		
     /**
      * Popula un <select class="model_select">
      * Cuando un <select class="brand_select"> dispara el evento "change"
@@ -92,29 +93,30 @@ $(document).ready(function () {
         var brand = $(this).find(":selected").val();
 
         $.ajax({
-            url: Yii.app.createUrl('purchase/buy/getmodels', {'brand': brand}),
+            url: Yii.app.createUrl('purchase/purchase/getmodelsjson', {'brand': brand}),
             type: 'POST',
             dataType: 'json',
-            success: function (data) {
-                $('.model_select option').each(function () {
+            success: function(data) {
+                $('.model_select option').each(function() {
                     if ($(this).val()) {
                         $(this).remove();
                     }
                 });
 
-                jQuery.each(data, function (key, val) {
-                    var o = new Option(val.model);
-                    o.value = val.model;
-                    $('.model_select').append(o);
-                });
-            },
-            error: function () {
-                //console.log('error');
-            }
-        });
-    });
+				jQuery.each(data, function(key, val) {
 
-    alert("anda");
+					var o = new Option(val.model);
+					o.value = val.model;
+					$('.model_select').append(o);
+				});
+			},
+			error: function() {
+				//console.log('error');
+			}
+		});
+	});
+        
+
     if ($('#User_company_id').val() != '') {
         $('#User_point_of_sale_id').parent().fadeIn();
     }
@@ -157,7 +159,6 @@ $(document).ready(function () {
 
 });
 
-
 /**
  * DATE FILTER FUNCTIONS
  * @return {[type]} [description]
@@ -166,15 +167,13 @@ function refreshGrid() {
     $('.grid-view').each(function () {
         $.fn.yiiGridView.update($(this).attr('id'));
     })
-}
-;
+};
 
 function resetDateFilter(prefix) {
     $.removeCookie(prefix + "from");
     $.removeCookie(prefix + "to");
     location.reload();
-}
-;
+};
 
 /**
  * Guarda en una cookie los checkbox seleccionados en un Grid
@@ -201,8 +200,7 @@ function setCheckedItems() {
     checkedItems = arrayDiff(checkedItems, getUncheckeds());
 
     $.cookie('checkedItems', checkedItems, {path: '/'});
-}
-;
+};
 
 
 /**
@@ -220,16 +218,14 @@ function uniq(a) {
         else
             return objs.indexOf(item) >= 0 ? false : objs.push(item);
     });
-}
-;
+};
 
 
 function arrayDiff(a1, a2) {
     return a1.filter(function (i) {
         return a2.indexOf(i) < 0;
     });
-}
-;
+};
 
 
 /**
@@ -243,8 +239,7 @@ function getUncheckeds() {
         unch.push($(this).val());
     });
     return unch.toString();
-}
-;
+};
 
 /**
  * Esta función la invocan los formularios validados por ajax

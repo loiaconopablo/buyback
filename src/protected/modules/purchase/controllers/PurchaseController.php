@@ -30,6 +30,11 @@ class PurchaseController extends Controller
                 'actions' => array('ownerview', 'dispatch'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
+              array(
+                'allow',
+                'actions' => array('GetmodelsJSON'),
+                'users'=>array('*'),
+            ),
             array('deny',  // deny all users
                 'users'=>array('*'),
             ),
@@ -115,5 +120,25 @@ class PurchaseController extends Controller
             'dispatch_note_model' => $dispatch_note_model,
             )
         );
+    }
+
+
+    /**
+     * Devuelve un json con los modelos de la marca seleccionada
+     * @param  string $brand marca de equipo
+     */
+    public function actionGetmodelsJSON($brand)
+    {
+        if (Yii::app()->getRequest()->getIsPostRequest()) {
+
+            $models = PriceList::model()->findAllByAttributes(array('brand' => $brand), array('order'=>'model'));
+
+            header('Content-type: application/json');
+      
+            echo CJSON::encode($models);
+            Yii::app()->end();
+        } else {
+            throw new CHttpException(400, Yii::t('app', 'Your request is invalid.'));
+        }
     }
 }

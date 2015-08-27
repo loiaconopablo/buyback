@@ -8,6 +8,8 @@ class Purchase extends BasePurchase
 
     const COMPROBANTE_TIPO_COMPRA = 'C';
     const COMPROBANTE_TIPO_NOTA_DE_CREDITO = 'NC';
+    const COMPROBANTE_TIPO_COMPRA_MASIVA = 'CM';
+    const PUNTO_DE_VENTA_COMPRA_MASIVA = '33';
 
     public $quantity;
     public $price_average;
@@ -72,12 +74,118 @@ class Purchase extends BasePurchase
         return CMap::mergeArray(
             parent::rules(),
             array(
-                array('', 'safe', 'on' => 'search'),
-                array('imei_checked, peoplesoft_order', 'required', 'on' => 'checking'),
+                array('imei_checked', 'required', 'on' => 'checking'),
                 array('contract_number', 'unique', 'on' => 'insert'),
+                array('imei', 'isDuplicate', 'on' => 'insert'),
+                array('gif_response_json', 'gifNotMatch', 'on' => 'insert'),
+                array('imei', 'validateImeiFormat'),
             )
         );
     }
+
+    /**
+     * INICIO VALIDACIONES DE RULES
+     */
+    
+    // Chequea si el equipo ya fue vendido por el mismo cliente
+    public function isDuplicate($attribute, $params)
+    {
+        if (!$this->seller_id) {
+            return;
+        }
+
+        $criteria = new CDbCriteria;
+        $criteria->addNotInCondition('current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
+        $criteria->compare('imei', $this->imei);
+        $equipos = $this->findAll($criteria);
+
+        if (count($equipos)) {
+            foreach ($equipos as $equipo) {
+
+                if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_COMPRA) {
+                    if ($equipo->seller->dni == $this->seller->dni) {
+                        $this->addError($attribute, Yii::t('app', 'El equipo ya fue comprado al mismo vendedor'));
+                    }
+                }
+
+                if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_COMPRA_MASIVA) {
+                    if ($equipo->company->cuit == $this->company->cuit) {
+                        $this->addError($attribute, Yii::t('app', 'El equipo ya fue comprado al mismo vendedor'));
+                    }
+                }
+                
+            }
+        }
+    }
+
+
+    /**
+     * Valida que el imai tenga un formato valido
+     * @param  [type] $attribute [description]
+     * @param  [type] $params    [description]
+     */
+    public function validateImeiFormat($attribute, $params)
+    {
+        //Luhn' s algorithm
+        $number = $this->imei;
+
+        settype($number, 'string');
+
+        $sumTable = array(
+        array(0,1,2,3,4,5,6,7,8,9),
+        array(0,2,4,6,8,1,3,5,7,9)
+        );
+
+        $sum = 0;
+        $flip = 0;
+
+        for ($i = strlen($number) - 1; $i >= 0; $i--) {
+            $sum += $sumTable[$flip++ & 0x1][$number[$i]];
+        }
+
+        if (!(($sum % 10) === 0)) {
+            $this->addError($attribute, Yii::t('app', 'IMEI Formato invalido.'));
+        }
+    }
+
+    /**
+     * En realidad no es una validacion porque no bloquea
+     * si no coincide la data de GIF con la de la compra real solo se loguea
+     * TODO: avisar a un webservice de GIF
+     */
+    public function gifNotMatch()
+    {
+        $gif_response_json_obj = CJSON::decode($this->gif_response_json, false);
+
+        if ($gif_response_json_obj->respuesta->brand !== $this->brand) {
+            Yii::log('GIF_DICTIONARY brand: ' . $gif_response_json_obj->respuesta->brand . ' model: ' . $gif_response_json_obj->respuesta->brand . ' | USER SELECTION brand: ' . $this->brand . ' model: ' . $this->model, CLogger::LEVEL_WARNING, 'gif_not_match');
+        }
+    }
+
+    /**
+     * FIN VALIDACIONES DE RULES
+     */
+    
+
+    /**
+     * MODEL´S HOOCKS BEFORESAVE AFTERSAVE
+     */
+    protected function afterSave()
+    {
+        parent::afterSave();
+        if ($this->isNewRecord) {
+            // Envía datos de la nueva compra a GIF
+            Yii::app()->imeiws->postPurchase($this);
+        } else {
+            
+            die('no new');
+        }
+    }
+
+    /**
+     * END MODEL´S HOOCKS
+     */
+    
 
     public function searchReferences()
     {
@@ -391,6 +499,7 @@ class Purchase extends BasePurchase
     }
     
     /**
+     * TODO: eliminarla y usar isDuplicate()
      * Chequea que el mismo cliente no intente vender el mismo imei 2 o más veces
      * @param  string $imei       IMEI del equipo
      * @param  integer $seller_dni DNI del cliente
@@ -411,5 +520,165 @@ class Purchase extends BasePurchase
 
         // No existe el IMEI no es duplicado
         return false;
+    }
+
+
+    /**
+     * Setea el valor del campo gif_response_son
+     */
+    public function setGifDataAtBuy()
+    {
+        $this->gif_response_json = $this->getGifResponse();
+
+        $this->setGifData('gif_response_json');
+    }
+    
+    /**
+     * Trae el json de respuesta del webservise GIF
+     * @return string json
+     */
+    private function getGifResponse()
+    {
+        if ($this->imei) {
+
+            return Yii::app()->imeiws->check($this->imei);
+
+        } else {
+            throw new Exception(Yii::t('app', 'El imei es nulo no se puede buscar en GIF'), 1);  
+        }
+    }
+
+    /**
+     * Setea los atributos blacklist, brand, model
+     * Si los encuentra
+     */
+    private function setGifData($attribute) {
+        if (!strlen(trim($this->$attribute))) {
+            return false;
+        }
+
+        $gif_data = CJSON::decode($this->$attribute, false);
+
+        if (strtoupper(trim($gif_data->respuesta->blacklist)) == 'YES') {
+            // Esta en banda negativa. se marca el campo
+            Yii::log('IMEI: ' . $this->imei . ' - USER: ' . Yii::app()->user->name, CLogger::LEVEL_WARNING, 'blacklist');
+            $this->blacklist = 1;
+        } else {
+            $this->blacklist = 0;
+        }
+
+        $device = PriceList::model()->getByGifName($gif_data->respuesta->name);
+
+        if ($device) {
+            $this->brand = $device->brand;
+            $this->model = $device->model;
+        }
+    }
+
+    /**
+     * Setea los campos de la compra despues de tener el carrier_id
+     */
+    public function setPriceDataAtBuy()
+    {
+        $this->setPriceData();
+
+        $this->purchase_price = $this->calculatePrice();
+    }
+
+    /**
+     * Setea todos los campos que dependen de carrier_id
+     */
+    private function setPriceData()
+    {
+        if ($this->carrier_id !== null) {
+            // Setea el nombre de operador
+            $this->carrier_name = Carrier::model()->findByPk($this->carrier_id)->name;
+
+            // Setea el tipo de precio
+            if ($this->carrier_name == 'Liberado') {
+                $this->price_type = 'unlocked_price';
+            } else {
+                $this->price_type = 'locked_price';
+            }
+
+            $pricelist = PriceList::model()->findByAttributes(array('brand' => $this->brand, 'model' => $this->model));
+            // Setea pricelist_log
+            $this->pricelist_log = CJSON::encode($pricelist->getAttributes());
+            // Setea pricelist_id
+            $this->price_list_id = $pricelist->id;
+
+            // Actualiza el diccionario GIF
+            $gif_data = CJSON::decode($this->gif_response_json, false);
+            GifDictionary::model()->incrementQuantity($gif_data->respuesta->name, $this->brand, $this->model);
+
+        } else {
+            throw new Exception(Yii::t('app', 'carrier_id es nulo. No se pueden setear los datos del precio'), 1);   
+        }
+    }
+
+    /**
+     * Calcula el precio con los datos actuales
+     * @return mixed boolean, float
+     */
+    public function calculatePrice()
+    {
+        if ($this->price_type == null) {
+            // Si no se seteo el price_type no se puede definir el precio
+            return false;
+        }
+
+        $price_log_obj = CJSON::decode($this->pricelist_log, false);
+
+        if ($this->compareLoggedAndActualDevice()) {
+            // Devuelve el precio de lo que ya tenia en el log
+            return $this->getLoggedPrice($this->price_type);
+        }
+
+        $pricelist = PriceList::model()->findByAttributes(array('brand' => $this->brand, 'model' => $this->model));
+
+        return $pricelist->$price_type;
+
+    }
+
+    /**
+     * Compara el dispositivo en el log con los datos actuales en brand y model
+     * @return boolean
+     */
+    public function compareLoggedAndActualDevice()
+    {
+        if (!strlen(trim($this->pricelist_log))) {
+            return false;
+        }
+
+        $price_log_obj = CJSON::decode($this->pricelist_log, false);
+
+        if ($this->brand != $price_log_obj->brand) {
+            return false;
+        }
+
+        if ($this->model != $price_log_obj->model) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Devuelve el seller dependiendo si es compra masiva o minorista
+     * @return mixed Seller AR o Company AR
+     */
+    public function getSeller()
+    {
+        if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_COMPRA) {
+            $seller_data = $this->seller->getAttributes();
+            $seller_data['identification'] = $seller_data['dni'];
+        }
+
+        if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_COMPRA_MASIVA) {
+            $seller_data = $this->company->getAttributes();
+            $seller_data['identification'] = $seller_data['cuit'];
+        }
+
+        return $seller_data;
     }
 }

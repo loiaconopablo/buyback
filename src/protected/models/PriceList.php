@@ -53,4 +53,21 @@ class PriceList extends BasePriceList {
         // TODO: Lo que va aca adentro 26-06-2015
     }
 
+    /**
+     * Devuelve el AR si encuentra una coincidencia en Gifdictionari con el gifname
+     * @param  string $gif_name nombre del equipo para GIF (marca y modelo en un solo campo)
+     * @return PriceList AR  el precio (equipo) que encontro o null
+     */
+    public function getByGifName($gif_name)
+    {
+        $gif_dictionary_device = GifDictionary::model()->getParidadMasVotada($gif_name);
+
+        if (!$gif_dictionary_device) {
+            // No está en el diccionario
+            return null;
+        }
+
+        // Busca el dispositivo en Pricelist
+        return PriceList::model()->findByAttributes(array('brand' => $gif_dictionary_device->brand, 'model' => $gif_dictionary_device->model));
+    }
 }

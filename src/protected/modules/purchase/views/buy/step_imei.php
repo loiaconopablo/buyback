@@ -13,7 +13,7 @@
              'clientOptions'=>array(
                 'validateOnSubmit'=>true,
                 'validateOnChange' => false,
-                'validationUrl' => array('/purchase/buy/imei'),
+                'validationUrl' => array('/purchase/buy'),
                 'afterValidate'=>'js:formSend'
              )
         )

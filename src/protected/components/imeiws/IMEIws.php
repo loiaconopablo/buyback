@@ -51,6 +51,15 @@ class IMEIws extends CApplicationComponent
                 
         $output = Yii::app()->curl->setOption(CURLOPT_HTTPHEADER, array())->post($this->url, $request->toArray());
 
+        $imeiws_response = CJSON::decode($output, false);
+
+        if ($imeiws_response->error !== 0) {
+            // No valida como negativo pero loguea que hubo un error utilizando el webservice
+            Yii::log('IMEI WEBSERVICE: ' . $imeiws_response->error_desc, CLogger::LEVEL_ERROR, 'error');
+
+            return false;
+        }
+
         return $output;
     }
 
@@ -61,6 +70,8 @@ class IMEIws extends CApplicationComponent
      */
     public function postPurchase($purchase)
     {
+        $purchase->refresh();
+
         $post_purchase = new GifPurchase();
 
         $post_purchase->user = $this->credentials['user'];
@@ -82,16 +93,20 @@ class IMEIws extends CApplicationComponent
         $post_purchase->purchase_created_at = $purchase->created_at;
         $post_purchase->purchase_contract_number = $purchase->contract_number;
         $post_purchase->purchase_cae = $purchase->cae;
-        $post_purchase->seller_name = $purchase->seller->name;
-        $post_purchase->seller_dni = $purchase->seller->dni;
-        $post_purchase->seller_created_at = $purchase->seller->created_at;
-        $post_purchase->seller_address = $purchase->seller->address;
-        $post_purchase->seller_province = $purchase->seller->province;
-        $post_purchase->seller_locality = $purchase->seller->locality;
-        $post_purchase->seller_phone = $purchase->seller->phone;
-        $post_purchase->seller_mail = $purchase->seller->mail;
         $post_purchase->user_ip = $purchase->user_ip;
         $post_purchase->gif_request_id = $purchase->getGifRequestId();
+
+        // Devuelve el seller dependiendo si es compra mayorista o minorista
+        $seller = $purchase->getSeller();
+
+        $post_purchase->seller_name = $seller['name'];
+        $post_purchase->seller_dni = $seller['identification'];
+        $post_purchase->seller_created_at = $seller['created_at'];
+        $post_purchase->seller_address = $seller['address'];
+        $post_purchase->seller_province = $seller['province'];
+        $post_purchase->seller_locality = $seller['locality'];
+        $post_purchase->seller_phone = $seller['phone'];
+        $post_purchase->seller_mail = $seller['mail'];
 
         $output = Yii::app()->curl->setOption(CURLOPT_HTTPHEADER, array())->post($this->url_post_purchase, $post_purchase->toArray());
 

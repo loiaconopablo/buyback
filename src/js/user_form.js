@@ -1,5 +1,4 @@
 $(document).ready(function(){
-        alert("anda");
 	if ($('#User_company_id').val() != '') {
 			$('#User_point_of_sale_id').parent().fadeIn();
 	}

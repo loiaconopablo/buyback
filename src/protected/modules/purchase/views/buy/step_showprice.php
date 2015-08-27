@@ -40,5 +40,5 @@ endif;?>
 	</br>
 	</br>
 	</br>
-    <?php echo TbHtml::linkButton(Yii::t('app', 'COTIZAR OTRO EQUIPO'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/buy/imei')));?>
+    <?php echo TbHtml::linkButton(Yii::t('app', 'COTIZAR OTRO EQUIPO'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/buy')));?>
 </div>

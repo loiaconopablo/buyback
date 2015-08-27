@@ -1,7 +1,7 @@
 <?php
 
 $this->menu = array(
-    array('label' => Yii::t('app', 'Comprar'), 'icon' => 'plus-sign', 'url' => array('/purchase/buy/imei'), 'disabled' => !Yii::app()->user->checkAccess('retail')),
+    array('label' => Yii::t('app', 'Comprar'), 'icon' => 'plus-sign', 'url' => array('/purchase/buy'), 'disabled' => !Yii::app()->user->checkAccess('retail')),
 );
 
 ?>

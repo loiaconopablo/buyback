@@ -45,7 +45,7 @@ class BuyController extends Controller
      * Valida el imei contra el webservice chequeando que no esté en la BLACKLIST
      * Guarda el atributo 'name' del webservice en session para uso interno del sistema en las acciones que siguen
      */
-    public function actionImei()
+    public function actionIndex()
     {
 
         $model = new StepImeiForm;
@@ -314,7 +314,7 @@ class BuyController extends Controller
         $model = new Purchase;
         
         if ($model->checkIsDuplicate(Yii::app()->session['purchase']['imei'], $seller->dni)) {
-            throw new Exception("El equipo ya fue comprado al mismo vendedor", 1);
+            throw new Exception(Yii::t('app', 'El equipo ya fue comprado al mismo vendedor'), 1);
             
             return;
         }
@@ -613,7 +613,7 @@ class BuyController extends Controller
     public function checkSession()
     {
         if (!isset(Yii::app()->session['purchase'])) {
-            $this->redirect('purchase/buy/imei');
+            $this->redirect('purchase/buy');
         }
     }
 

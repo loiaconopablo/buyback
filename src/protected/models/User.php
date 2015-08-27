@@ -65,10 +65,10 @@ class User extends BaseUser {
                     array('old_password', 'findPasswords', 'on' => 'changePwd'),
                     array('repeat_password', 'compare', 'compareAttribute' => 'new_password', 'on' => 'changePwd'),
                     array('repeat_password', 'length', 'min' => 10, 'max' => 100, 'on' => 'changePwd'),
-                    array('repeat_password', 'match', 'pattern' => '/\d/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos un digito'), 'on' => 'changePwd'),
-                    array('repeat_password', 'match', 'pattern' => '/\W/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos un caracter especial'), 'on' => 'changePwd'),
-                    array('repeat_password', 'match', 'pattern' => '/(?=.*[a-z])/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos una letra minúscula'), 'on' => 'changePwd'),
-                    array('repeat_password', 'match', 'pattern' => '/(?=.*[A-Z])/', 'message' => Yii::t('app', 'Repetir contraseña debe contener al menos una letra mayúscula'), 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/\d/', 'message' => Yii::t('app', 'Contraseña debe contener al menos un digito'), 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/\W/', 'message' => Yii::t('app', 'Contraseña debe contener al menos un caracter especial'), 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/(?=.*[a-z])/', 'message' => Yii::t('app', 'Contraseña debe contener al menos una letra minúscula'), 'on' => 'changePwd'),
+                    array('repeat_password', 'match', 'pattern' => '/(?=.*[A-Z])/', 'message' => Yii::t('app', 'Contraseña debe contener al menos una letra mayúscula'), 'on' => 'changePwd'),
         ));
     }
 

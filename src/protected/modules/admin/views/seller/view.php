@@ -9,7 +9,7 @@ $this->menu=array(
     array('label'=>Yii::t('app', 'Listar') . ' ' . $model->label(2), 'icon' => 'list', 'url'=>array('index')),
     array('label'=>Yii::t('app', 'Crear') . ' ' . $model->label(), 'icon'=>'plus-sign', 'url'=>array('create')),
     array('label'=>Yii::t('app', 'Modificar') . ' ' . $model->label(), 'icon' => 'pencil', 'url'=>array('update', 'id' => $model->id)),
-    array('label'=>Yii::t('app', 'Eliminar') . ' ' . $model->label(), 'icon' => 'remove', 'url'=>'#', 'linkOptions' => array('submit' => array('delete', 'id' => $model->id), 'confirm'=>'Are you sure you want to delete this item?')),
+    array('label'=>Yii::t('app', 'Eliminar') . ' ' . $model->label(), 'icon' => 'remove', 'url'=>'#', 'linkOptions' => array('submit' => array('delete', 'id' => $model->id), 'confirm'=>Yii::t('app', 'Realmente desea eliminar este item?'))),
     array('label'=>Yii::t('app', 'Administrar') . ' ' . $model->label(2), 'icon' => 'th-list', 'url'=>array('admin')),
 );
 ?>
