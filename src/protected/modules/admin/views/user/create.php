@@ -2,11 +2,11 @@
 
 $this->breadcrumbs = array(
     $model->label(2) => array('index'),
-    Yii::t('app', 'Create'),
+    Yii::t('app', 'Crear'),
 );
 
 $this->menu = array(
-    array('label' => Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('admin')),
+    array('label' => Yii::t('app', 'Listar') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('admin')),
 );
 ?>
 

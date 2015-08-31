@@ -9,7 +9,7 @@
 ?>
 
 	<p class="note">
-    <?php echo Yii::t('app', 'Fields with');?> <span class="required">*</span> <?php echo Yii::t('app', 'are required');?>.
+    <?php echo Yii::t('app', 'Campos con');?> <span class="required">*</span> <?php echo Yii::t('app', 'son requeridos');?>.
 	</p>
 
     <?php echo $form->errorSummary($model);?>
@@ -67,7 +67,7 @@
 
 
 		<!-- ACA PONER UN TITULO PARA SEPARAR -->
-		<h4><?php echo Yii::t('app', 'Reference Data');?></h4>
+		<h4><?php echo Yii::t('app', 'Datos de referencia');?></h4>
 		<div>
     <?php echo $form->labelEx($model, 'reference_name');?>
     <?php echo $form->textField($model, 'reference_name', array('maxlength' => 255, 'size' => TbHtml::INPUT_SIZE_XXLARGE));?>

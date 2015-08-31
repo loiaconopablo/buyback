@@ -12,7 +12,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
     array('label'=>'Create Authitem', 'url'=>array('create')),
     //array('label'=>'Update Authitem', 'url'=>array('update', 'id'=>$model->name)),
-    array('label'=>'Delete Authitem', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->name),'confirm'=>'Are you sure you want to delete this item?')),
+    array('label'=>'Delete Authitem', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->name),'confirm'=>Yii::t('app', 'Realmente desea eliminar este item?'))),
     array('label'=>'Manage Authitem', 'url'=>array('admin')),
 );
 ?>

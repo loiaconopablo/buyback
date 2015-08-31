@@ -1,26 +1,25 @@
 <?php
+
 Yii::import('rights.models.*');
 
-class UserController extends Controller
-{
+class UserController extends Controller {
 
-    public function actionView($id) 
-    {
+    public function actionView($id) {
         $this->render(
-            'view', array(
+                'view', array(
             'model' => User::model()->findByPk($id),
-            )
+                )
         );
     }
 
-    public function actionCreate() 
-    {
+    public function actionCreate() {
         $model = new User;
 
         if (isset($_POST['User'])) {
             $model->setAttributes($_POST['User']);
-
-            if ($model->save()) {
+            if ($model->validate()) {
+                $model->resetPassword();
+                $model->save();
                 if (Yii::app()->getRequest()->getIsAjaxRequest()) {
                     Yii::app()->end();
                 } else {
@@ -41,26 +40,33 @@ class UserController extends Controller
         $this->render('create', array('model' => $model, 'Authassignment_model' => $Authassignment_model, 'roles' => $roles));
     }
 
-    public function actionUpdate($id) 
-    {
+    public function actionUpdate($id) {
         $model = User::model()->findByPk($id);
 
         if (isset($_POST['User'])) {
-            $model->setAttributes($_POST['User']);
+            if (isset($_POST['submit'])) {
+                $model->setAttributes($_POST['User']);
 
-            if (empty($model->password)) {
-                if ($model->save(true, array('company_id', 'username', 'mail', 'point_of_sale_id', 'employee_identification'))) {
-                    if ($this->saveAuthassigment($model, $_POST['Authassignment']['itemname'])) {
+//                if (empty($model->password)) {
+//                    
+//                    if ($model->save(true, array('company_id', 'username', 'mail', 'point_of_sale_id', 'employee_identification'))) {
+//                        if ($this->saveAuthassigment($model, $_POST['Authassignment']['itemname'])) {
+//                            $this->redirect(array('view', 'id' => $model->id));
+//                        }
+//                    }
+//                } else {
+                    if ($model->validate()) {
+                        $model->save();
                         $this->redirect(array('view', 'id' => $model->id));
                     }
-                }
-
-            } else {
-                if ($model->save()) {
+//                }
+            } elseif (isset($_POST['resetPass'])) {
+                if ($model->validate()) {
+                    $model->resetPassword();
+                    $model->save();
                     $this->redirect(array('view', 'id' => $model->id));
                 }
             }
-
         }
 
         $Authitem = new Authitem;
@@ -74,11 +80,9 @@ class UserController extends Controller
         }
 
         $this->render('update', array('model' => $model, 'Authassignment_model' => $Authassignment_model, 'roles' => $roles));
-
     }
 
-    public function actionDelete($id) 
-    {
+    public function actionDelete($id) {
         if (Yii::app()->getRequest()->getIsPostRequest()) {
             User::model()->findByPk($id)->delete();
 
@@ -89,20 +93,16 @@ class UserController extends Controller
             if (!Yii::app()->getRequest()->getIsAjaxRequest()) {
                 $this->redirect(array('admin'));
             }
-
         } else {
             throw new CHttpException(400, Yii::t('app', 'Your request is invalid.'));
         }
-
     }
 
-    public function actionIndex() 
-    {
+    public function actionIndex() {
         $this->redirect(array('admin'));
     }
 
-    public function actionAdmin() 
-    {
+    public function actionAdmin() {
         $model = new User('search');
         $model->unsetAttributes();
 
@@ -111,14 +111,13 @@ class UserController extends Controller
         }
 
         $this->render(
-            'admin', array(
+                'admin', array(
             'model' => $model,
-            )
+                )
         );
     }
 
-    public function saveAuthassigment($user, $itemname) 
-    {
+    public function saveAuthassigment($user, $itemname) {
         $model = new Authassignment;
 
         if ($authassigmen_item = $model->findByAttributes(array('userid' => $user->id))) {

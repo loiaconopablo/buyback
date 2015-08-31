@@ -1,18 +1,3 @@
-<?php
-
-$this->breadcrumbs = array(
-    $model->label(2) => array('index'),
-    GxHtml::valueEx($model),
-);
-
-$this->menu = array(
-    array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
-    array('label' => Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
-);
-?>
-
-<!--<h2><?php echo Yii::t('app', 'View') . ' ' . GxHtml::encode($model->label()) . ' ' . GxHtml::encode(GxHtml::valueEx($model));?></h2>-->
-
 <?php $this->widget(
     'bootstrap.widgets.TbDetailView', array(
     'data' => $model,

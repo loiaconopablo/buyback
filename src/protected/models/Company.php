@@ -57,6 +57,7 @@ class Company extends BaseCompany
                 'locality' => Yii::t('app', 'Localidad'),
                 'phone' => Yii::t('app', 'Teléfono'),
                 'percent_fee' => Yii::t('app', 'Comisión'),
+                'reference_name' => Yii::t('app', 'Nombre de Referencia'),
             )
         );
     }

@@ -7,9 +7,9 @@ $this->breadcrumbs = array(
 );
 
 $this->menu = array(
-    array('label' => Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
-    array('label' => Yii::t('app', 'Create') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('create')),
-    array('label' => Yii::t('app', 'View') . ' ' . $model->label(), 'icon' => 'eye-open', 'url' => array('view', 'id' => GxActiveRecord::extractPkValue($model, true))),
+    array('label' => Yii::t('app', 'Listar') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
+    array('label' => Yii::t('app', 'Crear') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('create')),
+    array('label' => Yii::t('app', 'Ver') . ' ' . $model->label(), 'icon' => 'eye-open', 'url' => array('view', 'id' => GxActiveRecord::extractPkValue($model, true))),
     //array('label' => Yii::t('app', 'Manage') . ' ' . $model->label(2), 'icon' => 'th-list', 'url'=>array('admin')),
 );
 ?>

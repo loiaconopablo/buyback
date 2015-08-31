@@ -18,7 +18,7 @@ class Home
         }
 
         if (Yii::app()->user->checkAccess('retail')) {
-                return array('/purchase/buy/imei');
+                return array('/purchase/buy');
         }
         
         if (Yii::app()->user->checkAccess('technical_supervisor')) {
@@ -27,6 +27,10 @@ class Home
 
         if (Yii::app()->user->checkAccess('company_admin')) {
                 return array('/report/purchase/');
+        }
+
+        if (Yii::app()->user->checkAccess('wholesale')) {
+                return array('/purchase/wholesale/');
         }
 
         //Si no esta logueado o no se reconoce el rol
@@ -51,9 +55,9 @@ class Home
         */
         if (Yii::app()->user->checkAccess('superuser')) {
             return array(
-            array('label'=>Yii::t('app', 'Setup'), 'url'=>array('/admin_root/carrier/admin'), 'active' => Yii::app()->controller->id == 'carrier'),
+            array('label'=>Yii::t('app', 'Configuración'), 'url'=>array('/admin_root/carrier/admin'), 'active' => Yii::app()->controller->id == 'carrier'),
             array('label'=>Yii::t('app', 'Roles'), 'url'=>array('/rights/authassignment/admin'), 'active' => Yii::app()->controller->id == 'authassignment'),
-            array('label'=>Yii::t('app', 'Manage'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
+            array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
             );
         }
 
@@ -94,7 +98,18 @@ class Home
         */
         if (Yii::app()->user->checkAccess('retail')) {
             return array(
-                array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy/imei'), 'active' => false),
+                array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/buy'), 'active' => false),
+                array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/purchase/list/inpointofsale')),
+                array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
+            );
+        }
+
+        /**
+        * MENU DE WHOLESALE (MAYORISTA)
+        */
+        if (Yii::app()->user->checkAccess('wholesale')) {
+            return array(
+                array('label'=>Yii::t('app', 'Inicio'), 'url'=>array('/purchase/wholesale'), 'active' => false),
                 array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/purchase/list/inpointofsale')),
                 array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             );

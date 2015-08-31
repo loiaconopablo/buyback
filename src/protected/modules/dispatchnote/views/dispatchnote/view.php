@@ -1,5 +1,5 @@
 <div class="well">
-	<h4>Nota de envío Nº <?php echo $dispatch_note->dispatch_note_number;?></h4>
+	<h4><?php echo Yii::t('app', 'Nota de envío N°'); ?> <?php echo $dispatch_note->dispatch_note_number;?></h4>
 </div>
 
 <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'dispatch_form')); ?>

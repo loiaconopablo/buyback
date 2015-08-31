@@ -1,7 +1,7 @@
 <?php
 
 $this->menu = array(
-    array('label' => Yii::t('app', 'Comprar'), 'icon' => 'plus-sign', 'url' => array('/purchase/buy/imei'), 'disabled' => !Yii::app()->user->checkAccess('retail')),
+    array('label' => Yii::t('app', 'Comprar'), 'icon' => 'plus-sign', 'url' => array('/purchase/buy'), 'disabled' => !Yii::app()->user->checkAccess('retail')),
 );
 
 ?>
@@ -41,6 +41,12 @@ $this->menu = array(
             'headerTemplate' => '<label>{item}<span></span></label>',
             'htmlOptions' => array('style' => 'width: 20px', 'class' => 'chandran text-center span1'),
             'headerHtmlOptions' => array('class' => 'text-center'),
+        ),
+        array(
+            'name' => 'contract_number',
+            'htmlOptions' => array(
+                'class' => 'text-center span2',
+            ),
         ),
         array(
             'name' => 'imei',

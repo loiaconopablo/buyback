@@ -219,7 +219,7 @@ class WsfeClient
          */
 
         $response_array = array(
-        'contract_number' => $this->formatearNumeroDeContrato(Counters::model()->getNext('contract_number')),
+        'contract_number' => Helper::formatearNumeroDeContrato($this->punto_de_venta, Counters::model()->getNext('contract_number')),
         'cae' => self::CAI,
         'json_response' => 'Este es un CAI fijo temporal mientras se tramita el CAE',
         );
@@ -252,7 +252,7 @@ class WsfeClient
              *
              * @var string
              */
-            $formated_contract_number = $this->formatearNumeroDeContrato($responseObj->feDetResp->fecaedetResponse[0]->cbteDesde);
+            $formated_contract_number = Helper::formatearNumeroDeContrato($this->punto_de_venta, $responseObj->feDetResp->fecaedetResponse[0]->cbteDesde);
 
             if ($responseObj->feCabResp->resultado != 'A') {
                 // 'A': Respuesta del servicio de la AFIP APROBADO
@@ -279,20 +279,5 @@ class WsfeClient
 
     }
 
-    /**
-     * Recibe el numero de contrato de la afip y lo formatea a:
-     * 4 digitos de punto de venta - (guión) 8 digitos de numero de contrato
-     *
-     * @author Richard Grinberg <rggrinberg@gmail.com>
-     * @param  integer $contract_number numero de contrato recibido de la afip
-     * @return string                  Numero de contrato con el formato 000-00000000
-     */
-    private function formatearNumeroDeContrato($contract_number)
-    {
-        $contract_pdv_num = str_pad($this->punto_de_venta, 4, "0", STR_PAD_LEFT);
-        $contract_cn_num = str_pad($contract_number, 8, "0", STR_PAD_LEFT);
-        $final_contract_number = $contract_pdv_num . '-' . $contract_cn_num;
-
-        return $final_contract_number;
-    }
+    
 }

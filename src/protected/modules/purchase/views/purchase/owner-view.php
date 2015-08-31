@@ -6,7 +6,7 @@
     'attributes' => array(
         'contract_number',
         array(
-            'label' => 'CAE',
+            'label' => Yii::t('app', 'CAE'),
             'value' => $model->cae,
         ),
         'imei',
@@ -14,7 +14,7 @@
         'model',
         'carrier',
         array(
-            'label' => 'Precio de compra',
+            'label' => Yii::t('app', 'Precio de Compra'),
             'value' => "$ " . $model->purchase_price,
         ),
         'company',
