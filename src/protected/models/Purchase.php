@@ -156,10 +156,12 @@ class Purchase extends BasePurchase
      */
     public function gifNotMatch()
     {
-        $gif_response_json_obj = CJSON::decode($this->gif_response_json, false);
+        if (strlen(trim($this->gif_response_json))) {
+            $gif_response_json_obj = CJSON::decode($this->gif_response_json, false);
 
-        if ($gif_response_json_obj->respuesta->brand !== $this->brand) {
-            Yii::log('GIF_DICTIONARY brand: ' . $gif_response_json_obj->respuesta->brand . ' model: ' . $gif_response_json_obj->respuesta->brand . ' | USER SELECTION brand: ' . $this->brand . ' model: ' . $this->model, CLogger::LEVEL_WARNING, 'gif_not_match');
+            if ($gif_response_json_obj->respuesta->brand !== $this->brand) {
+                Yii::log('GIF_DICTIONARY brand: ' . $gif_response_json_obj->respuesta->brand . ' model: ' . $gif_response_json_obj->respuesta->brand . ' | USER SELECTION brand: ' . $this->brand . ' model: ' . $this->model, CLogger::LEVEL_WARNING, 'gif_not_match');
+            }
         }
     }
 
@@ -177,9 +179,6 @@ class Purchase extends BasePurchase
         if ($this->isNewRecord) {
             // Envía datos de la nueva compra a GIF
             Yii::app()->imeiws->postPurchase($this);
-        } else {
-            
-            die('no new');
         }
     }
 
@@ -346,32 +345,6 @@ class Purchase extends BasePurchase
     }
 
     /**
-     * TODO: hacer que a este metodo se le pase el estado y sea generico
-     * TODO: cambir nombre a setPurchasesStatus
-     * Recibe un array de ids de purchase y les cambia el estado a IN_OBSERVATION
-     * Guarda para cada purchase su estado y comentario en purchase_status
-     * @param array  $purchase_ids array de purchases id
-     * @param string $comment      comentario
-     */
-    public function setPurchasesInObservation($purchase_ids, $comment)
-    {
-
-        if (count($purchase_ids)) {
-            $criteria = new CDbCriteria;
-            $criteria->addInCondition('id', $purchase_ids);
-            $purchase_model = self::model()->findAll($criteria);
-
-            foreach ($purchase_model as $purchase) {
-                $purchase->setStatus(Status::IN_OBSERVATION, null, $comment);
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Devuelve el AR de PurchaseStatus con mayor id donde la compra tiene el estado RECEIVED
      * o null si no encuentra nada
      * @return timestamp la fecha del ultimo estado RECIVED
@@ -496,30 +469,6 @@ class Purchase extends BasePurchase
             return $gif_response_json['respuesta']['id_request'];
         }
         
-        return false;
-    }
-    
-    /**
-     * TODO: eliminarla y usar isDuplicate()
-     * Chequea que el mismo cliente no intente vender el mismo imei 2 o más veces
-     * @param  string $imei       IMEI del equipo
-     * @param  integer $seller_dni DNI del cliente
-     * @return bollean            [description]
-     */
-    public function checkIsDuplicate($imei, $seller_dni)
-    {
-        $equipos = $this->findAllByAttributes(array('imei' => $imei));
-
-        if (count($equipos)) {
-            foreach ($equipos as $equipo) {
-                if ($equipo->seller->dni == $seller_dni) {
-                    // El equipo ya fue vendido con ese DNI
-                    return true;
-                }
-            }
-        }
-
-        // No existe el IMEI no es duplicado
         return false;
     }
 
@@ -679,6 +628,11 @@ class Purchase extends BasePurchase
             $seller_data = $this->company->getAttributes();
             $seller_data['identification'] = $seller_data['cuit'];
         }
+
+        if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_NOTA_DE_CREDITO) {
+            $seller_data = $this->company->getAttributes();
+            $seller_data['identification'] = $seller_data['cuit'];
+        } 
 
         return $seller_data;
     }

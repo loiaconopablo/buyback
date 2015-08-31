@@ -33,7 +33,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: Yii.app.createUrl('purchase/buy/cancel', {'id': $('#purchase_id').val()}),
+            url: Yii.app.createUrl('purchase/purchase/cancel', {'id': $('#purchase_id').val()}),
             type: 'POST',
             dataType: 'json',
             success: function (data) {

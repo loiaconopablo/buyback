@@ -25,11 +25,6 @@ class BuyController extends Controller
             ),
             array(
                 'allow',
-                'actions' => array('cancel'),
-                'expression' => "Yii::app()->user->checkAccess('admin')",
-            ),
-            array(
-                'allow',
                 'actions' => array('getmodels'),
                 'expression' => "Yii::app()->user->checkAccess('technical_supervisor')",
             ),
@@ -176,7 +171,6 @@ class BuyController extends Controller
                         'seller_id' => $model->id, // El id del seller recien guardado
                         'user_ip' => Yii::app()->request->userHostAddress,
                         'comprobante_tipo' => Purchase::COMPROBANTE_TIPO_COMPRA,
-                        'contract_number' => Helper::formatearNumeroDeContrato(Purchase::PUNTO_DE_VENTA_COMPRA_MASIVA, Counters::model()->getNext('wholesale_number')),
                     ));
 
                     try {
@@ -188,6 +182,10 @@ class BuyController extends Controller
                     }
 
                     if (Yii::app()->session['buy_purchase']->save()) {
+                        
+                        Yii::app()->session['buy_purchase']->refresh();
+                        Yii::app()->session['buy_purchase']->setStatus(Status::PENDING);
+
                         $transaction->commit();
 
                         $this->redirect(array('showprice', 'personal_select' => $_POST['personal-select']));
@@ -212,74 +210,6 @@ class BuyController extends Controller
     public function actionShowPrice($personal_select)
     {
         $this->render('step_showprice', array('model' => Yii::app()->session['buy_purchase'], 'personal_select' => $personal_select));
-    }
-
-
-    /**
-     * Anula una compra generando su respectiva nota de credito asociada
-     * @param  int $id Purchase.id
-     */
-    public function actionCancel($id)
-    {
-        $associate_purchase = Purchase::model()->findByPk($id);
-        
-        $new_purchase = new Purchase;
-        // Duplica los datos sin id
-        $data = $associate_purchase->attributes;
-        unset($data['id']);
-        $new_purchase->setAttributes($data, false);
-
-        // Inicia la transacción de DisptchNote
-        $transaction = Yii::app()->getDb()->beginTransaction();
-
-        try {
-            /**
-             * Array con la respuesta de la AFIP con los siguienes items
-             * ['contract_munber'] : integer
-             * ['cae'] : integer
-             * ['json_response'] : string : json raw del json que devuelve la afip con todos sus datos incluido el CAE
-             *
-             * @var array
-             */
-            $cae_array = Yii::app()->wsfe->getCaeParaContrato($associate_purchase->purchase_price, $associate_purchase->seller);
-
-            // Guarda los datos del CAE
-            $new_purchase->contract_number = $cae_array['contract_number'];
-            $new_purchase->cae_response_json = $cae_array['json_response'];
-            $new_purchase->cae = $cae_array['cae'];
-            // Pone el precio en negativo
-            $new_purchase->purchase_price = -($associate_purchase->purchase_price);
-            // Marca el contrato como NOTA DE CREDITO
-            $new_purchase->comprobante_tipo = 'NC';
-            // Guarda el contrato asociado que debe anular
-            $new_purchase->associate_row = $associate_purchase->id;
-
-            $new_purchase->save();
-            // Crea el estado canclation
-            $new_purchase->setStatus(Status::CANCELLATION);
-
-            // Actualiza la compra anulada
-            $associate_purchase->associate_row = $new_purchase->id;
-            $associate_purchase->setStatus(Status::CANCELLED);
-
-            // No ocurrió ningún error
-            // Ejecuta la transacción
-            $transaction->commit();
-            // Genera la respuesta para el javascript
-            $response['status'] = 1;
-            $response['purchase_id'] = $new_purchase->id;
-            $response['message'] = 'Cancelación de compra generada.';
-            //$this->renderJSON($response);
-            die(CJSON::encode($response));
-
-        } catch (Exception $e) {
-            $transaction->rollback();
-            // Genera la respuesta para el javascript
-            $response['status'] = 0;
-            $response['errors'] = $e->getMessage();
-            // $this->renderJSON($response);
-            die(CJSON::encode($response));
-        }
     }
 
     /**
