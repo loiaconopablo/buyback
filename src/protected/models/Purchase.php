@@ -76,6 +76,7 @@ class Purchase extends BasePurchase
             array(
                 array('imei_checked', 'required', 'on' => 'checking'),
                 array('contract_number', 'unique', 'on' => 'insert'),
+                array('paid_price', 'safe', 'on' => 'insert'),
                 array('imei', 'isDuplicate', 'on' => 'insert'),
                 array('gif_response_json', 'gifNotMatch', 'on' => 'insert'),
                 array('imei', 'validateImeiFormat'),
@@ -528,7 +529,7 @@ class Purchase extends BasePurchase
      */
     public function setGifDataAtBuy()
     {
-        $this->gif_response_json = $this->getGifResponse();
+        $this->gif_response_json = trim($this->getGifResponse());
 
         $this->setGifData('gif_response_json');
     }
@@ -680,5 +681,34 @@ class Purchase extends BasePurchase
         }
 
         return $seller_data;
+    }
+
+    public function setAfipData() {
+        if (!$this->purchase_price) {
+            throw new Exception("El equipo no tiene precio asignado", 1);
+        }
+
+        if (!$this->seller) {
+            throw new Exception("El equipo no tiene cliente asignado", 1);
+        }
+
+        try {
+            /**
+             * Array con la respuesta de la AFIP con los siguienes items
+             * ['contract_munber'] : integer
+             * ['cae'] : integer
+             * ['json_response'] : string : json raw del json que devuelve la afip con todos sus datos incluido el CAE
+             *
+             * @var array
+             */
+            $cae_array = Yii::app()->wsfe->getCaeParaContrato($this->purchase_price, $this->seller);
+
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+        $this->contract_number = $cae_array['contract_number'];
+        $this->cae = $cae_array['cae'];
+        $this->cae_response_json = $cae_array['json_response'];
     }
 }

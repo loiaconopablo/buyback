@@ -8,24 +8,23 @@
     $form = $this->beginWidget(
         'GxActiveForm', array(
         'id' => 'purchase-form',
-        'action' => array('/purchase/buy/brandmodel'),
-        'enableAjaxValidation' => true,
-             'clientOptions'=>array(
-                'validateOnSubmit'=>true,
-                'validateOnChange' => false,
-                'validationUrl' => array('/purchase/buy'),
-                'afterValidate'=>'js:formSend'
-             )
+        'enableAjaxValidation' => false,
         )
     );
     ?>
 
 	<div>
 		<div class="alert alert-block alert-info">
-    <?php echo $form->labelEx($model, 'IMEI'); ?>
-    <?php echo $form->numberField($model, 'imei', array('class' => 'no-spin input-text-big')); ?>
+            <?php echo $form->labelEx($model, 'IMEI'); ?>
+            <?php echo $form->numberField($model, 'imei', array('class' => 'no-spin input-text-big')); ?>
 		</div>
-    <?php echo $form->error($model, 'imei'); ?>
+
+        <?php if($model->hasErrors('imei')) : ?>
+            <div class="alert alert-block alert-error">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <?php echo $form->error($model, 'imei'); ?>
+            </div>
+        <?php endif; ?>
 	</div><!-- row -->
 
 	<div class="alert alert-success">
@@ -33,8 +32,6 @@
     echo TbHtml::submitButton(Yii::t('app', 'Siguiente'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE));
     $this->endWidget();
     ?>
-		
-    <?php echo TbHtml::link(Yii::t('app','Volver'), array('/retail'), array('class' => 'btn btn-large pull-right')); ?>
 	</div>
 </div>
 

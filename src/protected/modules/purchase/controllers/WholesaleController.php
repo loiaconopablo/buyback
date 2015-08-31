@@ -44,6 +44,7 @@ class WholesaleController extends Controller
         Yii::app()->session['wholesale_purchase'] = $model;
 
         if (isset($_POST['Purchase'])) {
+
             Yii::app()->session['wholesale_purchase']->setAttributes($_POST['Purchase']);
 
             // Valida IMEI
@@ -79,7 +80,7 @@ class WholesaleController extends Controller
 
             // Valida MARCA, MODELO y OPERADORA
             if (Yii::app()->session['wholesale_purchase']->validate(array('brand', 'model', 'carrier_id'))) {
-                // Setea todos los datos para guarar la compra
+                // Setea todos los datos para guardar la compra
                 Yii::app()->session['wholesale_purchase']->setPriceDataAtBuy();
 
                 Yii::app()->session['wholesale_purchase']->setAttributes(array(
