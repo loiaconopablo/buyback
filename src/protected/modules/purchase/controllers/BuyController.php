@@ -166,6 +166,7 @@ class BuyController extends Controller
                     // Setea los últimos campos de purchase
                     Yii::app()->session['buy_purchase']->setAttributes(array(
                         'point_of_sale_id' => Yii::app()->user->point_of_sale_id,
+                        'last_location_id' => Yii::app()->user->point_of_sale_id,
                         'company_id' => Yii::app()->user->company_id,
                         'headquarter_id' => Yii::app()->user->headquarter_id,
                         'seller_id' => $model->id, // El id del seller recien guardado

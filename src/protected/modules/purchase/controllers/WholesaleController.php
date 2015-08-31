@@ -85,6 +85,7 @@ class WholesaleController extends Controller
 
                 Yii::app()->session['wholesale_purchase']->setAttributes(array(
                     'point_of_sale_id' => Yii::app()->user->point_of_sale_id,
+                    'last_location_id' => Yii::app()->user->point_of_sale_id,
                     'company_id' => Yii::app()->user->company_id,
                     'headquarter_id' => Yii::app()->user->headquarter_id,
                     'seller_id' => Yii::app()->user->company_id, // Es un caso especial "CM" donde el vendedor es la empresa
@@ -95,6 +96,9 @@ class WholesaleController extends Controller
 
                 // GUARDA LA COMPRA
                 if (Yii::app()->session['wholesale_purchase']->save()) {
+
+                    Yii::app()->session['wholesale_purchase']->refresh();
+                    Yii::app()->session['wholesale_purchase']->setStatus(Status::PENDING);
                     // Redirecciona para ingresar un nuevo imei
                     $this->redirect(array('index'));
                 }

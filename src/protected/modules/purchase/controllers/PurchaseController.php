@@ -20,6 +20,11 @@ class PurchaseController extends Controller
                 'actions' => array('view', 'dispatch'),
                 'expression' => "Yii::app()->user->checkAccess('retail')",
             ),
+            array(
+                'allow',
+                'actions' => array('view', 'dispatch'),
+                'expression' => "Yii::app()->user->checkAccess('wholesale')",
+            ),
              array(
                 'allow',
                 'actions' => array('view'),
@@ -167,6 +172,7 @@ class PurchaseController extends Controller
         // Setea los últimos campos de purchase
         $new_purchase->setAttributes(array(
             'point_of_sale_id' => Yii::app()->user->point_of_sale_id,
+            'last_location_id' => Yii::app()->user->point_of_sale_id,
             'company_id' => Yii::app()->user->company_id,
             'headquarter_id' => Yii::app()->user->headquarter_id,
             'user_ip' => Yii::app()->request->userHostAddress,
