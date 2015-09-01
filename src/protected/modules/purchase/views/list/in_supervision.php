@@ -71,6 +71,12 @@ $this->menu = array(
             'value' => 'date("d-m-Y", strtotime($data->created_at))',
             'htmlOptions' => array('class' => 'text-center span2'),
         ),
+        array(
+            'name' => 'last_dispatch_note_id',
+            'header' => Yii::t('app', 'Nota'),
+            'value' => '$data->last_dispatch_note',
+            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->admin(), 't.last_dispatch_note_id', 't.last_dispatch_note_id ASC'), 'last_dispatch_note_id', 'last_dispatch_note.dispatch_note_number'),
+        ),
         
         array(
             'name' => 'point_of_sale_id',

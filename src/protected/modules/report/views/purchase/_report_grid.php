@@ -128,7 +128,7 @@
         	'name' => 'last_dispatch_note_id',
         	'header' => Yii::t('app', 'Nota'),
         	'value' => '$data->last_dispatch_note',
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.last_dispatch_note_id'), 'last_dispatch_note_id', 'last_dispatch_note.dispatch_note_number'),
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.last_dispatch_note_id', 't.last_dispatch_note_id ASC'), 'last_dispatch_note_id', 'last_dispatch_note.dispatch_note_number'),
         ),
          array(
             'header' => Yii::t('app', 'F. recepción'),
