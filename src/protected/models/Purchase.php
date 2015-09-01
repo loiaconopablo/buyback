@@ -223,8 +223,8 @@ class Purchase extends BasePurchase
             array(
                 'criteria' => $criteria,
                 'pagination'=>array(
-                    'pageSize'=>20,
-                    ),
+                    'pageSize'=>30,
+                ),
             )
         );
     }
@@ -262,46 +262,50 @@ class Purchase extends BasePurchase
             $this,
             array(
             'criteria' => $criteria,
+            'pagination'=>array(
+                    'pageSize'=>30,
+                ),
             )
         );
     }
 
-    /**
-     * Agrega condiciones al criterio de search para filtrar los equipos que estan en los estados
-     * donde no se encuentra aún en la cabecera del Owner
-     * @author Richard Grinberg <rggrinberg@gmail.com>
-     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
-     */
-    public function pending()
-    {
+    // /**
+    //  * TODO: creo que hay que borrarlo 01-08-2015
+    //  * Agrega condiciones al criterio de search para filtrar los equipos que estan en los estados
+    //  * donde no se encuentra aún en la cabecera del Owner
+    //  * @author Richard Grinberg <rggrinberg@gmail.com>
+    //  * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
+    //  */
+    // public function pending()
+    // {
 
-        $criteria = $this->search()->getCriteria();
+    //     $criteria = $this->search()->getCriteria();
 
-        return $this->pendingSearch($criteria);
+    //     return $this->pendingSearch($criteria);
 
 
-    }
+    // }
 
-    public function pendingReferences()
-    {
-        $criteria = parent::search()->getCriteria();
+    // public function pendingReferences()
+    // {
+    //     $criteria = parent::search()->getCriteria();
 
-        return $this->pendingSearch($criteria);
-    }
+    //     return $this->pendingSearch($criteria);
+    // }
 
-    public function pendingSearch($criteria)
-    {
-        $criteria->addCondition('last_location_id != :user_point_of_sale');
-        $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
-        $criteria->order = 'created_at DESC';
+    // public function pendingSearch($criteria)
+    // {
+    //     $criteria->addCondition('last_location_id != :user_point_of_sale');
+    //     $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
+    //     $criteria->order = 'created_at DESC';
 
-        return new CActiveDataProvider(
-            $this,
-            array(
-            'criteria' => $criteria,
-            )
-        );
-    }
+    //     return new CActiveDataProvider(
+    //         $this,
+    //         array(
+    //         'criteria' => $criteria,
+    //         )
+    //     );
+    // }
 
     /**
      * Guarda el estado de purchase y el correspondiente purchase_status
