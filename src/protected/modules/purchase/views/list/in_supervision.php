@@ -87,6 +87,7 @@ $this->menu = array(
         array(
             'name' => 'company_id',
             'value' => '$data->company->name',
+            'header' => Yii::t('app', 'Empresa'),
             'htmlOptions' => array('class' => 'text-left span2'),
             'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->admin(), 't.company_id'), 'company_id', 'company'),
         ),
