@@ -170,8 +170,8 @@ function refreshGrid() {
 };
 
 function resetDateFilter(prefix) {
-    $.removeCookie(prefix + "from");
-    $.removeCookie(prefix + "to");
+    $.removeCookie(prefix + "from", {'path': '/'});
+    $.removeCookie(prefix + "to", {'path': '/'});
     location.reload();
 };
 

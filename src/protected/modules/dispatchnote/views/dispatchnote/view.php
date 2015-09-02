@@ -103,6 +103,12 @@
 	</div>
 <?php endif; ?>
 
+    <?php if (strlen(trim($dispatch_note->comment_received))) : ?>
+	<div class="well">
+    <?php echo $dispatch_note->comment_received; ?>
+	</div>
+<?php endif; ?>
+
 <?php if ($dispatch_note->status != DispatchNote::CANCELLED) : ?>
     <?php echo TbHtml::linkButton(Yii::t('app', 'Imprimir Nota de Envío'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('generatepdf', 'id' => $dispatch_note->id), 'target' => '_blank'));?>
 <?php endif; ?>

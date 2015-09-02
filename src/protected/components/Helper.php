@@ -97,10 +97,12 @@ class Helper
      * @param  CDataprovider $dataProvider
      * @return Purchase::model()
      */
-    public static function getUniqueInDataprovider($dataProvider, $field)
+    public static function getUniqueInDataprovider($dataProvider, $field, $order = 'created_at ASC')
     {
         $criteria = $dataProvider->getCriteria();
         $criteria->group = $field;
+        $criteria->addCondition($field . ' <> 0');
+        $criteria->order = $order;
 
         $dataProvider->setCriteria($criteria);
 
