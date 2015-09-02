@@ -117,4 +117,21 @@ class PointOfSale extends BasePointOfSale
             )
         );
     }
+    
+    public function search()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        $criteria->select = 't.*';
+
+        return new CActiveDataProvider(
+            $this,
+            array(
+                'criteria' => $criteria,
+                'pagination'=>array(
+                    'pageSize'=>30,
+                ),
+            )
+        );
+    }
 }
