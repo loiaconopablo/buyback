@@ -2,10 +2,9 @@
 
 Yii::import('application.models._base.BasePurchase');
 
-class Purchase extends BasePurchase
-{
-    const DEFAULT_PAID_PRICE = 0;
+class Purchase extends BasePurchase {
 
+    const DEFAULT_PAID_PRICE = 0;
     const COMPROBANTE_TIPO_COMPRA = 'C';
     const COMPROBANTE_TIPO_NOTA_DE_CREDITO = 'NC';
     const COMPROBANTE_TIPO_COMPRA_MASIVA = 'CM';
@@ -14,30 +13,26 @@ class Purchase extends BasePurchase
     public $quantity;
     public $price_average;
 
-    public static function model($className = __CLASS__)
-    {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
-
-    public function relations()
-    {
+    public function relations() {
         return array(
-        'purchase_statuses' => array(self::HAS_MANY, 'PurchaseStatus', 'purchase_id'),
-        'purchase' => array(self::HAS_ONE, 'Purchase', 'associate_row'),
-
-        'company' => array(self::BELONGS_TO, 'Company', 'company_id'),
-        'point_of_sale' => array(self::BELONGS_TO, 'PointOfSale', 'point_of_sale_id'),
-        'last_location' => array(self::BELONGS_TO, 'PointOfSale', 'last_location_id'),
-        'last_dispatch_note' => array(self::BELONGS_TO, 'DispatchNote', 'last_dispatch_note_id'),
-        'headquarter' => array(self::BELONGS_TO, 'PointOfSale', 'headquarter_id'),
-        'user' => array(self::BELONGS_TO, 'User', 'user_create_id'),
-        'seller' => array(self::BELONGS_TO, 'Seller', 'seller_id'),
-        'carrier' => array(self::BELONGS_TO, 'Carrier', 'carrier_id'),
-        'price_list' => array(self::BELONGS_TO, 'PriceList', 'price_list_id'),
-        'current_status' => array(self::BELONGS_TO, 'Status', 'current_status_id'),
-        'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
-        'associate_purchase' => array(self::BELONGS_TO, 'Purchase', 'associate_row'),
+            'purchase_statuses' => array(self::HAS_MANY, 'PurchaseStatus', 'purchase_id'),
+            'purchase' => array(self::HAS_ONE, 'Purchase', 'associate_row'),
+            'company' => array(self::BELONGS_TO, 'Company', 'company_id'),
+            'point_of_sale' => array(self::BELONGS_TO, 'PointOfSale', 'point_of_sale_id'),
+            'last_location' => array(self::BELONGS_TO, 'PointOfSale', 'last_location_id'),
+            'last_dispatch_note' => array(self::BELONGS_TO, 'DispatchNote', 'last_dispatch_note_id'),
+            'headquarter' => array(self::BELONGS_TO, 'PointOfSale', 'headquarter_id'),
+            'user' => array(self::BELONGS_TO, 'User', 'user_create_id'),
+            'seller' => array(self::BELONGS_TO, 'Seller', 'seller_id'),
+            'carrier' => array(self::BELONGS_TO, 'Carrier', 'carrier_id'),
+            'price_list' => array(self::BELONGS_TO, 'PriceList', 'price_list_id'),
+            'current_status' => array(self::BELONGS_TO, 'Status', 'current_status_id'),
+            'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
+            'associate_purchase' => array(self::BELONGS_TO, 'Purchase', 'associate_row'),
         );
     }
 
@@ -45,52 +40,46 @@ class Purchase extends BasePurchase
         return 'contract_number';
     }
 
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return CMap::mergeArray(
-            parent::attributeLabels(),
-            array(
-            'user_update_id' => Yii::t('app', 'User|Users', 1),
-            'user_create_id' => Yii::t('app', 'Usuario'),
-            'contract_number' => Yii::t('app', 'Nº Contrato'),
-            'brand' => Yii::t('app', 'Marca'),
-            'imei' => Yii::t('app', 'IMEI'),
-            'model' => Yii::t('app', 'Modelo'),
-            'carrier' => Yii::t('app', 'Operador'),
-            'carrier_id' => Yii::t('app', 'Operador'),
-            'carrier_name' => Yii::t('app', 'Operador'),
-            'point_of_sale_id' => Yii::t('app', 'Punto de Venta'),
-            'user' => Yii::t('app', 'Usuario', 1),
-            'created_at' => Yii::t('app', 'F. de compra'),
-            'peoplesoft_order' => Yii::t('app', 'Nº PeopleSoft'),
-            'to_refurbish' => Yii::t('app', 'Apto para refabricación'),
-            'seller' => Yii::t('app', 'Cliente'),
-            )
+                        parent::attributeLabels(), array(
+                    'user_update_id' => Yii::t('app', 'User|Users', 1),
+                    'user_create_id' => Yii::t('app', 'Usuario'),
+                    'contract_number' => Yii::t('app', 'Nº Contrato'),
+                    'brand' => Yii::t('app', 'Marca'),
+                    'imei' => Yii::t('app', 'IMEI'),
+                    'model' => Yii::t('app', 'Modelo'),
+                    'carrier' => Yii::t('app', 'Operador'),
+                    'carrier_id' => Yii::t('app', 'Operador'),
+                    'carrier_name' => Yii::t('app', 'Operador'),
+                    'point_of_sale_id' => Yii::t('app', 'Punto de Venta'),
+                    'user' => Yii::t('app', 'Usuario', 1),
+                    'created_at' => Yii::t('app', 'F. de compra'),
+                    'peoplesoft_order' => Yii::t('app', 'Nº PeopleSoft'),
+                    'to_refurbish' => Yii::t('app', 'Apto para refabricación'),
+                    'seller' => Yii::t('app', 'Cliente'),
+                        )
         );
     }
 
-    public function rules()
-    {
+    public function rules() {
         return CMap::mergeArray(
-            parent::rules(),
-            array(
-                array('imei_checked', 'required', 'on' => 'checking'),
-                array('contract_number', 'unique', 'on' => 'insert'),
-                array('paid_price', 'safe', 'on' => 'insert'),
-                array('imei', 'isDuplicate', 'on' => 'insert'),
-                array('gif_response_json', 'gifNotMatch', 'on' => 'insert'),
-                array('imei', 'validateImeiFormat'),
-            )
+                        parent::rules(), array(
+                    array('imei_checked', 'required', 'on' => 'checking'),
+                    array('contract_number', 'unique', 'on' => 'insert'),
+                    array('paid_price', 'safe', 'on' => 'insert'),
+                    array('imei', 'isDuplicate', 'on' => 'insert'),
+                    array('gif_response_json', 'gifNotMatch', 'on' => 'insert'),
+                    array('imei', 'validateImeiFormat'),
+                        )
         );
     }
 
     /**
      * INICIO VALIDACIONES DE RULES
      */
-    
     // Chequea si el equipo ya fue vendido por el mismo cliente
-    public function isDuplicate($attribute, $params)
-    {
+    public function isDuplicate($attribute, $params) {
         if (!$this->seller_id) {
             return;
         }
@@ -114,27 +103,24 @@ class Purchase extends BasePurchase
                         $this->addError($attribute, Yii::t('app', 'El equipo ya fue comprado al mismo vendedor'));
                     }
                 }
-                
             }
         }
     }
-
 
     /**
      * Valida que el imai tenga un formato valido
      * @param  [type] $attribute [description]
      * @param  [type] $params    [description]
      */
-    public function validateImeiFormat($attribute, $params)
-    {
+    public function validateImeiFormat($attribute, $params) {
         //Luhn' s algorithm
         $number = $this->imei;
 
         settype($number, 'string');
 
         $sumTable = array(
-        array(0,1,2,3,4,5,6,7,8,9),
-        array(0,2,4,6,8,1,3,5,7,9)
+            array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+            array(0, 2, 4, 6, 8, 1, 3, 5, 7, 9)
         );
 
         $sum = 0;
@@ -154,8 +140,7 @@ class Purchase extends BasePurchase
      * si no coincide la data de GIF con la de la compra real solo se loguea
      * TODO: avisar a un webservice de GIF
      */
-    public function gifNotMatch()
-    {
+    public function gifNotMatch() {
         if (strlen(trim($this->gif_response_json))) {
             $gif_response_json_obj = CJSON::decode($this->gif_response_json, false);
 
@@ -168,13 +153,11 @@ class Purchase extends BasePurchase
     /**
      * FIN VALIDACIONES DE RULES
      */
-    
 
     /**
      * MODEL´S HOOCKS BEFORESAVE AFTERSAVE
      */
-    protected function afterSave()
-    {
+    protected function afterSave() {
         parent::afterSave();
         if ($this->isNewRecord) {
             // Envía datos de la nueva compra a GIF
@@ -185,26 +168,31 @@ class Purchase extends BasePurchase
     /**
      * END MODEL´S HOOCKS
      */
-    
-
-    public function searchReferences()
-    {
+    public function searchReferences() {
         return parent::search();
     }
 
-    public function search()
-    {
+    public function companyReferences() {
+        $criteria = parent::search()->getCriteria();
+        $criteria->addCondition('t.point_of_sale_id=' . Yii::app()->user->point_of_sale_id);
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+        ));
+    }
+
+    public function search() {
         $criteria = parent::search()->getCriteria();
 
         $criteria->select = 't.*';
-        
+
         $params_created = Helper::getDateFilterParams('created_at');
         $params_recived = Helper::getDateFilterParams('recived_at');
         $criteria->join = 'LEFT JOIN purchase_status AS ps ON t.id = ps.purchase_id';
-        $criteria->addBetweenCondition('t.created_at',  $params_created[':from'], $params_created[':to']);
-        $criteria->addBetweenCondition('ps.created_at',  $params_recived[':from'], $params_recived[':to']);
+        $criteria->addBetweenCondition('t.created_at', $params_created[':from'], $params_created[':to']);
+        $criteria->addBetweenCondition('ps.created_at', $params_recived[':from'], $params_recived[':to']);
         $criteria->group = 't.id';
-        
+
 
         /**
          * Filtra por estados si esta seteada la cookie
@@ -213,19 +201,17 @@ class Purchase extends BasePurchase
 
         if (isset(Yii::app()->request->cookies['checkedPurchaseStatuses'])) {
             $checkedItemsArray = explode(',', Yii::app()->request->cookies['checkedPurchaseStatuses']->value);
-
         }
 
         $criteria->addInCondition('current_status_id', $checkedItemsArray);
 
         return new CActiveDataProvider(
-            $this,
-            array(
-                'criteria' => $criteria,
-                'pagination'=>array(
-                    'pageSize'=>30,
-                ),
-            )
+                $this, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => 30,
+            ),
+                )
         );
     }
 
@@ -235,37 +221,33 @@ class Purchase extends BasePurchase
      * @author Richard Grinberg <rggrinberg@gmail.com>
      * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
      */
-    public function admin()
-    {
+    public function admin() {
 
         $criteria = $this->search()->getCriteria();
 
         return $this->adminSearch($criteria);
     }
-    
-    public function adminReferences()
-    {
+
+    public function adminReferences() {
         $criteria = parent::search()->getCriteria();
 
         return $this->adminSearch($criteria);
     }
 
-    public function adminSearch($criteria)
-    {
-         /*
-        Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
+    public function adminSearch($criteria) {
+        /*
+          Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
          */
         $criteria->compare('last_location_id', Yii::app()->user->point_of_sale_id);
         $criteria->addInCondition('current_status_id', array(Status::PENDING, Status::RECEIVED));
 
         return new CActiveDataProvider(
-            $this,
-            array(
+                $this, array(
             'criteria' => $criteria,
-            'pagination'=>array(
-                    'pageSize'=>30,
-                ),
-            )
+            'pagination' => array(
+                'pageSize' => 30,
+            ),
+                )
         );
     }
 
@@ -278,27 +260,19 @@ class Purchase extends BasePurchase
     //  */
     // public function pending()
     // {
-
     //     $criteria = $this->search()->getCriteria();
-
     //     return $this->pendingSearch($criteria);
-
-
     // }
-
     // public function pendingReferences()
     // {
     //     $criteria = parent::search()->getCriteria();
-
     //     return $this->pendingSearch($criteria);
     // }
-
     // public function pendingSearch($criteria)
     // {
     //     $criteria->addCondition('last_location_id != :user_point_of_sale');
     //     $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
     //     $criteria->order = 'created_at DESC';
-
     //     return new CActiveDataProvider(
     //         $this,
     //         array(
@@ -314,8 +288,7 @@ class Purchase extends BasePurchase
      * @param integer $dispatch_note_id Nro de la nota de envio en la que esta cuando cambia de estado. Si no esta en ninguna es 0
      * @param string  $comment          Comentario que se guarda en el estado (no en la compra 'purchase')
      */
-    public function setStatus($status, $dispatch_note_id = 0, $comment = null)
-    {
+    public function setStatus($status, $dispatch_note_id = 0, $comment = null) {
         //Acutaliza el atributo current_status_id
         $this->current_status_id = $status;
 
@@ -343,8 +316,7 @@ class Purchase extends BasePurchase
      * Pasa la compra al estado cancelado
      * Esto se dispara cuando se cancela un remito
      */
-    public function setAsCancelled()
-    {
+    public function setAsCancelled() {
         $this->setStatus(Status::CANCELLED, $this->last_dispatch_note_id);
     }
 
@@ -353,8 +325,7 @@ class Purchase extends BasePurchase
      * o null si no encuentra nada
      * @return timestamp la fecha del ultimo estado RECIVED
      */
-    public function getLastRecivedDate()
-    {
+    public function getLastRecivedDate() {
         $PurchaseStatusModel = new PurchaseStatus;
 
         $criteria = new CDbCriteria;
@@ -381,10 +352,9 @@ class Purchase extends BasePurchase
      * @param  string $to   Fecha hasta
      * @return  Purcahse AR
      */
-    public function getTotalPurchaseBetweenDates($from, $to)
-    {
+    public function getTotalPurchaseBetweenDates($from, $to) {
         $criteria = new CDbCriteria;
-        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addBetweenCondition('t.created_at', $from, $to);
         $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
         $criteria->order = 'brand';
 
@@ -397,11 +367,10 @@ class Purchase extends BasePurchase
      * @param  string $to   Fecha hasta
      * @return  Purcahse AR
      */
-    public function getBrandQuantitiesBetweenDates($from, $to)
-    {
+    public function getBrandQuantitiesBetweenDates($from, $to) {
         $criteria = new CDbCriteria;
         $criteria->select = 't.brand, COUNT(t.id) AS "quantity"';
-        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addBetweenCondition('t.created_at', $from, $to);
         $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
         $criteria->group = 't.brand';
         $criteria->order = 'quantity DESC';
@@ -415,11 +384,10 @@ class Purchase extends BasePurchase
      * @param  string $to   Fecha hasta
      * @return  Purcahse AR
      */
-    public function getBrandPriceAverageBetweenDates($from, $to)
-    {
+    public function getBrandPriceAverageBetweenDates($from, $to) {
         $criteria = new CDbCriteria;
         $criteria->select = 't.brand, AVG(t.purchase_price) AS "price_average"';
-        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addBetweenCondition('t.created_at', $from, $to);
         $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
         $criteria->group = 't.brand';
         $criteria->order = 'price_average DESC';
@@ -433,11 +401,10 @@ class Purchase extends BasePurchase
      * @param  string $to   Fecha hasta
      * @return Purcahse AR  Compras agrupadas por PDV
      */
-    public function getWorkingPointsOfSaleBetweenDates($from, $to)
-    {
+    public function getWorkingPointsOfSaleBetweenDates($from, $to) {
         $criteria = new CDbCriteria;
         $criteria->select = 't.brand, COUNT(t.id) AS "quantity"';
-        $criteria->addBetweenCondition('t.created_at',  $from, $to);
+        $criteria->addBetweenCondition('t.created_at', $from, $to);
         $criteria->addNotInCondition('t.current_status_id', array(Status::CANCELLED, Status::CANCELLATION));
         $criteria->group = 't.point_of_sale_id';
         $criteria->order = 'quantity DESC';
@@ -450,14 +417,13 @@ class Purchase extends BasePurchase
      * @param  string $price_type [locked, unlocked]
      * @return integer            El precio
      */
-    public function getLoggedPrice($price_type)
-    {
+    public function getLoggedPrice($price_type) {
         $price_log_obj = CJSON::decode($this->pricelist_log);
 
         if (strlen(trim($this->pricelist_log))) {
             return $price_log_obj[$price_type];
         }
-        
+
         return false;
     }
 
@@ -465,40 +431,35 @@ class Purchase extends BasePurchase
      * Devuelve el request_id extrayendolo del json de la respuesta de GIF
      * @return string GIF request id
      */
-    public function getGifRequestId()
-    {
+    public function getGifRequestId() {
         $gif_response_json = CJSON::decode($this->gif_response_json);
 
         if (strlen(trim($this->gif_response_json))) {
             return $gif_response_json['respuesta']['id_request'];
         }
-        
+
         return false;
     }
-
 
     /**
      * Setea el valor del campo gif_response_son
      */
-    public function setGifDataAtBuy()
-    {
+    public function setGifDataAtBuy() {
         $this->gif_response_json = trim($this->getGifResponse());
 
         $this->setGifData('gif_response_json');
     }
-    
+
     /**
      * Trae el json de respuesta del webservise GIF
      * @return string json
      */
-    private function getGifResponse()
-    {
+    private function getGifResponse() {
         if ($this->imei) {
 
             return Yii::app()->imeiws->check($this->imei);
-
         } else {
-            throw new Exception(Yii::t('app', 'El imei es nulo no se puede buscar en GIF'), 1);  
+            throw new Exception(Yii::t('app', 'El imei es nulo no se puede buscar en GIF'), 1);
         }
     }
 
@@ -532,8 +493,7 @@ class Purchase extends BasePurchase
     /**
      * Setea los campos de la compra despues de tener el carrier_id
      */
-    public function setPriceDataAtBuy()
-    {
+    public function setPriceDataAtBuy() {
         $this->setPriceData();
 
         $this->purchase_price = $this->calculatePrice();
@@ -542,8 +502,7 @@ class Purchase extends BasePurchase
     /**
      * Setea todos los campos que dependen de carrier_id
      */
-    private function setPriceData()
-    {
+    private function setPriceData() {
         if ($this->carrier_id !== null) {
             // Setea el nombre de operador
             $this->carrier_name = Carrier::model()->findByPk($this->carrier_id)->name;
@@ -564,9 +523,8 @@ class Purchase extends BasePurchase
             // Actualiza el diccionario GIF
             $gif_data = CJSON::decode($this->gif_response_json, false);
             GifDictionary::model()->incrementQuantity($gif_data->respuesta->name, $this->brand, $this->model);
-
         } else {
-            throw new Exception(Yii::t('app', 'carrier_id es nulo. No se pueden setear los datos del precio'), 1);   
+            throw new Exception(Yii::t('app', 'carrier_id es nulo. No se pueden setear los datos del precio'), 1);
         }
     }
 
@@ -574,8 +532,7 @@ class Purchase extends BasePurchase
      * Calcula el precio con los datos actuales
      * @return mixed boolean, float
      */
-    public function calculatePrice()
-    {
+    public function calculatePrice() {
         if ($this->price_type == null) {
             // Si no se seteo el price_type no se puede definir el precio
             return false;
@@ -591,15 +548,13 @@ class Purchase extends BasePurchase
         $pricelist = PriceList::model()->findByAttributes(array('brand' => $this->brand, 'model' => $this->model));
 
         return $pricelist->$price_type;
-
     }
 
     /**
      * Compara el dispositivo en el log con los datos actuales en brand y model
      * @return boolean
      */
-    public function compareLoggedAndActualDevice()
-    {
+    public function compareLoggedAndActualDevice() {
         if (!strlen(trim($this->pricelist_log))) {
             return false;
         }
@@ -621,8 +576,7 @@ class Purchase extends BasePurchase
      * Devuelve el seller dependiendo si es compra masiva o minorista
      * @return mixed Seller AR o Company AR
      */
-    public function getSeller()
-    {
+    public function getSeller() {
         if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_COMPRA) {
             $seller_data = $this->seller->getAttributes();
             $seller_data['identification'] = $seller_data['dni'];
@@ -636,7 +590,7 @@ class Purchase extends BasePurchase
         if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_NOTA_DE_CREDITO) {
             $seller_data = $this->company->getAttributes();
             $seller_data['identification'] = $seller_data['cuit'];
-        } 
+        }
 
         return $seller_data;
     }
@@ -660,7 +614,6 @@ class Purchase extends BasePurchase
              * @var array
              */
             $cae_array = Yii::app()->wsfe->getCaeParaContrato($this->purchase_price, $this->seller);
-
         } catch (Exception $e) {
             throw $e;
         }
@@ -669,4 +622,41 @@ class Purchase extends BasePurchase
         $this->cae = $cae_array['cae'];
         $this->cae_response_json = $cae_array['json_response'];
     }
+
+    public function company() {
+        $criteria = parent::search()->getCriteria();
+
+        $criteria->select = 't.*';
+
+        $params_created = Helper::getDateFilterParams('created_at');
+        $params_recived = Helper::getDateFilterParams('recived_at');
+        $criteria->join = 'LEFT JOIN purchase_status AS ps ON t.id = ps.purchase_id';
+//        $criteria->addCondition('t.company_id=' . Yii::app()->user->company_id);
+        $criteria->addCondition('t.point_of_sale_id=' . Yii::app()->user->point_of_sale_id);
+        $criteria->addBetweenCondition('t.created_at', $params_created[':from'], $params_created[':to']);
+        $criteria->addBetweenCondition('ps.created_at', $params_recived[':from'], $params_recived[':to']);
+        $criteria->group = 't.id';
+
+
+        /**
+         * Filtra por estados si esta seteada la cookie
+         */
+        $checkedItemsArray = array();
+
+        if (isset(Yii::app()->request->cookies['checkedPurchaseStatuses'])) {
+            $checkedItemsArray = explode(',', Yii::app()->request->cookies['checkedPurchaseStatuses']->value);
+        }
+
+        $criteria->addInCondition('current_status_id', $checkedItemsArray);
+
+        return new CActiveDataProvider(
+                $this, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => 30,
+            ),
+                )
+        );
+    }
+
 }

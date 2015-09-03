@@ -1,73 +1,66 @@
 <?php
 
-class PurchaseController extends Controller
-{
-	// Uncomment the following methods and override them if needed
-	
-	/**
-    * @return array action filters
-    */
-    public function filters()
-    {
-            return array(
-                    'accessControl', // perform access control for CRUD operations
-            );
+class PurchaseController extends Controller {
+    // Uncomment the following methods and override them if needed
+
+    /**
+     * @return array action filters
+     */
+    public function filters() {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
     }
 
-    public function accessRules()
-    {
+    public function accessRules() {
         return array(
             array(
                 'allow',
                 'actions' => array('index', 'export', 'monthly'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
-             array(
+            array(
                 'allow',
                 'actions' => array('index', 'export'),
                 'expression' => "Yii::app()->user->checkAccess('company_admin')",
             ),
-            array('deny',  // deny all users
-                'users'=>array('*'),
+            array('deny', // deny all users
+                'users' => array('*'),
             ),
         );
     }
-	
+
     /**
      * Muestra la grilla con todos los filtros para realizar reportes
      */
-	public function actionIndex()
-	{
+    public function actionIndex() {
 
-		$model = new Purchase('search');
+        $model = new Purchase('search');
         $model->unsetAttributes();
 
         if (isset($_GET['Purchase'])) {
             $model->setAttributes($_GET['Purchase']);
 
             Yii::app()->request->cookies['purchase_filters'] = new CHttpCookie('purchase_filters', CJSON::encode($_GET['Purchase']));
-
         }
 
-        if(!Yii::app()->request->isAjaxRequest) {
-        	// Limpia la variable que mantiene los filtros
-			unset(Yii::app()->request->cookies['purchase_filters']);
+        if (!Yii::app()->request->isAjaxRequest) {
+            // Limpia la variable que mantiene los filtros
+            unset(Yii::app()->request->cookies['purchase_filters']);
         }
 
         $this->render(
-            $this->reportViewByRol(),
-            array(
+                $this->reportViewByRol(), array(
             'model' => $model,
-            )
+                )
         );
-	}
+    }
 
     /**
      * Devuelve al nombre de la vista a renderizar dependiendo del rol
      * @return string view name
      */
-    public function reportViewByRol()
-    {
+    public function reportViewByRol() {
         if (Yii::app()->user->checkAccess('admin')) {
             return 'report_admin';
         }
@@ -80,17 +73,16 @@ class PurchaseController extends Controller
     /**
      * Exporta la busqueda a Excel
      */
-    public function actionExport()
-    {
+    public function actionExport() {
         $model = new Purchase;
-        
+
         //var_dump($model->search()->pagination->setPageSize($model->search()->totalItemCount));
 
         if (isset($_POST['purchase'])) {
 
             Yii::import('vendor.phpoffice.phpexcel.Classes.PHPExcel', true);
 
-            
+
             $model->unsetAttributes();
             $model->setAttributes(CJSON::decode(Yii::app()->request->cookies['purchase_filters']));
 
@@ -126,7 +118,7 @@ class PurchaseController extends Controller
                 }
 
                 // Attributos de la empresa
-                 if (isset($_POST['compay'])) {
+                if (isset($_POST['compay'])) {
                     foreach ($_POST['compay'] as $compay_attribute) {
                         array_push($excel_row, $this->formatData($compay_attribute, $purchase->company->$compay_attribute));
                     }
@@ -182,7 +174,7 @@ class PurchaseController extends Controller
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename=" reporte_' . date('d-m-Y') . '.xls"');
             header('Cache-Control: max-age=0');
-             
+
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
             $objWriter->save('php://output');
         }
@@ -190,9 +182,7 @@ class PurchaseController extends Controller
         $this->render('export', array('model' => $model));
     }
 
-
-    public function formatData($attribute, $data)
-    {
+    public function formatData($attribute, $data) {
         if ($attribute == 'created_at' || $attribute == 'updated_at') {
             return date("d-m-Y h:i", strtotime($data));
         }
@@ -203,8 +193,7 @@ class PurchaseController extends Controller
     /**
      * Emite un reporte para el mes seleccionado
      */
-    public function actionMonthly()
-    {
+    public function actionMonthly() {
         $this->layout = '//layouts/column1.view';
 
         $model = new MonthlyForm;
@@ -213,7 +202,6 @@ class PurchaseController extends Controller
 
             $model->month = $_POST['MonthlyForm']['month'];
             $model->year = $_POST['MonthlyForm']['year'];
-
         } else {
 
             $date['year'] = (int) date('Y', time());
@@ -222,13 +210,13 @@ class PurchaseController extends Controller
             $model->month = $date['month'];
             $model->year = $date['year'];
         }
-        
+
         $view_data = array();
 
         // Calcula los dias habiles sin descontar los feriados
         $fromDate = $model->year . '-' . $model->month . '-01';
         $toDate = date("Y-m-t", strtotime($fromDate)) . ' 23:59:59';
-       // die(var_dump($toDate));
+        // die(var_dump($toDate));
         $dias_habiles_del_mes = DateHelper::numberOfWorkingDaysBetweenDates($fromDate, $toDate);
 
         // Calcula los dias habiles transcurridos
@@ -261,7 +249,7 @@ class PurchaseController extends Controller
 
         // Calcula la cantidad de equipos compradospor marca en el mes
         $cantidad_por_marca = Purchase::model()->getBrandQuantitiesBetweenDates($fromDate, $toDate);
-      
+
         $view_data['cantidad_por_marca'] = $cantidad_por_marca;
 
         // Calcula el promedio de precio por marca en el mes
@@ -275,11 +263,11 @@ class PurchaseController extends Controller
         $view_data['cantidad_pdv_habilitados'] = $cantidad_pdv_habilitados;
 
         $pdv_operativos = Purchase::model()->getWorkingPointsOfSaleBetweenDates('000-00-00', date('Y-m-t', time()));
-        $cantidad_pdv_operativos = count($pdv_operativos) ? count($pdv_operativos) : 1 ;
+        $cantidad_pdv_operativos = count($pdv_operativos) ? count($pdv_operativos) : 1;
         $view_data['cantidad_pdv_operativos'] = $cantidad_pdv_operativos;
-        
+
         $pdv_efectivos = Purchase::model()->getWorkingPointsOfSaleBetweenDates($fromDate, $toDate);
-        $cantidad_pdv_efectivos = count($pdv_efectivos) ? count($pdv_efectivos) : 1 ;
+        $cantidad_pdv_efectivos = count($pdv_efectivos) ? count($pdv_efectivos) : 1;
         $view_data['cantidad_pdv_efectivos'] = $cantidad_pdv_efectivos;
 
         $promedio_por_pdv = round($view_data['total_compras'] / $cantidad_pdv_efectivos, 2);
