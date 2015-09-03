@@ -18,6 +18,8 @@
 	
 	<?php echo $showprice; ?>
 
+	<?php echo $showprice; ?>
+
     <?php echo CHtml::hiddenField('personal-select', 1);?>
 
 	<h3><?php echo Yii::t('app', 'Datos del cliente'); ?></h3>
