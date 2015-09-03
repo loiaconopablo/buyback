@@ -2,13 +2,13 @@
 
 $this->breadcrumbs = array(
     $PriceList_model->label(2) => array('index'),
-    Yii::t('app', 'Upload'),
+    Yii::t('app', 'Importar'),
 );
 
 $this->menu=array(
-    array('label'=>Yii::t('app', 'List') . ' ' . $PriceList_model->label(2), 'icon' => 'list', 'url'=>array('index')),
-    array('label'=>Yii::t('app', 'Create') . ' ' . $PriceList_model->label(), 'icon'=>'plus-sign', 'url'=>array('create')),
-    array('label'=>Yii::t('app', 'Manage') . ' ' . $PriceList_model->label(2), 'icon' => 'th-list', 'url'=>array('admin')),
+    array('label'=>Yii::t('app', 'Listar') . ' ' . $PriceList_model->label(2), 'icon' => 'list', 'url'=>array('index')),
+    array('label'=>Yii::t('app', 'Crear') . ' ' . $PriceList_model->label(), 'icon'=>'plus-sign', 'url'=>array('create')),
+    array('label'=>Yii::t('app', 'Administrar') . ' ' . $PriceList_model->label(2), 'icon' => 'th-list', 'url'=>array('admin')),
 );
 ?>
 
@@ -38,7 +38,7 @@ endif; ?>
     </div><!-- row -->
 
     <?php
-    echo TbHtml::submitButton(Yii::t('app', Yii::t('app', 'Upload')), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'block' => 'true'));
+    echo TbHtml::submitButton(Yii::t('app', Yii::t('app', 'Importar')), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'block' => 'true'));
     $this->endWidget();
     ?>
 </div>

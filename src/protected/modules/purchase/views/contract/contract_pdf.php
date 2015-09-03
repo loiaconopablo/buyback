@@ -1,14 +1,14 @@
 <page backtop="2mm" backbottom="5mm" backleft="5mm" backright="5mm" format="A4" orientation="landscape">
 <page_footer>
 	<table style="width:100%;">
-		<tr><td colspan="2"><?php echo yii::t('app', 'Delivery confirmation in Point of Sale products sold BGH'); ?></td></tr>
+		<tr><td colspan="2"><?php echo yii::t('contract', 'Confirmación de la entrega en Punto de Venta de los productos vendidos a BGH'); ?></td></tr>
 		<tr>
 			<td style="font-size:8pt; width:50%">
 			<div style="display:inline; width:250px; height:100px; background-color:#CCC; padding: 5px; margin-right:10px;"><?php
-            echo Yii::t('app', 'Seller s sign');
+            echo Yii::t('contract', 'Firma del vendedor');
             ?></div>
 			<div style="float:right; display:inline; width:250px; height:100px; background-color:#CCC; padding: 5px"><?php
-            echo Yii::t('app', 'seal and signature of the seller'); 
+            echo Yii::t('contract', 'Sello y Firma Punto de Venta'); 
             ?></div>
 			</td>
 			<td style="text-align: right; vertical-align: bottom; width:50%; font-size:8pt;"><?php echo $footer;?></td>
@@ -22,8 +22,8 @@
 				<tr>
 					<td colspan="2" style="text-align:center;">
 					<p style="font-size:9pt; line-height:10pt;"><?php
-                        echo Yii::t('app', 'Comprobante de Compra');
-                    ?><br/><?php echo Yii::t('app', 'used goods to final consumers not registrable'); ?><br/><?php echo Yii::t('app', 'code'); ?> Nº 49, R.G. AFIP 3411</p>
+                        echo Yii::t('contract', 'Comprobante de Compra');
+                    ?><br/><?php echo Yii::t('contract', 'BIENES USADOS NO REGISTRABLES A CONSUMIDORES FINALES'); ?><br/><?php echo Yii::t('contract', 'CODIGO'); ?> Nº 49, R.G. AFIP 3411</p>
 					</td>
 				</tr>
 				<tr>
@@ -33,15 +33,15 @@
 				<tr>
 					<td colspan="2" style="text-align:center;">
 					<p style="font-size:8pt; line-height:10pt;">BGH SA &#8226; CUIT: 30-50361289-1 &#8226; BRASIL 731 &#8226; CABA<br/>IIBB: 901-918955-9 &#8226; <?php 
-                        echo Yii::t('app', 'start date'); ?>: 01/02/1974 &#8226; <?php echo Yii::t('app', 'sell conditions'); ?>: <?php
-                        echo Yii::t('app', 'cash'); ?></p>
+                        echo Yii::t('contract', 'INICIO DE ACTIVIDADES'); ?>: 01/02/1974 &#8226; <?php echo Yii::t('contract', 'CONDICION DE VENTA'); ?>: <?php
+                        echo Yii::t('contract', 'CONTADO'); ?></p>
 					</td>
 				</tr>
 				</table>
 
 				<table style="width:100%;">
 				<tr>
-					<td colspan=5><span style="font-size: 14pt"><?php echo Yii::t('app', 'Content of the sale'); ?></span></td>
+					<td colspan=5><span style="font-size: 14pt"><?php echo Yii::t('contract', 'Contenido de la venta'); ?></span></td>
 				</tr>
 				<tr style="background-color:#CCC; padding: 5px 0;">
 					<td style="width:20%"><?php echo Yii::t('app', 'Marca'); ?></td>

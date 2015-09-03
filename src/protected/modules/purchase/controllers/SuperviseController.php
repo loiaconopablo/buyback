@@ -293,13 +293,13 @@ class SuperviseController extends Controller
     {
 
         /**
-         * el AC de GifDictionary del equipo por encontraro por nombre y mayor cantidad o NULL
+         * el AR de GifDictionary del equipo por encontrar o por nombre y mayor cantidad o NULL
          * @var Gifdictionary
          */
         $gif_dictionary_device = GifDictionary::model()->getParidadMasVotada($gif_name);
 
         /**
-         * El AC de Pricelist del equipo encontrado matcheando con GifDictionary o NULL
+         * El AR de Pricelist del equipo encontrado matcheando con GifDictionary o NULL
          * @var Pricelist
          */
         $price_list_device = $this->getDeviceFromPricelist($gif_dictionary_device);

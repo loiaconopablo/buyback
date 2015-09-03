@@ -1,36 +1,37 @@
 <?php
-
 $this->breadcrumbs = array(
     $model->label(2) => array('index'),
     Yii::t('app', 'Manage'),
 );
 
 $this->menu = array(
-    array('label' => Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
-    array('label' => Yii::t('app', 'Create') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('create')),
+    array('label' => Yii::t('app', 'Listar') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
+    array('label' => Yii::t('app', 'Crear') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('create')),
 );
-
 ?>
 
-<!--<h2><?php echo Yii::t('app', 'Manage') . ' ' . GxHtml::encode($model->label(2));?></h2>-->
+<!--<h2><?php echo Yii::t('app', 'Manage') . ' ' . GxHtml::encode($model->label(2)); ?></h2>-->
 
 
 
-<?php $this->widget(
-    'bootstrap.widgets.TbGridView', array(
+<?php
+$data_provider = $model->search();
+$this->widget(
+        'bootstrap.widgets.TbGridView', array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
-    'dataProvider' => $model->search(),
+//    'dataProvider' => $model->search(),
+    'dataProvider' => $data_provider,
     'filter' => $model,
     'template' => "{items}\n{pager}",
     'columns' => array(
         'name',
         array(
-            'name' => 'headquarter',
+            'name' => 'headquarter_id',
             'value' => 'GxHtml::valueEx($data->headquarter)',
             'filter' => GxHtml::listDataEx(PointOfSale::model()->findAllAttributes(null, true)),
         ),
         array(
-            'name' => 'company',
+            'name' => 'company_id',
             'value' => 'GxHtml::valueEx($data->company)',
             'filter' => GxHtml::listDataEx(Company::model()->findAllAttributes(null, true)),
         ),
@@ -41,14 +42,14 @@ $this->menu = array(
         // 	'filter' => GxHtml::listDataEx(User::model()->getListData()),
         // ),
         /*
-        'province',
-        'locality',
-        'phone',
-        'mail',
-        'created_at',
-        'updated_at',
-        'user_update_id',
-        */
+          'province',
+          'locality',
+          'phone',
+          'mail',
+          'created_at',
+          'updated_at',
+          'user_update_id',
+         */
         array(
             'class' => 'TbButtonColumn',
             'template' => '{view}{update}{delete}',
@@ -59,12 +60,15 @@ $this->menu = array(
             ),
         ),
     ),
-    )
-);?>
+        )
+);
+?>
 
 
-<?php $this->renderPartial(
-    '_search', array(
+<?php
+$this->renderPartial(
+        '_search', array(
     'model' => $model,
-    )
-);?>
+        )
+);
+?>

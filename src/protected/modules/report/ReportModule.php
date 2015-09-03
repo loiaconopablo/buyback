@@ -31,8 +31,7 @@ class ReportModule extends CWebModule
 
             $controller->submenu = array(
             array('label' => Yii::t('app', 'Equipos', 2), 'url' => array('/report/purchase'), 'active' => $controller->id == 'purchase'),
-            array('label' => Yii::t('app', 'Notas de envío', 2), 'url' => array('/report/dispatchnote'), 'active' => $controller->id == 'dispatchnote'),
-            array('label' => Yii::t('app', 'Mensual'), 'url' => array('/report/purchase/monthly'), 'active' => $controller->id == 'monthly'),
+            array('label' => Yii::t('app', 'Mensual'), 'url' => array('/report/purchase/monthly'), 'active' => $controller->id == 'monthly', 'disabled' => !Yii::app()->user->checkAccess('admin')),
             );
 
 			// this method is called before any module controller action is performed

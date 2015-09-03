@@ -97,14 +97,33 @@ class Helper
      * @param  CDataprovider $dataProvider
      * @return Purchase::model()
      */
-    public static function getUniqueInDataprovider($dataProvider, $field)
+    public static function getUniqueInDataprovider($dataProvider, $field, $order = 'created_at ASC')
     {
         $criteria = $dataProvider->getCriteria();
         $criteria->group = $field;
+        $criteria->addCondition($field . ' <> 0');
+        $criteria->order = $order;
 
         $dataProvider->setCriteria($criteria);
 
         return $dataProvider->data;
+    }
+
+    /**
+     * Recibe el numero de contrato de la afip y lo formatea a:
+     * 4 digitos de punto de venta - (guión) 8 digitos de numero de contrato
+     *
+     * @author Richard Grinberg <rggrinberg@gmail.com>
+     * @param  integer $contract_number numero de contrato recibido de la afip
+     * @return string                  Numero de contrato con el formato 000-00000000
+     */
+    public static function formatearNumeroDeContrato($punto_de_venta, $contract_number)
+    {
+        $contract_pdv_num = str_pad($punto_de_venta, 4, "0", STR_PAD_LEFT);
+        $contract_cn_num = str_pad($contract_number, 8, "0", STR_PAD_LEFT);
+        $final_contract_number = $contract_pdv_num . '-' . $contract_cn_num;
+
+        return $final_contract_number;
     }
     
 }

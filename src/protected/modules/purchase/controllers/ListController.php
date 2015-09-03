@@ -23,6 +23,11 @@ class ListController extends Controller
             array(
                 'allow',
                 'actions' => array('inpointofsale'),
+                'expression' => "Yii::app()->user->checkAccess('wholesale')",
+            ),
+            array(
+                'allow',
+                'actions' => array('inpointofsale'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
             array(

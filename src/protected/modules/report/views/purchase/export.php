@@ -1,16 +1,3 @@
-<?php
-
-$this->breadcrumbs = array(
-    $model->label(2) => array('index'),
-    Yii::t('app', 'Manage'),
-);
-
-$this->menu = array(
-   // array('label' => Yii::t('app', 'Buy'), 'icon' => 'plus-sign', 'url' => array('/retail/purchase/imei')),
-);
-
-?>
-
 <?php $form = $this->beginWidget(
     'GxActiveForm', array(
     'id' => 'purchase-form',
@@ -26,10 +13,14 @@ $this->menu = array(
         'imei' => Yii::t('app', 'IMEI'),
         'brand' => Yii::t('app', 'Marca'),
         'model' => Yii::t('app', 'Modelo'),
-        'purchase_price' => Yii::t('app', 'Precio'),
+        'purchase_price' => Yii::t('app', 'Precio de compra'),
+        'paid_price' => Yii::t('app', 'Precio de liquidación'),
         'created_at' => Yii::t('app', 'Fecha de creación'),
         'user_ip' => Yii::t('app', 'IP'),
-        // 'associate_row' => Yii::t('app', 'Contrato asociado'),
+        'comprobante_tipo' => Yii::t('app', 'Tipo de comprobante'),
+        'associate_purchase' => Yii::t('app', 'Contrato asociado'),
+        'peoplesoft_order' => Yii::t('app', 'Nº PeopleSoft'),
+        'blacklist' => Yii::t('app', 'Banda negativa'),
     );
 
     $attribute_carrier_options = array(
@@ -94,35 +85,35 @@ $this->menu = array(
 ?>
 <div class="span3">
 <?php echo TbHtml::labelTb(Yii::t('app', 'Equipo'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
-<?php echo TbHtml::checkBoxList('attributes', '', $attribute_options); ?>
+<?php echo TbHtml::checkBoxList('purchase', '', $attribute_options); ?>
 
 <?php echo TbHtml::labelTb(Yii::t('app', 'Operador'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
-<?php echo TbHtml::checkBoxList('carrier_attributes', '', $attribute_carrier_options); ?>
+<?php echo TbHtml::checkBoxList('carrier', '', $attribute_carrier_options); ?>
 </div>
 
 <div class="span3">
 <?php echo TbHtml::labelTb(Yii::t('app', 'Punto de Venta'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
-<?php echo TbHtml::checkBoxList('point_of_sale_attributes', '', $attribute_point_of_sale_options); ?>
+<?php echo TbHtml::checkBoxList('point_of_sale', '', $attribute_point_of_sale_options); ?>
 
 <?php echo TbHtml::labelTb(Yii::t('app', 'Empresa'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
-<?php echo TbHtml::checkBoxList('compay_attributes', '', $attribute_company_options); ?>
+<?php echo TbHtml::checkBoxList('compay', '', $attribute_company_options); ?>
 </div>
 
 
 <div class="span3">
 <?php echo TbHtml::labelTb(Yii::t('app', 'Usuario'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
-<?php echo TbHtml::checkBoxList('user_attributes', '', $attribute_user_options); ?>
+<?php echo TbHtml::checkBoxList('user', '', $attribute_user_options); ?>
 
 <?php echo TbHtml::labelTb(Yii::t('app', 'cliente'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
-<?php echo TbHtml::checkBoxList('seller_attributes', '', $attribute_seller_options); ?>
+<?php echo TbHtml::checkBoxList('seller', '', $attribute_seller_options); ?>
 </div>
 
 <div class="span3">
 <?php echo TbHtml::labelTb(Yii::t('app', 'N. de envío'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
-<?php echo TbHtml::checkBoxList('dispatchnote_attributes', '', $attribute_dispatchnote_options); ?>
+<?php echo TbHtml::checkBoxList('last_dispatch_note', '', $attribute_dispatchnote_options); ?>
 
 <?php echo TbHtml::labelTb(Yii::t('app', 'Última ubicación'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
-<?php echo TbHtml::checkBoxList('last_location_attributes', '', $attribute_last_location_options); ?>
+<?php echo TbHtml::checkBoxList('last_location', '', $attribute_last_location_options); ?>
 </div>
 
 <div class="span12" style="margin-left: 0;">

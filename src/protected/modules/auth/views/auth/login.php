@@ -49,7 +49,7 @@ if($data['successNewpassword']) {
     'validateOnSubmit'=>true,
     ),
     )
-); ?>|
+); ?>
 		<div class="">
     <?php // echo $form->labelEx($model,'usuario'); ?>
     <?php echo $form->textField($model, 'username', array('class'=>'input-block-level', 'placeholder'=> Yii::t('app', 'Nombre de usuario'))); ?>

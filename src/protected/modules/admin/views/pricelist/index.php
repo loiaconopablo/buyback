@@ -2,12 +2,12 @@
 
 $this->breadcrumbs = array(
     PriceList::label(2),
-    Yii::t('app', 'Index'),
+    Yii::t('app', 'Inicio'),
 );
 
 $this->menu = array(
-    array('label'=>Yii::t('app', 'Create') . ' ' . PriceList::label(), 'icon'=>'plus-sign', 'url' => array('create')),
-    array('label'=>Yii::t('app', 'Manage') . ' ' . PriceList::label(2), 'icon'=>'th-list', 'url' => array('admin')),
+    array('label'=>Yii::t('app', 'Crear') . ' ' . PriceList::label(), 'icon'=>'plus-sign', 'url' => array('create')),
+    array('label'=>Yii::t('app', 'Administrar') . ' ' . PriceList::label(2), 'icon'=>'th-list', 'url' => array('admin')),
 );
 ?>
 

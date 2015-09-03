@@ -31,7 +31,7 @@ if (isset(Yii::app()->request->cookies[$prefix . 'from']) || isset(Yii::app()->r
         'showButtonPanel' => true,
         'changeYear' => true,
         'dateFormat' => 'dd/mm/yy',
-        'onSelect'=> new CJavaScriptExpression("function(dateSelected){ $.cookie('" . $prefix . "from', dateSelected); }"),
+        'onSelect'=> new CJavaScriptExpression("function(dateSelected){ $.cookie('" . $prefix . "from', dateSelected, {path: '/'}); }"),
         ),
                         )
 );
@@ -49,7 +49,7 @@ if (isset(Yii::app()->request->cookies[$prefix . 'from']) || isset(Yii::app()->r
         'showButtonPanel' => true,
         'changeYear' => true,
         'dateFormat' => 'dd/mm/yy',
-        'onSelect'=> new CJavaScriptExpression("function(dateSelected){ $.cookie('" . $prefix . "to', dateSelected); }"),
+        'onSelect'=> new CJavaScriptExpression("function(dateSelected){ $.cookie('" . $prefix . "to', dateSelected, {path: '/'}); }"),
         ),
                         )
 );

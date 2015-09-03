@@ -122,16 +122,18 @@ class Authitem extends CActiveRecord
 
     /**
      * Devuelve los roles que puede asignar el admin
-     * @return [type] [description]
+     * @return array Los roles que se muestran en el select del administrador
      */
     public function getRoles()
     {
         $roles = array(
-            array('role' => 'retail', 'name' => 'Punto de Venta'),
-            array('role' => 'requoter', 'name' => 'Mercadolibre'),
-            array('role' => 'personal', 'name' => 'Personal'),
-            array('role' => 'admin', 'name' => 'Administrador BGH'),
-            array('role' => 'technical_supervisor', 'name' => 'Supervisor técnico'),
+            array('role' => 'retail', 'name' => Yii::t('app', 'Usuario de Punto de venta')),
+            array('role' => 'company_admin', 'name' => Yii::t('app', 'Administrador Empresa')),
+            array('role' => 'wholesale', 'name' => Yii::t('app', 'Comprador mayorista')),
+            array('role' => 'requoter', 'name' => Yii::t('app', 'Comprador Mercadolibre')),
+            array('role' => 'technical_supervisor', 'name' => Yii::t('app', 'Supervisor técnico')),
+            array('role' => 'admin', 'name' => Yii::t('app', 'Administrador BGH')),
+            //array('role' => 'personal', 'name' => 'Personal'),
         );
 
         return $roles;

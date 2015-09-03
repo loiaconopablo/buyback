@@ -2,14 +2,14 @@
 
 $this->breadcrumbs = array(
     $model->label(2) => array('index'),
-    Yii::t('app', 'Manage'),
+    Yii::t('app', 'Administrar'),
 );
 
 $this->menu = array(
-    array('label' => Yii::t('app', 'Create') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('create')),
-    array('label' => Yii::t('app', 'List') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
-    array('label' => Yii::t('app', 'Upload') . ' ' . $model->label(2), 'icon' => 'file', 'url' => array('upload')),
-    array('label' => Yii::t('app', 'Delete All') . ' ' . $model->label(2), 'icon' => 'remove', 'url' => '#', 'linkOptions' => array('submit' => array('truncate'), 'confirm' => 'Está seguro que quiere eliminar toda la tabla?')),
+    array('label' => Yii::t('app', 'Crear') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('create')),
+    array('label' => Yii::t('app', 'Listar') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
+    array('label' => Yii::t('app', 'Importar') . ' ' . $model->label(2), 'icon' => 'file', 'url' => array('upload')),
+    array('label' => Yii::t('app', 'Eliminar todo') . ' ' . $model->label(2), 'icon' => 'remove', 'url' => '#', 'linkOptions' => array('submit' => array('truncate'), 'confirm' => 'Está seguro que quiere eliminar toda la tabla?')),
 );
 
 ?>
@@ -61,7 +61,7 @@ $this->menu = array(
 );?>
 
 <?php echo TbHtml::button(
-    Yii::t('app', 'Advanced Search'),
+    Yii::t('app', 'Busqueda avanzada'),
     array(
     'style' => TbHtml::BUTTON_COLOR_PRIMARY,
     'data-toggle' => 'modal',
