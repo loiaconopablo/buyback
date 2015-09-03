@@ -7,8 +7,6 @@
 
 <?php endif; ?>
 
-<?php echo $showprice; ?>
-
 <div class="form">
 
 	<?php $form = $this->beginWidget(
@@ -17,6 +15,8 @@
 	    'enableAjaxValidation' => false,
 	    )
 	); ?>
+	
+	<?php echo $showprice; ?>
 
     <?php echo CHtml::hiddenField('personal-select', 1);?>
 
