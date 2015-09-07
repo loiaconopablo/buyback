@@ -20,7 +20,7 @@
     <div>
         <div class="alert alert-block alert-info">
             <?php echo Yii::t('app', $form->labelEx($model, 'brand_checked')); ?>
-            <?php echo $form->dropDownList($model, 'brand_checked', CHtml::listData(PriceList::model()->findAll(), 'brand', 'brand'), array('empty'=>'Marca...', 'class' => 'brand_select')); ?>
+            <?php echo $form->dropDownList($model, 'brand_checked', CHtml::listData(PriceList::model()->getBrands(), 'brand', 'brand'), array('empty'=>'Marca...', 'class' => 'brand_select')); ?>
         </div>
         <?php if($model->hasErrors('brand_checked')) : ?>
         <div class="alert alert-block alert-error">

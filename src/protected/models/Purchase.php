@@ -615,7 +615,7 @@ class Purchase extends BasePurchase
                 $this->price_type = 'locked_price';
             }
 
-            $pricelist = PriceList::model()->findByAttributes(array('brand' => $this->brand, 'model' => $this->model));
+            $pricelist = PriceList::model()->getDevice(array('brand' => $this->brand, 'model' => $this->model));
             // Setea pricelist_log
             $this->pricelist_log = CJSON::encode($pricelist->getAttributes());
             // Setea pricelist_id
@@ -648,7 +648,7 @@ class Purchase extends BasePurchase
             return $this->getLoggedPrice($this->price_type);
         }
 
-        $pricelist = PriceList::model()->findByAttributes(array('brand' => $this->brand, 'model' => $this->model));
+        $pricelist = PriceList::model()->getDevice(array('brand' => $this->brand, 'model' => $this->model));
 
         return $pricelist->$price_type;
 

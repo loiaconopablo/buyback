@@ -46,9 +46,14 @@ class IMEIws extends CApplicationComponent
 
         $request->user = $this->credentials['user'];
         $request->password = $this->credentials['password'];
+        $request->purchase_user_create_id = Yii::app()->user->id;
+        $request->user_ip = Yii::app()->request->userHostAddress;
+        $request->purchase_point_of_sale_id = Yii::app()->user->point_of_sale_id;
+        $request->purchase_headquarter_id = Yii::app()->user->headquarter_id;
+        $request->purchase_company_id = Yii::app()->user->company_id;
 
         $request->imeinumber = $imei;
-                
+             
         $output = Yii::app()->curl->setOption(CURLOPT_HTTPHEADER, array())->post($this->url, $request->toArray());
 
         $imeiws_response = CJSON::decode($output, false);

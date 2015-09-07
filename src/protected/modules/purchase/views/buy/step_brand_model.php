@@ -16,7 +16,7 @@
 	<div>
         <div class="alert alert-block alert-info">
             <?php echo Yii::t('app', $form->labelEx($model, 'brand')); ?>
-            <?php echo $form->dropDownList($model, 'brand', CHtml::listData(PriceList::model()->findAll(), 'brand', 'brand'), array('empty'=>'Marca...', 'class' => 'brand_select')); ?>
+            <?php echo $form->dropDownList($model, 'brand', CHtml::listData(PriceList::model()->getBrands(), 'brand', 'brand'), array('empty'=>'Marca...', 'class' => 'brand_select')); ?>
 		</div>
         <?php if($model->hasErrors('brand')) : ?>
             <div class="alert alert-block alert-error">
