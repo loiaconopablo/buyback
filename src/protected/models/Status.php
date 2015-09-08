@@ -26,6 +26,7 @@ class Status extends BaseStatus
     {
         return array(
         'purchase_status'      => array(self::HAS_MANY, 'PurchaseStatus', 'status_id'),
+        'purchase'             => array(self::HAS_MANY, 'Purchase', 'current_status_id'),
         'current_status'       => array(self::HAS_MANY, 'Purchase', 'purchase_status_id'),
         'user_log'             => array(self::BELONGS_TO, 'User', 'user_update_id'),
         );

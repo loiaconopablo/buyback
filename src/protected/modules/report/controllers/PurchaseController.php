@@ -93,13 +93,10 @@ class PurchaseController extends Controller
     {
         $model = new Purchase;
         
-        //var_dump($model->search()->pagination->setPageSize($model->search()->totalItemCount));
-
         if (isset($_POST['purchase'])) {
 
             Yii::import('vendor.phpoffice.phpexcel.Classes.PHPExcel', true);
 
-            
             $model->unsetAttributes();
             $model->setAttributes(CJSON::decode(Yii::app()->request->cookies['purchase_filters']));
 
@@ -112,20 +109,12 @@ class PurchaseController extends Controller
                 $excel_row = array();
 
                 // Attributos de la compra
-                foreach ($_POST['purchase'] as $purchase_attribute) {
-                    array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
-                }
-
-                // Attributos del Operador
-                if (isset($_POST['carrier'])) {
-                    foreach ($_POST['carrier'] as $carrier_attribute) {
-                        if ($purchase->carrier) {
-                            array_push($excel_row, $this->formatData($carrier_attribute, $purchase->carrier->$carrier_attribute));
-                        } else {
-                            array_push($excel_row, 'Liberado');
-                        }
+                if (isset($_POST['purchase'])) {
+                    foreach ($_POST['purchase'] as $purchase_attribute) {
+                        array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
                     }
                 }
+                
 
                 // Attributos del punto de venta
                 if (isset($_POST['point_of_sale'])) {
@@ -174,6 +163,13 @@ class PurchaseController extends Controller
                         } else {
                             array_push($excel_row, '');
                         }
+                    }
+                }
+
+                // Attributos de la compra
+                if (isset($_POST['purchase_checked'])) {
+                    foreach ($_POST['purchase_checked'] as $purchase_attribute) {
+                        array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
                     }
                 }
 
