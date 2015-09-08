@@ -67,6 +67,14 @@ class Purchase extends BasePurchase
             'peoplesoft_order' => Yii::t('app', 'Nº PeopleSoft'),
             'to_refurbish' => Yii::t('app', 'Apto para refabricación'),
             'seller' => Yii::t('app', 'Cliente'),
+            'purchase_price' => Yii::t('app', 'Precio de compra'),
+            'paid_price' => Yii::t('app', 'Precio de liquidación'),
+            'user_ip' => Yii::t('app', 'IP'),
+            'associate_purchase' => Yii::t('app', 'Comprobante asociado'),
+            'status' => Yii::t('app', 'Estado'),
+            'brand_checked' => Yii::t('app', 'Marca confirmado'),
+            'model_checked' => Yii::t('app', 'Modelo confirmado'),
+            'carrier_checked' => Yii::t('app', 'Operador confirmado'),
             )
         );
     }

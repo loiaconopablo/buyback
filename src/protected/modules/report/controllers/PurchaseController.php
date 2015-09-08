@@ -105,6 +105,9 @@ class PurchaseController extends Controller
 
             $excel_data = array();
 
+            $column_names = $this->getColumnNames($_POST);
+            array_push($excel_data, $column_names);
+
             foreach ($dataProvider->data as $purchase) {
                 $excel_row = array();
 
@@ -193,6 +196,37 @@ class PurchaseController extends Controller
         }
 
         $this->render('export', array('model' => $model));
+    }
+
+
+    public function getColumnNames($post_request)
+    {
+        $purchase = new Purchase;
+        $excel_row = array();
+
+        foreach ($post_request as $clase => $attributes) {
+            if (is_array($attributes)) {
+                foreach ($attributes as $attribute) {
+
+                    if (!is_object($clase == 'purchase_checked')) {
+                        array_push($excel_row, $purchase->getAttributeLabel($attribute));
+                        continue;
+                    }
+
+                    if (!is_object($purchase->$clase)) {
+                        array_push($excel_row, $purchase->getAttributeLabel($attribute));
+                        continue;
+                    }
+
+                    if (is_object($purchase->$clase)) {
+                        array_push($excel_row, $purchase->getAttributeLabel($purchase->$clase->$attribute));
+                        continue;
+                    }
+                }
+            }
+        }
+
+        return $excel_row;
     }
 
 
