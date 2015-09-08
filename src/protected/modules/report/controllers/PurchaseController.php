@@ -22,10 +22,15 @@ class PurchaseController extends Controller
                 'actions' => array('index', 'export', 'monthly'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
-             array(
+            array(
                 'allow',
                 'actions' => array('index', 'export'),
                 'expression' => "Yii::app()->user->checkAccess('company_admin')",
+            ),
+            array(
+                'allow',
+                'actions' => array('index', 'export'),
+                'expression' => "Yii::app()->user->checkAccess('technical_supervisor')",
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
@@ -74,6 +79,10 @@ class PurchaseController extends Controller
 
         if (Yii::app()->user->checkAccess('company_admin')) {
             return 'report_company_admin';
+        }
+
+        if (Yii::app()->user->checkAccess('technical_supervisor')) {
+            return 'report_technical_supervisor';
         }
     }
 

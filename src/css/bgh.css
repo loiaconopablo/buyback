@@ -418,15 +418,15 @@ tr.IN_OBSERVATION td:last-child {
 
 /* APPROVED */
 tr.APPROVED td:first-child, li.APPROVED, div.well.APPROVED {
-	box-shadow: inset 5px 0px 0px 0px  #269C62;
-	-webkit-box-shadow: inset 5px 0px 0px 0px  #269C62;
-	-moz-box-shadow: inset 5px 0px 0px 0px  #269C62;
+	box-shadow: inset 5px 0px 0px 0px  #2196f3;
+	-webkit-box-shadow: inset 5px 0px 0px 0px  #2196f3;
+	-moz-box-shadow: inset 5px 0px 0px 0px  #2196f3;
 }
 
 tr.APPROVED td:last-child {
-	box-shadow: inset -5px 0px 0px 0px  #269C62;
-	-webkit-box-shadow: inset -5px 0px 0px 0px  #269C62;
-	-moz-box-shadow: inset -5px 0px 0px 0px  #269C62;
+	box-shadow: inset -5px 0px 0px 0px  #2196f3;
+	-webkit-box-shadow: inset -5px 0px 0px 0px  #2196f3;
+	-moz-box-shadow: inset -5px 0px 0px 0px  #2196f3;
 }
 
 /* REJECTED */

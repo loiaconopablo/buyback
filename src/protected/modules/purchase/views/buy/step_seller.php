@@ -17,6 +17,8 @@
 	    'enableAjaxValidation' => false,
 	    )
 	); ?>
+	
+	<?php echo $showprice; ?>
 
     <?php echo CHtml::hiddenField('personal-select', 1);?>
 

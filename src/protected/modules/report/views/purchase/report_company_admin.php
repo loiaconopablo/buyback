@@ -1,4 +1,4 @@
-<?php $this->renderPartial('_report_grid', array('data_provider' => $model->company(), 'model' => $model)); ?>
+<?php $this->renderPartial('_report_grid', array('data_provider' => $model->company())); ?>
 
 
 <?php echo TbHtml::linkButton(Yii::t('app', 'Exportar a Excel'), array('class' => 'export_to_excel' ,'color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'url' => array('export')));?>
@@ -17,6 +17,5 @@
     <div class="modal-body"></div>
     <div class="modal-footer">
 	    <a href="#" data-dismiss="modal" class="btn"><?php echo Yii::t('app', 'Close');?></a>
-	    <!--<a href="#" id="in-observation-purchase" class="btn btn-warning"><?php echo Yii::t('app', 'En observación');?></a>-->
     </div>
 </div>

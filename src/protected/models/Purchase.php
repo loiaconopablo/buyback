@@ -74,7 +74,8 @@ class Purchase extends BasePurchase
         return CMap::mergeArray(
             parent::rules(),
             array(
-                array('imei_checked', 'required', 'on' => 'checking'),
+                array('imei_checked, to_refurbish, brand_checked, model_checked, carrier_id', 'required', 'on' => 'checking'),
+                array('imei_checked', 'validateImeiFormat', 'on' => 'checking'),
                 array('contract_number', 'unique', 'on' => 'insert'),
                 array('paid_price', 'safe', 'on' => 'insert'),
                 array('imei', 'isDuplicate', 'on' => 'insert'),
@@ -128,7 +129,7 @@ class Purchase extends BasePurchase
     public function validateImeiFormat($attribute, $params)
     {
         //Luhn' s algorithm
-        $number = $this->imei;
+        $number = $this->$attribute;
 
         settype($number, 'string');
 
@@ -145,7 +146,7 @@ class Purchase extends BasePurchase
         }
 
         if (!(($sum % 10) === 0)) {
-            $this->addError($attribute, Yii::t('app', 'IMEI Formato invalido.'));
+            $this->addError($attribute, Yii::t('app', $this->$attribute . ' - IMEI Formato invalido.'));
         }
     }
 
@@ -159,8 +160,14 @@ class Purchase extends BasePurchase
         if (strlen(trim($this->gif_response_json))) {
             $gif_response_json_obj = CJSON::decode($this->gif_response_json, false);
 
-            if ($gif_response_json_obj->respuesta->brand !== $this->brand) {
-                Yii::log('GIF_DICTIONARY brand: ' . $gif_response_json_obj->respuesta->brand . ' model: ' . $gif_response_json_obj->respuesta->brand . ' | USER SELECTION brand: ' . $this->brand . ' model: ' . $this->model, CLogger::LEVEL_WARNING, 'gif_not_match');
+            if (strtoupper($gif_response_json_obj->respuesta->brand) !== strtoupper($this->brand)) {
+                Yii::log('GIF_DICTIONARY brand: ' . $gif_response_json_obj->respuesta->brand . ' model: ' . $gif_response_json_obj->respuesta->model . ' | USER SELECTION brand: ' . $this->brand . ' model: ' . $this->model, CLogger::LEVEL_WARNING, 'gif_not_match');
+                return;
+            }
+
+            if (strtoupper($gif_response_json_obj->respuesta->model) !== strtoupper($this->model)) {
+                Yii::log('GIF_DICTIONARY brand: ' . $gif_response_json_obj->respuesta->brand . ' model: ' . $gif_response_json_obj->respuesta->model . ' | USER SELECTION brand: ' . $this->brand . ' model: ' . $this->model, CLogger::LEVEL_WARNING, 'gif_not_match');
+                return;
             }
         }
     }
@@ -269,43 +276,79 @@ class Purchase extends BasePurchase
         );
     }
 
-    // /**
-    //  * TODO: creo que hay que borrarlo 01-08-2015
-    //  * Agrega condiciones al criterio de search para filtrar los equipos que estan en los estados
-    //  * donde no se encuentra aún en la cabecera del Owner
-    //  * @author Richard Grinberg <rggrinberg@gmail.com>
-    //  * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
-    //  */
-    // public function pending()
-    // {
 
-    //     $criteria = $this->search()->getCriteria();
+    /**
+     * Agrega condiciones al criterio de search para filtrar los equipos que estan en estado
+     * RECEIVED o PENDING para en el point_of_sale_id del usuario de session
+     * @author Richard Grinberg <rggrinberg@gmail.com>
+     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
+     */
+    public function company()
+    {
 
-    //     return $this->pendingSearch($criteria);
+        $criteria = $this->search()->getCriteria();
 
+        return $this->companySearch($criteria);
+    }
+    
+    public function companyReferences()
+    {
+        $criteria = parent::search()->getCriteria();
 
-    // }
+        return $this->companySearch($criteria);
+    }
 
-    // public function pendingReferences()
-    // {
-    //     $criteria = parent::search()->getCriteria();
+    public function companySearch($criteria)
+    {
+         /*
+        Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
+         */
+        $criteria->compare('t.company_id', Yii::app()->user->company_id);
 
-    //     return $this->pendingSearch($criteria);
-    // }
+        return new CActiveDataProvider(
+            $this,
+            array(
+            'criteria' => $criteria,
+            )
+        );
+    }
 
-    // public function pendingSearch($criteria)
-    // {
-    //     $criteria->addCondition('last_location_id != :user_point_of_sale');
-    //     $criteria->params[ ':user_point_of_sale' ] = Yii::app()->user->point_of_sale_id;
-    //     $criteria->order = 'created_at DESC';
+    /**
+     * Agrega condiciones al criterio de search para filtrar los equipos que estan en estado
+     * @author Richard Grinberg <rggrinberg@gmail.com>
+     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
+     */
+    public function technicalsupervisor()
+    {
 
-    //     return new CActiveDataProvider(
-    //         $this,
-    //         array(
-    //         'criteria' => $criteria,
-    //         )
-    //     );
-    // }
+        $criteria = $this->search()->getCriteria();
+
+        return $this->technicalsupervisorSearch($criteria);
+    }
+    
+    public function technicalsupervisorReferences()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->technicalsupervisorSearch($criteria);
+    }
+
+    public function technicalsupervisorSearch($criteria)
+    {
+         /*
+        Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
+         */
+        $criteria->compare('t.last_location_id', Yii::app()->user->point_of_sale_id);
+        $criteria->addInCondition('current_status_id', array(Status::RECEIVED, Status::APPROVED, Status::REJECTED,  Status::REQUOTED));
+
+        return new CActiveDataProvider(
+            $this,
+            array(
+            'criteria' => $criteria,
+            )
+        );
+    }
+
 
     /**
      * Guarda el estado de purchase y el correspondiente purchase_status
@@ -482,20 +525,40 @@ class Purchase extends BasePurchase
      */
     public function setGifDataAtBuy()
     {
-        $this->gif_response_json = trim($this->getGifResponse());
+        $this->gif_response_json = trim($this->getGifResponse($this->imei));
 
-        $this->setGifData('gif_response_json');
+        $device = $this->setGifData('gif_response_json');
+
+        if ($device) {
+            $this->brand = $device->brand;
+            $this->model = $device->model;
+        }
+    }
+
+    /**
+     * Setea el valor del campo gif_response_son
+     */
+    public function setGifDataAtChecked()
+    {
+        $this->gif_response_json_checked = trim($this->getGifResponse($this->imei_checked));
+
+        $device = $this->setGifData('gif_response_json_checked');
+
+        if ($device) {
+            $this->brand_checked = $device->brand;
+            $this->model_checked = $device->model;
+        }
     }
     
     /**
      * Trae el json de respuesta del webservise GIF
      * @return string json
      */
-    private function getGifResponse()
+    private function getGifResponse($imei)
     {
         if ($this->imei) {
 
-            return Yii::app()->imeiws->check($this->imei);
+            return Yii::app()->imeiws->check($imei);
 
         } else {
             throw new Exception(Yii::t('app', 'El imei es nulo no se puede buscar en GIF'), 1);  
@@ -510,23 +573,20 @@ class Purchase extends BasePurchase
         if (!strlen(trim($this->$attribute))) {
             return false;
         }
-
         $gif_data = CJSON::decode($this->$attribute, false);
 
         if (strtoupper(trim($gif_data->respuesta->blacklist)) == 'YES') {
             // Esta en banda negativa. se marca el campo
             Yii::log('IMEI: ' . $this->imei . ' - USER: ' . Yii::app()->user->name, CLogger::LEVEL_WARNING, 'blacklist');
             $this->blacklist = 1;
+            $this->to_refurbish = 0;
         } else {
             $this->blacklist = 0;
         }
 
         $device = PriceList::model()->getByGifName($gif_data->respuesta->name);
 
-        if ($device) {
-            $this->brand = $device->brand;
-            $this->model = $device->model;
-        }
+        return $device;
     }
 
     /**

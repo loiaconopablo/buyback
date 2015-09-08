@@ -42,12 +42,15 @@
  * @property string $user_ip
  * @property string $comprobante_tipo
  * @property string $associate_row
- * @property integer $imei_checked
+ * @property string $imei_checked
  * @property string $peoplesoft_order
  * @property integer $to_refurbish
  * @property integer $blacklist
  * @property string $gif_response_json_checked
  * @property string $questionary_json_checked
+ * @property string $brand_checked
+ * @property string $model_checked
+ * @property string $carrier_id_checked
  *
  */
 abstract class BasePurchase extends GxActiveRecord {
@@ -78,17 +81,17 @@ abstract class BasePurchase extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, carrier_id, price_list_id, imei, brand, model, carrier_name, price_type, contract_number', 'required'),
-			array('imei_checked, to_refurbish, blacklist', 'numerical', 'integerOnly'=>true),
-			array('company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, last_dispatch_note_id, carrier_id, price_list_id, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id', 'length', 'max'=>10),
-			array('imei', 'length', 'max'=>16),
-			array('brand, model, carrier_name', 'length', 'max'=>255),
+			array('to_refurbish, blacklist', 'numerical', 'integerOnly'=>true),
+			array('company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, last_dispatch_note_id, carrier_id, price_list_id, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id, carrier_id_checked', 'length', 'max'=>10),
+			array('imei, imei_checked', 'length', 'max'=>16),
+			array('brand, model, carrier_name, brand_checked, model_checked', 'length', 'max'=>255),
 			array('price_type, contract_number, cae, user_ip, associate_row', 'length', 'max'=>20),
 			array('purchase_price, paid_price, importe_neto, importe_iva', 'length', 'max'=>8),
 			array('comprobante_tipo', 'length', 'max'=>2),
 			array('peoplesoft_order', 'length', 'max'=>50),
 			array('created_at, updated_at, cae_response_json, gif_response_json, pricelist_log, gif_response_json_checked, questionary_json_checked', 'safe'),
-			array('last_dispatch_note_id, purchase_price, paid_price, created_at, updated_at, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row, imei_checked, peoplesoft_order, to_refurbish, blacklist, gif_response_json_checked, questionary_json_checked', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, last_dispatch_note_id, carrier_id, price_list_id, imei, brand, model, carrier_name, price_type, purchase_price, paid_price, created_at, updated_at, user_update_id, contract_number, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row, imei_checked, peoplesoft_order, to_refurbish, blacklist, gif_response_json_checked, questionary_json_checked', 'safe', 'on'=>'search'),
+			array('last_dispatch_note_id, purchase_price, paid_price, created_at, updated_at, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row, imei_checked, peoplesoft_order, to_refurbish, blacklist, gif_response_json_checked, questionary_json_checked, brand_checked, model_checked, carrier_id_checked', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, last_dispatch_note_id, carrier_id, price_list_id, imei, brand, model, carrier_name, price_type, purchase_price, paid_price, created_at, updated_at, user_update_id, contract_number, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row, imei_checked, peoplesoft_order, to_refurbish, blacklist, gif_response_json_checked, questionary_json_checked, brand_checked, model_checked, carrier_id_checked', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -143,6 +146,9 @@ abstract class BasePurchase extends GxActiveRecord {
 			'blacklist' => Yii::t('app', 'Blacklist'),
 			'gif_response_json_checked' => Yii::t('app', 'Gif Response Json Checked'),
 			'questionary_json_checked' => Yii::t('app', 'Questionary Json Checked'),
+			'brand_checked' => Yii::t('app', 'Brand Checked'),
+			'model_checked' => Yii::t('app', 'Model Checked'),
+			'carrier_id_checked' => Yii::t('app', 'Carrier Id Checked'),
 		);
 	}
 
@@ -182,12 +188,15 @@ abstract class BasePurchase extends GxActiveRecord {
 		$criteria->compare('t.user_ip', $this->user_ip, true);
 		$criteria->compare('t.comprobante_tipo', $this->comprobante_tipo, true);
 		$criteria->compare('t.associate_row', $this->associate_row, true);
-		$criteria->compare('t.imei_checked', $this->imei_checked);
+		$criteria->compare('t.imei_checked', $this->imei_checked, true);
 		$criteria->compare('t.peoplesoft_order', $this->peoplesoft_order, true);
 		$criteria->compare('t.to_refurbish', $this->to_refurbish);
 		$criteria->compare('t.blacklist', $this->blacklist);
 		$criteria->compare('t.gif_response_json_checked', $this->gif_response_json_checked, true);
 		$criteria->compare('t.questionary_json_checked', $this->questionary_json_checked, true);
+		$criteria->compare('t.brand_checked', $this->brand_checked, true);
+		$criteria->compare('t.model_checked', $this->model_checked, true);
+		$criteria->compare('t.carrier_id_checked', $this->carrier_id_checked, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
