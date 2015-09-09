@@ -65,7 +65,8 @@
         </div>
     <?php endforeach; ?>
 
-    <div class="alert alert-block alert-warning ">
+    <?php if (!$model->blacklist): ?>
+    <div class="alert alert-block alert-warning">
         <div class="form-inline">
             <?php echo $model->getAttributeLabel('to_refurbish'); ?>
         </div>
@@ -73,7 +74,7 @@
             <?php echo $form->radioButtonList($model, 'to_refurbish', array(
                 '1' => Yii::t('app', 'Si'),
                 '0' => Yii::t('app', 'No'),
-            ), array('disabled' => $model->blacklist)); ?>
+            )); ?>
         </div>
     </div>
 
@@ -83,6 +84,8 @@
             <?php echo $form->error($model, 'to_refurbish'); ?>
         </div>
     <?php endif; ?>
+    <?php endif; ?>
+    
 
     <?php echo TbHtml::submitButton(Yii::t('app', 'Generar reporte técnico'), array('color' => TbHtml::BUTTON_COLOR_WARNING, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true)); ?>
 

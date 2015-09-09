@@ -21,19 +21,19 @@
 
     <div>
         <div class="alert alert-block alert-info">
-            <?php echo TbHtml::labelTb(Yii::t('app', 'Marca') . ': ' . $model->brand, array('color' => TbHtml::LABEL_COLOR_INFO, 'style' => 'font-size:23px; padding:15px')); ?>
+            <?php echo TbHtml::labelTb(Yii::t('app', 'Marca') . ': ' . $model->brand_checked, array('color' => TbHtml::LABEL_COLOR_INFO, 'style' => 'font-size:23px; padding:15px')); ?>
         </div>
     </div>
 
     <div>
         <div class="alert alert-block alert-info">
-            <?php echo TbHtml::labelTb(Yii::t('app', 'Modelo') . ': ' . $model->model, array('color' => TbHtml::LABEL_COLOR_INFO, 'style' => 'font-size:23px; padding:15px')); ?>
+            <?php echo TbHtml::labelTb(Yii::t('app', 'Modelo') . ': ' . $model->model_checked, array('color' => TbHtml::LABEL_COLOR_INFO, 'style' => 'font-size:23px; padding:15px')); ?>
         </div>
     </div>
 
     <div>
         <div class="alert alert-block alert-info">
-            <?php echo TbHtml::labelTb(Yii::t('app', 'Operador') . ': ' . $model->carrier_name, array('color' => TbHtml::LABEL_COLOR_INFO, 'style' => 'font-size:23px; padding:15px')); ?>
+            <?php echo TbHtml::labelTb(Yii::t('app', 'Operador') . ': ' . $model->carrier_checked, array('color' => TbHtml::LABEL_COLOR_INFO, 'style' => 'font-size:23px; padding:15px')); ?>
         </div>
     </div>
 

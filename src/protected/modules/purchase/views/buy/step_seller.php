@@ -7,8 +7,6 @@
 
 <?php endif; ?>
 
-<?php echo $showprice; ?>
-
 <div class="form">
 
 	<?php $form = $this->beginWidget(

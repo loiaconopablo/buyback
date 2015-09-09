@@ -73,10 +73,13 @@ class SuperviseController extends Controller
             Yii::app()->session['check_purchase']->setAttributes($_POST['Purchase']);
 
             if (Yii::app()->session['check_purchase']->validate()) {
+
                 if($this->validateQuestions()) {
+
                     Yii::app()->session['check_purchase']->paid_price = $this->getPaidPrice();
 
                     if(isset($_POST['question'])) {
+
                         $reasons = array();
                         foreach($_POST['question'] as $question_id => $anwser) {
                             $reasons['reason-' . $question_id] = Questionary::model()->findByPk($question_id)->question;
@@ -96,9 +99,13 @@ class SuperviseController extends Controller
 
         } else {
             Yii::app()->session['check_purchase']->to_refurbish = null;
+
             Yii::app()->session['check_purchase']->carrier_id_checked = Yii::app()->session['check_purchase']->carrier_id;
         }
 
+        if (Yii::app()->session['check_purchase']->blacklist) {
+            Yii::app()->session['check_purchase']->to_refurbish = 0;
+        }
         
 
         $this->render('checkdevise', array(
@@ -122,6 +129,7 @@ class SuperviseController extends Controller
 
     public function actionShowReport()
     {
+        var_dump(Yii::app()->session['check_purchase']->status->name);
         if (isset($_POST['form_sent'])) {
             if (Yii::app()->session['check_purchase']->validate()) {
                 if (Yii::app()->session['check_purchase']->save()) {
@@ -166,8 +174,10 @@ class SuperviseController extends Controller
         }
 
         if(isset($_POST['question'])) {
-            foreach ($_POST['question']as $question_id => $answer) {
-                $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_ERROR, Yii::t('app', Questionary::model()->findByPk($question_id)->question));
+            foreach ($_POST['question'] as $question_id => $answer) {
+                if (!$answer) {
+                    $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_ERROR, Yii::t('app', Questionary::model()->findByPk($question_id)->question));
+                }
             }
         }
 
@@ -184,25 +194,28 @@ class SuperviseController extends Controller
             return 0;
         }
         // Si el equipo no cumple con todas las condiciones del cuestionario no se paga
-        if(isset($_POST['questionary'])) {
-            Yii::app()->session['check_purchase']->current_status_id = Status::REJECTED;
-            return 0;
+        foreach ($_POST['question'] as $question_id => $answer) {
+            if (!$answer) {
+                Yii::app()->session['check_purchase']->current_status_id = Status::REJECTED;
+                return 0;
+            }
         }
 
         $price_data = $this->getPriceData();
         // Si cambió la marca devuelve el nuevo precio de la lista de precios actual
-        if (Yii::app()->session['actual_purchase_attributes']['brand'] != Yii::app()->session['check_purchase']->brand) {
+        if (Yii::app()->session['actual_purchase_attributes']['brand'] != Yii::app()->session['check_purchase']->brand_checked) {
             Yii::app()->session['check_purchase']->current_status_id = Status::REQUOTED;
             return $price_data['purchase_price'];
         }
         // Si cambió el modelo devuelve el nuevo precio de la lista de precios actual
-        if (Yii::app()->session['actual_purchase_attributes']['model'] != Yii::app()->session['check_purchase']->model) {
+        if (Yii::app()->session['actual_purchase_attributes']['model'] != Yii::app()->session['check_purchase']->model_checked) {
             Yii::app()->session['check_purchase']->current_status_id = Status::REQUOTED;
             return $price_data['purchase_price'];
         }
         // Si solo cambio el prestador devuelve el preico de la linea de price_list logeada en el registro de la compra
-        if (Yii::app()->session['actual_purchase_attributes']['carrier_id'] != Yii::app()->session['check_purchase']->carrier_id) {
-            if (Yii::app()->session['check_purchase']->carrier_id == Carrier::model()->findByAttributes(array('name' => 'Liberado'))->id) {
+        if (Yii::app()->session['actual_purchase_attributes']['carrier_id'] != Yii::app()->session['check_purchase']->carrier_id_checked) {
+
+            if (Yii::app()->session['check_purchase']->carrier_id_checked == Carrier::model()->findByAttributes(array('name' => 'Liberado'))->id) {
                 $price_type = 'unlocked_price';
             } else {
                 $price_type = 'locked_price';
