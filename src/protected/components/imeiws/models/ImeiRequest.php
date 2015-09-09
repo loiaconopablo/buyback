@@ -36,11 +36,34 @@ class ImeiRequest
      * @var integer
      */
     public $terminal_id = null;
+
+
+
+    public $purchase_company_id = null;
     /**
-     * ID del usuario de buyback
+     * ID del punto de venta que efectuó la compra
      * @var integer
      */
-    public $user_id = null;
+    public $purchase_point_of_sale_id = null;
+    /**
+     * ID del Punto de Venta Cabecera
+     * @var integer
+     */
+    public $purchase_headquarter_id = null;
+    /**
+     * ID del Punto de Venta Cabecera
+     * @var integer
+     */
+    public $user_ip = '';
+    /**
+     * request id de GIF al momento de chequear el IMEI
+     * @var string
+     */
+    public $purchase_user_create_id = null;
+    /**
+     * ID del cliente que vendió el equipo
+     * @var integer
+     */
 
     /**
      * Devuelve el modelo en formato JSON
@@ -65,7 +88,6 @@ class ImeiRequest
             'name' => $this->name,
             'customer_id' => $this->customer_id,
             'terminal_id' => $this->terminal_id,
-            'user_id' => $this->user_id,
         );
     }
 }
