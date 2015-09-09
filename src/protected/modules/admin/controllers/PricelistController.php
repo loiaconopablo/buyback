@@ -2,6 +2,31 @@
 
 class PricelistController extends Controller
 {
+    /**
+    * @return array action filters
+    */
+    public function filters()
+    {
+            return array(
+                    'accessControl', // perform access control for CRUD operations
+            );
+    }
+
+    public function accessRules()
+    {
+        return array(
+
+             array(
+                'allow',
+                'actions' => array('upload', 'view', 'create', 'update', 'delete', 'truncate', 'index', 'admin'),
+                'expression' => "Yii::app()->user->checkAccess('admin')",
+            ),
+            array('deny',  // deny all users
+                'users'=>array('*'),
+            ),
+        );
+    }
+
 
     /**
      * Permite la carga del archivo Excel con la lista de precios
@@ -18,7 +43,7 @@ class PricelistController extends Controller
 
             if ($model->validate()) {
                 if ($model->file->saveAs(Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $model->file->getName())) {
-                    $this->redirect(array('processexcel', 'filename' => $model->file->getName()));
+                    $this->redirect(array('processexcel', 'filename' => $model->file->getName(), 'company_id' => $model->company_id));
                 }
                 // redirect to success page
             }
@@ -121,7 +146,7 @@ class PricelistController extends Controller
      * Muestra las lineas con errores si las hay
      * @param  string $filename Nombre del archivo xls a procesar
      */
-    public function actionProcessExcel($filename)
+    public function actionProcessExcel($filename, $company_id)
     {
 
         Yii::import('vendor.phpoffice.phpexcel.Classes.PHPExcel', true);
@@ -147,6 +172,7 @@ class PricelistController extends Controller
                 continue;
             }
             $values = array(
+                'company_id' => $company_id,
                 'brand' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(0, $row)->getValue())),
                 'model' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(1, $row)->getValue())),
                 'locked_price' => $this->cleanPrice($objWorksheet->getCellByColumnAndRow(2, $row)->getValue()),
@@ -155,7 +181,7 @@ class PricelistController extends Controller
 
             );
 
-            $device = $model->findByAttributes(array('brand' => $values['brand'], 'model' => $values['model']));
+            $device = $model->findByAttributes(array('company_id' => $company_id, 'brand' => $values['brand'], 'model' => $values['model']));
 
             if ($device) {
                 $model = $device;
@@ -201,13 +227,24 @@ class PricelistController extends Controller
 
     public function actionTruncate()
     {
-        $pricelist = new PriceList();
+        $model = new PriceList();
 
-        $pricelist->truncateTable();
+        if (isset($_POST['PriceList'])) {
+            $model->setAttributes($_POST['PriceList']);
 
-        Yii::app()->user->setFlash('admin', 'Todos loa datos de la lista de precios han sido eliminados.');
+            if ($model->validate(array('company_id'))) {
+                $files = PriceList::model()->deleteAllByAttributes(array('company_id' => $model->company_id));
+                
+                Yii::app()->user->setFlash('info', Yii::t('app', 'Se eliminaron ' . $files . ' registros'));
+            }
+        }
 
-        $this->redirect(array('admin'));
+        $this->render(
+            'truncate',
+            array(
+            'model' => $model,
+            )
+        );
     }
 
     public function cleanPrice($price)

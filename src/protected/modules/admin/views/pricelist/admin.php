@@ -9,7 +9,7 @@ $this->menu = array(
     array('label' => Yii::t('app', 'Crear') . ' ' . $model->label(), 'icon' => 'plus-sign', 'url' => array('create')),
     array('label' => Yii::t('app', 'Listar') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('index')),
     array('label' => Yii::t('app', 'Importar') . ' ' . $model->label(2), 'icon' => 'file', 'url' => array('upload')),
-    array('label' => Yii::t('app', 'Eliminar todo') . ' ' . $model->label(2), 'icon' => 'remove', 'url' => '#', 'linkOptions' => array('submit' => array('truncate'), 'confirm' => 'Está seguro que quiere eliminar toda la tabla?')),
+    array('label' => Yii::t('app', 'Eliminar todo') . ' ' . $model->label(2), 'icon' => 'remove', 'url' => array('truncate')),
 );
 
 ?>
@@ -42,6 +42,12 @@ $this->menu = array(
             'name' => 'broken_price',
             'value' => '$data->broken_price',
             'htmlOptions' => array('style' => 'text-align: right'),
+        ),
+        array(
+            'name' => 'company_id',
+            'value' => '$data->company',
+            'header' => Yii::t('app', 'Empresa'),
+            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.company_id'), 'company_id', 'company'),
         ),
         //          array(
         //  'name'=>'user_update_id',
