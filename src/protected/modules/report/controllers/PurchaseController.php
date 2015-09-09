@@ -22,10 +22,15 @@ class PurchaseController extends Controller
                 'actions' => array('index', 'export', 'monthly'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
-             array(
+            array(
                 'allow',
                 'actions' => array('index', 'export'),
                 'expression' => "Yii::app()->user->checkAccess('company_admin')",
+            ),
+            array(
+                'allow',
+                'actions' => array('index', 'export'),
+                'expression' => "Yii::app()->user->checkAccess('technical_supervisor')",
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
@@ -75,6 +80,10 @@ class PurchaseController extends Controller
         if (Yii::app()->user->checkAccess('company_admin')) {
             return 'report_company_admin';
         }
+
+        if (Yii::app()->user->checkAccess('technical_supervisor')) {
+            return 'report_technical_supervisor';
+        }
     }
 
     /**
@@ -84,13 +93,10 @@ class PurchaseController extends Controller
     {
         $model = new Purchase;
         
-        //var_dump($model->search()->pagination->setPageSize($model->search()->totalItemCount));
-
         if (isset($_POST['purchase'])) {
 
             Yii::import('vendor.phpoffice.phpexcel.Classes.PHPExcel', true);
 
-            
             $model->unsetAttributes();
             $model->setAttributes(CJSON::decode(Yii::app()->request->cookies['purchase_filters']));
 
@@ -99,24 +105,19 @@ class PurchaseController extends Controller
 
             $excel_data = array();
 
+            $column_names = $this->getColumnNames($_POST);
+            array_push($excel_data, $column_names);
+
             foreach ($dataProvider->data as $purchase) {
                 $excel_row = array();
 
                 // Attributos de la compra
-                foreach ($_POST['purchase'] as $purchase_attribute) {
-                    array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
-                }
-
-                // Attributos del Operador
-                if (isset($_POST['carrier'])) {
-                    foreach ($_POST['carrier'] as $carrier_attribute) {
-                        if ($purchase->carrier) {
-                            array_push($excel_row, $this->formatData($carrier_attribute, $purchase->carrier->$carrier_attribute));
-                        } else {
-                            array_push($excel_row, 'Liberado');
-                        }
+                if (isset($_POST['purchase'])) {
+                    foreach ($_POST['purchase'] as $purchase_attribute) {
+                        array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
                     }
                 }
+                
 
                 // Attributos del punto de venta
                 if (isset($_POST['point_of_sale'])) {
@@ -168,6 +169,13 @@ class PurchaseController extends Controller
                     }
                 }
 
+                // Attributos de la compra
+                if (isset($_POST['purchase_checked'])) {
+                    foreach ($_POST['purchase_checked'] as $purchase_attribute) {
+                        array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
+                    }
+                }
+
                 // inserta la fila
                 array_push($excel_data, $excel_row);
             }
@@ -188,6 +196,37 @@ class PurchaseController extends Controller
         }
 
         $this->render('export', array('model' => $model));
+    }
+
+
+    public function getColumnNames($post_request)
+    {
+        $purchase = new Purchase;
+        $excel_row = array();
+
+        foreach ($post_request as $clase => $attributes) {
+            if (is_array($attributes)) {
+                foreach ($attributes as $attribute) {
+
+                    if (!is_object($clase == 'purchase_checked')) {
+                        array_push($excel_row, $purchase->getAttributeLabel($attribute));
+                        continue;
+                    }
+
+                    if (!is_object($purchase->$clase)) {
+                        array_push($excel_row, $purchase->getAttributeLabel($attribute));
+                        continue;
+                    }
+
+                    if (is_object($purchase->$clase)) {
+                        array_push($excel_row, $purchase->getAttributeLabel($purchase->$clase->$attribute));
+                        continue;
+                    }
+                }
+            }
+        }
+
+        return $excel_row;
     }
 
 

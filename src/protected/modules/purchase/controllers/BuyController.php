@@ -149,6 +149,7 @@ class BuyController extends Controller
         if (isset($_POST['Seller'])) {
             // Si es rol "requoter" puede haber cambiado el precio
             if (Yii::app()->user->checkAccess('requoter')) {
+                // var_dump($_POST);
                 Yii::app()->session['buy_purchase']->setAttributes(array('purchase_price' => $_POST['price']));
             }
 
@@ -176,25 +177,25 @@ class BuyController extends Controller
 
                     try {
                         Yii::app()->session['buy_purchase']->setAfipData();
+
+                        if (Yii::app()->session['buy_purchase']->save()) {
+                        
+                            Yii::app()->session['buy_purchase']->refresh();
+                            Yii::app()->session['buy_purchase']->setStatus(Status::PENDING);
+
+                            $transaction->commit();
+
+                            $this->redirect(array('showprice', 'personal_select' => $_POST['personal-select']));
+
+                        } else {
+                            die(var_dump(Yii::app()->session['buy_purchase']->getErrors()));
+                            $transaction->rollback();
+                            Yii::app()->user->setFlash('error', 'Error guardando la compra');
+                        }
+
                     } catch (Excaption $e) {
                         $transaction->rollback;
                         Yii::app()->user->setFlash('error', $e->getMessage());
-                        break;
-                    }
-
-                    if (Yii::app()->session['buy_purchase']->save()) {
-                        
-                        Yii::app()->session['buy_purchase']->refresh();
-                        Yii::app()->session['buy_purchase']->setStatus(Status::PENDING);
-
-                        $transaction->commit();
-
-                        $this->redirect(array('showprice', 'personal_select' => $_POST['personal-select']));
-
-                    } else {
-                        $transaction->rollback();
-                        Yii::app()->user->setFlash('error', Yii::app()->session['buy_purchase']->getErrors());
-                        break;
                     }
 
                 }

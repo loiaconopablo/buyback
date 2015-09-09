@@ -104,9 +104,7 @@ class Helper
         $criteria->addCondition($field . ' <> 0');
         $criteria->order = $order;
 
-        $dataProvider->setCriteria($criteria);
-
-        return $dataProvider->data;
+        return $dataProvider->model->findAll($criteria);
     }
 
     /**

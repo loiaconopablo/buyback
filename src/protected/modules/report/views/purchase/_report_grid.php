@@ -5,7 +5,7 @@
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'id' => 'owner-purchase-grid',
     'dataProvider' => $data_provider,
-    'filter' => $model,
+    'filter' => $data_provider->model,
     'rowCssClassExpression' => '
         ( Status::model()->findByAttributes(array("id" => $data->current_status_id))->constant_name )
     ',
@@ -128,7 +128,7 @@
         	'name' => 'last_dispatch_note_id',
         	'header' => Yii::t('app', 'Nota'),
         	'value' => '$data->last_dispatch_note',
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.last_dispatch_note_id', 't.last_dispatch_note_id ASC'), 'last_dispatch_note_id', 'last_dispatch_note.dispatch_note_number'),
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.last_dispatch_note_id', 't.last_dispatch_note_id ASC'), 'last_dispatch_note_id', 'last_dispatch_note.dispatch_note_number'),
         ),
          array(
             'header' => Yii::t('app', 'F. recepción'),
@@ -141,7 +141,7 @@
             'name' => 'last_location_id',
             'value' => '$data->last_location',
             'header' => Yii::t('app', 'Última ubicación'),
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($model->search(), 't.last_location_id'), 'last_location_id', 'last_location'),
+			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.last_location_id'), 'last_location_id', 'last_location'),
         ),
         
     ),

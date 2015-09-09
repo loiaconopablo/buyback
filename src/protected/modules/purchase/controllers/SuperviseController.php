@@ -40,58 +40,27 @@ class SuperviseController extends Controller
     {
 
         $model = Purchase::model()->findByPk($id);
+        $model->setScenario('checking');
 
-        $model->scenario = 'checking';
-
-        Yii::app()->session['check_purchase'] = $model;
         Yii::app()->session['actual_purchase_attributes'] = $model->getAttributes();
 
-        $this->render('index', array('model' => $model));
-    }
-
-    /**
-     * Valida el imei via AJAX
-     * Renderiza una respuesta json
-     */
-    public function actionImeiValidation()
-    {
-        $model = new ImeiForm;
- 
         if (isset($_POST['Purchase'])) {
-            $model->setAttributes($_POST['Purchase']);
 
-            if ($model->validate()) {
+            Yii::app()->session['check_purchase']->setAttributes($_POST['Purchase']);
+
+            if (Yii::app()->session['check_purchase']->validate(array('imei_checked'))) {
                 // Guarda la respuesta de gif (webservice) en session
-                $gif_response_json_checked = Yii::app()->imeiws->check($model->imei_checked);
+                Yii::app()->session['check_purchase']->setGifDataAtChecked();
 
-                Yii::app()->session['check_gif_data'] = CJSON::decode($gif_response_json_checked, false);
-
-                Yii::app()->session['check_purchase']->setAttributes(array(
-                    'imei_checked' => $model->imei_checked,
-                    'gif_response_json_checked' => $gif_response_json_checked
-                    )
-                );
-
-                header('Content-type: application/json');
-                $response = array(
-                    'error' => 0,
-                    'message' => Yii::t('app', 'Todo bien')
-                );
-                echo CJSON::encode($response);
-                Yii::app()->end();
-
-            } else {
-                header('Content-type: application/json');
-                $response = array(
-                    'error' => count($model->getErrors()),
-                    'message' => $model->getErrors()
-                );
-                echo CJSON::encode($response);
-                Yii::app()->end();
-
+                $this->redirect(array('checkdevise'));
             }
+        } else {
+            Yii::app()->session['check_purchase'] = $model;
         }
+
+        $this->render('index', array('model' => Yii::app()->session['check_purchase']));
     }
+
 
     /**
      * Muestra los datos al técnico del equipo a testear después de haber chequeado el imei contra GIF
@@ -99,73 +68,73 @@ class SuperviseController extends Controller
      */
     public function actionCheckDevise()
     {
-        $model = Yii::app()->session['check_purchase'];
-
-        $price_list_device = $this->getBrandModelByGifName(Yii::app()->session['check_gif_data']->respuesta->name);
-
-        // Marca si esta en lista negra
-        if (strtoupper(Yii::app()->session['check_gif_data']->respuesta->blacklist) == 'YES') {
-            $model->blacklist = 1;
-        }
-
-        $model->brand = isset($price_list_device->brand) ? $price_list_device->brand : null;
-        $model->model = isset($price_list_device->model) ? $price_list_device->model : null;
-
-        $this->render('checkdevise', array('model' => $model));
-    }
-
-    /**
-     * Valida los datos del formulario para poder elegir el precio a pagar
-     */
-    public function actionCheckDeviseValidation()
-    {
         if (isset($_POST['Purchase'])) {
 
             Yii::app()->session['check_purchase']->setAttributes($_POST['Purchase']);
 
             if (Yii::app()->session['check_purchase']->validate()) {
 
-                Yii::app()->session['check_purchase']->paid_price = $this->getPaidPrice();;
+                if($this->validateQuestions()) {
 
-                Yii::app()->session['check_purchase']->carrier_name = Carrier::model()->findByPk(Yii::app()->session['check_purchase']->carrier_id)->name;
+                    Yii::app()->session['check_purchase']->paid_price = $this->getPaidPrice();
 
-                if(isset($_POST['questionary'])) {
-                    $reasons = array();
-                    foreach($_POST['questionary'] as $key => $reason) {
-                        $reasons['reason-' . $key] = $reason;
+                    if(isset($_POST['question'])) {
+
+                        $reasons = array();
+                        foreach($_POST['question'] as $question_id => $anwser) {
+                            $reasons['reason-' . $question_id] = Questionary::model()->findByPk($question_id)->question;
+                        }
+                        Yii::app()->session['check_purchase']->questionary_json_checked = CJSON::encode($reasons);
                     }
-                    Yii::app()->session['check_purchase']->questionary_json_checked = CJSON::encode($reasons);
+
+                    $this->setErrors();
+
+                    $this->redirect(array('showreport'));
+                    
+                } else {
+                    Yii::app()->user->setFlash('error', Yii::t('app', 'Debe responder todas las preguntas técnicas'));
                 }
-
-                $this->setErrors();
-
-                header('Content-type: application/json');
-                $response = array(
-                    'error' => 0,
-                    'message' => Yii::t('app', 'Todo bien')
-                );
-                echo CJSON::encode($response);
-                Yii::app()->end();
-
-            } else {
-                header('Content-type: application/json');
-                $response = array(
-                    'error' => count(Yii::app()->session['check_purchase']->getErrors()),
-                    'message' => Yii::app()->session['check_purchase']->getErrors()
-                );
-                echo CJSON::encode($response);
-                Yii::app()->end();
 
             }
 
+        } else {
+            Yii::app()->session['check_purchase']->to_refurbish = null;
+
+            Yii::app()->session['check_purchase']->carrier_id_checked = Yii::app()->session['check_purchase']->carrier_id;
         }
+
+        if (Yii::app()->session['check_purchase']->blacklist) {
+            Yii::app()->session['check_purchase']->to_refurbish = 0;
+        }
+        
+
+        $this->render('checkdevise', array(
+            'model' => Yii::app()->session['check_purchase'],
+            'questions' => Questionary::model()->findAll(array('order' => '"order" ASC')),
+            )
+        );
     }
+
+    public function validateQuestions()
+    {
+        if (isset($_POST['question'])) {
+            if (count($_POST['question']) == count(Questionary::model()->findAll())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     public function actionShowReport()
     {
+        var_dump(Yii::app()->session['check_purchase']->status->name);
         if (isset($_POST['form_sent'])) {
             if (Yii::app()->session['check_purchase']->validate()) {
                 if (Yii::app()->session['check_purchase']->save()) {
+
+                    Yii::app()->session['check_purchase']->refresh();
                     Yii::app()->session['check_purchase']->setStatus(Yii::app()->session['check_purchase']->current_status_id);
 
                     $this->redirect(array('/purchase/list/insupervision'));
@@ -188,15 +157,15 @@ class SuperviseController extends Controller
         $messages = '';
         Yii::app()->session->remove('report_messages');
 
-        if (Yii::app()->session['actual_purchase_attributes']['brand'] != Yii::app()->session['check_purchase']->brand) {
+        if (Yii::app()->session['actual_purchase_attributes']['brand'] != Yii::app()->session['check_purchase']->brand_checked) {
             $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_WARNING, Yii::t('app', 'La marca que usted seleccionó no coincide con la marca seleccionada en el momento de la compra.'));
         }
 
-        if (Yii::app()->session['actual_purchase_attributes']['model'] != Yii::app()->session['check_purchase']->model) {
+        if (Yii::app()->session['actual_purchase_attributes']['model'] != Yii::app()->session['check_purchase']->model_checked) {
             $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_WARNING, Yii::t('app', 'El modelo que usted seleccionó no coincide con el modelo seleccionado en el momento de la compra.'));
         }
 
-        if (Yii::app()->session['actual_purchase_attributes']['carrier_id'] != Yii::app()->session['check_purchase']->carrier_id) {
+        if (Yii::app()->session['actual_purchase_attributes']['carrier_id'] != Yii::app()->session['check_purchase']->carrier_id_checked) {
             $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_WARNING, Yii::t('app', 'El operador que usted seleccionó no coincide con el operador seleccionado en el momento de la compra.'));
         }
 
@@ -204,9 +173,11 @@ class SuperviseController extends Controller
             $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_WARNING, Yii::t('app', 'El equipo será recotizado.'));
         }
 
-        if(isset($_POST['questionary'])) {
-            foreach ($_POST['questionary']as $question) {
-                $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_ERROR, Yii::t('app', $question));
+        if(isset($_POST['question'])) {
+            foreach ($_POST['question'] as $question_id => $answer) {
+                if (!$answer) {
+                    $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_ERROR, Yii::t('app', Questionary::model()->findByPk($question_id)->question));
+                }
             }
         }
 
@@ -223,25 +194,28 @@ class SuperviseController extends Controller
             return 0;
         }
         // Si el equipo no cumple con todas las condiciones del cuestionario no se paga
-        if(isset($_POST['questionary'])) {
-            Yii::app()->session['check_purchase']->current_status_id = Status::REJECTED;
-            return 0;
+        foreach ($_POST['question'] as $question_id => $answer) {
+            if (!$answer) {
+                Yii::app()->session['check_purchase']->current_status_id = Status::REJECTED;
+                return 0;
+            }
         }
 
         $price_data = $this->getPriceData();
         // Si cambió la marca devuelve el nuevo precio de la lista de precios actual
-        if (Yii::app()->session['actual_purchase_attributes']['brand'] != Yii::app()->session['check_purchase']->brand) {
+        if (Yii::app()->session['actual_purchase_attributes']['brand'] != Yii::app()->session['check_purchase']->brand_checked) {
             Yii::app()->session['check_purchase']->current_status_id = Status::REQUOTED;
             return $price_data['purchase_price'];
         }
         // Si cambió el modelo devuelve el nuevo precio de la lista de precios actual
-        if (Yii::app()->session['actual_purchase_attributes']['model'] != Yii::app()->session['check_purchase']->model) {
+        if (Yii::app()->session['actual_purchase_attributes']['model'] != Yii::app()->session['check_purchase']->model_checked) {
             Yii::app()->session['check_purchase']->current_status_id = Status::REQUOTED;
             return $price_data['purchase_price'];
         }
         // Si solo cambio el prestador devuelve el preico de la linea de price_list logeada en el registro de la compra
-        if (Yii::app()->session['actual_purchase_attributes']['carrier_id'] != Yii::app()->session['check_purchase']->carrier_id) {
-            if (Yii::app()->session['check_purchase']->carrier_id == Carrier::model()->findByAttributes(array('name' => 'Liberado'))->id) {
+        if (Yii::app()->session['actual_purchase_attributes']['carrier_id'] != Yii::app()->session['check_purchase']->carrier_id_checked) {
+
+            if (Yii::app()->session['check_purchase']->carrier_id_checked == Carrier::model()->findByAttributes(array('name' => 'Liberado'))->id) {
                 $price_type = 'unlocked_price';
             } else {
                 $price_type = 'locked_price';
