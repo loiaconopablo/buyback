@@ -252,6 +252,20 @@ class PointOfSaleController extends Controller {
                 $userModel->resetPassword();
                 $userModel->save();
 
+                $authassigment = new Authassignment;
+                $authassigment->itemname = 'retail';
+                $authassigment->userid = $userModel->id;
+
+                if ($authassigment->validate()) {
+                    try {
+                        $auth = Yii::app()->authManager;
+                        $auth->assign($authassigment->itemname, $authassigment->userid, $authassigment->bizrule, $authassigment->data);
+                    } catch (CDbException $e) {
+                        Yii::app()->user->setFlash('error', $e->getMessage());
+                        return false;
+                    }
+                }
+
                 $resultRow = array();
                 array_push($resultRow, $model->name, $userModel->username, $userModel->password_generated);
                 array_push($result, $resultRow);
