@@ -193,13 +193,15 @@ class PointOfSaleController extends Controller {
         $highestColumnIndex = PHPExcel_Cell::columnIndexFromString($highestColumn); // e.g. 5
         $userAutoInc = 00;
 
-        // Transaccion de DB
-        $transaction = Yii::app()->db->beginTransaction();
+
         // Array para generar el resultado en archivo Excel
         $result = array();
 
         // Se procesa cada fila
         for ($row = 1; $row <= $highestRow; ++$row) {
+            // Transaccion de DB
+            $transaction = Yii::app()->db->beginTransaction();
+
             $model = new PointOfSale;
             $provinceModel = new Province;
 
@@ -230,6 +232,9 @@ class PointOfSaleController extends Controller {
             $userModel->attributes = $user_values;
 
             // Se valida la provincia contra la tabla de Provincias
+            if (empty($model->province)) {
+                $model->addError('province', 'Provincia no puede ser nulo');
+            }
             $province = $provinceModel->findByAttributes(array('name' => $values['province']));
             if ($province) {
                 $model->province = $province->name;
@@ -271,6 +276,7 @@ class PointOfSaleController extends Controller {
                 array_push($result, $resultRow);
                 unset($model);
                 unset($userModel);
+                $transaction->commit();
             } else {
                 // Si la validacion falla, se genera un arreglo dinamico de errores por cada campo
                 $rowErrors = array(
@@ -297,15 +303,13 @@ class PointOfSaleController extends Controller {
                     }
                 }
                 $errors[$row] = $rowErrors;
+                $transaction->rollback();
             }
         }
-
-        // Si existen errores, se muestran en una tabla, caso contrario se ejecuta la transaccion y se persisten los datos
+        
         if (isset($errors)) {
-            $transaction->rollback();
             $this->render('excel_errors', array('model' => $errors,));
         } else {
-            $transaction->commit();
             $this->generateResult($result);
         }
     }
