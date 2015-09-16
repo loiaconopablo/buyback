@@ -29,6 +29,7 @@ class PointOfSale extends BasePointOfSale {
                         parent::rules(), array(
                     array('headquarter_id', 'validateHeadquarter'),
                     array('mail', 'email'),
+                    array('name', 'unique'),
                     array('reference_mail', 'email'),
                     array('phone', 'match', 'pattern' => '/^([0-9-+])+$/'),
                     array('reference_phone', 'match', 'pattern' => '/^([0-9-+])+$/'),
