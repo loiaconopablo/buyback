@@ -273,7 +273,7 @@ class PointOfSaleController extends Controller {
                 }
 
                 $resultRow = array();
-                array_push($resultRow, $model->name, $userModel->username, $userModel->password_generated);
+                array_push($resultRow, $model->name, $userModel->username, $userModel->password_generated, $userModel->mail);
                 array_push($result, $resultRow);
                 unset($model);
                 unset($userModel);
