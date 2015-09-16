@@ -18,6 +18,7 @@ class multiCreateForm extends CFormModel {
         return CMap::mergeArray(parent::attributeLabels(), array(
                     'headquarter_id' => Yii::t('app', 'Cabecera'),
                     'company_id' => Yii::t('app', 'Empresa'),
+                    'file' => Yii::t('app', 'Archivo'),
         ));
     }
 
