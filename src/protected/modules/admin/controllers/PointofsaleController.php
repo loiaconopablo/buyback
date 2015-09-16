@@ -194,8 +194,9 @@ class PointOfSaleController extends Controller {
         $userAutoInc = 00;
 
 
-        // Array para generar el resultado en archivo Excel
+        // Arrays para generar el resultado en archivo Excel
         $result = array();
+        $errors = array();
 
         // Se procesa cada fila
         for ($row = 1; $row <= $highestRow; ++$row) {
@@ -306,18 +307,15 @@ class PointOfSaleController extends Controller {
                 $transaction->rollback();
             }
         }
-        
-        if (isset($errors)) {
-            $this->render('excel_errors', array('model' => $errors,));
-        } else {
-            $this->generateResult($result);
-        }
+        Yii::app()->session['result'] = $result;
+        $this->render('excel_errors', array('model' => $errors,));
     }
 
     /**
      * Genera un archivo xls con la lista de puntos de venta y usuarios creados correctamente
      */
-    public function generateResult($result) {
+    public function actionResult() {
+        $result = Yii::app()->session['result'];
         Yii::import('vendor.phpoffice.phpexcel.Classes.PHPExcel', true);
 
         $objPHPExcel = new PHPExcel('UTF-8', false, 'Punto de Venta - Alta Masiva');
@@ -335,8 +333,6 @@ class PointOfSaleController extends Controller {
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
-
-//        $this->redirect(array('admin'));
     }
 
 }
