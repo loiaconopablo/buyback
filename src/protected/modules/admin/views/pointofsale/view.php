@@ -45,7 +45,7 @@ $this->menu = array(
         'reference_name',
         'reference_phone',
         array(
-            'label' => Yii::t('app', 'Mail'),
+            'label' => Yii::t('app', 'Mail Referencia'),
             'type' => 'raw',
             'value' => CHtml::mailto($model->reference_mail, $model->reference_mail),
         ),
