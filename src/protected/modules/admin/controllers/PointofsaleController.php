@@ -326,10 +326,9 @@ class PointOfSaleController extends Controller {
         $objPHPExcel->getActiveSheet()->fromArray($result, null, 'A1');
 
         // Redirect output to a client's web browser (Excel5)
-        header('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="punto_venta_alta_masiva_' . date('d-m-Y') . '.xls"');
-        header('Pragma', 'public');
-        header('Cache-Control: max-age=1');
+        header('Cache-Control: max-age=0');
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
