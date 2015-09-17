@@ -20,6 +20,7 @@ $this->menu=array(
     'data' => $model,
     'attributes' => array(
     'id',
+    'company',
     'brand',
     'model',
     'locked_price',
@@ -31,14 +32,3 @@ $this->menu=array(
     ),
     )
 ); ?>
-
-<h2><?php echo GxHtml::encode($model->getRelationLabel('purchase')); ?></h2>
-<?php
-    echo GxHtml::openTag('ul');
-foreach($model->purchase as $relatedModel) {
-    echo GxHtml::openTag('li');
-    echo GxHtml::link(GxHtml::encode(GxHtml::valueEx($relatedModel)), array('purchase/view', 'id' => GxActiveRecord::extractPkValue($relatedModel, true)));
-    echo GxHtml::closeTag('li');
-}
-    echo GxHtml::closeTag('ul');
-?>

@@ -18,7 +18,7 @@ class PricelistController extends Controller
 
              array(
                 'allow',
-                'actions' => array('upload', 'view', 'create', 'update', 'delete', 'truncate', 'index', 'admin'),
+                'actions' => array('upload', 'view', 'create', 'update', 'delete', 'truncate', 'processexcel', 'index', 'admin'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
             array('deny',  // deny all users
