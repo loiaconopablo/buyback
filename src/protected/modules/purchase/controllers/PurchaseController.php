@@ -136,7 +136,7 @@ class PurchaseController extends Controller
     {
         if (Yii::app()->getRequest()->getIsPostRequest()) {
 
-            $models = PriceList::model()->findAllByAttributes(array('brand' => $brand), array('order'=>'model'));
+            $models = PriceList::model()->getModels($brand);
 
             header('Content-type: application/json');
       

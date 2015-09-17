@@ -18,6 +18,7 @@
  * @property string $created_at
  * @property string $updated_at
  * @property string $user_update_id
+ * @property string $company_id
  *
  */
 abstract class BasePriceList extends GxActiveRecord {
@@ -47,13 +48,13 @@ abstract class BasePriceList extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('brand, model', 'required'),
+			array('brand, model, company_id', 'required'),
 			array('brand, model', 'length', 'max'=>255),
 			array('locked_price, unlocked_price, broken_price', 'length', 'max'=>8),
-			array('user_update_id', 'length', 'max'=>10),
+			array('user_update_id, company_id', 'length', 'max'=>10),
 			array('created_at, updated_at', 'safe'),
 			array('locked_price, unlocked_price, broken_price, created_at, updated_at, user_update_id', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, brand, model, locked_price, unlocked_price, broken_price, created_at, updated_at, user_update_id', 'safe', 'on'=>'search'),
+			array('id, brand, model, locked_price, unlocked_price, broken_price, created_at, updated_at, user_update_id, company_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,21 +79,23 @@ abstract class BasePriceList extends GxActiveRecord {
 			'created_at' => Yii::t('app', 'Created At'),
 			'updated_at' => Yii::t('app', 'Updated At'),
 			'user_update_id' => Yii::t('app', 'User Update'),
+			'company_id' => Yii::t('app', 'Company'),
 		);
 	}
 
 	public function search() {
 		$criteria = new CDbCriteria;
 
-		$criteria->compare('id', $this->id, true);
-		$criteria->compare('brand', $this->brand, true);
-		$criteria->compare('model', $this->model, true);
-		$criteria->compare('locked_price', $this->locked_price, true);
-		$criteria->compare('unlocked_price', $this->unlocked_price, true);
-		$criteria->compare('broken_price', $this->broken_price, true);
-		$criteria->compare('created_at', $this->created_at, true);
-		$criteria->compare('updated_at', $this->updated_at, true);
-		$criteria->compare('user_update_id', $this->user_update_id, true);
+		$criteria->compare('t.id', $this->id, true);
+		$criteria->compare('t.brand', $this->brand, true);
+		$criteria->compare('t.model', $this->model, true);
+		$criteria->compare('t.locked_price', $this->locked_price, true);
+		$criteria->compare('t.unlocked_price', $this->unlocked_price, true);
+		$criteria->compare('t.broken_price', $this->broken_price, true);
+		$criteria->compare('t.created_at', $this->created_at, true);
+		$criteria->compare('t.updated_at', $this->updated_at, true);
+		$criteria->compare('t.user_update_id', $this->user_update_id, true);
+		$criteria->compare('t.company_id', $this->company_id, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

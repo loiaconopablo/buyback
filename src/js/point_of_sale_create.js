@@ -30,4 +30,24 @@ $(document).ready(function(){
 			}
 		});
 	});
+        
+	$('#multiCreateForm_company_id').on('change', function() {
+		var company_id = $(this).val();
+
+		$.ajax({
+			url: Yii.app.createUrl('admin/pointofsale/headquarters', {'company_id': company_id}),
+			type: 'POST',
+			dataType: 'json',
+			success: function(data) {
+				$('#multiCreateForm_headquarter_id').html('');
+				jQuery.each(data, function(key, val) {
+					var o = new Option(val.name, val.id);
+					$('#multiCreateForm_headquarter_id').append(o);
+				});
+			},
+			error: function() {
+				//console.log('error');
+			}
+		});
+	});
 });

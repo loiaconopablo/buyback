@@ -12,6 +12,7 @@ class PriceList extends BasePriceList {
         return array(
             'purchase' => array(self::HAS_MANY, 'Purchase', 'price_list_id'),
             'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
+            'company' => array(self::BELONGS_TO, 'Company', 'company_id'),
         );
     }
 
@@ -23,6 +24,7 @@ class PriceList extends BasePriceList {
 //        return CMap::mergeArray(parent::attributeLabels(), array('user_update_id' => Yii::t('app', 'User|Users', 1)));
         return array(
             'id' => Yii::t('app', 'ID'),
+            'company_id' => Yii::t('app', 'Empresa'),
             'brand' => Yii::t('app', 'Marca'),
             'model' => Yii::t('app', 'Modelo'),
             'locked_price' => Yii::t('app', 'Precio con operadora'),
@@ -68,6 +70,61 @@ class PriceList extends BasePriceList {
         }
 
         // Busca el dispositivo en Pricelist
-        return PriceList::model()->findByAttributes(array('brand' => $gif_dictionary_device->brand, 'model' => $gif_dictionary_device->model));
+        return $this->getDevice(array('brand' => $gif_dictionary_device->brand, 'model' => $gif_dictionary_device->model));
+    }
+
+    /**
+     * Devuelve el equipo de la lista de empresa de la empresa, si existe y sino de la lista de owner
+     * @param  string $brand [description]
+     * @param  string $model [description]
+     * @return PriceList AR
+     */
+    public function getDevice($device)
+    {
+        if (count($this->findAllByAttributes(array('company_id' => Yii::app()->user->company_id)))) {
+            // Tiene lista de precio
+            return $this->findByAttributes(array('company_id' => Yii::app()->user->company_id, 'brand' => $device['brand'], 'model' => $device['model']));
+        } else {
+            // No tiene lista de precio
+            return $this->findByAttributes(array('company_id' => Company::model()->findByAttributes(array('is_owner' => true))->id, 'brand' => $device['brand'], 'model' => $device['model']));
+        }
+        
+    }
+
+    public function search()
+    {
+        $criteria = parent::search()->getCriteria();
+
+        return new CActiveDataProvider(
+            $this,
+            array(
+                'criteria' => $criteria,
+                'pagination'=>array(
+                    'pageSize'=>30,
+                ),
+            )
+        );
+    }
+
+    public function getBrands() {
+
+        if (count($this->findAllByAttributes(array('company_id' => Yii::app()->user->company_id)))) {
+            // Tiene lista de precio
+            return $this->findAllByAttributes(array('company_id' => Yii::app()->user->company_id));
+        } else {
+            // No tiene lista de precio
+            return $this->findAllByAttributes(array('company_id' => Company::model()->findByAttributes(array('is_owner' => true))->id));
+        }
+    }
+
+    public function getModels($brand) {
+
+        if (count($this->findAllByAttributes(array('company_id' => Yii::app()->user->company_id)))) {
+            // Tiene lista de precio
+            return $this->findAllByAttributes(array('company_id' => Yii::app()->user->company_id, 'brand' => $brand));
+        } else {
+            // No tiene lista de precio
+            return $this->findAllByAttributes(array('company_id' => Company::model()->findByAttributes(array('is_owner' => true))->id, 'brand' => $brand));
+        }
     }
 }

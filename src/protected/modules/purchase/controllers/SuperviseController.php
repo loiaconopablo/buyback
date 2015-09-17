@@ -82,7 +82,9 @@ class SuperviseController extends Controller
 
                         $reasons = array();
                         foreach($_POST['question'] as $question_id => $anwser) {
-                            $reasons['reason-' . $question_id] = Questionary::model()->findByPk($question_id)->question;
+                            if ($anwser) {
+                                $reasons['reason-' . $question_id] = Questionary::model()->findByPk($question_id)->question;
+                            }
                         }
                         Yii::app()->session['check_purchase']->questionary_json_checked = CJSON::encode($reasons);
                     }
@@ -129,7 +131,6 @@ class SuperviseController extends Controller
 
     public function actionShowReport()
     {
-        var_dump(Yii::app()->session['check_purchase']->status->name);
         if (isset($_POST['form_sent'])) {
             if (Yii::app()->session['check_purchase']->validate()) {
                 if (Yii::app()->session['check_purchase']->save()) {

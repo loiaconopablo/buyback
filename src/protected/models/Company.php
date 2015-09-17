@@ -15,6 +15,7 @@ class Company extends BaseCompany
         'purchases' => array(self::HAS_MANY, 'Purchase', 'company_id'),
         'dispatch_notes' => array(self::HAS_MANY, 'DispatchNote', 'company_id'),
         'points_of_sale' => array(self::HAS_MANY, 'PointOfSale', 'company_id'),
+        'price_list' => array(self::HAS_MANY, 'PriceList', 'company_id'),
         'users' => array(self::HAS_MANY, 'User', 'company_id'),
         'purchase_statuses' => array(self::HAS_MANY, 'PurchaseStatus', 'company_id'),
 

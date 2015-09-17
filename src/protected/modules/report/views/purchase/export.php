@@ -83,6 +83,7 @@
         'carrier_checked' => Yii::t('app', 'Operador confirmado'),
         'paid_price' => Yii::t('app', 'Precio de liquidación'),
         'peoplesoft_order' => Yii::t('app', 'Nº PeopleSoft'),
+        'questionary_json_checked' => Yii::t('app', 'Motivos de rechazo'),
         'blacklist' => Yii::t('app', 'Banda negativa'),
     );
 ?>
