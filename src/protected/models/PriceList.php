@@ -116,4 +116,15 @@ class PriceList extends BasePriceList {
             return $this->findAllByAttributes(array('company_id' => Company::model()->findByAttributes(array('is_owner' => true))->id));
         }
     }
+
+    public function getModels($brand) {
+
+        if (count($this->findAllByAttributes(array('company_id' => Yii::app()->user->company_id)))) {
+            // Tiene lista de precio
+            return $this->findAllByAttributes(array('company_id' => Yii::app()->user->company_id, 'brand' => $brand));
+        } else {
+            // No tiene lista de precio
+            return $this->findAllByAttributes(array('company_id' => Company::model()->findByAttributes(array('is_owner' => true))->id, 'brand' => $brand));
+        }
+    }
 }
