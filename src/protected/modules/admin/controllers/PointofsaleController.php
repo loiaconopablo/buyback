@@ -211,15 +211,15 @@ class PointOfSaleController extends Controller {
                 'headquarter_id' => $headquarter_id,
                 'is_headquarter' => 0,
                 'is_owner' => 0,
-                'name' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(0, $row)->getValue())),
-                'address' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(1, $row)->getValue())),
-                'province' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(2, $row)->getValue())),
-                'locality' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(3, $row)->getValue())),
-                'phone' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(4, $row)->getValue())),
-                'mail' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(5, $row)->getValue())),
-                'reference_name' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(6, $row)->getValue())),
-                'reference_phone' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(7, $row)->getValue())),
-                'reference_mail' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(8, $row)->getValue())),
+                'name' => trim($objWorksheet->getCellByColumnAndRow(0, $row)->getValue()),
+                'address' => trim($objWorksheet->getCellByColumnAndRow(1, $row)->getValue()),
+                'province' => trim($objWorksheet->getCellByColumnAndRow(2, $row)->getValue()),
+                'locality' => trim($objWorksheet->getCellByColumnAndRow(3, $row)->getValue()),
+                'phone' => trim($objWorksheet->getCellByColumnAndRow(4, $row)->getValue()),
+                'mail' => trim($objWorksheet->getCellByColumnAndRow(5, $row)->getValue()),
+                'reference_name' => trim($objWorksheet->getCellByColumnAndRow(6, $row)->getValue()),
+                'reference_phone' => trim($objWorksheet->getCellByColumnAndRow(7, $row)->getValue()),
+                'reference_mail' => trim($objWorksheet->getCellByColumnAndRow(8, $row)->getValue()),
             );
             $model->attributes = $values;
 
@@ -227,8 +227,8 @@ class PointOfSaleController extends Controller {
             $user_values = array(
                 'company_id' => $model->company_id,
                 'point_of_sale_id' => 999,
-                'username' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(9, $row)->getValue())),
-                'mail' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(10, $row)->getValue())),
+                'username' => trim($objWorksheet->getCellByColumnAndRow(9, $row)->getValue()),
+                'mail' => trim($objWorksheet->getCellByColumnAndRow(10, $row)->getValue()),
             );
             $userModel->attributes = $user_values;
 
