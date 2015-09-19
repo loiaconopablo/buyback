@@ -1,6 +1,6 @@
 <?php /* @var $this Controller */?>
 <!DOCTYPE html>
-<html>
+<html ng-app="buybackApp">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="language" content="en">
@@ -9,14 +9,18 @@
 
 	<title><?php echo CHtml::encode($this->pageTitle);?></title>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl;?>/css/bgh.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl;?>/css/bgh.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl;?>/css/angular-notify.css">
+</head>
 </head>
 
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["corechart","bar"]});
 </script>
 
-<body>
+<body ng-controller="NotiController as noti">
 
 <!-- CONTAINER begin -->
 <div class="container">
@@ -108,6 +112,8 @@
 
 <!-- SCRIPTS begin -->
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl;?>/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl;?>/js/angular-notify.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl;?>/js/buyback-app.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl;?>/js/bgh.js"></script>
 <!-- SCRIPTS end -->
 
