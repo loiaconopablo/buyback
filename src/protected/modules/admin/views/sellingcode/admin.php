@@ -10,13 +10,13 @@ $this->menu = array(
     array('label' => Yii::t('app', 'Listar') . ' ' . $model->label(2), 'icon' => 'list', 'url' => array('admin')),
     array('label' => Yii::t('app', 'Importar') . ' ' . $model->label(2), 'icon' => 'file', 'url' => array('upload')),
     array('label' => Yii::t('app', 'Eliminar') . ' ' . $model->label(2), 'icon' => 'remove', 'url' => array('truncate')));
-
 ?>
 <?php
 
 $this->widget(
         'bootstrap.widgets.TbGridView', array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
+    'id' => 'owner-purchase-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
     'template' => "{items}\n{pager}",
@@ -54,7 +54,7 @@ echo TbHtml::button(
 <?php
 
 $this->renderPartial(
-    '_search', array(
+        '_search', array(
     'model' => $model,
         )
 );

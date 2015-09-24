@@ -127,7 +127,7 @@ class SellingCodeController extends Controller {
 
         for ($row = 1; $row <= $highestRow; ++$row) {
             $model = new SellingCode();
-            
+
             $values = array(
                 'brand' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(0, $row)->getValue())),
                 'model' => strtoupper(trim($objWorksheet->getCellByColumnAndRow(1, $row)->getValue())),
@@ -142,7 +142,12 @@ class SellingCodeController extends Controller {
                 'bad_refurbish' => trim($objWorksheet->getCellByColumnAndRow(10, $row)->getValue()),
                 'bad_irreparable' => trim($objWorksheet->getCellByColumnAndRow(11, $row)->getValue()),
             );
+            
+            $device = $model->findByAttributes(array('brand' => $values['brand'], 'model' => $values['model']));
 
+            if ($device) {
+                $model = $device;
+            }
             $model->attributes = $values;
 
             if ($model->validate()) {
@@ -166,7 +171,7 @@ class SellingCodeController extends Controller {
                 foreach ($model->getErrors() as $field => $value) {
                     $rowErrors[$field] = $value[0];
                 }
-                
+
                 $errors[$row] = $rowErrors;
             }
         }
