@@ -88,6 +88,11 @@ class ImeiRequest
             'name' => $this->name,
             'customer_id' => $this->customer_id,
             'terminal_id' => $this->terminal_id,
+            'purchase_company_id' => $this->purchase_company_id,
+            'purchase_point_of_sale_id' => $this->purchase_point_of_sale_id,
+            'purchase_headquarter_id' => $this->purchase_headquarter_id,
+            'user_ip' => $this->user_ip,
+            'purchase_user_create_id' => $this->purchase_user_create_id,
         );
     }
 }
