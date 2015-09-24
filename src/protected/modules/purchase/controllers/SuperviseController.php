@@ -293,7 +293,7 @@ class SuperviseController extends Controller
 
         if ($price_list) {
 
-            if (Yii::app()->session['check_purchase']->carrier_id == Carrier::model()->findByAttributes(array('name' => 'Liberado'))->id) {
+            if (Yii::app()->session['check_purchase']->carrier_id_checked == Carrier::model()->findByAttributes(array('name' => 'Liberado'))->id) {
                 $price_data = array(
                     'purchase_price' => $price_list->unlocked_price,
                     'price_type' => 'unlocked',
