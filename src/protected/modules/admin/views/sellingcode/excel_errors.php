@@ -1,3 +1,9 @@
+<?php
+$this->menu = array(
+    array('label' => Yii::t('app', 'Listar Lista de Codigos'), 'icon' => 'list', 'url' => array('admin')),
+    array('label' => Yii::t('app', 'Crear Lista de Codigos'), 'icon' => 'plus-sign', 'url' => array('create')),
+    array('label' => Yii::t('app', 'Eliminar Lista de Codigos'), 'icon' => 'remove', 'url' => array('truncate'), 'linkOptions' => array('onClick' => 'return confirm("¿Desea eliminar todos los registros?");')));
+?>
 
 <table class="table table-condensed">
     <thead>

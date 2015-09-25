@@ -33,16 +33,16 @@ class SellingCode extends BaseSellingCode {
     public function rules() {
         return CMap::mergeArray(
                         parent::rules(), array(
-                    array('movistar_a', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido.')),
-                    array('personal_a', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido')),
-                    array('claro_a', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido')),
-                    array('libre_a', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido')),
-                    array('movistar_b', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido')),
-                    array('personal_b', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido')),
-                    array('claro_b', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido')),
-                    array('libre_b', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido')),
-                    array('bad_refurbish', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido')),
-                    array('bad_irreparable', 'match', 'pattern' => '/^PNT-+.*$/', 'message' => Yii::t('app', 'El formato es invalido')),
+                    array('movistar_a', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido.')),
+                    array('personal_a', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido')),
+                    array('claro_a', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido')),
+                    array('libre_a', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido')),
+                    array('movistar_b', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido')),
+                    array('personal_b', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido')),
+                    array('claro_b', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido')),
+                    array('libre_b', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido')),
+                    array('bad_refurbish', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido')),
+                    array('bad_irreparable', 'match', 'pattern' => '/^PNT-+.*[A-Z\d]+$/', 'message' => Yii::t('app', 'El formato es invalido')),
         ));
     }
 

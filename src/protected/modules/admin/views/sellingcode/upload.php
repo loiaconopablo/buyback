@@ -8,7 +8,7 @@ $this->menu = array(
     array('label' => Yii::t('app', 'Crear') . ' ' . $sellingcode_model->label(), 'icon' => 'plus-sign', 'url' => array('create')),
     array('label' => Yii::t('app', 'Listar') . ' ' . $sellingcode_model->label(2), 'icon' => 'list', 'url' => array('admin')),
     array('label' => Yii::t('app', 'Importar') . ' ' . $sellingcode_model->label(2), 'icon' => 'file', 'url' => array('upload')),
-    array('label' => Yii::t('app', 'Eliminar') . ' ' . $model->label(2), 'icon' => 'remove', 'url' => array('truncate'), 'linkOptions' => array('onClick'=>'return confirm("¿Desea eliminar todos los registros?");' )));
+    array('label' => Yii::t('app', 'Eliminar') . ' ' . $sellingcode_model->label(2), 'icon' => 'remove', 'url' => array('truncate'), 'linkOptions' => array('onClick'=>'return confirm("¿Desea eliminar todos los registros?");' )));
 ?>
 
 <div class="span12">
