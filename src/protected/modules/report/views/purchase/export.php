@@ -85,6 +85,7 @@
         'peoplesoft_order' => Yii::t('app', 'Nº PeopleSoft'),
         'questionary_json_checked' => Yii::t('app', 'Motivos de rechazo'),
         'blacklist' => Yii::t('app', 'Banda negativa'),
+        'selling_code' => Yii::t('app', 'Código'),
     );
 ?>
 <div class="span3">
