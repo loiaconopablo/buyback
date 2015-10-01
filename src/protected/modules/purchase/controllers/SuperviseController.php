@@ -75,7 +75,7 @@ class SuperviseController extends Controller {
 
                         $reasons = array();
                         foreach ($_POST['question'] as $question_id => $anwser) {
-                            if ($anwser) {
+                            if (!$anwser) {
                                 $reasons['reason-' . $question_id] = Questionary::model()->findByPk($question_id)->question;
                             }
                         }
