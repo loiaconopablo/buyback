@@ -51,6 +51,7 @@
  * @property string $brand_checked
  * @property string $model_checked
  * @property string $carrier_id_checked
+ * @property string $selling_code
  *
  */
 abstract class BasePurchase extends GxActiveRecord {
@@ -88,10 +89,10 @@ abstract class BasePurchase extends GxActiveRecord {
 			array('price_type, contract_number, cae, user_ip, associate_row', 'length', 'max'=>20),
 			array('purchase_price, paid_price, importe_neto, importe_iva', 'length', 'max'=>8),
 			array('comprobante_tipo', 'length', 'max'=>2),
-			array('peoplesoft_order', 'length', 'max'=>50),
+			array('peoplesoft_order, selling_code', 'length', 'max'=>50),
 			array('created_at, updated_at, cae_response_json, gif_response_json, pricelist_log, gif_response_json_checked, questionary_json_checked', 'safe'),
-			array('last_dispatch_note_id, purchase_price, paid_price, created_at, updated_at, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row, imei_checked, peoplesoft_order, to_refurbish, blacklist, gif_response_json_checked, questionary_json_checked, brand_checked, model_checked, carrier_id_checked', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, last_dispatch_note_id, carrier_id, price_list_id, imei, brand, model, carrier_name, price_type, purchase_price, paid_price, created_at, updated_at, user_update_id, contract_number, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row, imei_checked, peoplesoft_order, to_refurbish, blacklist, gif_response_json_checked, questionary_json_checked, brand_checked, model_checked, carrier_id_checked', 'safe', 'on'=>'search'),
+			array('last_dispatch_note_id, purchase_price, paid_price, created_at, updated_at, user_update_id, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row, imei_checked, peoplesoft_order, to_refurbish, blacklist, gif_response_json_checked, questionary_json_checked, brand_checked, model_checked, carrier_id_checked, selling_code', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, company_id, point_of_sale_id, headquarter_id, user_create_id, seller_id, last_dispatch_note_id, carrier_id, price_list_id, imei, brand, model, carrier_name, price_type, purchase_price, paid_price, created_at, updated_at, user_update_id, contract_number, current_status_id, last_location_id, last_source_id, last_destination_id, cae, importe_neto, importe_iva, cae_response_json, gif_response_json, pricelist_log, user_ip, comprobante_tipo, associate_row, imei_checked, peoplesoft_order, to_refurbish, blacklist, gif_response_json_checked, questionary_json_checked, brand_checked, model_checked, carrier_id_checked, selling_code', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -149,6 +150,7 @@ abstract class BasePurchase extends GxActiveRecord {
 			'brand_checked' => Yii::t('app', 'Brand Checked'),
 			'model_checked' => Yii::t('app', 'Model Checked'),
 			'carrier_id_checked' => Yii::t('app', 'Carrier Id Checked'),
+			'selling_code' => Yii::t('app', 'Selling Code'),
 		);
 	}
 
@@ -197,6 +199,7 @@ abstract class BasePurchase extends GxActiveRecord {
 		$criteria->compare('t.brand_checked', $this->brand_checked, true);
 		$criteria->compare('t.model_checked', $this->model_checked, true);
 		$criteria->compare('t.carrier_id_checked', $this->carrier_id_checked, true);
+		$criteria->compare('t.selling_code', $this->selling_code, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
