@@ -1,31 +1,27 @@
 <?php
 
-class SuperviseController extends Controller
-{
+class SuperviseController extends Controller {
 
     public $layout = '//layouts/column1.view';
 
     /**
-    * @return array action filters
-    */
-    public function filters()
-    {
-            return array(
-                    'accessControl', // perform access control for CRUD operations
-            );
+     * @return array action filters
+     */
+    public function filters() {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
     }
 
-    public function accessRules()
-    {
+    public function accessRules() {
         return array(
             array(
                 'allow',
-                'actions' => array('index', 'imeivalidation', 'checkdevise', 'checkdevisevalidation', 'showreport', 'getmodels'),
+                'actions' => array('index', 'imeivalidation', 'checkdevise', 'checkdevisevalidation', 'showreport', 'getmodels', 'sellingcode'),
                 'expression' => "Yii::app()->user->checkAccess('technical_supervisor')",
             ),
-
-            array('deny',  // deny all users
-                'users'=>array('*'),
+            array('deny', // deny all users
+                'users' => array('*'),
             ),
         );
     }
@@ -36,8 +32,7 @@ class SuperviseController extends Controller
      * Valida el imei contra el webservice chequeando que no esté en la BLACKLIST
      * Guarda la respuesta del webservice de GIF en session para utilizarla y guardarla en el registro
      */
-    public function actionIndex($id)
-    {
+    public function actionIndex($id) {
 
         $model = Purchase::model()->findByPk($id);
         $model->setScenario('checking');
@@ -61,28 +56,26 @@ class SuperviseController extends Controller
         $this->render('index', array('model' => Yii::app()->session['check_purchase']));
     }
 
-
     /**
      * Muestra los datos al técnico del equipo a testear después de haber chequeado el imei contra GIF
      * @param  integer $id Purchase.id
      */
-    public function actionCheckDevise()
-    {
+    public function actionCheckDevise() {
         if (isset($_POST['Purchase'])) {
 
             Yii::app()->session['check_purchase']->setAttributes($_POST['Purchase']);
 
             if (Yii::app()->session['check_purchase']->validate()) {
 
-                if($this->validateQuestions()) {
+                if ($this->validateQuestions()) {
 
                     Yii::app()->session['check_purchase']->paid_price = $this->getPaidPrice();
 
-                    if(isset($_POST['question'])) {
+                    if (isset($_POST['question'])) {
 
                         $reasons = array();
-                        foreach($_POST['question'] as $question_id => $anwser) {
-                            if ($anwser) {
+                        foreach ($_POST['question'] as $question_id => $anwser) {
+                            if (!$anwser) {
                                 $reasons['reason-' . $question_id] = Questionary::model()->findByPk($question_id)->question;
                             }
                         }
@@ -92,13 +85,10 @@ class SuperviseController extends Controller
                     $this->setErrors();
 
                     $this->redirect(array('showreport'));
-                    
                 } else {
                     Yii::app()->user->setFlash('error', Yii::t('app', 'Debe responder todas las preguntas técnicas'));
                 }
-
             }
-
         } else {
             Yii::app()->session['check_purchase']->to_refurbish = null;
 
@@ -108,17 +98,16 @@ class SuperviseController extends Controller
         if (Yii::app()->session['check_purchase']->blacklist) {
             Yii::app()->session['check_purchase']->to_refurbish = 0;
         }
-        
+
 
         $this->render('checkdevise', array(
             'model' => Yii::app()->session['check_purchase'],
             'questions' => Questionary::model()->findAll(array('order' => '"order" ASC')),
-            )
+                )
         );
     }
 
-    public function validateQuestions()
-    {
+    public function validateQuestions() {
         if (isset($_POST['question'])) {
             if (count($_POST['question']) == count(Questionary::model()->findAll())) {
                 return true;
@@ -128,18 +117,16 @@ class SuperviseController extends Controller
         return false;
     }
 
-
-    public function actionShowReport()
-    {
+    public function actionShowReport() {
         if (isset($_POST['form_sent'])) {
             if (Yii::app()->session['check_purchase']->validate()) {
+                Yii::app()->session['check_purchase']->setSellingCode();
                 if (Yii::app()->session['check_purchase']->save()) {
 
                     Yii::app()->session['check_purchase']->refresh();
                     Yii::app()->session['check_purchase']->setStatus(Yii::app()->session['check_purchase']->current_status_id);
 
                     $this->redirect(array('/purchase/list/insupervision'));
-
                 } else {
                     if ($model->getErrors()) {
                         foreach ($model->getErrors() as $error) {
@@ -153,8 +140,7 @@ class SuperviseController extends Controller
         $this->render('showreport', array('model' => Yii::app()->session['check_purchase']));
     }
 
-    public function setErrors()
-    {
+    public function setErrors() {
         $messages = '';
         Yii::app()->session->remove('report_messages');
 
@@ -174,7 +160,7 @@ class SuperviseController extends Controller
             $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_WARNING, Yii::t('app', 'El equipo será recotizado.'));
         }
 
-        if(isset($_POST['question'])) {
+        if (isset($_POST['question'])) {
             foreach ($_POST['question'] as $question_id => $answer) {
                 if (!$answer) {
                     $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_ERROR, Yii::t('app', Questionary::model()->findByPk($question_id)->question));
@@ -187,8 +173,7 @@ class SuperviseController extends Controller
         }
     }
 
-    public function getPaidPrice()
-    {
+    public function getPaidPrice() {
         // Si el equipo está en banda negativa no se paga
         if (Yii::app()->session['check_purchase']->blacklist) {
             Yii::app()->session['check_purchase']->current_status_id = Status::REJECTED;
@@ -223,17 +208,14 @@ class SuperviseController extends Controller
             }
 
             $price_log = Yii::app()->session['check_purchase']->getLoggedPrice($price_type);
-            
+
             if ($price_log !== false) {
                 Yii::app()->session['check_purchase']->current_status_id = Status::REQUOTED;
                 return $price_log;
-
             } else {
                 Yii::app()->session['check_purchase']->current_status_id = Status::REQUOTED;
                 return $price_data['purchase_price'];
-
             }
-            
         }
 
         // Si no suffrio ninguna variación devuelve el mismo precio de compra
@@ -241,13 +223,11 @@ class SuperviseController extends Controller
         return Yii::app()->session['actual_purchase_attributes']['purchase_price'];
     }
 
-
     /**
      * Devuelve un json con los modelos de la marca seleccionada
      * @param  string $brand marca de equipo
      */
-    public function actionGetmodels($brand)
-    {
+    public function actionGetmodels($brand) {
         if (Yii::app()->getRequest()->getIsPostRequest()) {
             $model = new PriceList();
 
@@ -264,8 +244,7 @@ class SuperviseController extends Controller
      * Intenta matchear $gif_dictionary_device con un registro de price_list
      * @return Pricelist Devuelve el AR que encontro o NULL
      */
-    public function getBrandModelByGifName($gif_name)
-    {
+    public function getBrandModelByGifName($gif_name) {
 
         /**
          * el AR de GifDictionary del equipo por encontrar o por nombre y mayor cantidad o NULL
@@ -281,14 +260,12 @@ class SuperviseController extends Controller
 
         // Devuelve el AR de Pricelist o NULL
         return $price_list_device;
-
     }
 
     /**
      * Devuelve el precio y el tipo de precio segun los datos ingresados en el formulario
      */
-    public function getPriceData()
-    {
+    public function getPriceData() {
         $price_list = PriceList::model()->findByAttributes(array('brand' => Yii::app()->session['check_purchase']->brand, 'model' => Yii::app()->session['check_purchase']->model));
 
         if ($price_list) {
@@ -298,7 +275,6 @@ class SuperviseController extends Controller
                     'purchase_price' => $price_list->unlocked_price,
                     'price_type' => 'unlocked',
                 );
-
             } else {
                 $price_data = array(
                     'purchase_price' => $price_list->locked_price,
@@ -307,14 +283,11 @@ class SuperviseController extends Controller
             }
 
             return $price_data;
-
         } else {
             // No existe en la lista de precios
             return 0;
         }
-        
     }
-
 
     /**
      * Busca el dispocitivo en la lista de precios basandose en lo encontrado
@@ -322,8 +295,7 @@ class SuperviseController extends Controller
      * @param  GifDictionary $gif_dictionary_device Un objeto del diccionario
      * @return PriceList Devuelve un objeto de la lista de precios o null si no encuentra nada o no se le paso con que buscar $gif_dictionary_device
      */
-    public function getDeviceFromPricelist($gif_dictionary_device)
-    {
+    public function getDeviceFromPricelist($gif_dictionary_device) {
         // Si no hay dispocitivo del diccionario de GIF
         // Se retorna nulo
         if (!$gif_dictionary_device) {
@@ -336,9 +308,7 @@ class SuperviseController extends Controller
         if (!count($price_list_device)) {
             // Se loguea que el diccionario no matchea con la lista de precios
             Yii::log(
-                'gif_dictionary.name = ' . $gif_dictionary_device->name . ' - gif_dictionary.brand = ' . $gif_dictionary_device->brand . ' - gif_dictionary.model = ' . $gif_dictionary_device->model,
-                CLogger::LEVEL_WARNING,
-                'PRICELIST GIF_DICTIONARY NOT MATCH'
+                    'gif_dictionary.name = ' . $gif_dictionary_device->name . ' - gif_dictionary.brand = ' . $gif_dictionary_device->brand . ' - gif_dictionary.model = ' . $gif_dictionary_device->model, CLogger::LEVEL_WARNING, 'PRICELIST GIF_DICTIONARY NOT MATCH'
             );
 
             return null;
@@ -346,7 +316,14 @@ class SuperviseController extends Controller
 
         // Devuelve el dispocitivo encontrado en la lista de precios
         return $price_list_device;
-
+    }
+    
+    public function actionSellingCode($id){
+        $purchase = Purchase::model()->findByPk($id);
+        $purchase->setSellingCode();
+        $purchase->save();
+        
+        $this->redirect(array('/report'));
     }
 
 }

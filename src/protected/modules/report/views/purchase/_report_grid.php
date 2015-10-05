@@ -1,7 +1,8 @@
 <?php count($data_provider->getData()); ?>
-<?php $this->widget(
-    'bootstrap.widgets.TbGridView',
-    array(
+<?php
+
+$this->widget(
+        'bootstrap.widgets.TbGridView', array(
     'type' => TbHtml::GRID_TYPE_BORDERED,
     'id' => 'owner-purchase-grid',
     'dataProvider' => $data_provider,
@@ -14,7 +15,7 @@
         array(
             'name' => 'contract_number',
             'headerHtmlOptions' => array(
-                //'title' => 'Ordenar por Nº de Contrato',
+            //'title' => 'Ordenar por Nº de Contrato',
             ),
             'htmlOptions' => array(
                 'class' => 'text-right',
@@ -24,7 +25,7 @@
             'name' => 'imei',
             'header' => Yii::t('app', 'IMEI'),
             'headerHtmlOptions' => array(
-                //'title' => 'Ordenar por IMEI',
+            //'title' => 'Ordenar por IMEI',
             ),
             'htmlOptions' => array(
                 'class' => 'text-right',
@@ -33,21 +34,20 @@
         array(
             'name' => 'brand',
             'headerHtmlOptions' => array(
-                //'title' => 'Ordenar por Marca',
+            //'title' => 'Ordenar por Marca',
             ),
         ),
-
         array(
             'name' => 'model',
             'headerHtmlOptions' => array(
-               // 'title' => 'Ordenar por Modelo',
+            // 'title' => 'Ordenar por Modelo',
             ),
         ),
         array(
             'name' => 'purchase_price',
             'header' => Yii::t('app', 'Precio'),
             'headerHtmlOptions' => array(
-               // 'title' => 'Ordenar por Precio',
+            // 'title' => 'Ordenar por Precio',
             ),
             'value' => '"$ " . $data->purchase_price',
             'htmlOptions' => array('style' => 'text-align: right'),
@@ -59,27 +59,25 @@
             'filter' => false,
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
-         array(
-         	'name' => 'point_of_sale_id',
-         	'value' => '$data->point_of_sale',
-         	'header' => Yii::t('app', 'Comprado en...'),
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.point_of_sale_id'), 'point_of_sale_id', 'point_of_sale'),
+        array(
+            'name' => 'point_of_sale_id',
+            'value' => '$data->point_of_sale',
+            'header' => Yii::t('app', 'Comprado en...'),
+            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.point_of_sale_id'), 'point_of_sale_id', 'point_of_sale'),
         ),
-         array(
+        array(
             'name' => 'company_id',
             'value' => '$data->company',
             'header' => Yii::t('app', 'Empresa'),
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.company_id'), 'company_id', 'company'),
+            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.company_id'), 'company_id', 'company'),
         ),
-         //'user',
+        //'user',
         array(
             'name' => 'user_create_id',
             'header' => Yii::t('app', 'Comprado por...'),
             'value' => '$data->user',
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.user_create_id'), 'user_create_id', 'user'),
+            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.user_create_id'), 'user_create_id', 'user'),
         ),
-
-
         /**
          * BOTON VER INICIO
          */
@@ -88,12 +86,12 @@
             'template' => '{view-purchase-admin}{view-purchase-company_admin}',
             'header' => 'Ver',
             'headerHtmlOptions' => array(
-            	'style' => 'text-align: center',
+                'style' => 'text-align: center',
             ),
             'buttons' => array
-            (
-                'view-purchase-admin' => array
                 (
+                'view-purchase-admin' => array
+                    (
                     'label' => 'ver',
                     'visible' => 'Yii::app()->user->checkAccess("admin")',
                     'url' => 'Yii::app()->createUrl("/purchase/purchase/ownerview", array("id"=>$data->id))',
@@ -105,7 +103,7 @@
                     ),
                 ),
                 'view-purchase-company_admin' => array
-                (
+                    (
                     'label' => 'ver',
                     'visible' => 'Yii::app()->user->checkAccess("company_admin")',
                     'url' => 'Yii::app()->createUrl("/purchase/purchase/view", array("id"=>$data->id))',
@@ -121,29 +119,35 @@
         /**
          * BOTON VER END
          */
-
-
-
         array(
-        	'name' => 'last_dispatch_note_id',
-        	'header' => Yii::t('app', 'Nota'),
-        	'value' => '$data->last_dispatch_note',
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.last_dispatch_note_id', 't.last_dispatch_note_id ASC'), 'last_dispatch_note_id', 'last_dispatch_note.dispatch_note_number'),
+            'name' => 'last_dispatch_note_id',
+            'header' => Yii::t('app', 'Nota'),
+            'value' => '$data->last_dispatch_note',
+            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.last_dispatch_note_id', 't.last_dispatch_note_id ASC'), 'last_dispatch_note_id', 'last_dispatch_note.dispatch_note_number'),
         ),
-         array(
+        array(
             'header' => Yii::t('app', 'F. recepción'),
             'value' => '$data->getLastRecivedDate()',
             'filter' => false,
             'htmlOptions' => array('style' => 'text-align: center'),
         ),
-        
-         array(
+        array(
             'name' => 'last_location_id',
             'value' => '$data->last_location',
             'header' => Yii::t('app', 'Última ubicación'),
-			'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.last_location_id'), 'last_location_id', 'last_location'),
+            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.last_location_id'), 'last_location_id', 'last_location'),
         ),
-        
-    ),
-    )
-);?>
+        array(
+            'type' => 'raw',
+            'header' => Yii::t('app', 'Código'),
+//            'filter' => CHtml::activeTextField($model, 'comment'),
+            'value' => function ($data) {
+                if (!empty($data->selling_code)) {
+                    return $data->selling_code;
+                } else {
+                    return '<a class="btn btn-small btn-info" href=' . Yii::app()->createUrl("/purchase/supervise/sellingcode", array("id" => $data->id)) . '> Asignar  </a>';
+                }
+            },
+                    'htmlOptions' => array('class' => 'text-center')))
+        ));
+?>
