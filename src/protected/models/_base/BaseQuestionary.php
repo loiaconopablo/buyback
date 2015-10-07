@@ -12,6 +12,7 @@
  * @property string $id
  * @property string $question
  * @property integer $order
+ * @property string $answer
  *
  */
 abstract class BaseQuestionary extends GxActiveRecord {
@@ -42,9 +43,10 @@ abstract class BaseQuestionary extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('order', 'numerical', 'integerOnly'=>true),
+			array('answer', 'length', 'max'=>255),
 			array('question', 'safe'),
-			array('question, order', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, question, order', 'safe', 'on'=>'search'),
+			array('question, order, answer', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, question, order, answer', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +65,7 @@ abstract class BaseQuestionary extends GxActiveRecord {
 			'id' => Yii::t('app', 'ID'),
 			'question' => Yii::t('app', 'Question'),
 			'order' => Yii::t('app', 'Order'),
+			'answer' => Yii::t('app', 'Answer'),
 		);
 	}
 
@@ -72,6 +75,7 @@ abstract class BaseQuestionary extends GxActiveRecord {
 		$criteria->compare('t.id', $this->id, true);
 		$criteria->compare('t.question', $this->question, true);
 		$criteria->compare('t.order', $this->order);
+		$criteria->compare('t.answer', $this->answer, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
