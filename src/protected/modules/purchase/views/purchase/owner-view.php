@@ -22,7 +22,7 @@
         'user',
         array(
             'label' => Yii::t('app', 'Cliente'),
-            'value' => $model->seller,
+            'value' => $model->getSellerModel(),
         ),
         array(
             'name' => 'created_at',
