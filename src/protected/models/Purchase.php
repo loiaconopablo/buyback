@@ -659,6 +659,25 @@ class Purchase extends BasePurchase {
         return $seller_data;
     }
 
+    /**
+     * Devuelve el seller dependiendo si es compra masiva o minorista
+     * @return mixed Seller AR o Company AR
+     */
+    public function getSellerModel()
+    {
+        if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_COMPRA) {
+            return $this->seller;
+        }
+
+        if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_COMPRA_MASIVA) {
+            return $this->company;
+        }
+
+        if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_NOTA_DE_CREDITO) {
+            return $this->company;
+        } 
+    }
+
     public function setAfipData() {
         if (!$this->purchase_price) {
             throw new Exception("El equipo no tiene precio asignado", 1);

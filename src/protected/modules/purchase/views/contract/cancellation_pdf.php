@@ -77,33 +77,33 @@
             </table>
             <table style="width:100%; font-size:10pt; line-height:2pt; padding-top:12px;">
                 <tr>
-                    <td style="width:26%;">Nombre y Apellidos:</td>
-					<td style="width:53%;"><?php echo $model->seller->name;?></td>
-                    <td style="width:6%;">DNI:</td>
-					<td style="width:15%;"><?php echo $model->seller->dni;?></td>
+                    <td style="width:26%;"><?php echo Yii::t('app', 'Apellido y Nombre'); ?>:</td>
+                    <td style="width:53%;"><?php echo $seller['name'];?></td>
+                    <td style="width:6%;"><?php echo Yii::t('app', 'DNI'); ?>:</td>
+                    <td style="width:15%;"><?php echo $seller['identification'];?></td>
                 </tr>
             </table>
             <table style="width:100%; margin:0px; padding:0px;">
                 <tr>
-                    <td style="width:12%;">Telefono:</td>
-					<td style="width:15%;"><?php echo $model->seller->phone;?></td>
-					<td style="width:9%;"><?php echo Yii::t('app', 'E-mail');?>:</td>
-					<td style="width:66%;"><?php echo $model->seller->mail;?></td>
+                    <td style="width:12%;"><?php echo Yii::t('app', 'Teléfono'); ?>:</td>
+                    <td style="width:15%;"><?php echo $seller['phone'];?></td>
+                    <td style="width:9%;"><?php echo Yii::t('app', 'Mail');?>:</td>
+                    <td style="width:66%;"><?php echo $seller['mail'];?></td>
                 </tr>
             </table>
             <table style="width:100%; margin:0px; padding:0px; table-layout:fixed;">
                 <tr><td colspan="4"></td></tr>
                 <tr>
-					<td colspan="4" style="width:12%;"><?php echo Yii::t('app', 'Dirección');?>:</td>
+                    <td colspan="4" style="width:12%;"><?php echo Yii::t('app', 'Dirección');?>:</td>
                 </tr>
                 <tr>
-					<td colspan="4" style="width:88%; font-size:9pt;"><?php echo $model->seller->province;?></td>
+                    <td colspan="4" style="width:88%; font-size:9pt;"><?php echo $seller['province'];?></td>
                 </tr>
                 <tr>
-					<td colspan="4" style="width:88%; font-size:9pt;"><?php echo $model->seller->locality;?></td>
+                    <td colspan="4" style="width:88%; font-size:9pt;"><?php echo $seller['locality'];?></td>
                 </tr>
                 <tr>
-					<td colspan="4" style="width:88%; font-size:9pt;"><?php echo $model->seller->address;?></td>
+                    <td colspan="4" style="width:88%; font-size:9pt;"><?php echo $seller['address'];?></td>
                 </tr>
             </table>
             </td><!-- fin col 1 -->

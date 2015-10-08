@@ -269,6 +269,10 @@ h2.logo-retail {
 	padding: 8px 14px 8px 14px;
 }
 
+.grid-view {
+	overflow: auto;
+}
+
 .grid-view .table .button-column {
 	min-width: 50px;
 }

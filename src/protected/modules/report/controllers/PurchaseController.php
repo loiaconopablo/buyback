@@ -100,7 +100,18 @@ class PurchaseController extends Controller
             $model->unsetAttributes();
             $model->setAttributes(CJSON::decode(Yii::app()->request->cookies['purchase_filters']));
 
-            $dataProvider = $model->search();
+            if (Yii::app()->user->checkAccess('admin')) {
+                $dataProvider = $model->search();
+            }
+            
+            if (Yii::app()->user->checkAccess('company_admin')) {
+                $dataProvider = $model->company();
+            }
+            
+            if (Yii::app()->user->checkAccess('technical_supervisor')) {
+                $dataProvider = $model->technicalsupervisor();
+            }
+            
             $dataProvider->setPagination(false);
 
             $excel_data = array();
