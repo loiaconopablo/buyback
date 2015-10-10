@@ -107,6 +107,10 @@ class SuperviseController extends Controller {
         );
     }
 
+    /**
+     * Valida que se respondieron todas las preguntas
+     * @return boolean [description]
+     */
     public function validateQuestions() {
         if (isset($_POST['question'])) {
             if (count($_POST['question']) == count(Questionary::model()->findAll())) {
@@ -174,11 +178,14 @@ class SuperviseController extends Controller {
     }
 
     public function getPaidPrice() {
-        // Si el equipo está en banda negativa no se paga
+        // Si el equipo está en banda negativa y el imei cambió: NO SE PAGA
         if (Yii::app()->session['check_purchase']->blacklist) {
-            Yii::app()->session['check_purchase']->current_status_id = Status::REJECTED;
-            return 0;
+            if (Yii::app()->session['check_purchase']->imei !== Yii::app()->session['check_purchase']->imei_checked) {
+                Yii::app()->session['check_purchase']->current_status_id = Status::REJECTED;
+                return 0;
+            }
         }
+
         // Si el equipo no cumple con todas las condiciones del cuestionario no se paga
         foreach ($_POST['question'] as $question_id => $answer) {
             if (!$answer) {
@@ -266,7 +273,7 @@ class SuperviseController extends Controller {
      * Devuelve el precio y el tipo de precio segun los datos ingresados en el formulario
      */
     public function getPriceData() {
-        $price_list = PriceList::model()->findByAttributes(array('brand' => Yii::app()->session['check_purchase']->brand, 'model' => Yii::app()->session['check_purchase']->model));
+        $price_list = PriceList::model()->findByAttributes(array('brand' => Yii::app()->session['check_purchase']->brand_checked, 'model' => Yii::app()->session['check_purchase']->model_checked));
 
         if ($price_list) {
 
@@ -318,6 +325,11 @@ class SuperviseController extends Controller {
         return $price_list_device;
     }
     
+    /**
+     * Guarda el código 
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
     public function actionSellingCode($id){
         $purchase = Purchase::model()->findByPk($id);
         $purchase->setSellingCode();
