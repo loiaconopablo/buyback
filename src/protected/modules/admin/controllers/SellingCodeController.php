@@ -1,6 +1,6 @@
 <?php
 
-class SellingcodeController extends Controller {
+class SellingCodeController extends Controller {
 
     public function filters() {
         return array(
