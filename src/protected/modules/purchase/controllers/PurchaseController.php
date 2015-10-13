@@ -153,6 +153,7 @@ class PurchaseController extends Controller
      */
     public function actionCancel($id)
     {
+        die('cancelll');
         // La compra a anular
         $associate_purchase = Purchase::model()->findByPk($id);
         
@@ -195,7 +196,7 @@ class PurchaseController extends Controller
         if ($new_purchase->save()) {
             
             $new_purchase->refresh();
-            $new_purchase->setStatus(Status::PENDING);
+            $new_purchase->setStatus(Status::CANCELLATION);
 
             // Actualiza la compra anulada
             $associate_purchase->associate_row = $new_purchase->id;

@@ -188,7 +188,7 @@ class BuyController extends Controller
                             $this->redirect(array('showprice', 'personal_select' => $_POST['personal-select']));
 
                         } else {
-                            die(var_dump(Yii::app()->session['buy_purchase']->getErrors()));
+                            //die(var_dump(Yii::app()->session['buy_purchase']->getErrors()));
                             $transaction->rollback();
                             Yii::app()->user->setFlash('error', 'Error guardando la compra');
                         }
