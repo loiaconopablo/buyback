@@ -316,8 +316,8 @@ class Purchase extends BasePurchase {
         /*
           Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
          */
-        $criteria->compare('t.last_location_id', Yii::app()->user->point_of_sale_id);
-        $criteria->addInCondition('current_status_id', array(Status::RECEIVED, Status::APPROVED, Status::REJECTED, Status::REQUOTED));
+        $criteria->compare('t.last_destination_id', Yii::app()->user->point_of_sale_id);
+        $criteria->addInCondition('current_status_id', array(Status::SENT, Status::PENDING_TO_BE_RECEIVED, Status::RECEIVED, Status::APPROVED, Status::REJECTED, Status::REQUOTED));
 
         return new CActiveDataProvider(
                 $this, array(
