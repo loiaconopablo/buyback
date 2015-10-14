@@ -138,6 +138,7 @@ class DispatchNote extends BaseDispatchNote {
 
         $criteria->compare('destination_id', Yii::app()->user->point_of_sale_id);
         $criteria->addInCondition('status', array(self::PENDING_TO_SEND, self::SENT, self::PARTIALLY_RECEIVED));
+        $criteria->order = 'status DESC';
 
 
         return new CActiveDataProvider(
