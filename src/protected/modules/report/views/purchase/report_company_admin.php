@@ -1,4 +1,4 @@
-<?php $this->renderPartial('_report_grid', array('data_provider' => $model->company())); ?>
+<?php $this->renderPartial('_report_company_grid', array('data_provider' => $model->company())); ?>
 
 
 <?php echo TbHtml::linkButton(Yii::t('app', 'Exportar a Excel'), array('class' => 'export_to_excel' ,'color' => TbHtml::BUTTON_COLOR_SUCCESS, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'url' => array('export')));?>
