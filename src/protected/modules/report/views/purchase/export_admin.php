@@ -22,6 +22,10 @@
         'status' => Yii::t('app', 'Estado'),
     );
 
+    $attribute_current_status_options = array(
+        'comment' => Yii::t('app', 'Comentario'),
+    );
+
     $attribute_point_of_sale_options = array(
         'name' => Yii::t('app', 'Nombre'),
         'address' => Yii::t('app', 'Dirección'),
@@ -92,13 +96,16 @@
 <?php echo TbHtml::labelTb(Yii::t('app', 'Equipo'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
 <?php echo TbHtml::checkBoxList('purchase', '', $attribute_options); ?>
 
+<?php echo TbHtml::labelTb(Yii::t('app', 'Estado'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
+<?php echo TbHtml::checkBoxList('current_status', '', $attribute_current_status_options); ?>
+
 <?php echo TbHtml::labelTb(Yii::t('app', 'Punto de Venta'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
 <?php echo TbHtml::checkBoxList('point_of_sale', '', $attribute_point_of_sale_options); ?>
 </div>
 
 <div class="span3">
 <?php echo TbHtml::labelTb(Yii::t('app', 'Empresa'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
-<?php echo TbHtml::checkBoxList('compay', '', $attribute_company_options); ?>
+<?php echo TbHtml::checkBoxList('company', '', $attribute_company_options); ?>
 
 <?php echo TbHtml::labelTb(Yii::t('app', 'Usuario'), array('color' => TbHtml::LABEL_COLOR_INFO)); ?>
 <?php echo TbHtml::checkBoxList('user', '', $attribute_user_options); ?>

@@ -128,6 +128,13 @@ class PurchaseController extends Controller
                         array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
                     }
                 }
+
+                // Attributos del estado actual
+                if (isset($_POST['current_status'])) {
+                    foreach ($_POST['current_status'] as $current_status_attribute) {
+                        array_push($excel_row, $this->formatData($current_status_attribute, $purchase->getLastStatus()->$current_status_attribute));
+                    }
+                }
                 
 
                 // Attributos del punto de venta
@@ -138,9 +145,9 @@ class PurchaseController extends Controller
                 }
 
                 // Attributos de la empresa
-                 if (isset($_POST['compay'])) {
-                    foreach ($_POST['compay'] as $compay_attribute) {
-                        array_push($excel_row, $this->formatData($compay_attribute, $purchase->company->$compay_attribute));
+                 if (isset($_POST['company'])) {
+                    foreach ($_POST['company'] as $company_attribute) {
+                        array_push($excel_row, $this->formatData($company_attribute, $purchase->company->$company_attribute));
                     }
                 }
 
