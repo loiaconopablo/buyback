@@ -60,7 +60,7 @@ class PurchaseController extends Controller
         }
 
         $this->render(
-            $this->reportViewByRol(),
+            'report_' . $this->getViewByRol(),
             array(
             'model' => $model,
             )
@@ -71,18 +71,18 @@ class PurchaseController extends Controller
      * Devuelve al nombre de la vista a renderizar dependiendo del rol
      * @return string view name
      */
-    public function reportViewByRol()
+    public function getViewByRol()
     {
         if (Yii::app()->user->checkAccess('admin')) {
-            return 'report_admin';
+            return 'admin';
         }
 
         if (Yii::app()->user->checkAccess('company_admin')) {
-            return 'report_company_admin';
+            return 'company_admin';
         }
 
         if (Yii::app()->user->checkAccess('technical_supervisor')) {
-            return 'report_technical_supervisor';
+            return 'technical_supervisor';
         }
     }
 
@@ -206,7 +206,7 @@ class PurchaseController extends Controller
             $objWriter->save('php://output');
         }
 
-        $this->render('export', array('model' => $model));
+        $this->render('export_' . $this->getViewByRol(), array('model' => $model));
     }
 
 
