@@ -27,7 +27,7 @@ class PurchaseController extends Controller
             ),
              array(
                 'allow',
-                'actions' => array('view'),
+                'actions' => array('ownerview', 'view'),
                 'expression' => "Yii::app()->user->checkAccess('company_admin')",
             ),
              array(
