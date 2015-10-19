@@ -178,6 +178,34 @@ class DispatchNote extends BaseDispatchNote {
     }
 
     /**
+     * PENDIENTES DE LIQUIDACION DataProvider
+     */
+    public function pendingToPayment() {
+        $criteria = $this->search()->getCriteria();
+
+        return $this->pendingToPaymentSearch($criteria);
+    }
+
+    public function pendingToPaymentReference() {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->pendingToPaymentSearch($criteria);
+    }
+
+    public function pendingToPaymentSearch($criteria) {
+        $criteria->select = 't.*';
+        $criteria->join = 'LEFT JOIN purchase AS p ON t.id = p.last_dispatch_note_id';
+        $criteria->addInCondition('p.current_status_id', array(Status::APPROVED, Status::REJECTED, Status::REQUOTED));
+        $criteria->group = 't.dispatch_note_number';
+
+        return new CActiveDataProvider(
+                $this, array(
+            'criteria' => $criteria,
+                )
+        );
+    }
+
+    /**
      * Crea una nueva nota de envio
      * @param  array  $purchases Array con los id de purchase que entran en la nota de envio
      * @return integer  Ide de la nota de envio creada

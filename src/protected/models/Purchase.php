@@ -34,6 +34,7 @@ class Purchase extends BasePurchase {
             'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
             'associate_purchase' => array(self::BELONGS_TO, 'Purchase', 'associate_row'),
             'status' => array(self::BELONGS_TO, 'Status', 'current_status_id'),
+            'clearence' => array(self::BELONGS_TO, 'Clearence', 'clearence_id'),
         );
     }
 
@@ -67,6 +68,7 @@ class Purchase extends BasePurchase {
                     'brand_checked' => Yii::t('app', 'Marca confirmado'),
                     'model_checked' => Yii::t('app', 'Modelo confirmado'),
                     'carrier_checked' => Yii::t('app', 'Operador confirmado'),
+                    'clearence' => Yii::t('app', 'Liquidación'),
                         )
         );
     }
@@ -317,6 +319,41 @@ class Purchase extends BasePurchase {
          */
         $criteria->compare('t.last_destination_id', Yii::app()->user->point_of_sale_id);
         $criteria->addInCondition('current_status_id', array(Status::SENT, Status::PENDING_TO_BE_RECEIVED, Status::RECEIVED, Status::APPROVED, Status::REJECTED, Status::REQUOTED));
+
+        return new CActiveDataProvider(
+                $this, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => 30,
+            ),
+                )
+        );
+    }
+
+    /**
+     * Agrega condiciones al criterio de search para filtrar los equipos que estan en estado
+     * @author Richard Grinberg <rggrinberg@gmail.com>
+     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
+     */
+    public function clear($dispatchnote_id) {
+
+        $criteria = parent::search()->getCriteria();
+
+        return $this->clearSearch($criteria, $dispatchnote_id);
+    }
+
+    public function clearReferences($dispatchnote_id) {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->clearSearch($criteria, $dispatchnote_id);
+    }
+
+    public function clearSearch($criteria, $dispatchnote_id) {
+        /*
+          Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
+         */
+        $criteria->compare('t.last_dispatch_note_id', $dispatchnote_id);
+        $criteria->addInCondition('t.current_status_id', array(Status::APPROVED, Status::REJECTED, Status::REQUOTED));
 
         return new CActiveDataProvider(
                 $this, array(
