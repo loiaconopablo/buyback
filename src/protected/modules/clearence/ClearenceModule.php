@@ -27,8 +27,8 @@ class ClearenceModule extends CWebModule
 			$controller->submenu_title = Yii::t('app', 'Liquidaciones');
 
             $controller->submenu = array(
-            array('label' => Yii::t('app', 'Generar liquidación'), 'url' => array('/clearence/purchase'), 'active' => Home::isActive('/clearence')),
-            array('label' => Yii::t('app', 'Historial'), 'url' => array('/clearence/default/history'), 'active' => Home::isActive('/clearence/default/history')),
+            array('label' => Yii::t('app', 'Generar liquidación'), 'url' => array('/clearence'), 'active' => Home::isActive('/clearence')),
+            array('label' => Yii::t('app', 'Historial'), 'url' => array('/clearence/list/history'), 'active' => Home::isActive('/clearence/list/history')),
             );
 
 			return true;

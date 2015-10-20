@@ -31,4 +31,17 @@ class ListController extends Controller
             )
         );
     }
+
+
+    public function actionHistory() 
+    {
+        $model = new Clearence('search');
+        $model->unsetAttributes();
+
+        $this->render(
+            'clearence', array(
+            'model' => $model,
+            )
+        );
+    }
 }

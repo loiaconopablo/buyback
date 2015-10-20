@@ -5,7 +5,7 @@ class PurchaseController extends Controller
 	public function accessRules() {
         return array(
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array('clear'),
+                'actions' => array('clear', 'view'),
                 'expression' => "Yii::app()->user->checkAccess('admin')",
             ),
             array('deny', // deny all users
@@ -93,6 +93,30 @@ class PurchaseController extends Controller
                 'total_comision' => $total_comision,
                 'total_rejected_price' => $total_rejected_price,
                 'error_allowance' => $error_allowance,
+            )
+        );
+    }
+
+    /**
+     * Muestra la liquidacion
+     */
+    public function actionView($id)
+    {
+        $clearence = Clearence::model()->findByPk($id);
+
+        $purchases = Purchase::model()->findAllByAttributes(array('clearence_id' => $id));
+
+        $dataProvider = new CActiveDataProvider('Purchase');
+        $dataProvider->setData($purchases);
+
+        $this->render(
+            'view', array(
+                'model' => $purchases,
+                'dataProvider' => $dataProvider,
+                'total_paid_price' => $clearence->total_paid,
+                'total_comision' => $clearence->paid_comision,
+                'total_rejected_price' => $clearence->total_purchase,
+                'error_allowance' => $clearence->error_allowance,
             )
         );
     }
