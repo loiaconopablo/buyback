@@ -27,7 +27,10 @@ $(document).ready(function () {
     /**
      * Anula una compra generando su respectiva NOTA DE CREDITO y asociandola
      */
-    $('#cancel_purchase').live('click', function (ev) {
+    $('#cancellation_form').live('submit', function (ev) {
+
+        ev.preventDefault();
+
         if (!confirm('Cancelar compra emitiendo un comprobante negativo?')) {
             return;
         }
@@ -35,6 +38,7 @@ $(document).ready(function () {
         $.ajax({
             url: Yii.app.createUrl('purchase/purchase/cancel', {'id': $('#purchase_id').val()}),
             type: 'POST',
+            data: $(this).serialize(),
             dataType: 'json',
             success: function (data) {
                 if (data.status == 0) {

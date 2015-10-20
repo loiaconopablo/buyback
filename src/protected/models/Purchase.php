@@ -31,7 +31,6 @@ class Purchase extends BasePurchase {
             'carrier' => array(self::BELONGS_TO, 'Carrier', 'carrier_id'),
             'carrier_checked' => array(self::BELONGS_TO, 'Carrier', 'carrier_id_checked'),
             'price_list' => array(self::BELONGS_TO, 'PriceList', 'price_list_id'),
-            'current_status' => array(self::BELONGS_TO, 'Status', 'current_status_id'),
             'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
             'associate_purchase' => array(self::BELONGS_TO, 'Purchase', 'associate_row'),
             'status' => array(self::BELONGS_TO, 'Status', 'current_status_id'),
@@ -316,8 +315,8 @@ class Purchase extends BasePurchase {
         /*
           Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
          */
-        $criteria->compare('t.last_location_id', Yii::app()->user->point_of_sale_id);
-        $criteria->addInCondition('current_status_id', array(Status::RECEIVED, Status::APPROVED, Status::REJECTED, Status::REQUOTED));
+        $criteria->compare('t.last_destination_id', Yii::app()->user->point_of_sale_id);
+        $criteria->addInCondition('current_status_id', array(Status::SENT, Status::PENDING_TO_BE_RECEIVED, Status::RECEIVED, Status::APPROVED, Status::REJECTED, Status::REQUOTED));
 
         return new CActiveDataProvider(
                 $this, array(
@@ -734,6 +733,10 @@ class Purchase extends BasePurchase {
         } else {
             $this->selling_code = null;
         }
+    }
+
+    public function getLastStatus() {
+        return PurchaseStatus::model()->findByAttributes(array('purchase_id' => $this->id), array('order' => 'id DESC'));
     }
 
 }

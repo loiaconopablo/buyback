@@ -60,7 +60,7 @@ class PurchaseController extends Controller
         }
 
         $this->render(
-            $this->reportViewByRol(),
+            'report_' . $this->getViewByRol(),
             array(
             'model' => $model,
             )
@@ -71,18 +71,18 @@ class PurchaseController extends Controller
      * Devuelve al nombre de la vista a renderizar dependiendo del rol
      * @return string view name
      */
-    public function reportViewByRol()
+    public function getViewByRol()
     {
         if (Yii::app()->user->checkAccess('admin')) {
-            return 'report_admin';
+            return 'admin';
         }
 
         if (Yii::app()->user->checkAccess('company_admin')) {
-            return 'report_company_admin';
+            return 'company_admin';
         }
 
         if (Yii::app()->user->checkAccess('technical_supervisor')) {
-            return 'report_technical_supervisor';
+            return 'technical_supervisor';
         }
     }
 
@@ -128,6 +128,13 @@ class PurchaseController extends Controller
                         array_push($excel_row, $this->formatData($purchase_attribute, $purchase->$purchase_attribute));
                     }
                 }
+
+                // Attributos del estado actual
+                if (isset($_POST['current_status'])) {
+                    foreach ($_POST['current_status'] as $current_status_attribute) {
+                        array_push($excel_row, $this->formatData($current_status_attribute, $purchase->getLastStatus()->$current_status_attribute));
+                    }
+                }
                 
 
                 // Attributos del punto de venta
@@ -138,9 +145,9 @@ class PurchaseController extends Controller
                 }
 
                 // Attributos de la empresa
-                 if (isset($_POST['compay'])) {
-                    foreach ($_POST['compay'] as $compay_attribute) {
-                        array_push($excel_row, $this->formatData($compay_attribute, $purchase->company->$compay_attribute));
+                 if (isset($_POST['company'])) {
+                    foreach ($_POST['company'] as $company_attribute) {
+                        array_push($excel_row, $this->formatData($company_attribute, $purchase->company->$company_attribute));
                     }
                 }
 
@@ -206,7 +213,7 @@ class PurchaseController extends Controller
             $objWriter->save('php://output');
         }
 
-        $this->render('export', array('model' => $model));
+        $this->render('export_' . $this->getViewByRol(), array('model' => $model));
     }
 
 
