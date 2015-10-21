@@ -128,7 +128,7 @@ class SuperviseController extends Controller {
                 if (Yii::app()->session['check_purchase']->save()) {
 
                     Yii::app()->session['check_purchase']->refresh();
-                    Yii::app()->session['check_purchase']->setStatus(Yii::app()->session['check_purchase']->current_status_id);
+                    Yii::app()->session['check_purchase']->setStatus(Yii::app()->session['check_purchase']->current_status_id, Yii::app()->session['check_purchase']->last_dispatch_note_id);
 
                     $this->redirect(array('/purchase/list/insupervision'));
                 } else {

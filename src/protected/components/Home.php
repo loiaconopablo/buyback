@@ -69,6 +69,7 @@ class Home
             array('label'=>Yii::t('app', 'Equipos'), 'url'=>array('/purchase/list/inpointofsale'), 'active' => self::isActive('/purchase/list/inpointofsale')),
             array('label'=>Yii::t('app', 'Notas de envío'), 'url'=>array('/dispatchnote/list/pending'), 'active' => (Yii::app()->controller->module->id == 'dispatchnote')),
             array('label'=>Yii::t('app', 'Reportes'), 'url'=>array('/report'), 'active' => Yii::app()->controller->module->id == 'report'),
+            array('label'=>Yii::t('app', 'Liquidaciones'), 'url'=>array('/clearence'), 'active' => Yii::app()->controller->module->id == 'clearence'),
             array('label'=>Yii::t('app', 'Administración'), 'url'=>array('/admin/pointofsale/admin'), 'active' => Yii::app()->controller->module->id == 'admin'),
             );
         }
