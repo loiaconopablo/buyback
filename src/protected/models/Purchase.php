@@ -776,4 +776,8 @@ class Purchase extends BasePurchase {
         return PurchaseStatus::model()->findByAttributes(array('purchase_id' => $this->id), array('order' => 'id DESC'));
     }
 
+    public function calculateComision() {
+        return round($this->paid_price * ($this->company->percent_fee / 100), 2);
+    }
+
 }

@@ -1,5 +1,5 @@
 <div class="well">
-    <h4><?php echo Yii::t('app', 'Liquidación N°'); ?> <?php echo $model[0]->clearence_id;?></h4>
+    <h4><?php echo Yii::t('app', 'Liquidación N°'); ?> <?php echo $clearence->id;?></h4>
 </div>
 
 <?php $this->widget(
@@ -45,7 +45,7 @@
 
         array(
             'header' => Yii::t('app', 'Comisión'),
-            'value' => '"$ " . round($data->paid_price * ($data->company->percent_fee / 100), 2)',
+            'value' => '"$ " . $data->comision',
             'filter' => false,
             'htmlOptions' => array('class' => 'text-right span2'),
         ),
@@ -100,10 +100,10 @@
         </thead>
         <tbody>
             <tr>
-                <td style="text-align: right">$ <?php echo $total_paid_price; ?></td>
-                <td style="text-align: right">$ <?php echo $total_comision; ?></td>
-                <td style="text-align: right">$ <?php echo $error_allowance; ?></td>
-                <td style="text-align: right">$ <?php echo round($error_allowance + $total_comision, 2); ?></td>
+                <td style="text-align: right">$ <?php echo $clearence->total_paid; ?></td>
+                <td style="text-align: right">$ <?php echo $clearence->paid_comision; ?></td>
+                <td style="text-align: right">$ <?php echo $clearence->error_allowance; ?></td>
+                <td style="text-align: right">$ <?php echo round($clearence->error_allowance + $clearence->paid_comision, 2); ?></td>
             </tr>
         </tbody>
     </table>
@@ -112,7 +112,7 @@
 </br>
 
 <div class="span span12 nospace">
-<?php echo TbHtml::linkButton(Yii::t('app', 'Generar excel'), array('url' => '#', 'class' => 'btn-success', 'block' => true));?>
+<?php echo TbHtml::linkButton(Yii::t('app', 'Generar excel'), array('url' => Yii::app()->createUrl("/clearence/purchase/generateexcel", array("clearence_id"=>$clearence->id)), 'class' => 'btn-success', 'block' => true));?>
 </div>
 
 <div id="modal-purchase" class="modal hide fade" style="">

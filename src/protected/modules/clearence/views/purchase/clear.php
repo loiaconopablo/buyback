@@ -148,7 +148,7 @@
 
 <?php $this->endWidget();?>
 
-<?php $this->purchase_references = $model->clearReferences($dispatchnote_id);?>
+<?php //$this->purchase_references = $model->clearReferences($dispatchnote_id);?>
 
 
 <div id="modal-purchase" class="modal hide fade" style="">

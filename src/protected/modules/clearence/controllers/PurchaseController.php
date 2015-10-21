@@ -14,14 +14,22 @@ class PurchaseController extends Controller {
         );
     }
 
+    /**
+     * Muestra una posible liquidación
+     * La guarda y ofrece el ecxcell
+     * @param  integer $id dispatchnote_id
+     */
     public function actionClear($id) {
         $model = new Purchase('search');
         $model->unsetAttributes();
 
         $model_rows = $model->findAllByAttributes(array('last_dispatch_note_id' => $id));
 
+        // Total de purchase_price de equipos con estado REJECTED
         $total_rejected_price = 0;
+        // Total de paid_price de equipos con estados APPROVED o REQUOTED
         $total_paid_price = 0;
+        // Total de la comisión sobre los paid_price tomando el company.percent_fee
         $total_comision = 0;
 
 
@@ -38,7 +46,7 @@ class PurchaseController extends Controller {
                 $total_rejected_price += $purchase->purchase_price;
             }
 
-            $total_comision += round($purchase->paid_price * ($purchase->company->percent_fee / 100), 2);
+            $total_comision += $purchase->calculateComision();
         }
 
         $total_paid_price = round($total_paid_price, 2);
@@ -65,11 +73,14 @@ class PurchaseController extends Controller {
 
                 try {
                     foreach ($model_rows as $key => $purchase) {
+
                         $purchase->clearence_id = $liquidacion->id;
+                        $purchase->comision = $purchase->calculateComision();
+                        $purchase->company_percent_fee = $purchase->company->percent_fee;
                         $purchase->setStatus(Status::PAID, $purchase->last_dispatch_note_id);
                     }
                 } catch (Exception $e) {
-                    $transaction->rollback;
+                    $transaction->rollback();
                     throw $e;
                 }
 
@@ -80,20 +91,19 @@ class PurchaseController extends Controller {
             } else {
                 $liquidacion->getErrors();
                 $transaction->rollback();
-                die();
             }
         }
 
 
         $this->render(
                 'clear', array(
-            'model' => $model,
-            'dispatchnote_id' => $id,
-            'total_paid_price' => $total_paid_price,
-            'total_comision' => $total_comision,
-            'total_rejected_price' => $total_rejected_price,
-            'error_allowance' => $error_allowance,
-                )
+                'model' => $model,
+                'dispatchnote_id' => $id,
+                'total_paid_price' => $total_paid_price,
+                'total_comision' => $total_comision,
+                'total_rejected_price' => $total_rejected_price,
+                'error_allowance' => $error_allowance,
+            )
         );
     }
 
@@ -110,16 +120,17 @@ class PurchaseController extends Controller {
 
         $this->render(
                 'view', array(
-            'model' => $purchases,
-            'dataProvider' => $dataProvider,
-            'total_paid_price' => $clearence->total_paid,
-            'total_comision' => $clearence->paid_comision,
-            'total_rejected_price' => $clearence->total_purchase,
-            'error_allowance' => $clearence->error_allowance,
-                )
+                'model' => $purchases,
+                'dataProvider' => $dataProvider,
+                'clearence' => $clearence,
+            )
         );
     }
 
+    /**
+     * Genera el excel con los detalles de liquidación
+     * @param  integer $clearence_id [description]
+     */
     public function actionGenerateExcel($clearence_id) {
         $clearence = Clearence::model()->findByPk($clearence_id);
         $purchases = Purchase::model()->findAllByAttributes(array('clearence_id' => $clearence_id));
@@ -175,7 +186,7 @@ class PurchaseController extends Controller {
             $resultRow['carrier_checked'] = $purchase->carrier_checked;
             $resultRow['paid_price'] = $purchase->paid_price;
             $resultRow['comment_received'] = $purchase->last_dispatch_note->comment_received;
-            $resultRow['comision'] = round($purchase->paid_price * ($purchase->company->percent_fee / 100), 2);
+            $resultRow['comision'] = $purchase->comision;
 
             array_push($result, $resultRow);
             $lastRow ++;
