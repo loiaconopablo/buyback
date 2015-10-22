@@ -138,6 +138,7 @@ class DispatchNote extends BaseDispatchNote {
 
         $criteria->compare('destination_id', Yii::app()->user->point_of_sale_id);
         $criteria->addInCondition('status', array(self::PENDING_TO_SEND, self::SENT, self::PARTIALLY_RECEIVED));
+        $criteria->order = 'status DESC';
 
 
         return new CActiveDataProvider(
@@ -168,6 +169,34 @@ class DispatchNote extends BaseDispatchNote {
                     ':source_id' => Yii::app()->user->point_of_sale_id,
                     ':destination_id' => Yii::app()->user->point_of_sale_id
         ));
+
+        return new CActiveDataProvider(
+                $this, array(
+            'criteria' => $criteria,
+                )
+        );
+    }
+
+    /**
+     * PENDIENTES DE LIQUIDACION DataProvider
+     */
+    public function pendingToPayment() {
+        $criteria = $this->search()->getCriteria();
+
+        return $this->pendingToPaymentSearch($criteria);
+    }
+
+    public function pendingToPaymentReference() {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->pendingToPaymentSearch($criteria);
+    }
+
+    public function pendingToPaymentSearch($criteria) {
+        $criteria->select = 't.*';
+        $criteria->join = 'LEFT JOIN purchase AS p ON t.id = p.last_dispatch_note_id';
+        $criteria->addInCondition('p.current_status_id', array(Status::APPROVED, Status::REJECTED, Status::REQUOTED));
+        $criteria->group = 't.dispatch_note_number';
 
         return new CActiveDataProvider(
                 $this, array(

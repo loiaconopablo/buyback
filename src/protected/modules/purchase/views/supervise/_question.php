@@ -2,7 +2,7 @@
     <?php echo Yii::t('app', $question->question); ?>
 </div>
 <div>
-    <?php echo TbHtml::inlineRadioButtonList('question['. $question->id .']', '', array(
+    <?php echo TbHtml::inlineRadioButtonList('question['. $question->id .']', '1', array(
         '1' => Yii::t('app', 'Si'),
         '0' => Yii::t('app', 'No'),
     )); ?>

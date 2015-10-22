@@ -31,10 +31,10 @@ class Purchase extends BasePurchase {
             'carrier' => array(self::BELONGS_TO, 'Carrier', 'carrier_id'),
             'carrier_checked' => array(self::BELONGS_TO, 'Carrier', 'carrier_id_checked'),
             'price_list' => array(self::BELONGS_TO, 'PriceList', 'price_list_id'),
-            'current_status' => array(self::BELONGS_TO, 'Status', 'current_status_id'),
             'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
             'associate_purchase' => array(self::BELONGS_TO, 'Purchase', 'associate_row'),
             'status' => array(self::BELONGS_TO, 'Status', 'current_status_id'),
+            'clearence' => array(self::BELONGS_TO, 'Clearence', 'clearence_id'),
         );
     }
 
@@ -68,6 +68,7 @@ class Purchase extends BasePurchase {
                     'brand_checked' => Yii::t('app', 'Marca confirmado'),
                     'model_checked' => Yii::t('app', 'Modelo confirmado'),
                     'carrier_checked' => Yii::t('app', 'Operador confirmado'),
+                    'clearence' => Yii::t('app', 'Liquidación'),
                         )
         );
     }
@@ -316,8 +317,43 @@ class Purchase extends BasePurchase {
         /*
           Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
          */
-        $criteria->compare('t.last_location_id', Yii::app()->user->point_of_sale_id);
-        $criteria->addInCondition('current_status_id', array(Status::RECEIVED, Status::APPROVED, Status::REJECTED, Status::REQUOTED));
+        $criteria->compare('t.last_destination_id', Yii::app()->user->point_of_sale_id);
+        $criteria->addInCondition('current_status_id', array(Status::SENT, Status::PENDING_TO_BE_RECEIVED, Status::RECEIVED, Status::APPROVED, Status::REJECTED, Status::REQUOTED));
+
+        return new CActiveDataProvider(
+                $this, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => 30,
+            ),
+                )
+        );
+    }
+
+    /**
+     * Agrega condiciones al criterio de search para filtrar los equipos que estan en estado
+     * @author Richard Grinberg <rggrinberg@gmail.com>
+     * @return CActiveDataProvider conjunto de reguistros que responden al criterio genenrado
+     */
+    public function clear($dispatchnote_id) {
+
+        $criteria = parent::search()->getCriteria();
+
+        return $this->clearSearch($criteria, $dispatchnote_id);
+    }
+
+    public function clearReferences($dispatchnote_id) {
+        $criteria = parent::search()->getCriteria();
+
+        return $this->clearSearch($criteria, $dispatchnote_id);
+    }
+
+    public function clearSearch($criteria, $dispatchnote_id) {
+        /*
+          Condiciones para mostrar solo los equipos que el usuario debe ver en esta lista
+         */
+        $criteria->compare('t.last_dispatch_note_id', $dispatchnote_id);
+        $criteria->addInCondition('t.current_status_id', array(Status::APPROVED, Status::REJECTED, Status::REQUOTED));
 
         return new CActiveDataProvider(
                 $this, array(
@@ -659,6 +695,25 @@ class Purchase extends BasePurchase {
         return $seller_data;
     }
 
+    /**
+     * Devuelve el seller dependiendo si es compra masiva o minorista
+     * @return mixed Seller AR o Company AR
+     */
+    public function getSellerModel()
+    {
+        if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_COMPRA) {
+            return $this->seller;
+        }
+
+        if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_COMPRA_MASIVA) {
+            return $this->company;
+        }
+
+        if ($this->comprobante_tipo == self::COMPROBANTE_TIPO_NOTA_DE_CREDITO) {
+            return $this->company;
+        } 
+    }
+
     public function setAfipData() {
         if (!$this->purchase_price) {
             throw new Exception("El equipo no tiene precio asignado", 1);
@@ -715,6 +770,14 @@ class Purchase extends BasePurchase {
         } else {
             $this->selling_code = null;
         }
+    }
+
+    public function getLastStatus() {
+        return PurchaseStatus::model()->findByAttributes(array('purchase_id' => $this->id), array('order' => 'id DESC'));
+    }
+
+    public function calculateComision() {
+        return round($this->paid_price * ($this->company->percent_fee / 100), 2);
     }
 
 }

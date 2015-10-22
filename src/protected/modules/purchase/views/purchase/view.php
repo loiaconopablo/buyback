@@ -15,7 +15,10 @@
         'point_of_sale',
         'headquarter',
         'user',
-        'seller',
+        array(
+            'label' => Yii::t('app', 'Cliente'),
+            'value' => $model->getSellerModel(),
+        ),
         'created_at',
     ),
     )

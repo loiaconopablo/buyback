@@ -22,7 +22,7 @@
         'user',
         array(
             'label' => Yii::t('app', 'Cliente'),
-            'value' => $model->seller,
+            'value' => $model->getSellerModel(),
         ),
         array(
             'name' => 'created_at',
@@ -35,17 +35,20 @@
 <?php echo TbHtml::linkButton(Yii::t('app', 'Imprimir contrato'), array('color' => TbHtml::BUTTON_COLOR_PRIMARY, 'size' => TbHtml::BUTTON_SIZE_LARGE, 'block' => true, 'url' => array('/purchase/contract/generate', 'purchase_id' => $model->id), 'target' => '_blank'));?>
 <!-- ANULAR COMPRA -->
 <?php if (($model->current_status_id != Status::CANCELLED) && ($model->current_status_id != Status::CANCELLATION)): ?>
-    <?php 
-        echo TbHtml::linkButton(Yii::t('app', 'Anular compra'),
-            array(
-             'color' => TbHtml::BUTTON_COLOR_DANGER, 
-             'size' => TbHtml::BUTTON_SIZE_LARGE, 
-             'block' => true, 
-             'id' => 'cancel_purchase',
-            )
-        );
-    ?>
+    <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id' => 'cancellation_form')); ?>
+        <?php 
+            echo TbHtml::submitButton(Yii::t('app', 'Anular compra'),
+                array(
+                 'color' => TbHtml::BUTTON_COLOR_DANGER, 
+                 'size' => TbHtml::BUTTON_SIZE_LARGE, 
+                 'block' => true, 
+                )
+            );
+        ?>
+        <?php echo TbHtml::textArea('comment', null, array('placeholder' => Yii::t('app', 'Motivo de anulación'), 'block' => true, 'required' => true)); ?>
+    <?php $this->endWidget();?>
 <?php endif; ?>
+
 <!-- VER ANULACION SI YA ESTA ANULADA -->
 <?php if ($model->current_status_id == Status::CANCELLED): ?>
     <?php 

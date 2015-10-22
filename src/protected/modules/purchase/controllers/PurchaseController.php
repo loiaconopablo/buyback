@@ -27,7 +27,7 @@ class PurchaseController extends Controller
             ),
              array(
                 'allow',
-                'actions' => array('view'),
+                'actions' => array('ownerview', 'view'),
                 'expression' => "Yii::app()->user->checkAccess('company_admin')",
             ),
              array(
@@ -153,70 +153,71 @@ class PurchaseController extends Controller
      */
     public function actionCancel($id)
     {
-        die('cancelll');
-        // La compra a anular
-        $associate_purchase = Purchase::model()->findByPk($id);
-        
-        // El contrato de anulación
-        $new_purchase = new Purchase;
-
-        // Duplica los datos sin id
-        $data = $associate_purchase->attributes;
-        unset($data['id']);
-        $new_purchase->setAttributes($data, false);
-
-        // Inicia la transacción de DisptchNote
-        $transaction = Yii::app()->getDb()->beginTransaction();
-
-  
-
-        // Setea los últimos campos de purchase
-        $new_purchase->setAttributes(array(
-            'point_of_sale_id' => Yii::app()->user->point_of_sale_id,
-            'last_location_id' => Yii::app()->user->point_of_sale_id,
-            'company_id' => Yii::app()->user->company_id,
-            'headquarter_id' => Yii::app()->user->headquarter_id,
-            'user_ip' => Yii::app()->request->userHostAddress,
-            'comprobante_tipo' => Purchase::COMPROBANTE_TIPO_NOTA_DE_CREDITO,
-            'associate_row' => $associate_purchase->id,
-            'purchase_price' => -($new_purchase->purchase_price),
-        ));
-
-        try {
-            $new_purchase->setAfipData();
-        } catch (Excaption $e) {
-
-            $transaction->rollback;
-
-            $response['status'] = 0;
-            $response['errors'] = $e->getMessage();
-            die(CJSON::encode($response));
-        }
-
-        if ($new_purchase->save()) {
+        if (Yii::app()->getRequest()->getIsPostRequest()) {
+            // La compra a anular
+            $associate_purchase = Purchase::model()->findByPk($id);
             
-            $new_purchase->refresh();
-            $new_purchase->setStatus(Status::CANCELLATION);
+            // El contrato de anulación
+            $new_purchase = new Purchase;
 
-            // Actualiza la compra anulada
-            $associate_purchase->associate_row = $new_purchase->id;
-            $associate_purchase->setStatus(Status::CANCELLED);
+            // Duplica los datos sin id
+            $data = $associate_purchase->attributes;
+            unset($data['id']);
+            $new_purchase->setAttributes($data, false);
 
-            $transaction->commit();
+            // Inicia la transacción de DisptchNote
+            $transaction = Yii::app()->getDb()->beginTransaction();
 
-            // Genera la respuesta para el javascript
-            $response['status'] = 1;
-            $response['purchase_id'] = $new_purchase->id;
-            $response['message'] = 'Cancelación de compra generada.';
-            die(CJSON::encode($response));
+      
 
-        } else {
+            // Setea los últimos campos de purchase
+            $new_purchase->setAttributes(array(
+                'point_of_sale_id' => Yii::app()->user->point_of_sale_id,
+                'last_location_id' => Yii::app()->user->point_of_sale_id,
+                'company_id' => Yii::app()->user->company_id,
+                'headquarter_id' => Yii::app()->user->headquarter_id,
+                'user_ip' => Yii::app()->request->userHostAddress,
+                'comprobante_tipo' => Purchase::COMPROBANTE_TIPO_NOTA_DE_CREDITO,
+                'associate_row' => $associate_purchase->id,
+                'purchase_price' => -($new_purchase->purchase_price),
+            ));
 
-            $transaction->rollback;
+            try {
+                $new_purchase->setAfipData();
+            } catch (Excaption $e) {
 
-            $response['status'] = 0;
-            $response['errors'] = $new_purchase->getErrors();
-            die(CJSON::encode($response));
+                $transaction->rollback;
+
+                $response['status'] = 0;
+                $response['errors'] = $e->getMessage();
+                die(CJSON::encode($response));
+            }
+
+            if ($new_purchase->save()) {
+                
+                $new_purchase->refresh();
+                $new_purchase->setStatus(Status::CANCELLATION, 0, $_POST['comment']);
+
+                // Actualiza la compra anulada
+                $associate_purchase->associate_row = $new_purchase->id;
+                $associate_purchase->setStatus(Status::CANCELLED, 0, $_POST['comment']);
+
+                $transaction->commit();
+
+                // Genera la respuesta para el javascript
+                $response['status'] = 1;
+                $response['purchase_id'] = $new_purchase->id;
+                $response['message'] = 'Cancelación de compra generada.';
+                die(CJSON::encode($response));
+
+            } else {
+
+                $transaction->rollback;
+
+                $response['status'] = 0;
+                $response['errors'] = $new_purchase->getErrors();
+                die(CJSON::encode($response));
+            }
         }
     }
 }

@@ -76,7 +76,7 @@ class SuperviseController extends Controller {
                         $reasons = array();
                         foreach ($_POST['question'] as $question_id => $anwser) {
                             if (!$anwser) {
-                                $reasons['reason-' . $question_id] = Questionary::model()->findByPk($question_id)->question;
+                                $reasons['reason-' . $question_id] = Questionary::model()->findByPk($question_id)->answer;
                             }
                         }
                         Yii::app()->session['check_purchase']->questionary_json_checked = CJSON::encode($reasons);
@@ -128,7 +128,7 @@ class SuperviseController extends Controller {
                 if (Yii::app()->session['check_purchase']->save()) {
 
                     Yii::app()->session['check_purchase']->refresh();
-                    Yii::app()->session['check_purchase']->setStatus(Yii::app()->session['check_purchase']->current_status_id);
+                    Yii::app()->session['check_purchase']->setStatus(Yii::app()->session['check_purchase']->current_status_id, Yii::app()->session['check_purchase']->last_dispatch_note_id);
 
                     $this->redirect(array('/purchase/list/insupervision'));
                 } else {
@@ -167,7 +167,7 @@ class SuperviseController extends Controller {
         if (isset($_POST['question'])) {
             foreach ($_POST['question'] as $question_id => $answer) {
                 if (!$answer) {
-                    $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_ERROR, Yii::t('app', Questionary::model()->findByPk($question_id)->question));
+                    $messages .= TbHtml::alert(TbHtml::ALERT_COLOR_ERROR, Yii::t('app', Questionary::model()->findByPk($question_id)->answer));
                 }
             }
         }
