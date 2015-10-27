@@ -761,7 +761,7 @@ class Purchase extends BasePurchase {
                         $this->selling_code = $sellingCode->claro_a;
                         break;
                     case "Liberado":
-                        $this->selling_code = $sellingCode->liberado_a;
+                        $this->selling_code = $sellingCode->libre_a;
                         break;
                 }
             } else {
