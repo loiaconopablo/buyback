@@ -213,6 +213,12 @@ class DispatchNote extends BaseDispatchNote {
     public function create(array $purchases) {
         if (count($purchases)) {
 
+            // Chequea que todos los equipos sean comprados por la misma empresa
+            if (!$this->checkCompany($purchases)) {
+                throw new Exception(Yii::t('app', 'No se pueden enviar equipos comprados en diferentes empresas en una misma nota de envío'), 1);
+            }
+            
+
             $this->company_id = Yii::app()->user->company_id;
             $this->source_id = Yii::app()->user->point_of_sale_id;
             $this->dispatch_note_number = Company::model()->findByPk(Yii::app()->user->company_id)->getDispatchNoteNumber();
@@ -220,9 +226,6 @@ class DispatchNote extends BaseDispatchNote {
             $this->destination_id = Yii::app()->user->headquarter_id;
 
             $this->status = self::PENDING_TO_SEND;
-
-            // Inicia la transacción de DisptchNote
-            $transaction = $this->dbConnection->beginTransaction();
 
             try {
                 $this->save();
@@ -243,14 +246,8 @@ class DispatchNote extends BaseDispatchNote {
                     throw $e;
                 }
 
-                // Si no tiró ninguna exepción todos los Purchase se actualizaron correctamente
-                // Ejecuta la transacción
-                $transaction->commit();
-
                 return $this->id;
             } catch (Exception $e) {
-                // Hubo una excepción y no se ejecutan los update e insert
-                $transaction->rollback();
                 throw $e;
             }
         }
@@ -467,12 +464,34 @@ class DispatchNote extends BaseDispatchNote {
      * Devuelve el nombre de la constante de estado
      * @return string nombre le la constante de estado
      */
-    public function getStatusName() {
+    public function getStatusName()
+    {
         $reflection = new ReflectionClass(__CLASS__);
         $constants = $reflection->getConstants();
 
         return array_search($this->status, $constants);
         ;
+    }
+
+    /**
+     * Chequea que todos los equipos sean comprados por la misma compania
+     * @param  array $purchases ids de purchases
+     * @return boolean           [description]
+     */
+    public function checkCompany($purchases)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->addInCondition('id', $purchases);
+        $criteria->group = 't.company_id';
+
+        $purchase_model = new Purchase;
+        $purchases = $purchase_model->findAll($criteria);
+
+        if (count($purchases) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

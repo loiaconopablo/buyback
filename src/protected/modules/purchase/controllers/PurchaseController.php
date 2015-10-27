@@ -92,11 +92,26 @@ class PurchaseController extends Controller
         // Si cumple la condición es porque viene del submit del form para confirmar y despachar
         // los equipos (purchase) en una nota de envío (dispatchnote)      
         if (isset($_POST['DispatchNote'])) {
+
             $dispatch_note_model->setAttributes($_POST['DispatchNote']);
+
             $dispatch_note_model->user_sent_id = Yii::app()->user->id;
+
+            // Inicia la transacción de DisptchNote
+            $transaction = Yii::app()->db->beginTransaction();
+
             try {
+
                 $dispatch_note_id = $dispatch_note_model->create($purchases);
+
+                // Si no tiró ninguna exepción todos los Purchase se actualizaron correctamente
+                // Ejecuta la transacción
+                $transaction->commit();
+
             } catch (Exception $e) {
+                // Hubo una excepción y no se ejecutan los update e insert
+                $transaction->rollback();
+
                 Yii::app()->user->setFlash('error', $e->getMessage());
             }
 
