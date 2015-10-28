@@ -55,19 +55,19 @@
         array(
             'name' => 'purchase_price',
             'header' => Yii::t('app', '$ Compra'),
-            'value' => '"$ " . $data->purchase_price',
+            'value' => 'Helper::moneda($data->purchase_price)',
             'htmlOptions' => array('class' => 'text-right span2'),
         ),
         array(
             'name' => 'paid_price',
             'header' => Yii::t('app', '$ Liquidación'),
-            'value' => '"$ " . $data->paid_price',
+            'value' => 'Helper::moneda($data->paid_price)',
             'htmlOptions' => array('class' => 'text-right span2'),
         ),
 
         array(
             'header' => Yii::t('app', 'Comisión'),
-            'value' => '"$ " . round($data->paid_price * ($data->company->percent_fee / 100), 2)',
+            'value' => 'Helper::moneda(round($data->paid_price * ($data->company->percent_fee / 100), 2))',
             'filter' => false,
             'htmlOptions' => array('class' => 'text-right span2'),
         ),
@@ -134,10 +134,10 @@
         </thead>
         <tbody>
             <tr>
-                <td style="text-align: right">$ <?php echo $total_paid_price; ?></td>
-                <td style="text-align: right">$ <?php echo $total_comision; ?></td>
-                <td style="text-align: right">$ <?php echo $error_allowance; ?></td>
-                <td style="text-align: right">$ <?php echo round($error_allowance + $total_comision, 2); ?></td>
+                <td style="text-align: right"><?php echo Helper::moneda($total_paid_price); ?></td>
+                <td style="text-align: right"><?php echo Helper::moneda($total_comision); ?></td>
+                <td style="text-align: right"><?php echo Helper::moneda($error_allowance); ?></td>
+                <td style="text-align: right"><?php echo Helper::moneda(round($error_allowance + $total_comision, 2)); ?></td>
             </tr>
         </tbody>
     </table>

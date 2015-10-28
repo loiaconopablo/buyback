@@ -254,6 +254,10 @@ class PurchaseController extends Controller
             return date("d-m-Y h:i", strtotime($data));
         }
 
+        if ($attribute == 'questionary_json_checked') {
+            return implode(" - ", CJSON::decode($data));
+        }
+
         return $data;
     }
 

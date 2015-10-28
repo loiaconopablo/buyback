@@ -494,4 +494,25 @@ class DispatchNote extends BaseDispatchNote {
         }
     }
 
+    /**
+     * Chequea si la nota de envio se puede liquidar o no
+     * @return boolean [description]
+     */
+    public function isOnlyCompany()
+    {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('last_dispatch_note_id = :dispatchnote_id');
+        $criteria->group = 'company_id';
+        $criteria->params = array(':dispatchnote_id' => $this->id);
+
+        $purchase_model = new Purchase;
+        $purchases = $purchase_model->findAll($criteria);
+
+        if (count($purchases) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

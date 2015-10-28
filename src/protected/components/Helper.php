@@ -124,4 +124,13 @@ class Helper
         return $final_contract_number;
     }
     
+    /**
+     * Devuelve el valor con el simbolo de la moneda y 2 decimales
+     * @param  float $value valor a con
+     * @return string        [description]
+     */
+    public static function moneda($value)
+    {
+        return Yii::app()->numberFormatter->format("¤ #.00",(float) $value, Yii::t('app', '$'));
+    }
 }
