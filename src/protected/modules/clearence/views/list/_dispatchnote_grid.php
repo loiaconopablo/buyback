@@ -17,29 +17,56 @@
             'htmlOptions' => array('class' => 'span1 text-right'),
         ),
         array(
+            'name' => 'company_id',
+            'value' => '$data->company',
+            'header' => Yii::t('app', 'Empresa'),
+            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.company_id'), 'company_id', 'company'),
+        ),
+        array(
             'header' => Yii::t('app', 'Items'),
-            'value' => 'count(PurchaseStatus::model()->findAllByAttributes(array("dispatch_note_id" => $data->id, "status_id" => Status::PENDING_TO_SEND)))',
+            'value' => 'count(Purchase::model()->findAllByAttributes(array("last_dispatch_note_id" => $data->id)))',
             'htmlOptions' => array(
                 'class' => 'span1 text-right',
             ),
         ),
         array(
             'header' => Yii::t('app', 'Aprobados'),
-            'value' => 'count(PurchaseStatus::model()->findAllByAttributes(array("dispatch_note_id" => $data->id, "status_id" => Status::APPROVED)))',
+            'value' => 'count(Purchase::model()->findAllByAttributes(array("last_dispatch_note_id" => $data->id, "current_status_id" => Status::APPROVED)))',
             'htmlOptions' => array(
                 'class' => 'span1 text-right',
             ),
         ),
         array(
             'header' => Yii::t('app', 'Recotizados'),
-            'value' => 'count(PurchaseStatus::model()->findAllByAttributes(array("dispatch_note_id" => $data->id, "status_id" => Status::REQUOTED)))',
+            'value' => 'count(Purchase::model()->findAllByAttributes(array("last_dispatch_note_id" => $data->id, "current_status_id" => Status::REQUOTED)))',
             'htmlOptions' => array(
                 'class' => 'span1 text-right',
             ),
         ),
         array(
             'header' => Yii::t('app', 'Rechazados'),
-            'value' => 'count(PurchaseStatus::model()->findAllByAttributes(array("dispatch_note_id" => $data->id, "status_id" => Status::REJECTED)))',
+            'value' => 'count(Purchase::model()->findAllByAttributes(array("last_dispatch_note_id" => $data->id, "current_status_id" => Status::REJECTED)))',
+            'htmlOptions' => array(
+                'class' => 'span1 text-right',
+            ),
+        ),
+        array(
+            'header' => Yii::t('app', 'Recibidas'),
+            'value' => 'count(Purchase::model()->findAllByAttributes(array("last_dispatch_note_id" => $data->id, "current_status_id" => Status::RECEIVED)))',
+            'htmlOptions' => array(
+                'class' => 'span1 text-right',
+            ),
+        ),
+        array(
+            'header' => Yii::t('app', 'Pendientes'),
+            'value' => 'count(Purchase::model()->findAllByAttributes(array("last_dispatch_note_id" => $data->id, "current_status_id" => Status::PENDING_TO_BE_RECEIVED)))',
+            'htmlOptions' => array(
+                'class' => 'span1 text-right',
+            ),
+        ),
+        array(
+            'header' => Yii::t('app', 'Canceladas'),
+            'value' => 'count(Purchase::model()->findAllByAttributes(array("last_dispatch_note_id" => $data->id, "current_status_id" => Status::CANCELLED)))',
             'htmlOptions' => array(
                 'class' => 'span1 text-right',
             ),
@@ -63,18 +90,13 @@
             'filter' => false,
         ),
         array(
-            'name' => 'user_create_id',
-            'value' => '$data->user->username',
-            'htmlOptions' => array('class' => 'span1'),
-            'filter' => CHtml::listData(Helper::getUniqueInDataprovider($data_provider, 't.user_create_id'), 'user_create_id', 'user'),
-        ),
-        array(
             'class' => 'TbButtonColumn',
             'template' => '{pay}',
             'htmlOptions' => array('class' => 'text-center span1'),
             'buttons' => array(
                 'pay' => array(
                     'label' => Yii::t('app', 'Liquidar'),
+                    'visible' => '$data->isOnlyCompany()',
                     'url' => 'Yii::app()->createUrl("/clearence/purchase/clear", array("id"=>$data->id))',
                     'options' => array(
                         'class' => 'btn btn-small',

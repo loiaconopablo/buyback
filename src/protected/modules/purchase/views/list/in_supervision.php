@@ -30,18 +30,18 @@ $this->menu = array(
     'beforeAjaxUpdate'=>'function(){setCheckedItems()}',
     'template' => "{items}\n{pager}",
     'columns' => array(
-        array(
-            'header' => 'html',
-            'id' => 'purchase_selected',
-            'class' => 'CCheckBoxColumn',
-            'checked' => 'Helper::checkedInCookie($data->id, "checkedItems")',
-            //'selectableRows' => '50',
-            'selectableRows' => 2,
-            'value' => '$data->id',
-            'headerTemplate' => '<label>{item}<span></span></label>',
-            'htmlOptions' => array('style' => 'width: 20px', 'class' => 'chandran text-center span1'),
-            'headerHtmlOptions' => array('class' => 'text-center'),
-        ),
+        // array(
+        //     'header' => 'html',
+        //     'id' => 'purchase_selected',
+        //     'class' => 'CCheckBoxColumn',
+        //     'checked' => 'Helper::checkedInCookie($data->id, "checkedItems")',
+        //     //'selectableRows' => '50',
+        //     'selectableRows' => 2,
+        //     'value' => '$data->id',
+        //     'headerTemplate' => '<label>{item}<span></span></label>',
+        //     'htmlOptions' => array('style' => 'width: 20px', 'class' => 'chandran text-center span1'),
+        //     'headerHtmlOptions' => array('class' => 'text-center'),
+        // ),
         array(
             'name' => 'contract_number',
             'htmlOptions' => array(

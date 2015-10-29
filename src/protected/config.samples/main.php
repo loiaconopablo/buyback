@@ -14,7 +14,7 @@ return array(
 
     'language' => 'es',
 
-    'defaultController' => 'admin.company',
+    'defaultController' => 'auth/auth/login',
 
     // path aliases
     'aliases' => array(
@@ -49,12 +49,14 @@ return array(
         'purchase' => array(),
         'dispatchnote' => array(),
         'report' => array(),
+        'clearence' => array(),
+        'notification' => array(),
         // uncomment the following to enable the Gii tool
         'gii' => array(
             'class' => 'system.gii.GiiModule',
             'password' => '123456',
             // If removed, Gii defaults to localhost only. Edit carefully to taste.
-            'ipFilters' => array('127.0.0.1', '::1', '192.168.56.1'),
+            'ipFilters' => array('127.0.0.1', '::1', '192.168.33.1'),
             'generatorPaths' => array('giix.generators', 'bootstrap.gii'),
         ),
     ),
@@ -64,6 +66,16 @@ return array(
 
         'session' => array(
             'cookieMode' => 'only',
+        ),
+
+        'format' => array(
+            'numberFormat' => array('decimals'=>2, 'decimalSeparator'=>',', 'thousandSeparator'=>''),
+        ),
+
+        'queue' => array(
+            'class' => 'nfy.components.NfyDbQueue',
+            'label' => 'Notificaciones',
+            'timeout' => 30,
         ),
 
         // Descomentar esto en producción
@@ -123,6 +135,8 @@ return array(
 
         'wsfe' => include dirname(__FILE__) . '/wsfe.php',
 
+        'mailer' => include dirname(__FILE__) . '/mailer.php',
+
         'authManager' => array(
             'class' => 'CDbAuthManager',
             'connectionID' => 'db',
@@ -137,6 +151,21 @@ return array(
                 array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'error, warning, notice',
+                ),
+                array(
+                    'class' => 'CFileLogRoute',
+                    'logFile'=>'blacklist.log',
+                    'categories'=>'blacklist.*',
+                ),
+                array(
+                    'class' => 'CFileLogRoute',
+                    'logFile'=>'gif_not_match.log',
+                    'categories'=>'gif_not_match.*',
+                ),
+                array(
+                    'class'=>'CEmailLogRoute',
+                    'levels'=>'error, warning',
+                    'emails'=>'rggrinberg@gmail.com',
                 ),
                 // uncomment the following to show log messages on web pages
                 /*

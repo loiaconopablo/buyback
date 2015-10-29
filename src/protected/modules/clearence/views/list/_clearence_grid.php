@@ -24,28 +24,28 @@
         array(
             'name' => 'total_paid',
             'header' => Yii::t('app', 'Reintegro'),
-            'value' => '"$ " . $data->total_paid',
+            'value' => 'Helper::moneda($data->total_paid)',
             'htmlOptions' => array('class' => 'text-right span2'),
         ),
 
         array(
             'name' => 'paid_comision',
             'header' => Yii::t('app', 'Comisión'),
-            'value' => '"$ " . $data->paid_comision',
+            'value' => 'Helper::moneda($data->paid_comision)',
             'htmlOptions' => array('class' => 'text-right span2'),
         ),
 
         array(
             'name' => 'error_allowance',
             'header' => Yii::t('app', 'Ajuste'),
-            'value' => '"$ " . $data->error_allowance',
+            'value' => 'Helper::moneda($data->error_allowance)',
             'htmlOptions' => array('class' => 'text-right span2'),
         ),
 
         array(
             'name' => 'total_comision',
             'header' => Yii::t('app', 'Total comisión'),
-            'value' => '"$ " . $data->total_comision',
+            'value' => 'Helper::moneda($data->total_comision)',
             'htmlOptions' => array('class' => 'text-right span2'),
         ),
 

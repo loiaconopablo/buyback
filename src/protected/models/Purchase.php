@@ -34,6 +34,7 @@ class Purchase extends BasePurchase {
             'user_log' => array(self::BELONGS_TO, 'User', 'user_update_id'),
             'associate_purchase' => array(self::BELONGS_TO, 'Purchase', 'associate_row'),
             'status' => array(self::BELONGS_TO, 'Status', 'current_status_id'),
+            'checked_status' => array(self::BELONGS_TO, 'Status', 'checked_status_id'),
             'clearence' => array(self::BELONGS_TO, 'Clearence', 'clearence_id'),
         );
     }
@@ -761,7 +762,7 @@ class Purchase extends BasePurchase {
                         $this->selling_code = $sellingCode->claro_a;
                         break;
                     case "Liberado":
-                        $this->selling_code = $sellingCode->liberado_a;
+                        $this->selling_code = $sellingCode->libre_a;
                         break;
                 }
             } else {

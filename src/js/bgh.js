@@ -44,8 +44,8 @@ $(document).ready(function () {
                 if (data.status == 0) {
                     alert(data.errors);
                 }
-                var win = window.open(Yii.app.createUrl('purchase/contract/generatecancellationcontract', {'id': data.purchase_id}), '_blank');
-                $.fn.yiiGridView.update('owner-purchase-grid');
+                // var win = window.open(Yii.app.createUrl('purchase/contract/generatecancellationcontract', {'id': data.purchase_id}), '_blank');
+                $.fn.yiiGridView.update('selectableGrid');
                 $('#modal-purchase').modal('hide');
 
             },
